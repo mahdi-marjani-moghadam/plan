@@ -304,6 +304,7 @@ class reportsController
             /**
              * sum z
              */
+
             $sumZ[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['admin_id']]['sumZ']  += $row['faaliat_vazn'];
 
 
@@ -376,7 +377,7 @@ class reportsController
         }
 
 
-
+        print_r_debug($sumZ);
         return $export;
     }
 
