@@ -1,0 +1,4 @@
+<?
+class plan extends looeic{
+
+}
