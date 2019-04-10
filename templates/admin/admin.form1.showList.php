@@ -1664,7 +1664,7 @@
                                                                         <a href="<?=RELA_DIR?>statics/files/<?=$vFGroup['admin_id']?>/season1/<?=$vEghdam['eghdam_id']?>/<?=$vFGroup['admin_file1']?>">دانلود فایل</a>
                                                                     <? endif;?>
                                                                 </td>
-                                                                <td class="word-wrap">هاها<?=$vFGroup['admin_tozihat1']?></td>
+                                                                <td class="word-wrap"><?=$vFGroup['admin_tozihat1']?></td>
 
                                                                 <td><?if(isset($_GET['dev']))echo "O1 ";?><?=substr($vFGroup['O1'],0,5)?></td>
                                                                 <? if($admin_info['parent_id']==0 ):?>

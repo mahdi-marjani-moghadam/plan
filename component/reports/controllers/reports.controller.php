@@ -46,7 +46,7 @@ class reportsController
     }
 
 
-    function reportsProcess(){
+    function reportsProcess2(){
 
 
         /**
@@ -387,7 +387,7 @@ class reportsController
 
 
 
-    public function reportsProcess2()
+    public function reportsProcess()
     {
         global $admin_info;
 
