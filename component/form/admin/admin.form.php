@@ -53,7 +53,11 @@ switch ($_GET['action'])
         break;
 
     case 'chart':
-        $form1Controller->chart();
+        $form1Controller->chart($_GET);
+        break;
+
+    case 'deleteFile':
+        $form1Controller->deleteFile();
         break;
     default://universe
 

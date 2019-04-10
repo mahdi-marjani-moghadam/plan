@@ -485,7 +485,7 @@ class adminFormController
                     }
                     if ($list['admin_file2']){
                         $st .="<br>"."<a data-season='2' href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season2/{$list['eghdam_id']}/{$list['admin_file2']}"."'>دانلود فایل</a>";
-                        $st .= "<a href='".RELA_DIR."form/?component=form&action=deleteFile&{$list['admin_file2']}' style='color: red;'>X</a>";
+                        $st .= "<a href='".RELA_DIR."/?component=form&action=deleteFile&file={$list['admin_file2']}' style='color: red;'>حذف فایل</a>";
                     }
                 }
                 else
@@ -815,6 +815,15 @@ class adminFormController
         $this->fileName = 'chart.php';
         $this->template($list);
         die();
+    }
+
+
+
+    function deleteFile($input){
+
+        include_once ROOT_DIR.'component/group_list/model/group_list.model.php';
+        print_r_debug($input);
+
     }
 
 
