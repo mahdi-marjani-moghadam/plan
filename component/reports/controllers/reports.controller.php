@@ -59,7 +59,9 @@ class reportsController
          */
         $list = $this->getKalanList($child);
 
-        print_r_debug($list['kalans'][1]['amaliatis'][11]);
+        return $list;
+
+        //print_r_debug($list['kalans'][1]['amaliatis'][11]);
     }
     function child2(){
         global $admin_info;
@@ -215,7 +217,7 @@ class reportsController
             /**
              * kalan
              */
-//            $export['kalans'][$row['kalan_no']]['kalan_name'] = $row['kalan'];
+            $export['kalans'][$row['kalan_no']]['kalan_name'] = $row['kalan'];
 //            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['admin_name'] = $row['admin_name'];
 //            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['group_name'] = $row['group_name'].' '.$row['group_family'];
             /**
@@ -377,7 +379,7 @@ class reportsController
         }
 
 
-        print_r_debug($sumZ);
+
         return $export;
     }
 
