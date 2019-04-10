@@ -197,6 +197,9 @@
 
                     <table style="font-size: larger">
                         <td style="color: #c7284a"> توجه: </td>
+                        <div class="alert alert-danger">
+                            <strong > بارگذاری "مستندات" درخواستی در این دوره از ارزیابی "الزامی" می باشد.  </strong>
+                        </div>
 
                         <tr>
                             <td style="color: #c7284a"> * درصد اعلامی هر دوره نمی‌تواند از درصد نهایی(تائید شده) دوره قبل «کمتر» باشد. </td>
@@ -210,8 +213,6 @@
                         <tr>
                             <td style="color: #c7284a"> * درصورت عدم ثبت نهایی قبل از مهلت زمانی تعیین شده مرکز ارزیابی، مستندات فاقد اعتبار لازم جهت بررسی این مرکز خواهد بود.</td>
                         </tr>
-
-
 
 
                     </table>
@@ -263,11 +264,11 @@
                     <? endif;?>
 
                     <? if ($admin_info['group_admin'] == 0 && $admin_info['status'] == 1 && $admin_info['start_date'] <= date('Y-m-d') and $admin_info['finish_date'] >= date('Y-m-d')): ?>
-                        <input type="submit" class="btn btn-success btn-white btn-large" style="font-size: 20px" name="submit1" onclick="return confirm('آیا مطمئن هستید؟')"  value="ارسال به مافوق" />
+                        <input type="submit" class="btn btn-success btn-white btn-large" style="font-size: 20px" name="submit1" onclick="return confirm('{توجه:بارگذاری مستندات درخواستی در این دوره از ارزیابی الزامی می باشد.} پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')"  value="ارسال به مافوق" />
                     <? endif;?>
 
                     <? if( $admin_info['status'] == 3 || ($admin_info['group_admin'] == 1 && $admin_info['status'] == 1) && $admin_info['start_date'] <= date('Y-m-d') and $admin_info['finish_date'] >= date('Y-m-d') ): ?>
-                        <input type="submit" class="btn btn-success btn-white btn-large " style="font-size: 25px" name="submit2" onclick="return confirm('آیا مطمئن هستید؟')"  value="ثبت نهایی" />
+                        <input type="submit" class="btn btn-success btn-white btn-large " style="font-size: 25px" name="submit2" onclick="return confirm('{توجه:بارگذاری مستندات درخواستی در این دوره از ارزیابی الزامی می باشد.} پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد.آیا مطمئن هستید؟')"  value="ثبت نهایی" />
                     <? endif;?>
 
                 </form>

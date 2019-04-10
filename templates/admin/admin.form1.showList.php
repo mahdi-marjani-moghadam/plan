@@ -780,14 +780,14 @@
                                     </thead>
                                     <tbody>
 
-                                    <? foreach ($list['list'] as $kalan_no => $vKalan): ?>
+                                    <? foreach ($list['kalans'] as $kalan_no => $vKalan): ?>
 
                                         <tr class="">
                                             <td><?=$kalan_no?></td>
                                             <td class="word-wrap" style=" display: inline-table;width: 100% ">
-                                                <div><?=$vKalan['kalan']?>
-                                                    <a class="show-more " data-level="kalan" data-kalan_no="<?=$vKalan['kalan_no']?>" href="#">◄</a>
-                                                    <a class="show-more-admin " data-level="kalan" data-kalan_no="<?=$vKalan['kalan_no']?>" href="#">▼ واحد</a>
+                                                <div><?=$vKalan['kalan_name']?>
+                                                    <a class="show-more " data-level="kalan" data-kalan_no="<?=$kalan_no?>" href="#">◄</a>
+                                                    <a class="show-more-admin " data-level="kalan" data-kalan_no="<?=$kalan_no?>" href="#">▼ واحد</a>
                                                 </div>
                                             </td>
                                             <td style="background-color: whitesmoke"></td>
@@ -978,12 +978,12 @@
                                         <? endforeach;?>
 
 
-                                        <? foreach ($vKalan['amaliati'] as $amaliati_no => $vAmaliati):?>
+                                        <? foreach ($vKalan['amaliatis'] as $amaliati_no => $vAmaliati):?>
                                             <tr class="tr-amaliati kalan-<?=$vKalan['kalan_no']?>" >
                                                 <td></td>
                                                 <td></td>
                                                 <td class="word-wrap" style=" display: inline-table;width: 100% " rowspan="<?=$vKalan['amaliatiRow']?>" style="width:150px !important; ">
-                                                    <div><?=$vAmaliati['amaliati']?>
+                                                    <div><?=$vAmaliati['amaliati_name']?>
                                                         <a class="show-more" data-level="amaliati" data-amaliati_no="<?=$vAmaliati['amaliati_no']?>" href="#">◄</a>
                                                         <a class="show-more-admin " data-level="amaliati" data-amaliati_no="<?=$vAmaliati['amaliati_no']?>" href="#">▼ واحد</a>
                                                     </div></td>
@@ -1664,7 +1664,7 @@
                                                                         <a href="<?=RELA_DIR?>statics/files/<?=$vFGroup['admin_id']?>/season1/<?=$vEghdam['eghdam_id']?>/<?=$vFGroup['admin_file1']?>">دانلود فایل</a>
                                                                     <? endif;?>
                                                                 </td>
-                                                                <td class="word-wrap">هاها<?=$vFGroup['admin_tozihat1']?></td>
+                                                                <td class="word-wrap"><?=$vFGroup['admin_tozihat1']?></td>
 
                                                                 <td><?if(isset($_GET['dev']))echo "O1 ";?><?=substr($vFGroup['O1'],0,5)?></td>
                                                                 <? if($admin_info['parent_id']==0 ):?>

@@ -426,6 +426,7 @@ class adminFormController
 
                     if ($list['admin_file1']){
                         $st .= "<br>"."<a  href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season1/{$list['eghdam_id']}/{$list['admin_file1']}"."'>دانلود فایل</a>";
+
                     }
                 }
                 else
@@ -433,6 +434,7 @@ class adminFormController
                     $st =$list['admin_percent1'];
                     if ($list['admin_file1']){
                         $st .="<a href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season1/{$list['eghdam_id']}/{$list['admin_file1']}"."'>دانلود فایل</a>";
+
                     }
                 }
 
@@ -481,14 +483,17 @@ class adminFormController
                         $st .= 'اعلامی: <br>'.$list['admin_percent2'].'<br> نهایی: ' ." <div data-season='2-{$list['fid']}'>".$list['O2']."</div>";
 
                     }
-                    if ($list['admin_file2'])
+                    if ($list['admin_file2']){
                         $st .="<br>"."<a data-season='2' href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season2/{$list['eghdam_id']}/{$list['admin_file2']}"."'>دانلود فایل</a>";
+                        $st .= "<a href='".RELA_DIR."form/?component=form&action=deleteFile&{$list['admin_file2']}' style='color: red;'>X</a>";
+                    }
                 }
                 else
                 {
                     $st =$list['admin_percent2'];
                     if ($list['admin_file2']){
                         $st .="<a href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season2/{$list['eghdam_id']}/{$list['admin_file2']}"."'>دانلود فایل</a>";
+
                     }
                 }
 
