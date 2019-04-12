@@ -426,6 +426,7 @@ class adminFormController
 
                     if ($list['admin_file1']){
                         $st .= "<br>"."<a  href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season1/{$list['eghdam_id']}/{$list['admin_file1']}"."'>دانلود فایل</a>";
+                        $st .= "<a class='btn btn-danger text-white btn-xs'  href='".RELA_DIR."admin/?component=form&action=deleteFile&s=1&e={$list['eghdam_id']}&f={$list['faaliat_id']}' style='color: red;'>حذف فایل</a>";
 
                     }
                 }
@@ -545,6 +546,7 @@ class adminFormController
                     }
                     if ($list['admin_file3'])
                         $st .="<br>"."<a data-season='3' href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season1/{$list['eghdam_id']}/{$list['admin_file3']}"."'>دانلود فایل</a>";
+                    $st .= "<a class='btn btn-danger text-white btn-xs'  href='".RELA_DIR."admin/?component=form&action=deleteFile&s=3&e={$list['eghdam_id']}&f={$list['faaliat_id']}' style='color: red;'>حذف فایل</a>";
                 }
                 else
                 {
@@ -598,6 +600,7 @@ class adminFormController
                     }
                     if ($list['admin_file4'])
                         $st .="<br>"."<a data-season='4' href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season4/{$list['eghdam_id']}/{$list['admin_file4']}"."'>دانلود فایل</a>";
+                    $st .= "<a class='btn btn-danger text-white btn-xs'  href='".RELA_DIR."admin/?component=form&action=deleteFile&s=4&e={$list['eghdam_id']}&f={$list['faaliat_id']}' style='color: red;'>حذف فایل</a>";
                 }
                 else
                 {
