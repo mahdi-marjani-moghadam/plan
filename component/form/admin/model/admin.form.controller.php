@@ -485,7 +485,7 @@ class adminFormController
                     }
                     if ($list['admin_file2']){
                         $st .="<br>"."<a data-season='2' href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season2/{$list['eghdam_id']}/{$list['admin_file2']}"."'>دانلود فایل</a>";
-                        $st .= "<a href='".RELA_DIR."/?component=form&action=deleteFile&file={$list['admin_file2']}' style='color: red;'>حذف فایل</a>";
+                        $st .= "<a class='btn btn-danger text-white btn-xs'  href='".RELA_DIR."admin/?component=form&action=deleteFile&s=2&e={$list['eghdam_id']}&f={$list['faaliat_id']}' style='color: red;'>حذف فایل</a>";
                     }
                 }
                 else
@@ -820,9 +820,48 @@ class adminFormController
 
 
     function deleteFile($input){
+        global $admin_info,$messageStack;
+
+
 
         include_once ROOT_DIR.'component/group_list/model/group_list.model.php';
-        print_r_debug($input);
+        $obj = new group_list();
+        $res = $obj->getAll()
+            ->where('admin_id','=',$admin_info['admin_id'])
+            ->andWhere('faaliat_id','=',$input['f'])
+            ->get();
+
+        if($res['export']['recordsCount']==0){
+            $messageStack->add('message','یافت نشد','danger');
+            $result['msg']    = 'یافت نشد';
+            $result['result'] = -1;
+            return $result;
+        }
+
+        $filename = $res['export']['list'][0]->fields['admin_file'.$input['s']];
+
+        if(file_exists(ROOT_DIR.'statics/files/'.$admin_info['admin_id'].'/season'.$input['s'].'/'.$input['e'].'/'.$filename)){
+
+            $input['upload_dir'] = ROOT_DIR.'statics/files/'.$admin_info['admin_id'].'/season'.$input['s'].'/'.$input['e'].'/';
+
+            fileRemover($input['upload_dir'],$filename);
+
+            $res['export']['list'][0]->{admin_file.$input['s']} = '';
+
+            $res['export']['list'][0]->save();
+
+
+
+        }
+
+//        print_r_debug($input);
+
+
+        $messageStack->add_session('message','فایل حذف شد.','success');
+
+        $result['msg']    = 'فایل حذف شد.';
+        $result['result'] = 1;
+        return $result;
 
     }
 
