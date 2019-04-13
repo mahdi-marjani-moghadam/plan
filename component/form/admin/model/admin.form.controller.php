@@ -426,6 +426,7 @@ class adminFormController
 
                     if ($list['admin_file1']){
                         $st .= "<br>"."<a  href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season1/{$list['eghdam_id']}/{$list['admin_file1']}"."'>دانلود فایل</a>";
+                        $st .= "<a class='btn btn-danger text-white btn-xs'  href='".RELA_DIR."admin/?component=form&action=deleteFile&s=1&e={$list['eghdam_id']}&f={$list['faaliat_id']}' style='color: red;'>حذف فایل</a>";
 
                     }
                 }
@@ -485,7 +486,7 @@ class adminFormController
                     }
                     if ($list['admin_file2']){
                         $st .="<br>"."<a data-season='2' href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season2/{$list['eghdam_id']}/{$list['admin_file2']}"."'>دانلود فایل</a>";
-                        $st .= "<a href='".RELA_DIR."form/?component=form&action=deleteFile&{$list['admin_file2']}' style='color: red;'>X</a>";
+                        $st .= "<a class='btn btn-danger text-white btn-xs'  href='".RELA_DIR."admin/?component=form&action=deleteFile&s=2&e={$list['eghdam_id']}&f={$list['faaliat_id']}' style='color: red;'>حذف فایل</a>";
                     }
                 }
                 else
@@ -545,6 +546,7 @@ class adminFormController
                     }
                     if ($list['admin_file3'])
                         $st .="<br>"."<a data-season='3' href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season1/{$list['eghdam_id']}/{$list['admin_file3']}"."'>دانلود فایل</a>";
+                    $st .= "<a class='btn btn-danger text-white btn-xs'  href='".RELA_DIR."admin/?component=form&action=deleteFile&s=3&e={$list['eghdam_id']}&f={$list['faaliat_id']}' style='color: red;'>حذف فایل</a>";
                 }
                 else
                 {
@@ -598,6 +600,7 @@ class adminFormController
                     }
                     if ($list['admin_file4'])
                         $st .="<br>"."<a data-season='4' href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season4/{$list['eghdam_id']}/{$list['admin_file4']}"."'>دانلود فایل</a>";
+                    $st .= "<a class='btn btn-danger text-white btn-xs'  href='".RELA_DIR."admin/?component=form&action=deleteFile&s=4&e={$list['eghdam_id']}&f={$list['faaliat_id']}' style='color: red;'>حذف فایل</a>";
                 }
                 else
                 {
@@ -815,6 +818,54 @@ class adminFormController
         $this->fileName = 'chart.php';
         $this->template($list);
         die();
+    }
+
+
+
+    function deleteFile($input){
+        global $admin_info,$messageStack;
+
+
+
+        include_once ROOT_DIR.'component/group_list/model/group_list.model.php';
+        $obj = new group_list();
+        $res = $obj->getAll()
+            ->where('admin_id','=',$admin_info['admin_id'])
+            ->andWhere('faaliat_id','=',$input['f'])
+            ->get();
+
+        if($res['export']['recordsCount']==0){
+            $messageStack->add('message','یافت نشد','danger');
+            $result['msg']    = 'یافت نشد';
+            $result['result'] = -1;
+            return $result;
+        }
+
+        $filename = $res['export']['list'][0]->fields['admin_file'.$input['s']];
+
+        if(file_exists(ROOT_DIR.'statics/files/'.$admin_info['admin_id'].'/season'.$input['s'].'/'.$input['e'].'/'.$filename)){
+
+            $input['upload_dir'] = ROOT_DIR.'statics/files/'.$admin_info['admin_id'].'/season'.$input['s'].'/'.$input['e'].'/';
+
+            fileRemover($input['upload_dir'],$filename);
+
+            $res['export']['list'][0]->{admin_file.$input['s']} = '';
+
+            $res['export']['list'][0]->save();
+
+
+
+        }
+
+//        print_r_debug($input);
+
+
+        $messageStack->add_session('message','فایل حذف شد.','success');
+
+        $result['msg']    = 'فایل حذف شد.';
+        $result['result'] = 1;
+        return $result;
+
     }
 
 

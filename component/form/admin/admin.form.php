@@ -53,7 +53,12 @@ switch ($_GET['action'])
         break;
 
     case 'chart':
-        $form1Controller->chart();
+        $form1Controller->chart($_GET);
+        break;
+
+    case 'deleteFile':
+        $res = $form1Controller->deleteFile($_GET);
+        redirectPage(RELA_DIR.'admin/?component=form&action=myForm',$res['msg']);
         break;
     default://universe
 
