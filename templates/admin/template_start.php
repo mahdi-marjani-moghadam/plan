@@ -6,7 +6,7 @@
     <title> سامانه ارزیابی برنامه عملیاتی  </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
-    <meta name="author" content="campaign">
+    <meta name="author" content="m.marjani moghadam">
 
     <link rel="stylesheet" type="text/css" href="<?php echo RELA_DIR; ?>templates/<?php echo CURRENT_SKIN; ?>/assets/css/print.css" media="print">
 

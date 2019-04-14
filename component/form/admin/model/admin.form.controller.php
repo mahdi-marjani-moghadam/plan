@@ -425,7 +425,7 @@ class adminFormController
 
 
                     if ($list['admin_file1']){
-                        $st .= "<br>"."<a  href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season1/{$list['eghdam_id']}/{$list['admin_file1']}"."'>دانلود فایل</a>";
+                        $st .= "<br>"."<a class='btn btn-default'  href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season1/{$list['eghdam_id']}/{$list['admin_file1']}"."'>دانلود فایل</a>";
                         $st .= "<a class='btn btn-danger text-white btn-xs'  href='".RELA_DIR."admin/?component=form&action=deleteFile&s=1&e={$list['eghdam_id']}&f={$list['faaliat_id']}' style='color: red;'>حذف فایل</a>";
 
                     }
@@ -434,7 +434,7 @@ class adminFormController
                 {
                     $st =$list['admin_percent1'];
                     if ($list['admin_file1']){
-                        $st .="<a href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season1/{$list['eghdam_id']}/{$list['admin_file1']}"."'>دانلود فایل</a>";
+                        $st .="<a  class='btn btn-default' href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season1/{$list['eghdam_id']}/{$list['admin_file1']}"."'>دانلود فایل</a>";
 
                     }
                 }
@@ -485,15 +485,15 @@ class adminFormController
 
                     }
                     if ($list['admin_file2']){
-                        $st .="<br>"."<a data-season='2' href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season2/{$list['eghdam_id']}/{$list['admin_file2']}"."'>دانلود فایل</a>";
-                        $st .= "<a class='btn btn-danger text-white btn-xs'  href='".RELA_DIR."admin/?component=form&action=deleteFile&s=2&e={$list['eghdam_id']}&f={$list['faaliat_id']}' style='color: red;'>حذف فایل</a>";
+                        $st .="<br>"."<a  class='btn btn-success btn-xs' data-season='2' href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season2/{$list['eghdam_id']}/{$list['admin_file2']}"."'>دانلود فایل</a>";
+                        $st .= "<a class='btn btn-danger text-white btn-xs'  onclick=\" return confirm('آیا میخواهید فایل را حذف نمایید؟');\"     href='".RELA_DIR."admin/?component=form&action=deleteFile&s=2&e={$list['eghdam_id']}&f={$list['faaliat_id']}' style='color: red;'>حذف فایل</a>";
                     }
                 }
                 else
                 {
                     $st =$list['admin_percent2'];
                     if ($list['admin_file2']){
-                        $st .="<a href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season2/{$list['eghdam_id']}/{$list['admin_file2']}"."'>دانلود فایل</a>";
+                        $st .="<a  class='btn btn-default btn-xs' href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season2/{$list['eghdam_id']}/{$list['admin_file2']}"."'>دانلود فایل</a>";
 
                     }
                 }
@@ -544,9 +544,10 @@ class adminFormController
                         $st .= 'اعلامی: <br>'.$list['admin_percent3'].'<br> نهایی: ' ." <div data-season='3-{$list['fid']}'>".$list['O3']."</div>";
 
                     }
-                    if ($list['admin_file3'])
-                        $st .="<br>"."<a data-season='3' href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season1/{$list['eghdam_id']}/{$list['admin_file3']}"."'>دانلود فایل</a>";
-                    $st .= "<a class='btn btn-danger text-white btn-xs'  href='".RELA_DIR."admin/?component=form&action=deleteFile&s=3&e={$list['eghdam_id']}&f={$list['faaliat_id']}' style='color: red;'>حذف فایل</a>";
+                    if ($list['admin_file3']){
+                        $st .="<br>"."<a  class='btn btn-success btn-xs' data-season='3' href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season1/{$list['eghdam_id']}/{$list['admin_file3']}"."'>دانلود فایل</a>";
+                        $st .= "<a class='btn btn-danger text-white btn-xs' onclick=\" return confirm('آیا میخواهید فایل را حذف نمایید؟');\"   href='".RELA_DIR."admin/?component=form&action=deleteFile&s=3&e={$list['eghdam_id']}&f={$list['faaliat_id']}' style='color: red;'>حذف فایل</a>";
+                    }
                 }
                 else
                 {
@@ -598,9 +599,10 @@ class adminFormController
                     else{
                         $st .= 'اعلامی: <br>'.$list['admin_percent4'].'<br> نهایی: ' ." <div data-season='4-{$list['fid']}'>".$list['O4']."</div>";
                     }
-                    if ($list['admin_file4'])
-                        $st .="<br>"."<a data-season='4' href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season4/{$list['eghdam_id']}/{$list['admin_file4']}"."'>دانلود فایل</a>";
-                    $st .= "<a class='btn btn-danger text-white btn-xs'  href='".RELA_DIR."admin/?component=form&action=deleteFile&s=4&e={$list['eghdam_id']}&f={$list['faaliat_id']}' style='color: red;'>حذف فایل</a>";
+                    if ($list['admin_file4']){
+                        $st .="<br>"."<a   class='btn btn-success btn-xs' data-season='4' href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season4/{$list['eghdam_id']}/{$list['admin_file4']}"."'>دانلود فایل</a>";
+                        $st .= "<a class='btn btn-danger text-white btn-xs'  onclick=\" return confirm('آیا میخواهید فایل را حذف نمایید؟');\"  href='".RELA_DIR."admin/?component=form&action=deleteFile&s=4&e={$list['eghdam_id']}&f={$list['faaliat_id']}' style='color: red;'>حذف فایل</a>";
+                    }
                 }
                 else
                 {
