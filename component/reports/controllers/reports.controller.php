@@ -59,7 +59,7 @@ class reportsController
          */
         $list = $this->getKalanList($child);
         if(isset($_GET['dev2'])){
-            print_r_debug($list);
+            //print_r_debug($list);
         }
         return $list;
 
@@ -135,12 +135,13 @@ class reportsController
             ->select('
             e.kalan,e.kalan_no,
             e.amaliati,e.amaliati_no, 
-            e.eghdam,e.eghdam_id,
-            f.faaliat,f.faaliat_id,f.vahed_vazn_faaliat,
+            e.eghdam,e.eghdam_id,e.y,
+            f.faaliat,f.faaliat_id,f.vahed_vazn_faaliat,f.x,f.f_v_uni,
             group_list.parent_id as admin_id, 
             aa.name as admin_name,group_list.admin_id as group_id , ag.name as group_name, ag.family as group_family,
             fv.faaliat_vazn,
             ev.eghdam_vazn,
+            av.amaliati_vazn,
             
             group_list.admin_percent1,
             group_list.admin_percent2,
@@ -203,7 +204,8 @@ class reportsController
             ->leftJoin('admin as aa'       ,'aa.admin_id','=','group_list.parent_id')
             ->leftJoin('admin as ag'       ,'ag.admin_id','=','group_list.admin_id')
             ->leftJoin('faaliat_vazn as fv','fv.faaliat_id','=','group_list.faaliat_id and fv.admin_id = aa.admin_id')
-            ->leftJoin('eghdam_vazn as ev','ev.eghdam_id','=','e.eghdam_id and ev.admin_id = aa.admin_id');
+            ->leftJoin('eghdam_vazn as ev','ev.eghdam_id','=','e.eghdam_id and ev.admin_id = aa.admin_id')
+            ->leftJoin('amaliati_vazn as av','av.amaliati_no','=','e.amaliati_no and av.admin_id = aa.admin_id');
 
         if($child){
             $rowsObj = $rowsObj->where('group_list.admin_id' ,'in',$child);
@@ -218,7 +220,7 @@ class reportsController
 
 
 
-        $export = $sumOO = $sumO = $sumZZ = $sumZ = array();
+        $export = $sumOO = $sumO = $sumZZ = $sumZ = $sumMM = $sumM = $sumNN = $sumN = array();
         foreach ($rows['export']['list'] as $row)
         {
             /**
@@ -360,7 +362,27 @@ class reportsController
             /**
              * sum zz
              */
-            $sumZZ[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['admin_id']][$row['group_id']]['sumZZ']  += $row['faaliat_vazn'];
+            $sumZZ[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['admin_id']][$row['group_id']]['sumZZ']  +=
+                $row['faaliat_vazn'];
+
+            /**
+             * sum MM
+             */
+            if($sumMM[$row['kalan_no']][$row['amaliati_no']][$row['admin_id']][$row['group_id']][$row['eghdam_id']] != 1){
+
+                $sumMM[$row['kalan_no']][$row['amaliati_no']][$row['admin_id']][$row['group_id']]['sumMM']  += $row['eghdam_vazn'];
+                $sumMM[$row['kalan_no']][$row['amaliati_no']][$row['admin_id']][$row['group_id']][$row['eghdam_id']] = 1;
+            }
+
+            /**
+             * sum NN
+             */
+            if($sumNN[$row['kalan_no']][$row['admin_id']][$row['group_id']][$row['amaliati_no']] != 1){
+
+                $sumNN[$row['kalan_no']][$row['admin_id']][$row['group_id']]['sumNN']  += $row['amaliati_vazn'];
+                $sumNN[$row['kalan_no']][$row['admin_id']][$row['group_id']][$row['amaliati_no']] = 1;
+            }
+
 
 
             /**
@@ -370,6 +392,25 @@ class reportsController
             {
                 $sumZ[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['admin_id']]['sumZ']  += $row['faaliat_vazn'];
                 $sumZ[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['admin_id']][$row['faaliat_id']]  = 1;
+            }
+
+
+            /**
+             * sum M
+             */
+            if($sumM[$row['kalan_no']][$row['amaliati_no']][$row['admin_id']][$row['eghdam_id']] != 1)
+            {
+                $sumM[$row['kalan_no']][$row['amaliati_no']][$row['admin_id']]['sumM']  += $row['eghdam_vazn'];
+                $sumM[$row['kalan_no']][$row['amaliati_no']][$row['admin_id']][$row['eghdam_id']]  = 1;
+            }
+
+            /**
+             * sum N
+             */
+            if($sumN[$row['kalan_no']][$row['admin_id']][$row['amaliati_no']] != 1)
+            {
+                $sumN[$row['kalan_no']][$row['admin_id']]['sumN']  += $row['amaliati_vazn'];
+                $sumN[$row['kalan_no']][$row['admin_id']][$row['amaliati_no']]  = 1;
             }
 
 
@@ -397,10 +438,68 @@ class reportsController
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['B3'] += $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A3'] * $vahed_vazn_faaliat;
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['B4'] += $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A4'] * $vahed_vazn_faaliat;
 
-        }
 
+
+        }
+        $nextFaaliatAdmin2 = $nextEghdamAdmin2 = array();
+        $nextFaaliatAdmin = 0;
+        $nextEghdamAdmin = 1;
         foreach ($rows['export']['list'] as $row)
         {
+
+            if($_GET['dev3']){
+
+                echo "<pre>";
+            }
+
+            /** next faaliat admin */
+            if(!isset($nextFaaliatAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']][$row['admin_id']])){
+                $nextFaaliatAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']][$row['admin_id']]['nextAdmin'] = 0;
+                $nextFaaliatAdmin = 0;
+            }else{
+                $nextFaaliatAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']][$row['admin_id']]['nextAdmin'] = 1;
+                $nextFaaliatAdmin = 1;
+
+            }
+
+
+            /** next eghdam admin */
+            if(!isset($nextEghdamAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['admin_id']])){
+                $nextEghdamAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['admin_id']]['nextAdmin'] = 0;
+                $nextEghdamAdmin = 0;
+            }else{
+                $nextEghdamAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['admin_id']]['nextAdmin'] = 1;
+                $nextEghdamAdmin = 1;
+
+            }
+
+
+
+            if($nextEghdamAdmin == 0){
+                $countFaaliat = count($export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats']);
+            }
+
+
+
+
+
+
+
+
+
+//            if( !isset($nextEghdamAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['admin_id']])
+//              //  && $nextEghdamAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['admin_id']]['nextAdmin'] == 0
+//                ){
+//
+//                $nextEghdamAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['admin_id']]['nextAdmin'] = 1;
+//                $nextEghdamAdmin = 1;
+//            }
+
+
+
+
+
+
 
             /**
              *  ZZ
@@ -415,8 +514,397 @@ class reportsController
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['Z']     =
 
                 $row['faaliat_vazn'] / $sumZ[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['admin_id']]['sumZ'];
+
+
+
+            /**
+             *  MM
+             */
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM']
+
+                = $row['eghdam_vazn'] / $sumMM[$row['kalan_no']][$row['amaliati_no']][$row['admin_id']][$row['group_id']]['sumMM'];
+
+            /**
+             * M
+             */
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M']     =
+
+                $row['eghdam_vazn'] / $sumM[$row['kalan_no']][$row['amaliati_no']][$row['admin_id']]['sumM'];
+
+            /**
+             *  NN
+             */
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN']
+
+                = $row['amaliati_vazn'] / $sumNN[$row['kalan_no']][$row['amaliati_no']][$row['admin_id']][$row['group_id']]['sumNN'];
+
+            /**
+             * N
+             */
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N']     =
+
+                $row['amaliati_vazn'] / $sumN[$row['kalan_no']][$row['amaliati_no']][$row['admin_id']]['sumM'];
+
+
+
+            /**
+             * RR
+             */
+
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['RR1'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['OO1'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['ZZ'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['RR2'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['OO2'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['ZZ'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['RR3'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['OO3'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['ZZ'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['RR4'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['OO4'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['ZZ'];
+
+
+            /**
+             * R
+             */
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R1'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O1'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['ZZ'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R2'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O2'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['ZZ'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R3'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O3'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['ZZ'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R4'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O4'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['ZZ'];
+
+
+
+            /**
+             * CC
+             */
+            if($nextFaaliatAdmin == 0){
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['CC1'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['AA1'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['Z'];
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['CC2'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['AA2'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['Z'];
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['CC3'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['AA3'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['Z'];
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['CC4'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['AA4'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['Z'];
+            }
+
+//
+           /**
+            * C
+            */
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C1'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A1'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['Z'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C2'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A2'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['Z'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C3'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A3'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['Z'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C4'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A4'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['Z'];
+
+
+            /**
+             * DD
+             */
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['DD1'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['BB1'] *
+                $row['x'] * $row['f_v_uni'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['DD2'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['BB2'] *
+                $row['x'] * $row['f_v_uni'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['DD3'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['BB3'] *
+                $row['x'] * $row['f_v_uni'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['DD4'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['BB4'] *
+                $row['x'] * $row['f_v_uni'];
+            /**
+             * D
+             */
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['D1'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['B1'] *
+                $row['x'] * $row['f_v_uni'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['D2'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['B2'] *
+                $row['x'] * $row['f_v_uni'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['D3'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['B3'] *
+                $row['x'] * $row['f_v_uni'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['D4'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['B4'] *
+                $row['x'] * $row['f_v_uni'];
+
+            /**
+             * PP
+             */
+
+            if($nextFaaliatAdmin == 0){
+                $countFaaliat = $countFaaliat - 1;
+
+                if( $countFaaliat == 0 ) {
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP1'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['RR1'] *
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP2'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['RR2'] *
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP3'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['RR3'] *
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP4'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['RR4'] *
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
+                }
+            }
+                     if(isset($_GET['dev3']) && $row['kalan_no'] = 1 && $row['amaliati_no'] == 11 && $row['group_id'] == 1101 )
+                    {
+                        echo '<pre>'.
+                            ' NEA-'.$nextEghdamAdmin.
+                            ' NFA-'.$nextFaaliatAdmin.
+                            ' E-'.$row['eghdam_id'].
+                            ' F-'.$row['faaliat_id'].
+                            ' admin-'.$row['admin_id'].
+                            ' group-'.$row['group_id'].
+                            ' RR1-'.
+                            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['RR1']
+                            .' * ';
+                        echo 'MM-'.
+                            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM']
+                            .' = ';
+                        echo 'PP1-'.
+                            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP1']
+                            .'<br>';
+                    }
+
+
+
+            /**
+             * P
+             */
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P1'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R1'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P2'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R2'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P3'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R3'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P4'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R4'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
+
+            /**
+             * EE
+             */
+
+            if($nextFaaliatAdmin == 0){
+                $countFaaliat = $countFaaliat - 1;
+
+                if( $countFaaliat == 0 )
+                {
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['EE1'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['CC1'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['EE2'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['CC2'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['EE3'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['CC3'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['EE4'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['CC4'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
+
+
+
+
+                $nextEghdamAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['admin_id']]['nextAdmin'] = 1;
+
+
+
+
+
+
+                }
+            }
+
+
+
+
+
+
+
+
+
+            /**
+             * E
+             */
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E1'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C1'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E2'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C2'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E3'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C3'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E4'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C4'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
+
+            /**
+             * FF
+             */
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['FF1'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['DD1'] * $row['y'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['FF2'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['DD2'] * $row['y'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['FF3'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['DD3'] * $row['y'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['FF4'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['DD4'] * $row['y'];
+
+            /**
+             * F
+             */
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['F1'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['D1'] * $row['y'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['F2'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['D2'] * $row['y'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['F3'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['D3'] * $row['y'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['F4'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['D4'] * $row['y'];
+
+            /**
+             * QQ
+             */
+            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['QQ1'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP1'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
+            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['QQ2'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP2'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
+            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['QQ3'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP3'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
+            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['QQ4'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP4'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
+            /**
+             * Q
+             */
+            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['Q1'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P1'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
+            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['Q2'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P2'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
+            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['Q3'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P3'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
+            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['Q4'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P4'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
+
+            /**
+             * GG
+             */
+            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['GG1'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['EE1'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
+            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['GG2'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['EE2'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
+            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['GG3'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['EE3'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
+            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['GG4'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['EE4'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
+            /**
+             * G
+             */
+            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['G1'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E1'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
+            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['G2'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E2'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
+            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['G3'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E3'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
+            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['G4'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E4'] *
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
+
+            /**
+             * HH
+             */
+            $export['kalans'][$row['kalan_no']]['HH1'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['FF1'] * $row['amaliati_vazn'];
+            $export['kalans'][$row['kalan_no']]['HH2'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['FF2'] * $row['amaliati_vazn'];
+            $export['kalans'][$row['kalan_no']]['HH3'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['FF3'] * $row['amaliati_vazn'];
+            $export['kalans'][$row['kalan_no']]['HH4'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['FF4'] * $row['amaliati_vazn'];
+            /**
+             * H
+             */
+            $export['kalans'][$row['kalan_no']]['H1'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['F1'] * $row['amaliati_vazn'];
+            $export['kalans'][$row['kalan_no']]['H2'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['F2'] * $row['amaliati_vazn'];
+            $export['kalans'][$row['kalan_no']]['H3'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['F3'] * $row['amaliati_vazn'];
+            $export['kalans'][$row['kalan_no']]['H4'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['F4'] * $row['amaliati_vazn'];
+
+
+
+
+
+
+//            if(isset($nextAmaliatiAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['admin_id']])){
+//                $nextAmaliatiAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['admin_id']]['nextAdmin'] = 1;
+//                $nextAmaliatiAdmin = 1;
+//            }
+
         }
 
+
+
+
+
+
+        if(isset($_GET['dev3'])){
+
+            print_r_debug('');
+        }
+
+
+        if(isset($_GET['dev2'])){
+
+            print_r_debug($sumZZ);
+        }
 
 
         return $export;

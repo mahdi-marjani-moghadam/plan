@@ -51,9 +51,11 @@
     <script src="<?php echo RELA_DIR; ?>templates/<?php echo CURRENT_SKIN; ?>/assets/js/jquery.js"></script>
     <script src="<?php echo RELA_DIR; ?>templates/<?php echo CURRENT_SKIN; ?>/assets/js/scripts.js"></script>
 
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css"
+    <!--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css"
     integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns"
-    crossorigin="anonymous">
+    crossorigin="anonymous">-->
+
+    <link href="<?php echo RELA_DIR; ?>templates/<?php echo CURRENT_SKIN; ?>/assets/css/all.css" rel="stylesheet">
 
 
 
