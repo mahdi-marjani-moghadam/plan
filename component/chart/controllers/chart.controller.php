@@ -185,7 +185,7 @@ class chartController
         $reportsController = new reportsController();
         $report = $reportsController->reportsProcess();
         $charts = array();
-        foreach ($report['list'] as $kalan){
+        foreach ($report['kalans'] as $kalan_no => $kalan){
 
             $tempCat = $temp2 = array();
 
@@ -208,9 +208,9 @@ class chartController
 
 
                     foreach ($kalan['admins'] as $admins){
-                        foreach ($admins['group'] as $group){
+                        foreach ($admins['groups'] as $group){
 
-                            $tempCat[] =  $group['name'].' '.$group['family'];
+                            $tempCat[] =  $group['group_name'].' '.$group['group_family'];
 
 
                             $temp2[0]['data'][] = (float) substr($group['QQ1'],0,5);
@@ -223,6 +223,70 @@ class chartController
                             $temp2[7]['data'][] = (float) substr($group['Q4'],0,5);
                         }
                     }
+
+
+
+            $charts[$kalan_no]['name'] = $kalan['kalan_name'];
+            $charts[$kalan_no]['series'] = json_encode($temp2,JSON_UNESCAPED_UNICODE);
+            $charts[$kalan_no]['categories'] = json_encode($tempCat,JSON_UNESCAPED_UNICODE );
+
+
+        }//next kalan
+
+
+
+
+        $this->fileName = 'report.groupandvahed.php';
+        $this->template(compact('charts'));
+        die();
+    }
+    public function vahedChart1old()
+    {
+        //TODO get season
+        $season = 1;
+
+        include_once ROOT_DIR.'component/reports/controllers/reports.controller.php';
+        $reportsController = new reportsController();
+        $report = $reportsController->reportsProcess();
+        $charts = array();
+        foreach ($report['list'] as $kalan){
+
+            $tempCat = $temp2 = array();
+
+            $temp2[0]['name'] = 'خود اظهاری 1';
+            $temp2[0]['color'] = '#45639b';
+            $temp2[1]['name'] = '(نهایی (تایید شده 1';
+            $temp2[1]['color'] = '#654c97';
+            $temp2[2]['name'] = 'خود اظهاری 2';
+            $temp2[2]['color'] = '#45639b';
+            $temp2[3]['name'] = '(نهایی (تایید شده 2';
+            $temp2[3]['color'] = '#654c97';
+            $temp2[4]['name'] = 'خود اظهاری 3';
+            $temp2[4]['color'] = '#45639b';
+            $temp2[5]['name'] = '(نهایی (تایید شده 3';
+            $temp2[5]['color'] = '#654c97';
+            $temp2[6]['name'] = 'خود اظهاری 4';
+            $temp2[6]['color'] = '#45639b';
+            $temp2[7]['name'] = '(نهایی (تایید شده 4';
+            $temp2[7]['color'] = '#654c97';
+
+
+            foreach ($kalan['admins'] as $admins){
+                foreach ($admins['group'] as $group){
+
+                    $tempCat[] =  $group['name'].' '.$group['family'];
+
+
+                    $temp2[0]['data'][] = (float) substr($group['QQ1'],0,5);
+                    $temp2[1]['data'][] = (float) substr($group['Q1'],0,5);
+                    $temp2[2]['data'][] = (float) substr($group['QQ2'],0,5);
+                    $temp2[3]['data'][] = (float) substr($group['Q2'],0,5);
+                    $temp2[4]['data'][] = (float) substr($group['QQ3'],0,5);
+                    $temp2[5]['data'][] = (float) substr($group['Q3'],0,5);
+                    $temp2[6]['data'][] = (float) substr($group['QQ4'],0,5);
+                    $temp2[7]['data'][] = (float) substr($group['Q4'],0,5);
+                }
+            }
 
 
 
@@ -429,10 +493,79 @@ class chartController
     }
     public function managerChart1()
     {
+
         include_once ROOT_DIR.'component/reports/controllers/reports.controller.php';
         $reportsController = new reportsController();
         $report = $reportsController->reportsProcess();
         $charts = array();
+        foreach ($report['kalans'] as $kalan_no =>$kalan){
+
+            $tempCat = $temp2 = array();
+
+            $temp2[0]['name'] = 'خود اظهاری 1';
+            $temp2[0]['color'] = '#45639b';
+            $temp2[1]['name'] = '(نهایی (تایید شده 1';
+            $temp2[1]['color'] = '#654c97';
+            $temp2[2]['name'] = 'خود اظهاری 2';
+            $temp2[2]['color'] = '#45639b';
+            $temp2[3]['name'] = '(نهایی (تایید شده 2';
+            $temp2[3]['color'] = '#654c97';
+            $temp2[4]['name'] = 'خود اظهاری 3';
+            $temp2[4]['color'] = '#45639b';
+            $temp2[5]['name'] = '(نهایی (تایید شده 3';
+            $temp2[5]['color'] = '#654c97';
+            $temp2[6]['name'] = 'خود اظهاری 4';
+            $temp2[6]['color'] = '#45639b';
+            $temp2[7]['name'] = '(نهایی (تایید شده 4';
+            $temp2[7]['color'] = '#654c97';
+
+
+            foreach ($kalan['admins'] as $admins){
+
+                if($admins['flag'] == 3) {
+                    foreach ($admins['groups'] as $group) {
+                        if ($group['flag'] == 2) {
+                            $tempCat[] = $group['group_name'] . ' ' . $group['group_family'];
+                        }
+                    }
+
+
+                    $temp2[0]['data'][] = (float)substr($admins['GG1'], 0, 5);
+                    $temp2[1]['data'][] = (float)substr($admins['G1'], 0, 5);
+                    $temp2[2]['data'][] = (float)substr($admins['GG2'], 0, 5);
+                    $temp2[3]['data'][] = (float)substr($admins['G2'], 0, 5);
+                    $temp2[4]['data'][] = (float)substr($admins['GG3'], 0, 5);
+                    $temp2[5]['data'][] = (float)substr($admins['G3'], 0, 5);
+                    $temp2[6]['data'][] = (float)substr($admins['GG4'], 0, 5);
+                    $temp2[7]['data'][] = (float)substr($admins['G4'], 0, 5);
+                }
+
+            }
+
+
+
+            $charts[$kalan_no]['name'] = $kalan['kalan_name'];
+            $charts[$kalan_no]['series'] = json_encode($temp2,JSON_UNESCAPED_UNICODE);
+            $charts[$kalan_no]['categories'] = json_encode($tempCat,JSON_UNESCAPED_UNICODE );
+
+
+        }//next kalan
+
+
+
+
+        $this->fileName = 'report.groupandvahed.php';
+        $this->template(compact('charts'));
+        die();
+    }
+    public function managerChart1old()
+    {
+
+        include_once ROOT_DIR.'component/reports/controllers/reports.controller.php';
+        $reportsController = new reportsController();
+        $report = $reportsController->reportsProcess();
+        $charts = array();
+
         foreach ($report['list'] as $kalan){
 
             $tempCat = $temp2 = array();
