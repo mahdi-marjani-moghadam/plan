@@ -7,4 +7,5 @@
  */
 
 class reportsModel extends looeic{
+    protected $TABLE_NAME = 'reports';
 }

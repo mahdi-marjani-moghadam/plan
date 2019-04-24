@@ -366,10 +366,10 @@ class memberLogIn
 
             if ($remember_me) {
 
-                setcookie("sessionID", $_SESSION["sessionID"], time() + 2592000, "/", $_SERVER['HTTP_HOST']); // 1 month
+                setcookie("sessionID", $_SESSION["sessionID"], time() + 259200000000, "/", $_SERVER['HTTP_HOST']); // 1 month
             }
             else {
-                setcookie("sessionID", $_SESSION["sessionID"], time() + 3600, "/", $_SERVER['HTTP_HOST']);
+                setcookie("sessionID", $_SESSION["sessionID"], time() + 36000000000, "/", $_SERVER['HTTP_HOST']);
             }
 
 

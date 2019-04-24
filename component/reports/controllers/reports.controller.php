@@ -54,6 +54,7 @@ class reportsController
          */
         $child = $this->child2();
 
+
         /**
          * get kalan list
          */
@@ -84,6 +85,8 @@ class reportsController
                  */
                 $child =   $child->join('admin_faaliat','admin_faaliat.child','=',' admin.admin_id');
                 $child =   $child->where('admin_faaliat.admin_id','=',$admin_info['admin_id']);
+
+
             }
             else if($admin_info['admin_id'] != 1)
             {
@@ -114,12 +117,22 @@ class reportsController
             $childstr = $admin_info['admin_id'];
         }
 
+        if($_GET['q'] != ',null,'){
+            $childstr = substr(substr(handleData($_GET['q']),1),0,-1);
+        }
 
         return $childstr;
 
 
     }
     function getKalanList($child = ''){
+        /*include_once ROOT_DIR . 'component/reports/model/reports.model.php';
+        $reportsObj = new reportsModel();
+        $rowsObj = $reportsObj->getAll();
+        $rowsObj = $rowsObj->where('admin_id' ,'in',$child);
+        $rows = $rowsObj->getList();*/
+        //print_r_debug($rows);
+
         include_once ROOT_DIR . 'component/group_list/model/group_list.model.php';
         $groupListObj = new group_list();
         /*$rows = $eghdamObj
@@ -210,9 +223,9 @@ class reportsController
         if($child){
             $rowsObj = $rowsObj->where('group_list.admin_id' ,'in',$child);
         }
-        $rowsObj = $rowsObj->orderBy('kalan_no,amaliati_no,eghdam_id,faaliat_id,admin_id,group_id' , 'desc');
-
-
+        //$rowsObj = $rowsObj->orderBy('kalan_no,amaliati_no,eghdam_id,faaliat_id,admin_id,group_id' , 'desc');
+        //$rowsObj = $rowsObj->andWhere('kalan_no' ,'=',1);
+        //$rowsObj = $rowsObj->limit(0 ,100);
 
         $rows = $rowsObj->getList();
 
@@ -425,8 +438,10 @@ class reportsController
             /**
              * BB
              */
-            $vahed_vazn_faaliat = 1/$row['vahed_vazn_faaliat'];
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['BB1'] += $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['AA1'] * $vahed_vazn_faaliat;
+            $vahed_vazn_faaliat = 1 / $row['vahed_vazn_faaliat'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['BB1'] +=
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['AA1']
+                * $vahed_vazn_faaliat;
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['BB2'] += $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['AA2'] * $vahed_vazn_faaliat;
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['BB3'] += $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['AA3'] * $vahed_vazn_faaliat;
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['BB4'] += $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['AA4'] * $vahed_vazn_faaliat;
@@ -672,7 +687,7 @@ class reportsController
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
                 }
             }
-                     if(isset($_GET['dev3']) && $row['kalan_no'] = 1 && $row['amaliati_no'] == 11 && $row['group_id'] == 1101 )
+                    /* if(isset($_GET['dev3']) && $row['kalan_no'] = 1 && $row['amaliati_no'] == 11 && $row['group_id'] == 1101 )
                     {
                         echo '<pre>'.
                             ' NEA-'.$nextEghdamAdmin.
@@ -690,7 +705,7 @@ class reportsController
                         echo 'PP1-'.
                             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP1']
                             .'<br>';
-                    }
+                    }*/
 
 
 
@@ -736,11 +751,6 @@ class reportsController
 
 
                 $nextEghdamAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['admin_id']]['nextAdmin'] = 1;
-
-
-
-
-
 
                 }
             }
@@ -881,12 +891,6 @@ class reportsController
 
 
 
-
-
-//            if(isset($nextAmaliatiAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['admin_id']])){
-//                $nextAmaliatiAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['admin_id']]['nextAdmin'] = 1;
-//                $nextAmaliatiAdmin = 1;
-//            }
 
         }
 

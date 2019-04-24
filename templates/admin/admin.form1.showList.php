@@ -507,6 +507,18 @@
 
         }
 
+        $('.w100').keyup(function (e) {
+            if($(this).val() < 0 || $(this).val() > 100)
+            {
+               alert('مقدار '+$(this).val() + ' صحیح نمی باشد.');
+                $(this).val('')
+            }
+            else if(!$.isNumeric($(this).val())){
+                alert('مقدار '+$(this).val() + ' صحیح نمی باشد.');
+                $(this).val('')
+            }
+        });
+
     });
 </script>
 
@@ -871,7 +883,7 @@
                                         <? foreach ($vKalan['admins'] as $KAId => $vAdmins):?>
                                             <tr style="background-color: rgb(212,247,255) !important;" class="tr-kalan-admins kalan-admin-<?=$kalan_no?>">
                                                 <td></td>
-                                                <td class="word-wrap" style="white-space:nowrap;"><div><!--تجمیع--> <?=$vAdmins['admin_name'].' '.$vAdmins['family']?><a class="show-more-group-kalan show-more-admin-<?=$kalan_no?> a-show-group-kalan-<?=$kalan_no?> a-show-group-kalan-<?=$kalan_no?> " data-admin_id="<?=$vAdmins['admin_id']?>-<?=$kalan_no?>"  href="#">▼ </a></div></td>
+                                                <td class="word-wrap" style="white-space:nowrap;"><div><!--تجمیع--> <?=$vAdmins['admin_name'].' '.$vAdmins['family']?><a class="show-more-group-kalan show-more-admin-<?=$kalan_no?> a-show-group-kalan-<?=$kalan_no?> a-show-group-kalan-<?=$kalan_no?> " data-admin_id="<?=$KAId?>-<?=$kalan_no?>"  href="#">▼ </a></div></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
@@ -1064,12 +1076,12 @@
                                                 <? endif;?>
                                                 <td></td>
                                             </tr>
-                                            <? foreach ($vAmaliati['admins'] as $id => $vAdmins):?>
+                                            <? foreach ($vAmaliati['admins'] as $AAId => $vAdmins):?>
                                                 <tr style="background-color: rgb(212,247,255) !important;" class="tr-amaliati-admins amaliati-admin-<?=$amaliati_no?>">
                                                     <td></td>
                                                     <td></td>
                                                     <td class="word-wrap" style="white-space:nowrap;"> <div><!--تجمیع--> <?=$vAdmins['admin_name'].' '.$vAdmins['family']?><a class="show-more-group-amaliati show-more-admin-<?=$amaliati_no?> a-show-group-kalan-<?=$kalan_no?> "
-                                                                                                                                                                        data-admin_id="<?=$vAdmins['admin_id']?>-<?=$amaliati_no?>"  href="#">▼ </a></div></td>
+                                                                                                                                                                        data-admin_id="<?=$AAId?>-<?=$amaliati_no?>"  href="#">▼ </a></div></td>
 
                                                     <td></td>
                                                     <td></td>
@@ -1118,7 +1130,7 @@
                                                 </tr>
                                                 <? foreach ($vAdmins['groups'] as $id => $vAGroup):?>
                                                     <tr style="background-color: rgb(212,247,255) !important;"
-                                                        class="tr-admins-group admins-group-amaliati-<?=$vAGroup['parent_id']?>-<?=$amaliati_no?>
+                                                        class="tr-admins-group admins-group-amaliati-<?=$AAId?>-<?=$amaliati_no?>
                                             amaliati-no-group-<?=$vAGroup['amaliati_no']?>
                                             kalan-no-group-<?=$kalan_no?> " >
                                                         <td></td>
@@ -1281,10 +1293,11 @@
 
 
                                                         <? if($admin_info['parent_id']==0):?>
-                                                            <? if($admin_info['admin_id']!=1):?>                                                            <td><input class="w100" data-input="manager" data-position="<?=$eghdam_id?>_<?=$vEAdmins['eghdam_vazn']['admin_id']?>_1_1" name="manager[<?=$vEAdmins['eghdam_vazn']['admin_id']?>][<?=$eghdam_id?>][1_1]" value="<?=$vEAdmins['eghdam_vazn']['manager1_1']?>"></td>
-                                                            <td><input class="w100" data-input="manager" data-position="<?=$eghdam_id?>_<?=$vEAdmins['eghdam_vazn']['admin_id']?>_1_2" name="manager[<?=$vEAdmins['eghdam_vazn']['admin_id']?>][<?=$eghdam_id?>][1_2]" value="<?=$vEAdmins['eghdam_vazn']['manager1_2']?>"></td>
-                                                            <td><input class="w100" data-input="manager" data-position="<?=$eghdam_id?>_<?=$vEAdmins['eghdam_vazn']['admin_id']?>_1_3" name="manager[<?=$vEAdmins['eghdam_vazn']['admin_id']?>][<?=$eghdam_id?>][1_3]" value="<?=$vEAdmins['eghdam_vazn']['manager1_3']?>"></td>
-                                                            <td></td>
+                                                            <? if($admin_info['admin_id']!=1):?>
+                                                                <td><input class="w100" data-input="manager" data-position="<?=$eghdam_id?>_<?=$EAId?>_1_1" name="manager[<?=$EAId?>][<?=$eghdam_id?>][1_1]" value="<?=$vEAdmins['eghdam_vazn']['manager1_1']?>"></td>
+                                                                <td><input class="w100" data-input="manager" data-position="<?=$eghdam_id?>_<?=$EAId?>_1_2" name="manager[<?=$EAId?>][<?=$eghdam_id?>][1_2]" value="<?=$vEAdmins['eghdam_vazn']['manager1_2']?>"></td>
+                                                                <td><input class="w100" data-input="manager" data-position="<?=$eghdam_id?>_<?=$EAId?>_1_3" name="manager[<?=$EAId?>][<?=$eghdam_id?>][1_3]" value="<?=$vEAdmins['eghdam_vazn']['manager1_3']?>"></td>
+                                                                <td></td>
                                                         <? else:?>
                                                             <td></td>
                                                             <td></td>
@@ -1299,9 +1312,9 @@
                                                             <? if($admin_info['admin_id']==1):?>
 
                                                                 <span>ارزیاب</span>: <?=$vEAdmins['eghdam_vazn']['tarzyab1_4']?><br>
-                                                                    <span>مدیر</span>: <textarea name="manager[<?=$vEAdmins['eghdam_vazn']['admin_id']?>][<?=$eghdam_id?>][1_5]"><?=$vEAdmins['eghdam_vazn']['tmanager1_5']?></textarea>
+                                                                    <span>مدیر</span>: <textarea name="manager[<?=$EAId?>][<?=$eghdam_id?>][1_5]"><?=$vEAdmins['eghdam_vazn']['tmanager1_5']?></textarea>
                                                                 <? else :?>
-                                                                    <span>ارزیاب</span>: <textarea name="manager[<?=$vEAdmins['eghdam_vazn']['admin_id']?>][<?=$eghdam_id?>][1_4]"><?=$vEAdmins['eghdam_vazn']['tarzyab1_4']?></textarea><br>
+                                                                    <span>ارزیاب</span>: <textarea name="manager[<?=$EAId?>][<?=$eghdam_id?>][1_4]"><?=$vEAdmins['eghdam_vazn']['tarzyab1_4']?></textarea><br>
                                                                 <span>مدیر</span>: <?=$vEAdmins['eghdam_vazn']['tmanager1_5']?>
                                                                 <? endif;?>
                                                             <? else:?>
@@ -1316,9 +1329,9 @@
 
                                                         <? if($admin_info['parent_id']==0):?>
                                                         <? if($admin_info['admin_id']!=1):?>
-                                                                <td><input class="w100" data-input="manager" data-position="<?=$eghdam_id?>_<?=$vEAdmins['eghdam_vazn']['admin_id']?>_2_1" name="manager[<?=$vEAdmins['eghdam_vazn']['admin_id']?>][<?=$eghdam_id?>][2_1]" value="<?=$vEAdmins['eghdam_vazn']['manager2_1']?>"><span style="display: none;"><?=$vEAdmins['eghdam_vazn']['manager2_1']?></span></td>
-                                                                <td><input class="w100" data-input="manager" data-position="<?=$eghdam_id?>_<?=$vEAdmins['eghdam_vazn']['admin_id']?>_2_2" name="manager[<?=$vEAdmins['eghdam_vazn']['admin_id']?>][<?=$eghdam_id?>][2_2]" value="<?=$vEAdmins['eghdam_vazn']['manager2_2']?>"><span style="display: none;"><?=$vEAdmins['eghdam_vazn']['manager2_2']?></span></td>
-                                                                <td><input class="w100" data-input="manager" data-position="<?=$eghdam_id?>_<?=$vEAdmins['eghdam_vazn']['admin_id']?>_2_3" name="manager[<?=$vEAdmins['eghdam_vazn']['admin_id']?>][<?=$eghdam_id?>][2_3]" value="<?=$vEAdmins['eghdam_vazn']['manager2_3']?>"><span style="display: none;"><?=$vEAdmins['eghdam_vazn']['manager2_3']?></span></td>
+                                                                <td><input class="w100" data-input="manager" data-position="<?=$eghdam_id?>_<?=$EAId?>_2_1" name="manager[<?=$EAId?>][<?=$eghdam_id?>][2_1]" value="<?=$vEAdmins['eghdam_vazn']['manager2_1']?>"><span style="display: none;"><?=$vEAdmins['eghdam_vazn']['manager2_1']?></span></td>
+                                                                <td><input class="w100" data-input="manager" data-position="<?=$eghdam_id?>_<?=$EAId?>_2_2" name="manager[<?=$EAId?>][<?=$eghdam_id?>][2_2]" value="<?=$vEAdmins['eghdam_vazn']['manager2_2']?>"><span style="display: none;"><?=$vEAdmins['eghdam_vazn']['manager2_2']?></span></td>
+                                                                <td><input class="w100" data-input="manager" data-position="<?=$eghdam_id?>_<?=$EAId?>_2_3" name="manager[<?=$EAId?>][<?=$eghdam_id?>][2_3]" value="<?=$vEAdmins['eghdam_vazn']['manager2_3']?>"><span style="display: none;"><?=$vEAdmins['eghdam_vazn']['manager2_3']?></span></td>
                                                                 <td></td>
                                                             <? else:?>
                                                                 <td></td>
@@ -1334,10 +1347,10 @@
                                                                 <? if($admin_info['admin_id']==1):?>
 
                                                                     <span>ارزیاب</span>: <?=$vEAdmins['eghdam_vazn']['tarzyab2_4']?><br>
-                                                                    <span>مدیر</span>: <textarea name="manager[<?=$vEAdmins['eghdam_vazn']['admin_id']?>][<?=$eghdam_id?>][2_5]"><?=$vEAdmins['eghdam_vazn']['tmanager2_5']?></textarea>
-<!--                                                            <input  data-input="manager" data-position="<?/*=$eghdam_id*/?>_<?/*=$vEAdmins['eghdam_vazn']['admin_id']*/?>_2_4" name="manager[<?/*=$vEAdmins['eghdam_vazn']['admin_id']*/?>][<?/*=$eghdam_id*/?>][2_4]" value="<?/*=$vEAdmins['eghdam_vazn']['tahlil2_4']*/?>"><span style="display: none;">--><?/*=$vEAdmins['eghdam_vazn']['tahlil2_4']*/?>
+                                                                    <span>مدیر</span>: <textarea name="manager[<?=$EAId?>][<?=$eghdam_id?>][2_5]"><?=$vEAdmins['eghdam_vazn']['tmanager2_5']?></textarea>
+<!--                                                            <input  data-input="manager" data-position="<?/*=$eghdam_id*/?>_<?/*=$EAId*/?>_2_4" name="manager[<?/*=$EAId*/?>][<?/*=$eghdam_id*/?>][2_4]" value="<?/*=$vEAdmins['eghdam_vazn']['tahlil2_4']*/?>"><span style="display: none;">--><?/*=$vEAdmins['eghdam_vazn']['tahlil2_4']*/?>
                                                                 <? else :?>
-                                                                    <span>ارزیاب</span>: <textarea name="manager[<?=$vEAdmins['eghdam_vazn']['admin_id']?>][<?=$eghdam_id?>][2_4]"><?=$vEAdmins['eghdam_vazn']['tarzyab2_4']?></textarea><br>
+                                                                    <span>ارزیاب</span>: <textarea name="manager[<?=$EAId?>][<?=$eghdam_id?>][2_4]"><?=$vEAdmins['eghdam_vazn']['tarzyab2_4']?></textarea><br>
                                                                     <span>مدیر</span>: <?=$vEAdmins['eghdam_vazn']['tmanager2_5']?>
                                                                 <? endif;?>
                                                             <? else:?>
@@ -1352,9 +1365,9 @@
 
                                                         <? if($admin_info['parent_id']==0):?>
                                                             <? if($admin_info['admin_id']!=1):?>
-                                                                <td><input class="w100" data-input="manager" data-position="<?=$eghdam_id?>_<?=$vEAdmins['eghdam_vazn']['admin_id']?>_3_1" name="manager[<?=$vEAdmins['eghdam_vazn']['admin_id']?>][<?=$eghdam_id?>][3_1]" value="<?=$vEAdmins['eghdam_vazn']['manager3_1']?>"><span style="display: none;"><?=$vEAdmins['eghdam_vazn']['manager3_1']?></span></td>
-                                                                <td><input class="w100" data-input="manager" data-position="<?=$eghdam_id?>_<?=$vEAdmins['eghdam_vazn']['admin_id']?>_3_2" name="manager[<?=$vEAdmins['eghdam_vazn']['admin_id']?>][<?=$eghdam_id?>][3_2]" value="<?=$vEAdmins['eghdam_vazn']['manager3_2']?>"><span style="display: none;"><?=$vEAdmins['eghdam_vazn']['manager3_2']?></span></td>
-                                                                <td><input class="w100" data-input="manager" data-position="<?=$eghdam_id?>_<?=$vEAdmins['eghdam_vazn']['admin_id']?>_3_3" name="manager[<?=$vEAdmins['eghdam_vazn']['admin_id']?>][<?=$eghdam_id?>][3_3]" value="<?=$vEAdmins['eghdam_vazn']['manager3_3']?>"><span style="display: none;"><?=$vEAdmins['eghdam_vazn']['manager3_3']?></span></td>
+                                                                <td><input class="w100" data-input="manager" data-position="<?=$eghdam_id?>_<?=$EAId?>_3_1" name="manager[<?=$EAId?>][<?=$eghdam_id?>][3_1]" value="<?=$vEAdmins['eghdam_vazn']['manager3_1']?>"><span style="display: none;"><?=$vEAdmins['eghdam_vazn']['manager3_1']?></span></td>
+                                                                <td><input class="w100" data-input="manager" data-position="<?=$eghdam_id?>_<?=$EAId?>_3_2" name="manager[<?=$EAId?>][<?=$eghdam_id?>][3_2]" value="<?=$vEAdmins['eghdam_vazn']['manager3_2']?>"><span style="display: none;"><?=$vEAdmins['eghdam_vazn']['manager3_2']?></span></td>
+                                                                <td><input class="w100" data-input="manager" data-position="<?=$eghdam_id?>_<?=$EAId?>_3_3" name="manager[<?=$EAId?>][<?=$eghdam_id?>][3_3]" value="<?=$vEAdmins['eghdam_vazn']['manager3_3']?>"><span style="display: none;"><?=$vEAdmins['eghdam_vazn']['manager3_3']?></span></td>
                                                                 <td></td>
                                                         <? else:?>
                                                             <td></td>
@@ -1370,10 +1383,10 @@
                                                                 <? if($admin_info['admin_id']==1):?>
 
                                                                     <span>ارزیاب</span>: <?=$vEAdmins['eghdam_vazn']['tarzyab3_4']?><br>
-                                                                    <span>مدیر</span>: <textarea name="manager[<?=$vEAdmins['eghdam_vazn']['admin_id']?>][<?=$eghdam_id?>][3_5]"><?=$vEAdmins['eghdam_vazn']['tmanager3_5']?></textarea>
+                                                                    <span>مدیر</span>: <textarea name="manager[<?=$EAId?>][<?=$eghdam_id?>][3_5]"><?=$vEAdmins['eghdam_vazn']['tmanager3_5']?></textarea>
                                                                 <? else :?>
 
-                                                                    <span>ارزیاب</span>: <textarea name="manager[<?=$vEAdmins['eghdam_vazn']['admin_id']?>][<?=$eghdam_id?>][3_4]"><?=$vEAdmins['eghdam_vazn']['tarzyab3_4']?></textarea><br>
+                                                                    <span>ارزیاب</span>: <textarea name="manager[<?=$EAId?>][<?=$eghdam_id?>][3_4]"><?=$vEAdmins['eghdam_vazn']['tarzyab3_4']?></textarea><br>
                                                                     <span>مدیر</span>: <?=$vEAdmins['eghdam_vazn']['tmanager3_5']?>
                                                                 <? endif;?>
                                                             <? else:?>
@@ -1387,9 +1400,9 @@
                                                         <td><?if(isset($_GET['dev']))echo "C4-";?><?=substr($vEAdmins['C4'],0,5)?></td>
                                                         <? if($admin_info['parent_id']==0):?>
                                                             <? if($admin_info['admin_id']!=1):?>
-                                                                <td><input class="w100" data-input="manager" data-position="<?=$eghdam_id?>_<?=$vEAdmins['eghdam_vazn']['admin_id']?>_4_1" name="manager[<?=$vEAdmins['eghdam_vazn']['admin_id']?>][<?=$eghdam_id?>][4_1]" value="<?=$vEAdmins['eghdam_vazn']['manager4_1']?>"></td>
-                                                                <td><input class="w100" data-input="manager" data-position="<?=$eghdam_id?>_<?=$vEAdmins['eghdam_vazn']['admin_id']?>_4_2" name="manager[<?=$vEAdmins['eghdam_vazn']['admin_id']?>][<?=$eghdam_id?>][4_2]" value="<?=$vEAdmins['eghdam_vazn']['manager4_2']?>"></td>
-                                                                <td><input class="w100" data-input="manager" data-position="<?=$eghdam_id?>_<?=$vEAdmins['eghdam_vazn']['admin_id']?>_4_3" name="manager[<?=$vEAdmins['eghdam_vazn']['admin_id']?>][<?=$eghdam_id?>][4_3]" value="<?=$vEAdmins['eghdam_vazn']['manager4_3']?>"></td>
+                                                                <td><input class="w100" data-input="manager" data-position="<?=$eghdam_id?>_<?=$EAId?>_4_1" name="manager[<?=$EAId?>][<?=$eghdam_id?>][4_1]" value="<?=$vEAdmins['eghdam_vazn']['manager4_1']?>"></td>
+                                                                <td><input class="w100" data-input="manager" data-position="<?=$eghdam_id?>_<?=$EAId?>_4_2" name="manager[<?=$EAId?>][<?=$eghdam_id?>][4_2]" value="<?=$vEAdmins['eghdam_vazn']['manager4_2']?>"></td>
+                                                                <td><input class="w100" data-input="manager" data-position="<?=$eghdam_id?>_<?=$EAId?>_4_3" name="manager[<?=$EAId?>][<?=$eghdam_id?>][4_3]" value="<?=$vEAdmins['eghdam_vazn']['manager4_3']?>"></td>
                                                                 <td></td>
                                                                 <? else:?>
                                                                 <td></td>
@@ -1405,10 +1418,10 @@
                                                                 <? if($admin_info['admin_id']==1):?>
 
                                                                     <span>ارزیاب</span>: <?=$vEAdmins['eghdam_vazn']['tarzyab4_4']?><br>
-                                                                    <span>مدیر</span>: <textarea name="manager[<?=$vEAdmins['eghdam_vazn']['admin_id']?>][<?=$eghdam_id?>][4_5]"><?=$vEAdmins['eghdam_vazn']['tmanager4_5']?></textarea>
+                                                                    <span>مدیر</span>: <textarea name="manager[<?=$EAId?>][<?=$eghdam_id?>][4_5]"><?=$vEAdmins['eghdam_vazn']['tmanager4_5']?></textarea>
                                                                 <? else :?>
 
-                                                                    <span>ارزیاب</span>: <textarea name="manager[<?=$vEAdmins['eghdam_vazn']['admin_id']?>][<?=$eghdam_id?>][4_4]"><?=$vEAdmins['eghdam_vazn']['tarzyab4_4']?></textarea><br>
+                                                                    <span>ارزیاب</span>: <textarea name="manager[<?=$EAId?>][<?=$eghdam_id?>][4_4]"><?=$vEAdmins['eghdam_vazn']['tarzyab4_4']?></textarea><br>
                                                                     <span>مدیر</span>: <?=$vEAdmins['eghdam_vazn']['tmanager4_5']?>
                                                                 <? endif;?>
                                                             <? else:?>
@@ -1588,7 +1601,7 @@
                                                             <td><?if(isset($_GET['dev']))echo "AA1-";?><?=substr($vFAdmins['AA1'],0,5)?>
                                                                 <?/* if($vFAdmins['admin_file1']):*/?><!--
                                                     <br>
-                                                    <a href="<?/*=RELA_DIR*/?>statics/files/<?/*=$vFAdmins['admin_id']*/?>/season1/<?/*=$faaliat_id*/?>/<?/*=$vFAdmins['admin_file1']*/?>">دانلود فایل</a>
+                                                    <a href="<?/*=RELA_DIR*/?>statics/files/<?/*=$fAId*/?>/season1/<?/*=$faaliat_id*/?>/<?/*=$vFAdmins['admin_file1']*/?>">دانلود فایل</a>
                                                 <?/* endif;*/?></td>-->
                                                             <td></td>
                                                             <td><?if(isset($_GET['dev']))echo "A1-";?><?=substr($vFAdmins['A1'],0,5)?></td>
@@ -1603,7 +1616,7 @@
                                                             <td><?if(isset($_GET['dev']))echo "AA2-";?><?=substr($vFAdmins['AA2'],0,5)?>
                                                                 <?/* if($vFAdmins['admin_file2']):*/?><!--
                                                     <br>
-                                                    <a href="<?/*=RELA_DIR*/?>statics/files/<?/*=$vFAdmins['admin_id']*/?>/season2/<?/*=$faaliat_id*/?>/<?/*=$vFAdmins['admin_file2']*/?>">دانلود فایل</a>
+                                                    <a href="<?/*=RELA_DIR*/?>statics/files/<?/*=$fAId*/?>/season2/<?/*=$faaliat_id*/?>/<?/*=$vFAdmins['admin_file2']*/?>">دانلود فایل</a>
                                                 --><?/* endif;*/?>
                                                             </td>
                                                             <td></td>
@@ -1619,7 +1632,7 @@
                                                             <td><?if(isset($_GET['dev']))echo "AA3-";?><?=substr($vFAdmins['AA3'],0,5)?>
                                                                 <?/* if($vFAdmins['admin_file3']):*/?><!--
                                                     <br>
-                                                    <a href="<?/*=RELA_DIR*/?>statics/files/<?/*=$vFAdmins['admin_id']*/?>/season3/<?/*=$faaliat_id*/?>/<?/*=$vFAdmins['admin_file3']*/?>">دانلود فایل</a>
+                                                    <a href="<?/*=RELA_DIR*/?>statics/files/<?/*=$fAId*/?>/season3/<?/*=$faaliat_id*/?>/<?/*=$vFAdmins['admin_file3']*/?>">دانلود فایل</a>
                                                 --><?/* endif;*/?>
                                                             </td>
                                                             <td></td>
@@ -1635,7 +1648,7 @@
                                                             <td><?if(isset($_GET['dev']))echo "AA4-";?><?=substr($vFAdmins['AA4'],0,5)?>
                                                                 <!-- <?/* if($vFAdmins['admin_file4']):*/?>
                                                     <br>
-                                                    <a href="<?/*=RELA_DIR*/?>statics/files/<?/*=$vFAdmins['admin_id']*/?>/season4/<?/*=$faaliat_id*/?>/<?/*=$vFAdmins['admin_file4']*/?>">دانلود فایل</a>
+                                                    <a href="<?/*=RELA_DIR*/?>statics/files/<?/*=$fAId*/?>/season4/<?/*=$faaliat_id*/?>/<?/*=$vFAdmins['admin_file4']*/?>">دانلود فایل</a>
                                                 --><?/* endif;*/?>
                                                             </td>
                                                             <td></td>
@@ -1661,7 +1674,7 @@
                                                                 <td><?if(isset($_GET['dev']))echo "OO1-";?><?=substr($vFGroup['OO1'],0,5)?>
                                                                     <? if($vFGroup['admin_file1']):?>
                                                                         <br>
-                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$vFGroup['admin_id']?>/season1/<?=$eghdam_id?>/<?=$vFGroup['admin_file1']?>">دانلود فایل</a>
+                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$fAId?>/season1/<?=$eghdam_id?>/<?=$vFGroup['admin_file1']?>">دانلود فایل</a>
                                                                     <? endif;?>
                                                                 </td>
                                                                 <td class="word-wrap" >
@@ -1675,56 +1688,70 @@
 
                                                                         <td>
                                                                             <? if($admin_info['admin_id']!=1 ):?>
-                                                                                <select name="manager_group[<?=$vFGroup['admin_id']?>][<?=$faaliat_id?>][1_1]">
-                                                                                    <option value="0" <? if($vFGroup['manager1_1'] == 0){echo"selected";}?>>0</option>
-                                                                                    <option value="25" <? if($vFGroup['manager1_1'] == 25){echo"selected";}?>>25</option>
-                                                                                    <option value="50" <? if($vFGroup['manager1_1'] == 50){echo"selected";}?>>50</option>
-                                                                                    <option value="75" <? if($vFGroup['manager1_1'] == 75){echo"selected";}?>>75</option>
-                                                                                    <option value="100" <? if($vFGroup['manager1_1'] == 100){echo"selected";}?>>100</option>
-                                                                                </select>
-<!--                                                                                <input class="w100" data-input="manager_faaliat_<?/*=$eghdam_id*/?>_<?/*=$vFAdmins['admin_id']*/?>_1_1" name="manager_group[<?/*=$vFGroup['admin_id']*/?>][<?/*=$faaliat_id*/?>][1_1]" value="<?/*=$vFGroup['manager1_1']*/?>">
--->                                                                            <?else:?>
+                                                                              <!--  <select name="manager_group[<?/*=$fAId*/?>][<?/*=$faaliat_id*/?>][1_1]">
+                                                                                    <option value="0" <?/* if($vFGroup['manager1_1'] == 0){echo"selected";}*/?>>0</option>
+                                                                                    <option value="25" <?/* if($vFGroup['manager1_1'] == 25){echo"selected";}*/?>>25</option>
+                                                                                    <option value="50" <?/* if($vFGroup['manager1_1'] == 50){echo"selected";}*/?>>50</option>
+                                                                                    <option value="75" <?/* if($vFGroup['manager1_1'] == 75){echo"selected";}*/?>>75</option>
+                                                                                    <option value="100" <?/* if($vFGroup['manager1_1'] == 100){echo"selected";}*/?>>100</option>
+                                                                                </select>-->
+
+                                                                               <input class="w100"
+                                                                                data-input="manager_faaliat_<?=$eghdam_id?>_<?=$fAId?>_1_1"
+                                                                                name="manager_group[<?=$fAId?>][<?=$faaliat_id?>][1_1]"
+                                                                                value="<?=$vFGroup['manager1_1']?>"
+                                                                               >
+                                                                            <?else:?>
 
                                                                                 <?=$vFGroup['manager1_1']?><?endif;?>
                                                                         </td>
 
                                                                     <td>
                                                                         <? if($admin_info['admin_id']!=1 ):?>
-                                                                            <select name="manager_group[<?=$vFGroup['admin_id']?>][<?=$faaliat_id?>][1_2]">
-                                                                                <option value="0" <?if($vFGroup['manager1_2'] == 0){echo"selected";}?>>0</option>
-                                                                                <option value="25" <?if($vFGroup['manager1_2'] == 25){echo"selected";}?>>25</option>
-                                                                                <option value="50" <?if($vFGroup['manager1_2'] == 50){echo"selected";}?>>50</option>
-                                                                                <option value="75" <?if($vFGroup['manager1_2'] == 75){echo"selected";}?>>75</option>
-                                                                                <option value="100" <?if($vFGroup['manager1_2'] == 100){echo"selected";}?>>100</option>
-                                                                            </select>
+                                                                            <!--<select name="manager_group[<?/*=$fAId*/?>][<?/*=$faaliat_id*/?>][1_2]">
+                                                                                <option value="0" <?/*if($vFGroup['manager1_2'] == 0){echo"selected";}*/?>>0</option>
+                                                                                <option value="25" <?/*if($vFGroup['manager1_2'] == 25){echo"selected";}*/?>>25</option>
+                                                                                <option value="50" <?/*if($vFGroup['manager1_2'] == 50){echo"selected";}*/?>>50</option>
+                                                                                <option value="75" <?/*if($vFGroup['manager1_2'] == 75){echo"selected";}*/?>>75</option>
+                                                                                <option value="100" <?/*if($vFGroup['manager1_2'] == 100){echo"selected";}*/?>>100</option>
+                                                                            </select>-->
+                                                                            <input class="w100"
+                                                                                   data-input="manager_faaliat_<?=$eghdam_id?>_<?=$fAId?>_1_2"
+                                                                                   name="manager_group[<?=$fAId?>][<?=$faaliat_id?>][1_2]"
+                                                                                   value="<?=$vFGroup['manager1_2']?>">
+                                                                        <?else:?>
 
-                                                                        <?else:?><?=$vFGroup['manager1_2']?>
+                                                                            <?=$vFGroup['manager1_2']?>
                                                                         <?endif;?>
 
-<!--                                                                        <input class="w100" data-input="manager_faaliat_<?/*=$eghdam_id*/?>_<?/*=$vFAdmins['admin_id']*/?>_1_2" name="manager_group[<?/*=$vFGroup['admin_id']*/?>][<?/*=$faaliat_id*/?>][1_2]" value="<?/*=$vFGroup['manager1_2']*/?>">
--->
+
+
                                                                     </td>
 
 
                                                                         <td>
                                                                             <? if($admin_info['admin_id']!=1 ):?>
-                                                                                <select name="manager_group[<?=$vFGroup['admin_id']?>][<?=$faaliat_id?>][1_3]">
-                                                                                    <option value="0" <?if($vFGroup['manager1_3'] == 0){echo"selected";}?>>0</option>
-                                                                                    <option value="25" <?if($vFGroup['manager1_3'] == 25){echo"selected";}?>>25</option>
-                                                                                    <option value="50" <?if($vFGroup['manager1_3'] == 50){echo"selected";}?>>50</option>
-                                                                                    <option value="75" <?if($vFGroup['manager1_3'] == 75){echo"selected";}?>>75</option>
-                                                                                    <option value="100" <?if($vFGroup['manager1_3'] == 100){echo"selected";}?>>100</option>
-                                                                                </select>
+                                                                                <!--<select name="manager_group[<?/*=$fAId*/?>][<?/*=$faaliat_id*/?>][1_3]">
+                                                                                    <option value="0" <?/*if($vFGroup['manager1_3'] == 0){echo"selected";}*/?>>0</option>
+                                                                                    <option value="25" <?/*if($vFGroup['manager1_3'] == 25){echo"selected";}*/?>>25</option>
+                                                                                    <option value="50" <?/*if($vFGroup['manager1_3'] == 50){echo"selected";}*/?>>50</option>
+                                                                                    <option value="75" <?/*if($vFGroup['manager1_3'] == 75){echo"selected";}*/?>>75</option>
+                                                                                    <option value="100" <?/*if($vFGroup['manager1_3'] == 100){echo"selected";}*/?>>100</option>
+                                                                                </select>-->
+                                                                                <input class="w100"
+                                                                                       data-input="manager_faaliat_<?=$eghdam_id?>_<?=$fAId?>_1_3"
+                                                                                       name="manager_group[<?=$fAId?>][<?=$faaliat_id?>][1_3]"
+                                                                                       value="<?=$vFGroup['manager1_3']?>">
                                                                             <?else:?>
                                                                                 <?=$vFGroup['manager1_3']?>
                                                                             <?endif;?>
 
-<!--                                                                            <input class="w100" data-input="manager_faaliat_<?/*=$eghdam_id*/?>_<?/*=$vFAdmins['admin_id']*/?>_1_3" name="manager_group[<?/*=$vFGroup['admin_id']*/?>][<?/*=$faaliat_id*/?>][1_3]" value="<?/*=$vFGroup['manager1_3']*/?>">
--->                                                                        </td>
+
+                                                                        </td>
                                                                 <td>
                                                                         <? if($admin_info['admin_id']==1):?>
                                                                             <span>ارزیاب</span>: <?=substr($vFGroup['max1'],0,5)?><br>
-                                                                            <span>مدیر</span>:<input class="w100" name="manager_group[<?=$vFGroup['admin_id']?>][<?=$faaliat_id?>][max_manager1]" value="<?=$vFGroup['max_manager1']?>">
+                                                                            <span>مدیر</span>:<input class="w100" name="manager_group[<?=$fAId?>][<?=$faaliat_id?>][max_manager1]" value="<?=$vFGroup['max_manager1']?>">
                                                                         <? else :?>
                                                                             <span>ارزیاب</span>: <?=substr($vFGroup['max1'],0,5)?><br>
                                                                             <span>مدیر</span>: <?=substr($vFGroup['max_manager1'],0,5)?>
@@ -1736,9 +1763,9 @@
                                                                     <? if($admin_info['parent_id']==0):?>
                                                                         <? if($admin_info['admin_id']==1):?>
                                                                             <span>ارزیاب</span>: <?=$vFGroup['tahlil1']?><br>
-                                                                            <span>مدیر</span>: <textarea   name="manager_group[<?=$vFGroup['admin_id']?>][<?=$faaliat_id?>][tahlil_manager1]" ><?=$vFGroup['tahlil_manager1']?></textarea>
+                                                                            <span>مدیر</span>: <textarea   name="manager_group[<?=$fAId?>][<?=$faaliat_id?>][tahlil_manager1]" ><?=$vFGroup['tahlil_manager1']?></textarea>
                                                                         <? else :?>
-                                                                            <span>ارزیاب</span>: <textarea   name="manager_group[<?=$vFGroup['admin_id']?>][<?=$faaliat_id?>][tahlil1]" ><?=$vFGroup['tahlil1']?></textarea><br>
+                                                                            <span>ارزیاب</span>: <textarea   name="manager_group[<?=$fAId?>][<?=$faaliat_id?>][tahlil1]" ><?=$vFGroup['tahlil1']?></textarea><br>
                                                                             <span>مدیر</span>: <?=$vFGroup['tahlil_manager1']?>
                                                                         <? endif;?>
                                                                     <? else:?>
@@ -1749,7 +1776,7 @@
                                                                 <td><?if(isset($_GET['dev']))echo "OO2-";?><?=substr($vFGroup['OO2'],0,5)?>
                                                                     <? if($vFGroup['admin_file2']):?>
                                                                         <br>
-                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$vFGroup['admin_id']?>/season2/<?=$faaliat_id?>/<?=$vFGroup['admin_file2']?>">دانلود فایل</a>
+                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$fAId?>/season2/<?=$faaliat_id?>/<?=$vFGroup['admin_file2']?>">دانلود فایل</a>
                                                                     <? endif;?>
                                                                 </td>
                                                                 <td class="word-wrap">
@@ -1761,45 +1788,54 @@
                                                                 <td><?if(isset($_GET['dev']))echo "O2-";?><?=substr($vFGroup['O2'],0,5)?></td>
                                                                 <? if($admin_info['parent_id']==0):?>
                                                                     <td><? if($admin_info['admin_id']!=1 ):?>
-                                                                            <select name="manager_group[<?=$vFGroup['admin_id']?>][<?=$faaliat_id?>][2_1]">
-                                                                                <option value="0" <?if($vFGroup['manager2_1'] == 0){echo"selected";}?>>0</option>
-                                                                                <option value="25" <?if($vFGroup['manager2_1'] == 25){echo"selected";}?>>25</option>
-                                                                                <option value="50" <?if($vFGroup['manager2_1'] == 50){echo"selected";}?>>50</option>
-                                                                                <option value="75" <?if($vFGroup['manager2_1'] == 75){echo"selected";}?>>75</option>
-                                                                                <option value="100" <?if($vFGroup['manager2_1'] == 100){echo"selected";}?>>100</option>
-                                                                            </select>
-                                                                        <?else:?>
-                                                                            <?=$vFGroup['manager2_1']?><?endif;?>
-<!--                                                                            <input class="w100" data-input="manager_faaliat_<?/*=$eghdam_id*/?>_<?/*=$vFAdmins['admin_id']*/?>_2_1" name="manager_group[<?/*=$vFGroup['admin_id']*/?>][<?/*=$faaliat_id*/?>][2_1]" value="<?/*=$vFGroup['manager2_1']*/?>">
--->                                                                    </td>
+                                                                            <!--<select name="manager_group[<?/*=$fAId*/?>][<?/*=$faaliat_id*/?>][2_1]">
+                                                                                <option value="0" <?/*if($vFGroup['manager2_1'] == 0){echo"selected";}*/?>>0</option>
+                                                                                <option value="25" <?/*if($vFGroup['manager2_1'] == 25){echo"selected";}*/?>>25</option>
+                                                                                <option value="50" <?/*if($vFGroup['manager2_1'] == 50){echo"selected";}*/?>>50</option>
+                                                                                <option value="75" <?/*if($vFGroup['manager2_1'] == 75){echo"selected";}*/?>>75</option>
+                                                                                <option value="100" <?/*if($vFGroup['manager2_1'] == 100){echo"selected";}*/?>>100</option>
+                                                                            </select>-->
+                                                                        <?else:?><?=$vFGroup['manager2_1']?><?endif;?>
+                                                                            <input class="w100"
+                                                                                   data-input="manager_faaliat_<?=$eghdam_id?>_<?=$fAId?>_2_1"
+                                                                                   name="manager_group[<?=$fAId?>][<?=$faaliat_id?>][2_1]"
+                                                                                   value="<?=$vFGroup['manager2_1']?>">
+                                                                    </td>
                                                                     <td><? if($admin_info['admin_id']!=1 ):?>
-                                                                            <select name="manager_group[<?=$vFGroup['admin_id']?>][<?=$faaliat_id?>][2_2]">
-                                                                                <option value="0" <?if($vFGroup['manager2_2'] == 0){echo"selected";}?>>0</option>
-                                                                                <option value="25" <?if($vFGroup['manager2_2'] == 25){echo"selected";}?>>25</option>
-                                                                                <option value="50" <?if($vFGroup['manager2_2'] == 50){echo"selected";}?>>50</option>
-                                                                                <option value="75" <?if($vFGroup['manager2_2'] == 75){echo"selected";}?>>75</option>
-                                                                                <option value="100" <?if($vFGroup['manager2_2'] == 100){echo"selected";}?>>100</option>
-                                                                            </select>
+                                                                            <!--<select name="manager_group[<?/*=$fAId*/?>][<?/*=$faaliat_id*/?>][2_2]">
+                                                                                <option value="0" <?/*if($vFGroup['manager2_2'] == 0){echo"selected";}*/?>>0</option>
+                                                                                <option value="25" <?/*if($vFGroup['manager2_2'] == 25){echo"selected";}*/?>>25</option>
+                                                                                <option value="50" <?/*if($vFGroup['manager2_2'] == 50){echo"selected";}*/?>>50</option>
+                                                                                <option value="75" <?/*if($vFGroup['manager2_2'] == 75){echo"selected";}*/?>>75</option>
+                                                                                <option value="100" <?/*if($vFGroup['manager2_2'] == 100){echo"selected";}*/?>>100</option>
+                                                                            </select>-->
+                                                                            <input class="w100"
+                                                                                   data-input="manager_faaliat_<?=$eghdam_id?>_<?=$fAId?>_2_2"
+                                                                                   name="manager_group[<?=$fAId?>][<?=$faaliat_id?>][2_2]"
+                                                                                   value="<?=$vFGroup['manager2_2']?>">
                                                                         <?else:?><?=$vFGroup['manager2_2']?><?endif;?>
-<!--                                                                        <input class="w100" data-input="manager_faaliat_<?/*=$eghdam_id*/?>_<?/*=$vFAdmins['admin_id']*/?>_2_2" name="manager_group[<?/*=$vFGroup['admin_id']*/?>][<?/*=$faaliat_id*/?>][2_2]" value="<?/*=$vFGroup['manager2_2']*/?>">
--->
+
+
                                                                     </td>
 
                                                                     <td><? if($admin_info['admin_id']!=1 ):?>
-                                                                            <select name="manager_group[<?=$vFGroup['admin_id']?>][<?=$faaliat_id?>][2_3]">
-                                                                                <option value="0" <?if($vFGroup['manager2_3'] == 0){echo"selected";}?>>0</option>
-                                                                                <option value="25" <?if($vFGroup['manager2_3'] == 25){echo"selected";}?>>25</option>
-                                                                                <option value="50" <?if($vFGroup['manager2_3'] == 50){echo"selected";}?>>50</option>
-                                                                                <option value="75" <?if($vFGroup['manager2_3'] == 75){echo"selected";}?>>75</option>
-                                                                                <option value="100" <?if($vFGroup['manager2_3'] == 100){echo"selected";}?>>100</option>
-                                                                            </select>
+                                                                           <!-- <select name="manager_group[<?/*=$fAId*/?>][<?/*=$faaliat_id*/?>][2_3]">
+                                                                                <option value="0" <?/*if($vFGroup['manager2_3'] == 0){echo"selected";}*/?>>0</option>
+                                                                                <option value="25" <?/*if($vFGroup['manager2_3'] == 25){echo"selected";}*/?>>25</option>
+                                                                                <option value="50" <?/*if($vFGroup['manager2_3'] == 50){echo"selected";}*/?>>50</option>
+                                                                                <option value="75" <?/*if($vFGroup['manager2_3'] == 75){echo"selected";}*/?>>75</option>
+                                                                                <option value="100" <?/*if($vFGroup['manager2_3'] == 100){echo"selected";}*/?>>100</option>
+                                                                            </select>-->
+                                                                            <input class="w100" data-input="manager_faaliat_<?=$eghdam_id?>_<?=$fAId?>_2_3"
+                                                                                   name="manager_group[<?=$fAId?>][<?=$faaliat_id?>][2_3]"
+                                                                                   value="<?=$vFGroup['manager2_3']?>">
                                                                         <?else:?><?=$vFGroup['manager2_3']?><?endif;?>
-<!--                                                                        <input class="w100" data-input="manager_faaliat_<?/*=$eghdam_id*/?>_<?/*=$vFAdmins['admin_id']*/?>_2_3" name="manager_group[<?/*=$vFGroup['admin_id']*/?>][<?/*=$faaliat_id*/?>][2_3]" value="<?/*=$vFGroup['manager2_3']*/?>">
--->                                                                    </td>
+
+                                                                    </td>
                                                                     <td>
                                                                         <? if($admin_info['admin_id']==1):?>
                                                                             <span>ارزیاب</span>: <?=substr($vFGroup['max2'],0,5)?><br>
-                                                                            <span>مدیر</span>: <input class="w100" name="manager_group[<?=$vFGroup['admin_id']?>][<?=$faaliat_id?>][max_manager2]" value="<?=$vFGroup['max_manager2']?>">
+                                                                            <span>مدیر</span>: <input class="w100" name="manager_group[<?=$fAId?>][<?=$faaliat_id?>][max_manager2]" value="<?=$vFGroup['max_manager2']?>">
                                                                         <? else :?>
                                                                             <span>ارزیاب</span>: <?=substr($vFGroup['max2'],0,5)?><br>
                                                                             <span>مدیر</span>: <?=substr($vFGroup['max_manager2'],0,5)?>
@@ -1811,9 +1847,9 @@
                                                                     <? if($admin_info['parent_id']==0):?>
                                                                         <? if($admin_info['admin_id']==1):?>
                                                                             <span>ارزیاب</span>: <?=$vFGroup['tahlil2']?><br>
-                                                                            <span>مدیر</span>: <textarea   name="manager_group[<?=$vFGroup['admin_id']?>][<?=$faaliat_id?>][tahlil_manager2]" ><?=$vFGroup['tahlil_manager2']?></textarea>
+                                                                            <span>مدیر</span>: <textarea   name="manager_group[<?=$fAId?>][<?=$faaliat_id?>][tahlil_manager2]" ><?=$vFGroup['tahlil_manager2']?></textarea>
                                                                         <? else :?>
-                                                                            <span>ارزیاب</span>: <textarea   name="manager_group[<?=$vFGroup['admin_id']?>][<?=$faaliat_id?>][tahlil2]" ><?=$vFGroup['tahlil2']?></textarea><br>
+                                                                            <span>ارزیاب</span>: <textarea   name="manager_group[<?=$fAId?>][<?=$faaliat_id?>][tahlil2]" ><?=$vFGroup['tahlil2']?></textarea><br>
                                                                             <span>مدیر</span>: <?=$vFGroup['tahlil_manager2']?>
                                                                         <? endif;?>
                                                                     <? else:?>
@@ -1823,7 +1859,7 @@
                                                                 <td><?if(isset($_GET['dev']))echo "OO3-";?><?=substr($vFGroup['OO3'],0,5)?>
                                                                     <? if($vFGroup['admin_file3']):?>
                                                                         <br>
-                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$vFGroup['admin_id']?>/season3/<?=$faaliat_id?>/<?=$vFGroup['admin_file3']?>">دانلود فایل</a>
+                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$fAId?>/season3/<?=$faaliat_id?>/<?=$vFGroup['admin_file3']?>">دانلود فایل</a>
                                                                     <? endif;?>
                                                                 </td>
                                                                 <td class="word-wrap">
@@ -1836,45 +1872,57 @@
                                                                 <? if($admin_info['parent_id']==0):?>
                                                                     <td>
                                                                         <? if($admin_info['admin_id']!=1 ):?>
-                                                                            <select name="manager_group[<?=$vFGroup['admin_id']?>][<?=$faaliat_id?>][3_1]">
-                                                                                <option value="0" <?if($vFGroup['manager3_1'] == 0){echo"selected";}?>>0</option>
-                                                                                <option value="25" <?if($vFGroup['manager3_1'] == 25){echo"selected";}?>>25</option>
-                                                                                <option value="50" <?if($vFGroup['manager3_1'] == 50){echo"selected";}?>>50</option>
-                                                                                <option value="75" <?if($vFGroup['manager3_1'] == 75){echo"selected";}?>>75</option>
-                                                                                <option value="100" <?if($vFGroup['manager3_1'] == 100){echo"selected";}?>>100</option>
-                                                                            </select>
+                                                                            <!--<select name="manager_group[<?/*=$fAId*/?>][<?/*=$faaliat_id*/?>][3_1]">
+                                                                                <option value="0" <?/*if($vFGroup['manager3_1'] == 0){echo"selected";}*/?>>0</option>
+                                                                                <option value="25" <?/*if($vFGroup['manager3_1'] == 25){echo"selected";}*/?>>25</option>
+                                                                                <option value="50" <?/*if($vFGroup['manager3_1'] == 50){echo"selected";}*/?>>50</option>
+                                                                                <option value="75" <?/*if($vFGroup['manager3_1'] == 75){echo"selected";}*/?>>75</option>
+                                                                                <option value="100" <?/*if($vFGroup['manager3_1'] == 100){echo"selected";}*/?>>100</option>
+                                                                            </select>-->
+                                                                            <input class="w100"
+                                                                                   data-input="manager_faaliat_<?=$eghdam_id?>_<?=$fAId?>_3_1"
+                                                                                   name="manager_group[<?=$fAId?>][<?=$faaliat_id?>][3_1]"
+                                                                                   value="<?=$vFGroup['manager3_1']?>">
                                                                         <?else:?><?=$vFGroup['manager3_1']?><?endif;?>
-<!--                                                                        <input class="w100" data-input="manager_faaliat_<?/*=$eghdam_id*/?>_<?/*=$vFAdmins['admin_id']*/?>_3_1" name="manager_group[<?/*=$vFGroup['admin_id']*/?>][<?/*=$faaliat_id*/?>][3_1]" value="<?/*=$vFGroup['manager3_1']*/?>">
--->
+
+
                                                                     </td>
                                                                     <td>
                                                                         <? if($admin_info['admin_id']!=1 ):?>
-                                                                            <select name="manager_group[<?=$vFGroup['admin_id']?>][<?=$faaliat_id?>][3_2]">
-                                                                                <option value="0" <?if($vFGroup['manager3_2'] == 0){echo"selected";}?>>0</option>
-                                                                                <option value="25" <?if($vFGroup['manager3_2'] == 25){echo"selected";}?>>25</option>
-                                                                                <option value="50" <?if($vFGroup['manager3_2'] == 50){echo"selected";}?>>50</option>
-                                                                                <option value="75" <?if($vFGroup['manager3_2'] == 75){echo"selected";}?>>75</option>
-                                                                                <option value="100" <?if($vFGroup['manager3_2'] == 100){echo"selected";}?>>100</option>
-                                                                            </select>
+                                                                           <!-- <select name="manager_group[<?/*=$fAId*/?>][<?/*=$faaliat_id*/?>][3_2]">
+                                                                                <option value="0" <?/*if($vFGroup['manager3_2'] == 0){echo"selected";}*/?>>0</option>
+                                                                                <option value="25" <?/*if($vFGroup['manager3_2'] == 25){echo"selected";}*/?>>25</option>
+                                                                                <option value="50" <?/*if($vFGroup['manager3_2'] == 50){echo"selected";}*/?>>50</option>
+                                                                                <option value="75" <?/*if($vFGroup['manager3_2'] == 75){echo"selected";}*/?>>75</option>
+                                                                                <option value="100" <?/*if($vFGroup['manager3_2'] == 100){echo"selected";}*/?>>100</option>
+                                                                            </select>-->
+                                                                            <input class="w100"
+                                                                                   data-input="manager_faaliat_<?=$eghdam_id?>_<?=$fAId?>_3_2"
+                                                                                   name="manager_group[<?=$fAId?>][<?=$faaliat_id?>][3_2]"
+                                                                                   value="<?=$vFGroup['manager3_2']?>">
                                                                         <?else:?><?=$vFGroup['manager3_2']?><?endif;?>
-<!--                                                                        <input class="w100" data-input="manager_faaliat_<?/*=$eghdam_id*/?>_<?/*=$vFAdmins['admin_id']*/?>_3_2" name="manager_group[<?/*=$vFGroup['admin_id']*/?>][<?/*=$faaliat_id*/?>][3_2]" value="<?/*=$vFGroup['manager3_2']*/?>">
--->                                                                    </td>
+
+                                                                    </td>
                                                                     <td>
                                                                         <? if($admin_info['admin_id']!=1 ):?>
-                                                                            <select name="manager_group[<?=$vFGroup['admin_id']?>][<?=$faaliat_id?>][3_3]">
-                                                                                <option value="0" <?if($vFGroup['manager3_3'] == 0){echo"selected";}?>>0</option>
-                                                                                <option value="25" <?if($vFGroup['manager3_3'] == 25){echo"selected";}?>>25</option>
-                                                                                <option value="50" <?if($vFGroup['manager3_3'] == 50){echo"selected";}?>>50</option>
-                                                                                <option value="75" <?if($vFGroup['manager3_3'] == 75){echo"selected";}?>>75</option>
-                                                                                <option value="100" <?if($vFGroup['manager3_3'] == 100){echo"selected";}?>>100</option>
-                                                                            </select>
+                                                                            <!--<select name="manager_group[<?/*=$fAId*/?>][<?/*=$faaliat_id*/?>][3_3]">
+                                                                                <option value="0" <?/*if($vFGroup['manager3_3'] == 0){echo"selected";}*/?>>0</option>
+                                                                                <option value="25" <?/*if($vFGroup['manager3_3'] == 25){echo"selected";}*/?>>25</option>
+                                                                                <option value="50" <?/*if($vFGroup['manager3_3'] == 50){echo"selected";}*/?>>50</option>
+                                                                                <option value="75" <?/*if($vFGroup['manager3_3'] == 75){echo"selected";}*/?>>75</option>
+                                                                                <option value="100" <?/*if($vFGroup['manager3_3'] == 100){echo"selected";}*/?>>100</option>
+                                                                            </select>-->
+                                                                            <input class="w100"
+                                                                                   data-input="manager_faaliat_<?=$eghdam_id?>_<?=$fAId?>_3_3"
+                                                                                   name="manager_group[<?=$fAId?>][<?=$faaliat_id?>][3_3]"
+                                                                                   value="<?=$vFGroup['manager3_3']?>">
                                                                         <?else:?><?=$vFGroup['manager3_3']?><?endif;?>
-<!--                                                                        <input class="w100" data-input="manager_faaliat_<?/*=$eghdam_id*/?>_<?/*=$vFAdmins['admin_id']*/?>_3_3" name="manager_group[<?/*=$vFGroup['admin_id']*/?>][<?/*=$faaliat_id*/?>][3_3]" value="<?/*=$vFGroup['manager3_3']*/?>">
--->                                                                    </td>
+
+                                                                    </td>
                                                                     <td>
                                                                         <? if($admin_info['admin_id']==1):?>
                                                                             <span>ارزیاب</span>: <?=substr($vFGroup['max3'],0,5)?><br>
-                                                                            <span>مدیر</span>: <input class="w100" name="manager_group[<?=$vFGroup['admin_id']?>][<?=$faaliat_id?>][max_manager3]" value="<?=$vFGroup['max_manager3']?>">
+                                                                            <span>مدیر</span>: <input class="w100" name="manager_group[<?=$fAId?>][<?=$faaliat_id?>][max_manager3]" value="<?=$vFGroup['max_manager3']?>">
                                                                         <? else :?>
                                                                             <span>ارزیاب</span>: <?=substr($vFGroup['max3'],0,5)?><br>
                                                                             <span>مدیر</span>: <?=substr($vFGroup['max_manager3'],0,5)?>
@@ -1886,9 +1934,9 @@
                                                                     <? if($admin_info['parent_id']==0):?>
                                                                         <? if($admin_info['admin_id']==1):?>
                                                                             <span>ارزیاب</span>: <?=$vFGroup['tahlil3']?><br>
-                                                                            <span>مدیر</span>: <textarea   name="manager_group[<?=$vFGroup['admin_id']?>][<?=$faaliat_id?>][tahlil_manager3]" ><?=$vFGroup['tahlil_manager3']?></textarea>
+                                                                            <span>مدیر</span>: <textarea   name="manager_group[<?=$fAId?>][<?=$faaliat_id?>][tahlil_manager3]" ><?=$vFGroup['tahlil_manager3']?></textarea>
                                                                         <? else :?>
-                                                                            <span>ارزیاب</span>: <textarea   name="manager_group[<?=$vFGroup['admin_id']?>][<?=$faaliat_id?>][tahlil3]" ><?=$vFGroup['tahlil3']?></textarea><br>
+                                                                            <span>ارزیاب</span>: <textarea   name="manager_group[<?=$fAId?>][<?=$faaliat_id?>][tahlil3]" ><?=$vFGroup['tahlil3']?></textarea><br>
                                                                             <span>مدیر</span>: <?=$vFGroup['tahlil_manager3']?>
                                                                         <? endif;?>
                                                                     <? else:?>
@@ -1898,7 +1946,7 @@
                                                                 <td><?if(isset($_GET['dev']))echo "OO4-";?><?=substr($vFGroup['OO4'],0,5)?>
                                                                     <? if($vFGroup['admin_file4']):?>
                                                                         <br>
-                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$vFGroup['admin_id']?>/season4/<?=$faaliat_id?>/<?=$vFGroup['admin_file4']?>">دانلود فایل</a>
+                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$fAId?>/season4/<?=$faaliat_id?>/<?=$vFGroup['admin_file4']?>">دانلود فایل</a>
                                                                     <? endif;?>
                                                                 </td>
                                                                 <td class="word-wrap">
@@ -1910,48 +1958,60 @@
                                                                 <? if($admin_info['parent_id']==0):?>
 
                                                                     <td><? if($admin_info['admin_id']!=1 ):?>
-                                                                            <select name="manager_group[<?=$vFGroup['admin_id']?>][<?=$faaliat_id?>][4_1]">
-                                                                                <option value="0" <?if($vFGroup['manager4_1'] == 0){echo"selected";}?>>0</option>
-                                                                                <option value="25" <?if($vFGroup['manager4_1'] == 25){echo"selected";}?>>25</option>
-                                                                                <option value="50" <?if($vFGroup['manager4_1'] == 50){echo"selected";}?>>50</option>
-                                                                                <option value="75" <?if($vFGroup['manager4_1'] == 75){echo"selected";}?>>75</option>
-                                                                                <option value="100" <?if($vFGroup['manager4_1'] == 100){echo"selected";}?>>100</option>
-                                                                            </select>
+                                                                            <!--<select name="manager_group[<?/*=$fAId*/?>][<?/*=$faaliat_id*/?>][4_1]">
+                                                                                <option value="0" <?/*if($vFGroup['manager4_1'] == 0){echo"selected";}*/?>>0</option>
+                                                                                <option value="25" <?/*if($vFGroup['manager4_1'] == 25){echo"selected";}*/?>>25</option>
+                                                                                <option value="50" <?/*if($vFGroup['manager4_1'] == 50){echo"selected";}*/?>>50</option>
+                                                                                <option value="75" <?/*if($vFGroup['manager4_1'] == 75){echo"selected";}*/?>>75</option>
+                                                                                <option value="100" <?/*if($vFGroup['manager4_1'] == 100){echo"selected";}*/?>>100</option>
+                                                                            </select>-->
+                                                                            <input class="w100"
+                                                                                   data-input="manager_faaliat_<?=$eghdam_id?>_<?=$fAId?>_4_1"
+                                                                                   name="manager_group[<?=$fAId?>][<?=$faaliat_id?>][4_1]"
+                                                                                   value="<?=$vFGroup['manager4_1']?>">
                                                                         <?else:?>
                                                                             <?=$vFGroup['manager4_1']?><?endif;?>
-<!--                                                                            <input class="w100" data-input="manager_faaliat_<?/*=$eghdam_id*/?>_<?/*=$vFAdmins['admin_id']*/?>_4_1" name="manager_group[<?/*=$vFGroup['admin_id']*/?>][<?/*=$faaliat_id*/?>][4_1]" value="<?/*=$vFGroup['manager4_1']*/?>">
--->                                                                    </td>
+
+                                                                    </td>
 
                                                                     <td><? if($admin_info['admin_id']!=1 ):?>
-                                                                            <select name="manager_group[<?=$vFGroup['admin_id']?>][<?=$faaliat_id?>][4_2]">
-                                                                                <option value="0" <?if($vFGroup['manager4_2'] == 0){echo"selected";}?>>0</option>
-                                                                                <option value="25" <?if($vFGroup['manager4_2'] == 25){echo"selected";}?>>25</option>
-                                                                                <option value="50" <?if($vFGroup['manager4_2'] == 50){echo"selected";}?>>50</option>
-                                                                                <option value="75" <?if($vFGroup['manager4_2'] == 75){echo"selected";}?>>75</option>
-                                                                                <option value="100" <?if($vFGroup['manager4_2'] == 100){echo"selected";}?>>100</option>
-                                                                            </select>
+                                                                           <!-- <select name="manager_group[<?/*=$fAId*/?>][<?/*=$faaliat_id*/?>][4_2]">
+                                                                                <option value="0" <?/*if($vFGroup['manager4_2'] == 0){echo"selected";}*/?>>0</option>
+                                                                                <option value="25" <?/*if($vFGroup['manager4_2'] == 25){echo"selected";}*/?>>25</option>
+                                                                                <option value="50" <?/*if($vFGroup['manager4_2'] == 50){echo"selected";}*/?>>50</option>
+                                                                                <option value="75" <?/*if($vFGroup['manager4_2'] == 75){echo"selected";}*/?>>75</option>
+                                                                                <option value="100" <?/*if($vFGroup['manager4_2'] == 100){echo"selected";}*/?>>100</option>
+                                                                            </select>-->
+                                                                            <input class="w100"
+                                                                                   data-input="manager_faaliat_<?=$eghdam_id?>_<?=$fAId?>_4_2"
+                                                                                   name="manager_group[<?=$fAId?>][<?=$faaliat_id?>][4_2]"
+                                                                                   value="<?=$vFGroup['manager4_2']?>">
                                                                         <?else:?>
                                                                             <?=$vFGroup['manager4_2']?><?endif;?>
-<!--                                                                        <input class="w100" data-input="manager_faaliat_<?/*=$eghdam_id*/?>_<?/*=$vFAdmins['admin_id']*/?>_4_2" name="manager_group[<?/*=$vFGroup['admin_id']*/?>][<?/*=$faaliat_id*/?>][4_2]" value="<?/*=$vFGroup['manager4_2']*/?>">
--->                                                                    </td>
+
+                                                                    </td>
 
                                                                     <td><? if($admin_info['admin_id']!=1 ):?>
-                                                                            <select name="manager_group[<?=$vFGroup['admin_id']?>][<?=$faaliat_id?>][4_3]">
-                                                                                <option value="0" <?if($vFGroup['manager4_3'] == 0){echo"selected";}?>>0</option>
-                                                                                <option value="25" <?if($vFGroup['manager4_3'] == 25){echo"selected";}?>>25</option>
-                                                                                <option value="50" <?if($vFGroup['manager4_3'] == 50){echo"selected";}?>>50</option>
-                                                                                <option value="75" <?if($vFGroup['manager4_3'] == 75){echo"selected";}?>>75</option>
-                                                                                <option value="100" <?if($vFGroup['manager4_3'] == 100){echo"selected";}?>>100</option>
-                                                                            </select>
+                                                                           <!-- <select name="manager_group[<?/*=$fAId*/?>][<?/*=$faaliat_id*/?>][4_3]">
+                                                                                <option value="0" <?/*if($vFGroup['manager4_3'] == 0){echo"selected";}*/?>>0</option>
+                                                                                <option value="25" <?/*if($vFGroup['manager4_3'] == 25){echo"selected";}*/?>>25</option>
+                                                                                <option value="50" <?/*if($vFGroup['manager4_3'] == 50){echo"selected";}*/?>>50</option>
+                                                                                <option value="75" <?/*if($vFGroup['manager4_3'] == 75){echo"selected";}*/?>>75</option>
+                                                                                <option value="100" <?/*if($vFGroup['manager4_3'] == 100){echo"selected";}*/?>>100</option>
+                                                                            </select>-->
+                                                                            <input class="w100"
+                                                                                   data-input="manager_faaliat_<?=$eghdam_id?>_<?=$fAId?>_4_3"
+                                                                                   name="manager_group[<?=$fAId?>][<?=$faaliat_id?>][4_3]"
+                                                                                   value="<?=$vFGroup['manager4_3']?>">
                                                                     <?else:?>
                                                                             <?=$vFGroup['manager4_3']?><?endif;?>
-<!--                                                                        <input class="w100" data-input="manager_faaliat_<?/*=$eghdam_id*/?>_<?/*=$vFAdmins['admin_id']*/?>_4_3" name="manager_group[<?/*=$vFGroup['admin_id']*/?>][<?/*=$faaliat_id*/?>][4_3]" value="<?/*=$vFGroup['manager4_3']*/?>">
--->                                                                    </td>
+
+                                                                    </td>
 
                                                                     <td>
                                                                         <? if($admin_info['admin_id']==1):?>
                                                                             <span>ارزیاب</span>: <?=substr($vFGroup['max4'],0,5)?><br>
-                                                                            <span>مدیر</span>: <input class="w100" name="manager_group[<?=$vFGroup['admin_id']?>][<?=$faaliat_id?>][max_manager4]" value="<?=$vFGroup['max_manager4']?>">
+                                                                            <span>مدیر</span>: <input class="w100" name="manager_group[<?=$fAId?>][<?=$faaliat_id?>][max_manager4]" value="<?=$vFGroup['max_manager4']?>">
                                                                         <? else :?>
                                                                             <span>ارزیاب</span>: <?=substr($vFGroup['max4'],0,5)?><br>
                                                                             <span>مدیر</span>: <?=substr($vFGroup['max_manager4'],0,5)?>
@@ -1963,9 +2023,9 @@
                                                                     <? if($admin_info['parent_id']==0):?>
                                                                         <? if($admin_info['admin_id']==1):?>
                                                                             <span>ارزیاب</span>: <?=$vFGroup['tahlil4']?><br>
-                                                                            <span>مدیر</span>: <textarea   name="manager_group[<?=$vFGroup['admin_id']?>][<?=$faaliat_id?>][tahlil_manager4]" ><?=$vFGroup['tahlil_manager4']?></textarea>
+                                                                            <span>مدیر</span>: <textarea   name="manager_group[<?=$fAId?>][<?=$faaliat_id?>][tahlil_manager4]" ><?=$vFGroup['tahlil_manager4']?></textarea>
                                                                         <? else :?>
-                                                                            <span>ارزیاب</span>: <textarea   name="manager_group[<?=$vFGroup['admin_id']?>][<?=$faaliat_id?>][tahlil4]" ><?=$vFGroup['tahlil4']?></textarea><br>
+                                                                            <span>ارزیاب</span>: <textarea   name="manager_group[<?=$fAId?>][<?=$faaliat_id?>][tahlil4]" ><?=$vFGroup['tahlil4']?></textarea><br>
                                                                             <span>مدیر</span>: <?=$vFGroup['tahlil_manager4']?>
                                                                         <? endif;?>
                                                                     <? else:?>

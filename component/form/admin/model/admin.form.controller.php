@@ -87,8 +87,13 @@ class adminFormController
         global $admin_info;
         include_once ROOT_DIR.'component/reports/controllers/reports.controller.php';
         $obj = new reportsController();
-        $list = $obj->reportsProcess();
+        if (isset($_GET['old'])) {
+            $list = $obj->reportsProcess2();
+        }else
+        {
+            $list = $obj->reportsProcess();
 
+        }
         if(isset($_GET['array'])){
             print_r_debug($list);
         }
@@ -119,7 +124,12 @@ class adminFormController
 
 //        print_r_debug($list);
 
-        $this->fileName = 'admin.form1.showList.php';
+        if (isset($_GET['old'])) {
+            $this->fileName = 'admin.form1.showList.old.php';
+        }else{
+
+            $this->fileName = 'admin.form1.showList.php';
+        }
         $this->template($list);
         die();
     }
@@ -306,7 +316,9 @@ class adminFormController
         global $admin_info, $messageStack, $dataStack;
 
         $list = '';
-        $this->fileName = 'admin.form1.addForm.php';
+
+            $this->fileName = 'admin.form1.addForm.php';
+
         $this->template($list);
         die();
     }

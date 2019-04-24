@@ -130,7 +130,7 @@ class adminLogin
 			}
 			else
 			{
-				setcookie("sessionID", $_SESSION["sessionID"], time()+3600, "/", $_SERVER['HTTP_HOST']);
+				setcookie("sessionID", $_SESSION["sessionID"], time()+36000000000, "/", $_SERVER['HTTP_HOST']);
 			}
 			
 			$admin_info = $this->checkLogin();
