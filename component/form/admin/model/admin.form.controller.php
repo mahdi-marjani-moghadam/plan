@@ -278,8 +278,6 @@ class adminFormController
                     }
                 }
                 $res['export']['list'][0]->save();
-
-
             }
 
         }
@@ -448,7 +446,7 @@ class adminFormController
                 {
                     $st =$list['admin_percent1'];
                     if ($list['admin_file1']){
-                        $st .="<a  class='btn btn-default' href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season1/{$list['eghdam_id']}/{$list['admin_file1']}"."'>دانلود فایل</a>";
+                        $st .="<a  class='btn btn-default' href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season1/{$list['eghdam_id']}/{$list['admin_file1']}"."'>دانلود فایل </a>";
 
                     }
                 }
