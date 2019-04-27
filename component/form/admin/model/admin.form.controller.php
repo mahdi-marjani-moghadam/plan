@@ -200,9 +200,11 @@ class adminFormController
         foreach ($fields['manager_group'] as $admin_id => $v){
 
             foreach ($v as $faaliat_id => $v2){
-
                 $res = group_list::getBy_admin_id_and_faaliat_id($admin_id,$faaliat_id)->get();
 
+                if($res['export']['recordsCount']==0){
+                    print_r_debug($admin_id);
+                }
 
                 if($admin_info['admin_id'] == 1){
                     $res['export']['list'][0]->max_manager1 = $v2['max_manager1'];
@@ -275,11 +277,11 @@ class adminFormController
                         $res['export']['list'][0]->tahlil_manager4 = $v2['tahlil4'];
                     }
                 }
-
                 $res['export']['list'][0]->save();
 
 
             }
+
         }
 
 
