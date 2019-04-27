@@ -1776,7 +1776,7 @@
                                                                 <td><?if(isset($_GET['dev']))echo "OO2-";?><?=substr($vFGroup['OO2'],0,5)?>
                                                                     <? if($vFGroup['admin_file2']):?>
                                                                         <br>
-                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$fAId?>/season2/<?=$faaliat_id?>/<?=$vFGroup['admin_file2']?>">دانلود فایل</a>
+                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$fAId?>/season2/<?=$eghdam_id?>/<?=$vFGroup['admin_file2']?>">دانلود فایل</a>
                                                                     <? endif;?>
                                                                 </td>
                                                                 <td class="word-wrap">
@@ -1859,7 +1859,7 @@
                                                                 <td><?if(isset($_GET['dev']))echo "OO3-";?><?=substr($vFGroup['OO3'],0,5)?>
                                                                     <? if($vFGroup['admin_file3']):?>
                                                                         <br>
-                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$fAId?>/season3/<?=$faaliat_id?>/<?=$vFGroup['admin_file3']?>">دانلود فایل</a>
+                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$fAId?>/season3/<?=$eghdam_id?>/<?=$vFGroup['admin_file3']?>">دانلود فایل</a>
                                                                     <? endif;?>
                                                                 </td>
                                                                 <td class="word-wrap">
@@ -1946,7 +1946,7 @@
                                                                 <td><?if(isset($_GET['dev']))echo "OO4-";?><?=substr($vFGroup['OO4'],0,5)?>
                                                                     <? if($vFGroup['admin_file4']):?>
                                                                         <br>
-                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$fAId?>/season4/<?=$faaliat_id?>/<?=$vFGroup['admin_file4']?>">دانلود فایل</a>
+                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$fAId?>/season4/<?=$eghdam_id?>/<?=$vFGroup['admin_file4']?>">دانلود فایل</a>
                                                                     <? endif;?>
                                                                 </td>
                                                                 <td class="word-wrap">
