@@ -1674,8 +1674,7 @@
                                                                 <td><?if(isset($_GET['dev']))echo "OO1-";?><?=substr($vFGroup['OO1'],0,5)?>
                                                                     <? if($vFGroup['admin_file1']):?>
                                                                         <br>
-                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$fAId?>/season1/<?=$eghdam_id?>/<?=$vFGroup['admin_file1']?>">دانلود فایل</a>
-                                                                    <? endif;?>
+                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$FGId?>/season1/<?=$eghdam_id?>/<?=$vFGroup['admin_file1']?>">دانلود فایل</a>                                                                    <? endif;?>
                                                                 </td>
                                                                 <td class="word-wrap" >
                                                                     <? if($vFGroup['admin_tozihat1']!=''):?>
@@ -1776,8 +1775,7 @@
                                                                 <td><?if(isset($_GET['dev']))echo "OO2-";?><?=substr($vFGroup['OO2'],0,5)?>
                                                                     <? if($vFGroup['admin_file2']):?>
                                                                         <br>
-                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$fAId?>/season1/<?=$eghdam_id?>/<?=$vFGroup['admin_file2']?>">دانلود فایل</a>
-                                                                    <? endif;?>
+                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$FGId?>/season2/<?=$eghdam_id?>/<?=$vFGroup['admin_file2']?>">دانلود فایل</a>                                                                    <? endif;?>
                                                                 </td>
                                                                 <td class="word-wrap">
                                                                     <? if($vFGroup['admin_tozihat2']!=''):?>
@@ -1859,8 +1857,7 @@
                                                                 <td><?if(isset($_GET['dev']))echo "OO3-";?><?=substr($vFGroup['OO3'],0,5)?>
                                                                     <? if($vFGroup['admin_file3']):?>
                                                                         <br>
-                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$fAId?>/season3/<?=$faaliat_id?>/<?=$vFGroup['admin_file3']?>">دانلود فایل</a>
-                                                                    <? endif;?>
+                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$FGId?>/season3/<?=$eghdam_id?>/<?=$vFGroup['admin_file3']?>">دانلود فایل</a>                                                                    <? endif;?>
                                                                 </td>
                                                                 <td class="word-wrap">
                                                                     <? if($vFGroup['admin_tozihat3']!=''):?>
@@ -1946,8 +1943,7 @@
                                                                 <td><?if(isset($_GET['dev']))echo "OO4-";?><?=substr($vFGroup['OO4'],0,5)?>
                                                                     <? if($vFGroup['admin_file4']):?>
                                                                         <br>
-                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$fAId?>/season4/<?=$faaliat_id?>/<?=$vFGroup['admin_file4']?>">دانلود فایل</a>
-                                                                    <? endif;?>
+                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$FGId?>/season4/<?=$eghdam_id?>/<?=$vFGroup['admin_file4']?>">دانلود فایل</a>                                                                    <? endif;?>
                                                                 </td>
                                                                 <td class="word-wrap">
                                                                     <? if($vFGroup['admin_tozihat4']!=''):?>
