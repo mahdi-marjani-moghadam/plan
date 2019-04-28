@@ -1589,7 +1589,8 @@
                                                                 <?/* if($vFAdmins['admin_file1']):*/?><!--
                                                     <br>
                                                     <a href="<?/*=RELA_DIR*/?>statics/files/<?/*=$vFAdmins['admin_id']*/?>/season1/<?/*=$vFaaliat['faaliat_id']*/?>/<?/*=$vFAdmins['admin_file1']*/?>">دانلود فایل</a>
-                                                <?/* endif;*/?></td>-->
+                                                <?/* endif;*/?>-->
+                                                            </td>
                                                             <td></td>
                                                             <td><?if(isset($_GET['dev']))echo "A1";?><?=substr($vFAdmins['A1'],0,5)?></td>
                                                             <? if($admin_info['parent_id']==0):?>
@@ -1746,7 +1747,7 @@
                                                                 <td><?if(isset($_GET['dev']))echo "O2'";?><?=substr($vFGroup['admin_percent2'],0,5)?>
                                                                     <? if($vFGroup['admin_file2']):?>
                                                                         <br>
-                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$vFGroup['admin_id']?>/season2/<?=$vFaaliat['faaliat_id']?>/<?=$vFGroup['admin_file2']?>">دانلود فایل</a>
+                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$vFGroup['admin_id']?>/season2/<?=$vEghdam['eghdam_id']?>/<?=$vFGroup['admin_file2']?>">دانلود فایل</a>
                                                                     <? endif;?>
                                                                 </td>
                                                                 <td class="word-wrap"><?=$vFGroup['admin_tozihat2']?></td>
@@ -1819,7 +1820,7 @@
                                                                 <td><?if(isset($_GET['dev']))echo "O3'";?><?=substr($vFGroup['admin_percent3'],0,5)?>
                                                                     <? if($vFGroup['admin_file3']):?>
                                                                         <br>
-                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$vFGroup['admin_id']?>/season3/<?=$vFaaliat['faaliat_id']?>/<?=$vFGroup['admin_file3']?>">دانلود فایل</a>
+                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$vFGroup['admin_id']?>/season3/<?=$vEghdam['eghdam_id']?>/<?=$vFGroup['admin_file3']?>">دانلود فایل</a>
                                                                     <? endif;?>
                                                                 </td>
                                                                 <td class="word-wrap"><?=$vFGroup['admin_tozihat3']?></td>
@@ -1893,7 +1894,7 @@
                                                                 <td><?if(isset($_GET['dev']))echo "O4'";?><?=substr($vFGroup['admin_percent4'],0,5)?>
                                                                     <? if($vFGroup['admin_file4']):?>
                                                                         <br>
-                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$vFGroup['admin_id']?>/season4/<?=$vFaaliat['faaliat_id']?>/<?=$vFGroup['admin_file4']?>">دانلود فایل</a>
+                                                                        <a href="<?=RELA_DIR?>statics/files/<?=$vFGroup['admin_id']?>/season4/<?=$vEghdam['eghdam_id']?>/<?=$vFGroup['admin_file4']?>">دانلود فایل</a>
                                                                     <? endif;?>
                                                                 </td>
                                                                 <td class="word-wrap"><?=$vFGroup['admin_tozihat4']?></td>
