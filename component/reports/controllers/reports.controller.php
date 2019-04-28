@@ -54,14 +54,11 @@ class reportsController
          */
         $child = $this->child2();
 
-
         /**
          * get kalan list
          */
         $list = $this->getKalanList($child);
-        if(isset($_GET['dev2'])){
-            //print_r_debug($list);
-        }
+
         return $list;
 
         //print_r_debug($list['kalans'][1]['amaliatis'][11]);
@@ -77,15 +74,15 @@ class reportsController
             /**
              * login by daneshkade va manager va arzyab
              */
-            $child = $adminObj->getAll()->select('admin.admin_id');
+
 
             if($admin_info['parent_id'] == 0 && $admin_info['admin_id'] != 1){
                 /**
                  * arzyab
                  */
+                $child = $adminObj->getAll()->select('admin.admin_id,admin_faaliat.faaliat_id');
                 $child =   $child->join('admin_faaliat','admin_faaliat.child','=',' admin.admin_id');
                 $child =   $child->where('admin_faaliat.admin_id','=',$admin_info['admin_id']);
-
 
             }
             else if($admin_info['admin_id'] != 1)
@@ -93,56 +90,58 @@ class reportsController
                 /**
                  *  vahed
                  */
-
+                $child = $adminObj->getAll()->select('admin.admin_id');
                 $child =   $child->where('parent_id','=',$admin_info['parent_id']);
+
                 //todo :: filter
                 //$child =   $child->andWhere('admin_id','in','1103,1104');
+            }else{
+                $child = $adminObj->getAll()->select('admin.admin_id');
             }
 
             $child = $child->getList()['export']['list'];
 
-            $childstr = '';
+            $childstr = $faaliatstr = '';
             foreach ($child as $k => $v){
                 if(strpos($childstr,$v['admin_id']) === false){
                     $childstr .= $v['admin_id'].',';
+                    if(isset($v['faaliat_id'])){
+                        $faaliatstr .= $v['faaliat_id'].',';
+                    }
                 }
             }
             $childstr = substr($childstr,0,-1);
+            $faaliatstr = substr($faaliatstr,0,-1);
 
         }
         else{
             /**
              * login by group
              */
+
             $childstr = $admin_info['admin_id'];
         }
 
-        if($_GET['q'] != ',null,'){
+        if($_GET['q'] != ',null,' && isset($_GET['q'])){
             $childstr = substr(substr(handleData($_GET['q']),1),0,-1);
         }
 
-        return $childstr;
+        $result['childStr'] = $childstr;
+        if(isset($faaliatstr)){
+            $result['faaliatstr'] = $faaliatstr;
+        }
+
+        return $result;
 
 
     }
     function getKalanList($child = ''){
-        /*include_once ROOT_DIR . 'component/reports/model/reports.model.php';
-        $reportsObj = new reportsModel();
-        $rowsObj = $reportsObj->getAll();
-        $rowsObj = $rowsObj->where('admin_id' ,'in',$child);
-        $rows = $rowsObj->getList();*/
-        //print_r_debug($rows);
+        global $admin_info;
+
 
         include_once ROOT_DIR . 'component/group_list/model/group_list.model.php';
         $groupListObj = new group_list();
-        /*$rows = $eghdamObj
-            ->leftJoin('faaliat'      ,'faaliat.eghdam_id'       ,'=', 'eghdam.eghdam_id')
-            ->leftJoin('faaliat_vazn' ,'faaliat_vazn.faaliat_id' ,'=', 'faaliat.faaliat_id')
-            ->leftJoin('admin'        ,'faaliat_vazn.admin_id'   ,'=', 'admin.admin_id')
-            ->leftJoin('group_list'   ,'admin.admin_id'        ,'=', 'group_list.parent_id')
-            ->select('kalan,kalan_no,amaliati,amaliati_no,eghdam,eghdam.eghdam_id,faaliat.faaliat,faaliat.faaliat_id,faaliat_vazn.admin_id,admin.name as admin_name,admin.family')
-            ->where('faaliat_vazn.admin_id','in',$child)
-            ->getList();*/
+
 
         $rowsObj = $groupListObj
             ->select('
@@ -150,7 +149,7 @@ class reportsController
             e.amaliati,e.amaliati_no, 
             e.eghdam,e.eghdam_id,e.y,
             f.faaliat,f.faaliat_id,f.vahed_vazn_faaliat,f.x,f.f_v_uni,
-            group_list.parent_id as admin_id, 
+            group_list.parent_id as admin_id,
             aa.name as admin_name,group_list.admin_id as group_id , ag.name as group_name, ag.family as group_family, aa.flag,
             fv.faaliat_vazn,
             ev.eghdam_vazn,
@@ -220,8 +219,13 @@ class reportsController
             ->leftJoin('eghdam_vazn as ev','ev.eghdam_id','=','e.eghdam_id and ev.admin_id = aa.admin_id')
             ->leftJoin('amaliati_vazn as av','av.amaliati_no','=','e.amaliati_no and av.admin_id = aa.admin_id');
 
-        if($child){
-            $rowsObj = $rowsObj->where('group_list.admin_id' ,'in',$child);
+        if($admin_info['admin_id'] != 1 && $admin_info['parent_id'] == 0){
+            $rowsObj = $rowsObj->leftJoin('admin_faaliat as af','af.faaliat_id','=','group_list.faaliat_id and af.child = group_list.admin_id');
+            $rowsObj = $rowsObj->where('af.admin_id' ,'=',$admin_info['admin_id']);
+            $rowsObj = $rowsObj->andWhere('group_list.admin_id' ,'in',$child['childStr']);
+        }
+        else{
+            $rowsObj = $rowsObj->Where('group_list.admin_id' ,'in',$child['childStr']);
         }
         //$rowsObj = $rowsObj->orderBy('kalan_no,amaliati_no,eghdam_id,faaliat_id,admin_id,group_id' , 'desc');
         //$rowsObj = $rowsObj->andWhere('kalan_no' ,'=',1);
@@ -268,6 +272,9 @@ class reportsController
             /*$export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['admin_family'] = $row['admin_family'];*/
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['faaliat_vazn'] = $row['faaliat_vazn'];
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['group_name'] = $row['group_name'].' '.$row['group_family'];
+            if($_GET['component'] == 'reports'){
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['parent_id'] = $row['admin_id'];
+            }
 
             /**
              * OO
@@ -395,11 +402,20 @@ class reportsController
             /**
              * sum NN
              */
-            if($sumNN[$row['kalan_no']][$row['admin_id']][$row['group_id']][$row['amaliati_no']] != 1){
+            if($sumNN[$row['kalan_no']][$row['amaliati_no']][$row['group_id']]['next'] != 1){
 
-                $sumNN[$row['kalan_no']][$row['admin_id']][$row['group_id']]['sumNN']  += $row['amaliati_vazn'];
-                $sumNN[$row['kalan_no']][$row['admin_id']][$row['group_id']][$row['amaliati_no']] = 1;
+                $sumNN[$row['kalan_no']][$row['group_id']]['sumNN']  += $row['amaliati_vazn'];
+                $sumNN[$row['kalan_no']][$row['amaliati_no']][$row['group_id']]['next'] = 1;
+
+                /*if(isset($_GET['dev3']) && $row['kalan_no'] == 1 && $row['group_id'] == 1101){
+                    echo "<pre>";
+                    echo "a: ".$row['amaliati_no'];
+                    echo " av: ".$row['amaliati_vazn'];
+                    echo " | ".$sumNN[$row['kalan_no']][$row['group_id']]['sumNN'];
+                }*/
             }
+
+
 
 
 
@@ -425,20 +441,12 @@ class reportsController
             /**
              * sum N
              */
-            if($sumN[$row['kalan_no']][$row['admin_id']][$row['amaliati_no']] != 1)
-            {
+            if($sumN[$row['kalan_no']][$row['amaliati_no']][$row['admin_id']]['next'] != 1){
                 $sumN[$row['kalan_no']][$row['admin_id']]['sumN']  += $row['amaliati_vazn'];
-                $sumN[$row['kalan_no']][$row['admin_id']][$row['amaliati_no']]  = 1;
+                $sumN[$row['kalan_no']][$row['amaliati_no']][$row['admin_id']]['next'] = 1;
             }
 
 
-//            if($row['kalan_no'] == 1 && $row['amaliati_no'] == 11 && $row['eghdam_id'] == 1101 && $_GET['dev2']){
-//                echo "<pre>";
-//                echo "f: ".$row['faaliat_id'];
-//                echo " (fv)".$row['faaliat_vazn']. '  = ';
-//                echo "sum fv {$row['admin_id']} = " . $sumZ[1][11][1101][$row['admin_id']]['sumZ'];
-//                echo "<br>============";
-//            }
 
 
 
@@ -476,7 +484,6 @@ class reportsController
             }
 
 
-
             if($nextEghdamAdmin == 0){
                 $countFaaliat = count($export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats']);
             }
@@ -504,15 +511,6 @@ class reportsController
             }
 
 
-
-
-//            if( !isset($nextEghdamAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['admin_id']])
-//              //  && $nextEghdamAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['admin_id']]['nextAdmin'] == 0
-//                ){
-//
-//                $nextEghdamAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['admin_id']]['nextAdmin'] = 1;
-//                $nextEghdamAdmin = 1;
-//            }
 
 
 
@@ -591,14 +589,14 @@ class reportsController
              */
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN']
 
-                = $row['amaliati_vazn'] / $sumNN[$row['kalan_no']][$row['amaliati_no']][$row['admin_id']][$row['group_id']]['sumNN'];
+                = $row['amaliati_vazn'] / $sumNN[$row['kalan_no']][$row['group_id']]['sumNN'];
 
             /**
              * N
              */
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N']     =
 
-                $row['amaliati_vazn'] / $sumN[$row['kalan_no']][$row['amaliati_no']][$row['admin_id']]['sumM'];
+                $row['amaliati_vazn'] / $sumN[$row['kalan_no']][$row['admin_id']]['sumN'];
 
 
 
@@ -675,108 +673,118 @@ class reportsController
             }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+
+
+
+        $nextFaaliatAdmin2 = $nextEghdamAdmin2 = $nextAmaliatiAdmin2 = $nextKalanAdmin2 = array();
+        $nextFaaliatAdmin = 0;
+        $nextEghdamAdmin = 1;
+        foreach ($rows['export']['list'] as $row){
+
+
+
+
+            /** next faaliat admin */
+            if(isset($nextFaaliatAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']]['nextAdmin']) ){
+                $nextFaaliatAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']]['nextAdmin'] = 1;
+                $nextFaaliatAdmin = 1;
+            }else{
+                $nextFaaliatAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']]['nextAdmin'] = 0;
+                $nextFaaliatAdmin = 0;
+
+            }
+
+            if($nextFaaliatAdmin == 0){
+                    /**
+                     * DD
+                     */
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['DD1'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['BB1'] *
+                        $row['x'] * $row['f_v_uni'];
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['DD2'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['BB2'] *
+                        $row['x'] * $row['f_v_uni'];
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['DD3'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['BB3'] *
+                        $row['x'] * $row['f_v_uni'];
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['DD4'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['BB4'] *
+                        $row['x'] * $row['f_v_uni'];
+
+                    /**
+                     * D
+                     */
+
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['D1'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['B1'] *
+                        $row['x'] * $row['f_v_uni'];
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['D2'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['B2'] *
+                        $row['x'] * $row['f_v_uni'];
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['D3'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['B3'] *
+                        $row['x'] * $row['f_v_uni'];
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['D4'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['B4'] *
+                        $row['x'] * $row['f_v_uni'];
+
+
+
+
+
+//                if ( $row['eghdam_id'] == 1101 && isset($_GET['dev3'])) {
+//                    echo "<pre>";
+//                    echo 'nf:' . $nextFaaliatAdmin . ' ne:' . $nextEghdamAdmin . ' f: ' . $row['faaliat_id'] . " e: ".$row['eghdam_id']."<br> ";
+//                    echo "                  BB1:" . $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['BB1'] . ' * ';
+//                    echo "   " . $row['x'] . ' * ';
+//                    echo " " . $row['f_v_uni'] . ' = ';
+//                    echo $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['BB1'] *
+//                        $row['x'] * $row['f_v_uni'] . ' | ';
+//                    echo 'DD1: ' . $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['DD1'] . "<br>";
+//                }
+            }
+
+
+        }
+
+
+
+
+        $nextEghdam2 = $nextEghdamAdmin2 = $nextEghdamGroup2 = array();
+        foreach ($rows['export']['list'] as $row){
+
+
+            /** next eghdam admin */
+            if(isset($nextEghdamAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['admin_id']]['nextAdmin']) ){
+                $nextEghdamAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['admin_id']]['nextAdmin'] = 1;
+                $nextEghdamAdmin = 1;
+            }else{
+                $nextEghdamAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['admin_id']]['nextAdmin'] = 0;
+                $nextEghdamAdmin = 0;
+
+            }
+
             if($nextEghdamAdmin == 0) {
                 /**
-                 * DD
+                 * EE
                  */
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['DD1'] +=
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['BB1'] *
-                    $row['x'] * $row['f_v_uni'];
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['DD2'] +=
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['BB2'] *
-                    $row['x'] * $row['f_v_uni'];
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['DD3'] +=
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['BB3'] *
-                    $row['x'] * $row['f_v_uni'];
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['DD4'] +=
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['BB4'] *
-                    $row['x'] * $row['f_v_uni'];
-                /**
-                 * D
-                 */
-
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['D1'] +=
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['B1'] *
-                    $row['x'] * $row['f_v_uni'];
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['D2'] +=
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['B2'] *
-                    $row['x'] * $row['f_v_uni'];
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['D3'] +=
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['B3'] *
-                    $row['x'] * $row['f_v_uni'];
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['D4'] +=
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['B4'] *
-                    $row['x'] * $row['f_v_uni'];
-            }
-            /**
-             * PP
-             */
-
-            if($nextFaaliatAdmin == 0){
-                $countFaaliat = $countFaaliat - 1;
-
-                if( $countFaaliat == 0 ) {
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP1'] +=
-                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['RR1'] *
-                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP2'] +=
-                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['RR2'] *
-                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP3'] +=
-                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['RR3'] *
-                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP4'] +=
-                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['RR4'] *
-                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
-                }
-            }
-                    /* if(isset($_GET['dev3']) && $row['kalan_no'] = 1 && $row['amaliati_no'] == 11 && $row['group_id'] == 1101 )
-                    {
-                        echo '<pre>'.
-                            ' NEA-'.$nextEghdamAdmin.
-                            ' NFA-'.$nextFaaliatAdmin.
-                            ' E-'.$row['eghdam_id'].
-                            ' F-'.$row['faaliat_id'].
-                            ' admin-'.$row['admin_id'].
-                            ' group-'.$row['group_id'].
-                            ' RR1-'.
-                            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['RR1']
-                            .' * ';
-                        echo 'MM-'.
-                            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM']
-                            .' = ';
-                        echo 'PP1-'.
-                            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP1']
-                            .'<br>';
-                    }*/
-
-
-
-            /**
-             * P
-             */
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P1'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R1'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P2'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R2'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P3'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R3'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P4'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R4'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
-
-            /**
-             * EE
-             */
-
-            if($nextFaaliatAdmin == 0){
-                $countFaaliat = $countFaaliat - 1;
-
-                if( $countFaaliat == 0 )
-                {
                 $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['EE1'] +=
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['CC1'] *
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
@@ -790,39 +798,124 @@ class reportsController
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['CC4'] *
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
 
+                /*if (isset($_GET['dev3']) && $row['amaliati_no'] == 31 && $row['admin_id'] == 110) {
+                       echo '<pre>' .
+                           ' E-' . $row['eghdam_id'] .
+                           ' group-' . $row['admin_id'] .
+                           ' CC1-' .
+                           $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['CC1']
+                           . ' * ';
+                       echo 'M-' .
+                           $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M']
+                           . ' = ';
+
+                       echo $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['CC1'] *
+                           $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
+
+                       echo 'EE1: ' .
+                           $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['EE1']
+                           . '<br>';
+                   }*/
+
+                /**
+                 * E
+                 */
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E1'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C1'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E2'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C2'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E3'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C3'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E4'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C4'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
+            }
 
 
+            /** next eghdam group */
+            if(isset($nextEghdamGroup2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['group_id']]['nextAdmin']) ){
+                $nextEghdamGroup2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['group_id']]['nextAdmin'] = 1;
+                $nextEghdamGroup = 1;
+            }else{
+                $nextEghdamGroup2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['group_id']]['nextAdmin'] = 0;
+                $nextEghdamGroup = 0;
 
-                $nextEghdamAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['admin_id']]['nextAdmin'] = 1;
+            }
 
-                }
+            if($nextEghdamGroup == 0) {
+                /**
+                 * PP
+                 */
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP1'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['RR1'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP2'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['RR2'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP3'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['RR3'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP4'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['RR4'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
+
+
+                /*if (isset($_GET['dev3']) && $row['amaliati_no'] == 31 && $row['group_id'] == 1101) {
+                    echo '<pre>' .
+                        ' NEA-' . $nextEghdamAdmin .
+                        ' E-' . $row['eghdam_id'] .
+                        ' group-' . $row['group_id'] .
+                        ' RR1-' .
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['RR1']
+                        . ' * ';
+                    echo 'MM-' .
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM']
+                        . ' = ';
+
+                    echo $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['RR1'] *
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'] . ' | ';
+
+                    echo 'PP1: ' .
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP1']
+                        . '<br>';
+                }*/
+
+                /**
+                 * P
+                 */
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P1'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R1'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P2'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R2'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P3'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R3'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P4'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R4'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
+
             }
 
 
 
 
+            /** next eghdam  */
+            if(isset($nextEghdam2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']]['nextAdmin']) ){
+                $nextEghdam2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']]['nextAdmin'] = 1;
+                $nextEghdam = 1;
+            }else{
+                $nextEghdam2[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']]['nextAdmin'] = 0;
+                $nextEghdam = 0;
 
+            }
 
+            if($nextEghdam == 0){
 
-
-
-            /**
-             * E
-             */
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E1'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C1'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E2'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C2'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E3'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C3'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E4'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C4'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
-
-            if($nextAmaliatiAdmin == 0) {
                 /**
                  * FF
                  */
@@ -847,70 +940,141 @@ class reportsController
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['D3'] * $row['y'];
                 $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['F4'] +=
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['D4'] * $row['y'];
+
+
+               /* if ( $row['amaliati_no'] == 11 && isset($_GET['dev3'])) {
+                    echo "<pre>";
+                    echo 'ne:' . $nextEghdamAdmin   . " e: ".$row['eghdam_id']."<br> ";
+                    echo "                  DD1:" . $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['DD1'] . ' * ';
+                    echo "   " . $row['y'] . ' = ';
+                    //echo " " . $row['f_v_uni'] . ' = ';
+                    echo $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['DD1'] * $row['y']  . ' | ';
+                    echo 'FF1: ' . $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['FF1'] . "<br>";
+                }*/
             }
-            /**
-             * QQ
-             */
-            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['QQ1'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP1'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
-            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['QQ2'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP2'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
-            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['QQ3'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP3'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
-            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['QQ4'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP4'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
-            /**
-             * Q
-             */
-            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['Q1'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P1'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
-            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['Q2'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P2'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
-            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['Q3'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P3'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
-            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['Q4'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P4'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
 
-            /**
-             * GG
-             */
-            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['GG1'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['EE1'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
-            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['GG2'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['EE2'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
-            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['GG3'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['EE3'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
-            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['GG4'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['EE4'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
-            /**
-             * G
-             */
-            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['G1'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E1'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
-            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['G2'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E2'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
-            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['G3'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E3'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
-            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['G4'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E4'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
 
-            if($nextKalanAdmin == 0) {
+        }
+
+
+
+
+        $nextAmaliati2 =$nextAmaliatiGroup2 = $nextAmaliatiAdmin2 = array();
+        foreach ($rows['export']['list'] as $row){
+
+
+
+            /** next eghdam admin */
+            if(isset($nextAmaliatiAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['admin_id']]['nextAdmin']) ){
+                $nextAmaliatiAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['admin_id']]['nextAdmin'] = 1;
+                $nextAmaliatiAdmin = 1;
+            }else{
+                $nextAmaliatiAdmin2[$row['kalan_no']][$row['amaliati_no']][$row['admin_id']]['nextAdmin'] = 0;
+                $nextAmaliatiAdmin = 0;
+
+            }
+
+            if($nextAmaliatiAdmin == 0) {
+                /**
+                 * GG
+                 */
+                $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['GG1'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['EE1'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
+                $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['GG2'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['EE2'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
+                $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['GG3'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['EE3'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
+                $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['GG4'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['EE4'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
+                /**
+                 * G
+                 */
+                $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['G1'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E1'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
+                $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['G2'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E2'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
+                $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['G3'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E3'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
+                $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['G4'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E4'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
+
+            }
+
+            /** next amaliati group */
+            if(isset($nextAmaliatiGroup2[$row['kalan_no']][$row['amaliati_no']][$row['group_id']]['nextAdmin']) ){
+                $nextAmaliatiGroup2[$row['kalan_no']][$row['amaliati_no']][$row['group_id']]['nextAdmin'] = 1;
+                $nextAmaliatiGroup = 1;
+            }else{
+                $nextAmaliatiGroup2[$row['kalan_no']][$row['amaliati_no']][$row['group_id']]['nextAdmin'] = 0;
+                $nextAmaliatiGroup = 0;
+
+            }
+
+            if($nextAmaliatiGroup == 0) {
+                /**
+                 * QQ
+                 */
+                $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['QQ1'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP1'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
+                $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['QQ2'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP2'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
+                $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['QQ3'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP3'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
+                $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['QQ4'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['PP4'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
+
+               /* if ( $row['kalan_no'] == 1 && isset($_GET['dev3'])) {
+                    echo "<pre>";
+                    echo 'ne:' . $nextEghdamAdmin   . " A: ".$row['amaliati_no']."<br> ";
+                    echo "                  FF1:" . $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['FF1'] . ' * '. $row['amaliati_vazn'].' = ';
+                    echo $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['FF1'] * $row['amaliati_vazn']  . ' | ';
+                    echo 'HH1: ' .$export['kalans'][$row['kalan_no']]['HH1'] . "<br>";
+                }*/
+
+                /**
+                 * Q
+                 */
+                $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['Q1'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P1'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
+                $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['Q2'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P2'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
+                $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['Q3'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P3'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
+                $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['Q4'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P4'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
+
+
+            }
+
+
+            /** next amaliati  */
+            if(isset($nextAmaliati2[$row['kalan_no']][$row['amaliati_no']]['nextAdmin']) ){
+                $nextAmaliati2[$row['kalan_no']][$row['amaliati_no']]['nextAdmin'] = 1;
+                $nextAmaliati = 1;
+            }else{
+                $nextAmaliati2[$row['kalan_no']][$row['amaliati_no']]['nextAdmin'] = 0;
+                $nextAmaliati = 0;
+
+            }
+
+            if($nextAmaliati == 0){
+
                 /**
                  * HH
                  */
@@ -934,9 +1098,17 @@ class reportsController
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['F3'] * $row['amaliati_vazn'];
                 $export['kalans'][$row['kalan_no']]['H4'] +=
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['F4'] * $row['amaliati_vazn'];
+
+
+
+                /*if ( $row['kalan_no'] == 1 && isset($_GET['dev3'])) {
+                    echo "<pre>";
+                    echo 'ne:' . $nextEghdamAdmin   . " A: ".$row['amaliati_no']."<br> ";
+                    echo "                  FF1:" . $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['FF1'] . ' * '. $row['amaliati_vazn'].' = ';
+                    echo $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['FF1'] * $row['amaliati_vazn']  . ' | ';
+                    echo 'HH1: ' .$export['kalans'][$row['kalan_no']]['HH1'] . "<br>";
+                }*/
             }
-
-
 
 
         }
@@ -1924,10 +2096,10 @@ WHERE group_list.faaliat_id = $faaliat_id and  group_list.parent_id = {$temp[$id
     function showTableReports(){
 
         global $admin_info;
-        $reports = $this->reportsProcess()['list'];
-        if(isset($_GET['array'])){
-            //print_r_debug($reports);
-        }
+        $reports = $this->reportsProcess()['kalans'];
+
+
+
         include_once ROOT_DIR.'component/admin/model/admin.model.php';
         $admin = new admin();
 

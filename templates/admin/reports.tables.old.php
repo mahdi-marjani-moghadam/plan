@@ -156,7 +156,7 @@
                     <tbody>
                     <? foreach ($reports as $kalan_no => $kalan_value):?>
                         <tr>
-                            <td><?=$kalan_value['kalan_name']?></td>
+                            <td><?=$kalan_value['kalan']?></td>
                             <? foreach ($groups as $head_admin_id => $head_admin_info):?>
                                 <td><?
                                     if($head_admin_info['parent_id'] == 1 ){
@@ -165,7 +165,7 @@
                                     }
                                     else{
                                         /**  */
-                                        echo substr($kalan_value['admins'][$head_admin_info['parent_id']]['groups'][$head_admin_id]['QQ'.$season],0,5);
+                                        echo substr($kalan_value['admins'][$head_admin_info['parent_id']]['group'][$head_admin_id]['QQ'.$season],0,5);
                                     }
                                     ?></td>
                             <? endforeach;?>
@@ -177,7 +177,7 @@
                                     }
                                     else{
                                         /**  */
-                                        echo substr($kalan_value['admins'][$head_admin_info['parent_id']]['groups'][$head_admin_id]['Q'.$season],0,5);
+                                        echo substr($kalan_value['admins'][$head_admin_info['parent_id']]['group'][$head_admin_id]['Q'.$season],0,5);
                                     }
                                     ?></td>
                             <? endforeach;?>
@@ -226,11 +226,11 @@
                     </thead>
                     <tbody>
                     <? foreach ($reports as $kalan_no => $kalan_value):?>
-                        <? foreach ($kalan_value['amaliatis'] as $amaliati_no => $amaliati_value):?>
-                            <? foreach ($amaliati_value['eghdams'] as $eghdam_id => $eghdam_value):?>
+                        <? foreach ($kalan_value['amaliati'] as $amaliati_no => $amaliati_value):?>
+                            <? foreach ($amaliati_value['eghdam'] as $eghdam_id => $eghdam_value):?>
                                 <tr>
                                     <td class="text-center"><?=$kalan_no?></td>
-                                    <td ><?=$eghdam_value['eghdam_name']?></td>
+                                    <td ><?=$eghdam_value['eghdam']?></td>
                                     <? foreach ($groups as $head_admin_id => $head_admin_info):?>
                                         <td><?
                                             if($head_admin_info['parent_id'] == 1 ){
@@ -239,7 +239,7 @@
                                             }
                                             else{
                                                 /**  */
-                                                echo substr($eghdam_value['admins'][$head_admin_info['parent_id']]['groups'][$head_admin_id]['RR'.$season],0,5);
+                                                echo substr($eghdam_value['admins'][$head_admin_info['parent_id']]['group'][$head_admin_id]['RR'.$season],0,5);
                                             }
                                             ?></td>
                                     <? endforeach;?>
@@ -251,7 +251,7 @@
                                             }
                                             else{
                                                 /**  */
-                                                echo substr($eghdam_value['admins'][$head_admin_info['parent_id']]['groups'][$head_admin_id]['R'.$season],0,5);
+                                                echo substr($eghdam_value['admins'][$head_admin_info['parent_id']]['group'][$head_admin_id]['R'.$season],0,5);
                                             }
                                             ?></td>
                                     <? endforeach;?>
@@ -304,13 +304,13 @@
                     </thead>
                     <tbody>
                     <? foreach ($reports as $kalan_no => $kalan_value):?>
-                        <? foreach ($kalan_value['amaliatis'] as $amaliati_no => $amaliati_value):?>
-                            <? foreach ($amaliati_value['eghdams'] as $eghdam_id => $eghdam_value):?>
-                                <? foreach ($eghdam_value['faaliats'] as $faaliat_id => $faaliat_value):?>
+                        <? foreach ($kalan_value['amaliati'] as $amaliati_no => $amaliati_value):?>
+                            <? foreach ($amaliati_value['eghdam'] as $eghdam_id => $eghdam_value):?>
+                                <? foreach ($eghdam_value['faaliat'] as $faaliat_id => $faaliat_value):?>
                                     <tr>
-                                        <td width="50" class="text-center"><?=$kalan_no?></td>
-                                        <td width="50"><?=$eghdam_id?></td>
-                                        <td width="300"><?=$faaliat_value['faaliat_name']?></td>
+                                        <td width="50" class="text-center"><?=$kalan_value['kalan_no']?></td>
+                                        <td width="50"><?=$eghdam_value['eghdam_id']?></td>
+                                        <td width="300"><?=$faaliat_value['faaliat']?></td>
                                         <? foreach ($groups as $head_admin_id => $head_admin_info):?>
                                             <td width="<?=300/count($groups)?>"><?
 
@@ -320,7 +320,7 @@
                                                 }
                                                 else{
                                                     /**  */
-                                                    echo substr($faaliat_value['admins'][$head_admin_info['parent_id']]['groups'][$head_admin_id]['OO'.$season],0,5);
+                                                    echo substr($faaliat_value['admins'][$head_admin_info['parent_id']]['group'][$head_admin_id]['admin_percent'.$season],0,5);
                                                 }
                                                 ?></td>
                                         <? endforeach;?>
@@ -332,7 +332,7 @@
                                                 }
                                                 else{
                                                     /**  */
-                                                    echo substr($faaliat_value['admins'][$head_admin_info['parent_id']]['groups'][$head_admin_id]['O'.$season],0,5);
+                                                    echo substr($faaliat_value['admins'][$head_admin_info['parent_id']]['group'][$head_admin_id]['O'.$season],0,5);
                                                 }
                                                 ?></td>
                                         <? endforeach;?>

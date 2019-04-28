@@ -90,6 +90,8 @@ class DB {
         }
         $conn = dbConn::getConnection();
 
+
+
         $stmt = $conn->prepare($this->sql);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         $stmt->execute();

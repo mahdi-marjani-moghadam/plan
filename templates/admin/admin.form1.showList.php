@@ -941,10 +941,10 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td><?if(isset($_GET['dev']))echo "Q1'-";?><?=substr($vKGroup['QQ1'],0,5)?></td>
+                                                    <td><?if(isset($_GET['dev']))echo "QQ1-";?><?=substr($vKGroup['QQ1'],0,5)?></td>
                                                     <td></td>
 
-                                                    <td><?if(isset($_GET['dev']))echo "Q1 ";?><?=substr($vKGroup['Q1'],0,5)?></td>
+                                                    <td><?if(isset($_GET['dev']))echo "Q1-";?><?=substr($vKGroup['Q1'],0,5)?></td>
                                                     <? if($admin_info['parent_id']==0):?>
                                                         <td></td>
                                                         <td></td>
@@ -953,10 +953,10 @@
                                                     <?endif;?>
                                                     <td></td>
 
-                                                    <td><?if(isset($_GET['dev']))echo "Q2'";?><?=substr($vKGroup['QQ2'],0,5)?></td>
+                                                    <td><?if(isset($_GET['dev']))echo "QQ2-";?><?=substr($vKGroup['QQ2'],0,5)?></td>
                                                     <td></td>
 
-                                                    <td><?if(isset($_GET['dev']))echo "Q2";?><?=substr($vKGroup['Q2'],0,5)?></td>
+                                                    <td><?if(isset($_GET['dev']))echo "Q2-";?><?=substr($vKGroup['Q2'],0,5)?></td>
                                                     <? if($admin_info['parent_id']==0):?>
                                                         <td></td>
                                                         <td></td>
@@ -964,10 +964,10 @@
                                                         <td></td>
                                                     <?endif;?>
                                                     <td></td>
-                                                    <td><?if(isset($_GET['dev']))echo "Q3'";?><?=substr($vKGroup['QQ3'],0,5)?></td>
+                                                    <td><?if(isset($_GET['dev']))echo "QQ3-";?><?=substr($vKGroup['QQ3'],0,5)?></td>
                                                     <td></td>
 
-                                                    <td><?if(isset($_GET['dev']))echo "Q3";?><?=substr($vKGroup['Q3'],0,5)?></td>
+                                                    <td><?if(isset($_GET['dev']))echo "Q3-";?><?=substr($vKGroup['Q3'],0,5)?></td>
                                                     <? if($admin_info['parent_id']==0):?>
                                                         <td></td>
                                                         <td></td>
@@ -975,9 +975,9 @@
                                                         <td></td>
                                                     <?endif;?>
                                                     <td></td>
-                                                    <td><?if(isset($_GET['dev']))echo "Q4'";?><?=substr($vKGroup['QQ4'],0,5)?></td>
+                                                    <td><?if(isset($_GET['dev']))echo "QQ4-";?><?=substr($vKGroup['QQ4'],0,5)?></td>
                                                     <td></td>
-                                                    <td><?if(isset($_GET['dev']))echo "Q4";?><?=substr($vKGroup['Q4'],0,5)?></td>
+                                                    <td><?if(isset($_GET['dev']))echo "Q4-";?><?=substr($vKGroup['Q4'],0,5)?></td>
                                                     <? if($admin_info['parent_id']==0):?>
                                                         <td></td>
                                                         <td></td>
@@ -993,7 +993,7 @@
                                         <? foreach ($vKalan['amaliatis'] as $amaliati_no => $vAmaliati):?>
                                             <tr class="tr-amaliati kalan-<?=$kalan_no?>" >
                                                 <td></td>
-                                                <td></td>
+                                                <td><?if(isset($_GET['dev']))echo $amaliati_no;?></td>
                                                 <td class="word-wrap" style=" display: inline-table;width: 100% " rowspan="<?=$vKalan['amaliatiRow']?>" style="width:150px !important; ">
                                                     <div><?=$vAmaliati['amaliati_name']?>
                                                         <a class="show-more" data-level="amaliati" data-amaliati_no="<?=$amaliati_no?>" href="#">◄</a>
@@ -1138,7 +1138,7 @@
                                                         <td class="word-wrap|--- "><?=$vAGroup['group_name'].' '.$vAGroup['group_family']?></td>
                                                         <td></td>
                                                         <td></td>
-                                                        <td></td>
+                                                        <td><?if(isset($_GET['dev']))echo "NN-";?><?=substr($vAGroup['NN'],0,5)?></td>
                                                         <td><?if(isset($_GET['dev']))echo "PP1-";?><?=substr($vAGroup['PP1'],0,5)?></td>
                                                         <td></td>
 
@@ -1192,7 +1192,7 @@
                                                 <tr class="tr-eghdam amaliati-<?=$amaliati_no?>">
                                                     <td></td>
                                                     <td></td>
-                                                    <td></td>
+                                                    <td><?if(isset($_GET['dev']))echo $eghdam_id;?></td>
                                                     <td  class="word-wrap"  style=" display: inline-table;width: 100% " rowspan="<?=$vKalan['eghdamRow']?>" style="width:150px !important; ">
                                                         <div><?=$vEghdam['eghdam_name']?>
                                                             <a class="show-more" data-level="eghdam" data-eghdam_no="<?=$eghdam_id?>" href="#">◄</a>
@@ -1201,13 +1201,13 @@
 
                                                     <td style="background-color: whitesmoke"></td>
                                                     <td></td>
-                                                    <td><?if(isset($_GET['dev']))echo "D1'";?>
+                                                    <td><?if(isset($_GET['dev']))echo "DD1-";?>
                                                         <? if($admin_info['parent_id']==0):?>
                                                         <?=substr($vEghdam['DD1'],0,5)?>
                                                         <?endif;?>
                                                     </td>
                                                     <td></td>
-                                                    <td><?if(isset($_GET['dev']))echo "D1";?>
+                                                    <td><?if(isset($_GET['dev']))echo "D1-";?>
                                                         <? if($admin_info['parent_id']==0):?>
                                                         <?=substr($vEghdam['D1'],0,5)?>
                                                         <?endif;?>
@@ -1219,13 +1219,13 @@
                                                         <td></td>
                                                     <? endif;?>
                                                     <td></td>
-                                                    <td><?if(isset($_GET['dev']))echo "D2'";?>
+                                                    <td><?if(isset($_GET['dev']))echo "DD2-";?>
                                                         <? if($admin_info['parent_id']==0):?>
                                                         <?=substr($vEghdam['DD2'],0,5)?>
                                                         <?endif;?>
                                                     </td>
                                                     <td></td>
-                                                    <td><?if(isset($_GET['dev']))echo "D2";?>
+                                                    <td><?if(isset($_GET['dev']))echo "D2-";?>
                                                         <? if($admin_info['parent_id']==0):?>
                                                         <?=substr($vEghdam['D2'],0,5)?>
                                                         <?endif;?>
@@ -1237,13 +1237,13 @@
                                                         <td></td>
                                                     <? endif;?>
                                                     <td></td>
-                                                    <td><?if(isset($_GET['dev']))echo "D3'";?>
+                                                    <td><?if(isset($_GET['dev']))echo "DD3-";?>
                                                         <? if($admin_info['parent_id']==0):?>
                                                         <?=substr($vEghdam['DD3'],0,5)?>
                                                         <? endif;?>
                                                     </td>
                                                     <td></td>
-                                                    <td><?if(isset($_GET['dev']))echo "D3";?>
+                                                    <td><?if(isset($_GET['dev']))echo "D3-";?>
                                                         <? if($admin_info['parent_id']==0):?>
                                                         <?=substr($vEghdam['D3'],0,5)?>
                                                         <? endif;?>
@@ -1255,13 +1255,13 @@
                                                         <td></td>
                                                     <? endif;?>
                                                     <td></td>
-                                                    <td><?if(isset($_GET['dev']))echo "D4'";?>
+                                                    <td><?if(isset($_GET['dev']))echo "DD4-";?>
                                                         <? if($admin_info['parent_id']==0):?>
                                                         <?=substr($vEghdam['DD4'],0,5)?>
                                                         <? endif;?>
                                                     </td>
                                                     <td></td>
-                                                    <td><?if(isset($_GET['dev']))echo "D4";?>
+                                                    <td><?if(isset($_GET['dev']))echo "D4-";?>
                                                         <? if($admin_info['parent_id']==0):?>
                                                         <?=substr($vEghdam['D4'],0,5)?>
                                                         <? endif;?>
