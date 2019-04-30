@@ -286,10 +286,11 @@ class reportsController
             /**
              * O
              */
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O1'] = $row['admin_percent1'] * $row['max1'];
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O2'] = $row['admin_percent2'] * $row['max2'];
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O3'] = $row['admin_percent3'] * $row['max3'];
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O4'] = $row['admin_percent4'] * $row['max4'];
+
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O1'] = $row['admin_percent1'] * $row['max1'] /100;
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O2'] = $row['admin_percent2'] * $row['max2'] /100;
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O3'] = $row['admin_percent3'] * $row['max3'] /100;
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O4'] = $row['admin_percent4'] * $row['max4'] /100;
 
             /**
              * AA
@@ -1367,11 +1368,25 @@ class reportsController
 
                                 $oCount ++;
                                 /** darsad tadili faaliat / vahed (O)  */
+                                /*$maxO1 = $groupInfo['max_manager1'] / 100;
+                                $maxO2 = $groupInfo['max_manager2'] / 100;
+                                $maxO3 = $groupInfo['max_manager3'] / 100;
+                                $maxO4 = $groupInfo['max_manager4'] / 100;
+
+                                $o1 =  $groupInfo['admin_percent1'] * $maxO1;
+                                $o2 =  $groupInfo['admin_percent2'] * $maxO2;
+                                $o3 =  $groupInfo['admin_percent3'] * $maxO3;
+                                $o4 =  $groupInfo['admin_percent4'] * $maxO4;*/
+
+
+
 
                                 $o1 =  $groupInfo['admin_percent1'] * $groupInfo['max_manager1'] / 100;
                                 $o2 =  $groupInfo['admin_percent2'] * $groupInfo['max_manager2'] / 100;
                                 $o3 =  $groupInfo['admin_percent3'] * $groupInfo['max_manager3'] / 100;
                                 $o4 =  $groupInfo['admin_percent4'] * $groupInfo['max_manager4'] / 100;
+                                print_r_debug($o1);
+
                                 if($managerStatus->status != 4 && $admin_info['parent_id'] != 0){
                                     if(STEP_FORM1 == 1){
                                         $o1 = 0;
@@ -1383,6 +1398,7 @@ class reportsController
                                         $o4 = 0;
                                     }
                                 }
+
 
                                 $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id]['faaliat'][$faaliat_id]['admins'][$id]['group'][$gid]['O1']=$o1;
                                 $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id]['faaliat'][$faaliat_id]['admins'][$id]['group'][$gid]['O2']=$o2;
