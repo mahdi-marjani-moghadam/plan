@@ -218,10 +218,10 @@ class adminFormController
                     $max = (($max > $v2['1_3'])? $max:$v2['1_3']);
                     $res['export']['list'][0]->max1 = $max;
                     $res['export']['list'][0]->tahlil1 = $v2['tahlil1'];
-                    if($res['export']['list'][0]->max_manager1 == 0.00 || $res['export']['list'][0]->max_manager1 == ''){
+                    //if($res['export']['list'][0]->max_manager1 == 0.00 || $res['export']['list'][0]->max_manager1 == ''){
                         $res['export']['list'][0]->max_manager1 = $max;
                         $res['export']['list'][0]->tahlil_manager1 = $v2['tahlil1'];
-                    }
+                    //}
                 }
 
                 if($admin_info['admin_id'] == 1){
@@ -236,10 +236,10 @@ class adminFormController
                     $max = (($max > $v2['2_3'])? $max:$v2['2_3']);
                     $res['export']['list'][0]->max2 = $max;
                     $res['export']['list'][0]->tahlil2 = $v2['tahlil2'];
-                    if($res['export']['list'][0]->max_manager2 == 0.00 || $res['export']['list'][0]->max_manager2 == ''){
+                    //if($res['export']['list'][0]->max_manager2 == 0.00 || $res['export']['list'][0]->max_manager2 == ''){
                         $res['export']['list'][0]->max_manager2 = $max;
                         $res['export']['list'][0]->tahlil_manager2 = $v2['tahlil2'];
-                    }
+                    //}
                 }
 
                 if($admin_info['admin_id'] == 1){
@@ -254,10 +254,10 @@ class adminFormController
                     $max = (($max > $v2['3_3'])? $max:$v2['3_3']);
                     $res['export']['list'][0]->max3 = $max;
                     $res['export']['list'][0]->tahlil3 = $v2['tahlil3'];
-                    if($res['export']['list'][0]->max_manager3 == 0.00 || $res['export']['list'][0]->max_manager3 == ''){
+                    //if($res['export']['list'][0]->max_manager3 == 0.00 || $res['export']['list'][0]->max_manager3 == ''){
                         $res['export']['list'][0]->max_manager3 = $max;
                         $res['export']['list'][0]->tahlil_manager3 = $v2['tahlil3'];
-                    }
+                    //}
                 }
 
                 if($admin_info['admin_id'] == 1){
@@ -272,10 +272,10 @@ class adminFormController
                     $max = (($max > $v2['4_3'])? $max:$v2['4_3']);
                     $res['export']['list'][0]->max4 = $max;
                     $res['export']['list'][0]->tahlil4 = $v2['tahlil4'];
-                    if($res['export']['list'][0]->max_manager4 == 0.00 || $res['export']['list'][0]->max_manager4 == ''){
+                    //if($res['export']['list'][0]->max_manager4 == 0.00 || $res['export']['list'][0]->max_manager4 == ''){
                         $res['export']['list'][0]->max_manager4 = $max;
                         $res['export']['list'][0]->tahlil_manager4 = $v2['tahlil4'];
-                    }
+                    //}
                 }
                 $res['export']['list'][0]->save();
             }

@@ -1,12 +1,16 @@
 <!--suppress ALL -->
-
+<style>
+    @media print {
+        table{direction: rtl}
+    }
+</style>
 <link rel="stylesheet" href="<?php echo RELA_DIR; ?>templates/<?php echo CURRENT_SKIN; ?>/assets/css/buttons.dataTables.min.css">
 <script>
     $(document).ready(function () {
         $('#level').change(function () {
             var season = $(this).val();
 
-            location.href = window.location.origin + '/admin/?component=reports&q='+season;
+            location.href = window.location.origin + '/admin/?component=reports&s='+season;
         });
 
 
@@ -64,10 +68,10 @@
         <div class="col-md-2 col-sm-12 col-xs-12">
             <label for="level">دوره ارزیابی:</label>
             <select name="season" id="level" >
-                <option value="STEP_FORM1" <?=($_GET['q'] == 'STEP_FORM1')?'selected':'';?>>سه ماهه</option>
-                <option value="STEP_FORM2" <?=($_GET['q'] == 'STEP_FORM2')?'selected':'';?>>شش ماهه</option>
-                <option value="STEP_FORM3" <?=($_GET['q'] == 'STEP_FORM3')?'selected':'';?>>نه ماهه</option>
-                <option value="STEP_FORM4" <?=($_GET['q'] == 'STEP_FORM4')?'selected':'';?>>یکساله</option>
+                <option value="STEP_FORM1" <?=($_GET['s'] == 'STEP_FORM1')?'selected':'';?>>سه ماهه</option>
+                <option value="STEP_FORM2" <?=($_GET['s'] == 'STEP_FORM2')?'selected':'';?>>شش ماهه</option>
+                <option value="STEP_FORM3" <?=($_GET['s'] == 'STEP_FORM3')?'selected':'';?>>نه ماهه</option>
+                <option value="STEP_FORM4" <?=($_GET['s'] == 'STEP_FORM4')?'selected':'';?>>یکساله</option>
             </select>
         </div>
         <div class="col-md-10 col-sm-12 col-sx-12">
@@ -78,18 +82,20 @@
             endif;
             ?>
             <? foreach ($child as $v):?>
-            <div class="col-md-2 col-xs-12 col-sm-12 ">
+                <? if($v['finish_date'] >= date('Y-m-d')):?>
+                    <div class="col-md-2 col-xs-12 col-sm-12 ">
 
-                <div class="col-md-12 confirm-vahed ">
-                    <div class="col-md-12" style="height: 50px">
-                        <label for=""><?=$v['name'].' '.$v['family']?></label>
+                        <div class="col-md-12 confirm-vahed ">
+                            <div class="col-md-12" style="height: 50px">
+                                <label for=""><?=$v['name'].' '.$v['family']?></label>
+                            </div>
+                            <div class="col-md-12">
+                                <a href="<?=RELA_DIR?>admin/?component=reports&action=confirm&id=<?=$v['admin_id']?>&s=1" class="btn btn-primary btn-block">تایید</a>
+                                <a href="<?=RELA_DIR?>admin/?component=reports&action=confirm&id=<?=$v['admin_id']?>&s=2" class="btn btn-primary btn-block">نیازمند اصلاح</a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-12">
-                        <a href="<?=RELA_DIR?>admin/?component=reports&action=confirm&id=<?=$v['admin_id']?>&s=1" class="btn btn-primary btn-block">تایید</a>
-                        <a href="<?=RELA_DIR?>admin/?component=reports&action=confirm&id=<?=$v['admin_id']?>&s=2" class="btn btn-primary btn-block">نیازمند اصلاح</a>
-                    </div>
-                </div>
-            </div>
+                <? endif;?>
             <? endforeach;?>
         </div>
     </div>
@@ -121,12 +127,14 @@
                     {
 
                         var divToPrint=document.getElementById('table1');
+                        var divToPrint2=document.getElementById('table2');
+                        var divToPrint3=document.getElementById('table3');
 
                         var newWin=window.open('','Print-Window');
 
                         newWin.document.open();
 
-                        newWin.document.write('<html><body onload="window.print()">'+divToPrint.innerHTML+'</body></html>');
+                        newWin.document.write('<html><body dir="rtl"  onload="window.print()"><style>td{font-family: Tahoma; font-size: 11px; padding: 5px}  table tr:nth-child(even){background: #f4f4f4}</style>'+divToPrint.innerHTML + divToPrint2.innerHTML + divToPrint3.innerHTML+'</body></html>');
 
                         newWin.document.close();
 
@@ -204,7 +212,7 @@
         </div>
         <div class="panel-body">
             <div id="container"  >
-                <div class='table-cont2'>
+                <div class='table-cont2' id="table2">
                 <table class="table  table-bordered ">
                     <thead>
                     <tr style="text-align: center">
@@ -281,7 +289,7 @@
         </div>
         <div class="panel-body">
             <div id="container"  >
-                <div class='table-cont3'>
+                <div class='table-cont3' id="table3">
                     <table class="table table-bordered">
                     <thead>
                         <tr style="text-align: center">

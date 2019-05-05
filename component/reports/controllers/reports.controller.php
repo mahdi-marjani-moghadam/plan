@@ -2143,8 +2143,8 @@ WHERE group_list.faaliat_id = $faaliat_id and  group_list.parent_id = {$temp[$id
         $groups = $admin->getList()['export']['list'];
 
         $rules = array('STEP_FORM1','STEP_FORM2','STEP_FORM3','STEP_FORM4');
-        if(in_array($_GET['q'],$rules)){
-            $season = str_replace('STEP_FORM','',handleData($_GET['q']));
+        if(in_array($_GET['s'],$rules)){
+            $season = str_replace('STEP_FORM','',handleData($_GET['s']));
         }
         else{
             $season = '1';
