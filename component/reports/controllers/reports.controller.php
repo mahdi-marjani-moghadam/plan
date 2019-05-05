@@ -59,6 +59,7 @@ class reportsController
          */
         $list = $this->getKalanList($child);
 
+
         return $list;
 
         //print_r_debug($list['kalans'][1]['amaliatis'][11]);
@@ -150,7 +151,7 @@ class reportsController
             e.eghdam,e.eghdam_id,e.y,
             f.faaliat,f.faaliat_id,f.vahed_vazn_faaliat,f.x,f.f_v_uni,
             group_list.parent_id as admin_id,
-            aa.name as admin_name,group_list.admin_id as group_id , ag.name as group_name, ag.family as group_family, aa.flag, ag.status as group_status
+            aa.name as admin_name,group_list.admin_id as group_id , ag.name as group_name, ag.family as group_family, aa.flag, ag.status as group_status,
             fv.faaliat_vazn,
             ev.eghdam_vazn,
             av.amaliati_vazn,
@@ -237,6 +238,7 @@ class reportsController
 
 
 
+
         $export = $sumOO = $sumO = $sumZZ = $sumZ = $sumMM = $sumM = $sumNN = $sumN = array();
         foreach ($rows['export']['list'] as $row)
         {
@@ -247,6 +249,21 @@ class reportsController
             $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['admin_name'] = $row['admin_name'];
             $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['group_name'] = $row['group_name'].' '.$row['group_family'];
             $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['group_status'] = $row['group_status'];
+
+
+            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['kalan_tahlil'] = function ($kalan_no,$group_id){
+                include_once ROOT_DIR.'component/kalan_tahlil/model/kalan_tahlil.model.php';
+                $kalanTahlilObj = new kalan_tahlil();
+                $resArr = $kalanTahlilObj::getAll()->where('kalan_no','=',$kalan_no)->andWhere('group_id','=',$group_id)->getList();
+
+
+                $result['kalan_tahlil_arzyab1'] = $resArr['export']['list'][0]['kalan_tahlil_arzyab1'];
+                $result['kalan_tahlil_manager1'] = $resArr['export']['list'][0]['kalan_tahlil_manager1'];
+                return $result;
+            };
+
+
+
             if($_GET['component'] == 'chart'){
                 $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['flag'] = $row['flag'];
                 $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['flag'] = $row['flag'];
