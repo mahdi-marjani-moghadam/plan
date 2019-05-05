@@ -90,9 +90,11 @@ class adminIndexController
         $result = adminProductModel::query('select count(Artists_products_id) as count from artists_products')->getList();
         $export['artists_products_count'] = $result['export']['list'][0]['count'];
 
-        include_once(ROOT_DIR."component/product/admin/model/admin.event.model.php");
-        $result = adminProductModel::query('select count(Event_id) as count from event')->getList();
-        $export['event_count'] = $result['export']['list'][0]['count'];*/
+        */
+
+        include_once(ROOT_DIR."component/admin/admin/model/admin.admin.model.php");
+        $result = adminadminModel::query('select count(admin_id) as count from sessions_admin group by admin_id')->getList();
+        $export['admin_count'] = $result['export']['list'][0]['count'];
 
         $this->fileName='admin.index.php';
         $this->template($export);

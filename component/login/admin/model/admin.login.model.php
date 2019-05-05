@@ -241,7 +241,9 @@ class adminLoginModel
         $_SESSION["sessionID"] = $this->encrypt($result['export']['insert_id'], $this->GetHash());
         /*$_SESSION["adminUsername"] = $obj->name . " " . $obj->family;*/
         //remember me
-        setcookie("sessionID", $_SESSION["sessionID"], time() + 3600000000000, "/", $_SERVER['HTTP_HOST']);
+
+        setcookie("sessionID", $_SESSION["sessionID"], time() + (86400 * 30), "/"); // 86400 = 1 day
+
 
         $admin_info = $this->checkLogin();
 
@@ -293,13 +295,13 @@ class adminLoginModel
         if (isset($_SESSION["sessionID"])) {
             $sessionID = $this->decrypt($_SESSION["sessionID"], $this->GetHash());
 
-            setcookie("sessionID", $sessionID, time() - 10000, "/", $_SERVER['HTTP_HOST']);
+            setcookie("sessionID", $sessionID, time() - 10000, "/");
 
 
         } elseif (isset($_COOKIE["sessionID"])) {
             $sessionID = $this->decrypt($_COOKIE["sessionID"], $this->GetHash());
 
-            setcookie("sessionID", $sessionID, time() - 10000, "/", $_SERVER['HTTP_HOST']);
+            setcookie("sessionID", $sessionID, time() - 10000, "/");
 
         }
         $result = adminLoginModelDb::deleteSessionWithSession_id($sessionID);

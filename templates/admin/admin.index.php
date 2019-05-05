@@ -19,25 +19,18 @@
 <?}?>
 
     </div>
-  <div class="col-md-3" style="display: none">
+    <?if($admin_info['parent_id'] == 0):?>
+  <div class="col-md-3" style="display: ">
     <div id="overall-visitor" class="panel panel-animated panel-primary bg-primary">
       <div class="panel-body">
-        <div class="panel-actions-fly">
-          <button data-refresh="#overall-visitor" data-error-place="#error-placement" title="refresh" class="btn-panel">
-            <i class="glyphicon glyphicon-refresh"></i>
-          </button><!--/btn-panel-->
-          <a href="#" title="Go to system stats page" class="btn-panel">
-            <i class="glyphicon glyphicon-stats"></i>
-          </a><!--/btn-panel-->
-        </div><!--/panel-action-fly-->
 
-        <p class="lead"></p><!--/lead as title-->
+        <p class="lead">کاربران آنلاین</p><!--/lead as title-->
 
           <ul class="list-percentages row ">
 
             <li class="col-xs-12">
               <p class="text-ellipsis"></p>
-              <p class="text-lg"><strong><?php echo $list['artists_count'];?></strong></p>
+              <p class="text-lg"><strong><?php echo $list['admin_count'];?></strong></p>
             </li>
 
 
@@ -48,6 +41,7 @@
       </div><!--/panel-body-->
     </div><!--/panel overal-visitor-->
   </div><!--/cols-->
+    <? endif;?>
   <div class="col-md-3" style="display: none">
     <div id="overall-visitor" class="panel panel-animated panel-success bg-success">
       <div class="panel-body">
