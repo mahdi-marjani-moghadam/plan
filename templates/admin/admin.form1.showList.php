@@ -1731,7 +1731,7 @@
                                                                     <? endif;?>
                                                                 </td>
 
-                                                                <td><? if($admin_info['parent_id']==0 ):?>
+                                                                <td><? if($admin_info['parent_id']==0 && $vFGroup['status'] == 5):?>
                                                                         <?if(isset($_GET['dev']))echo "O1-";?><?=substr($vFGroup['O1'],0,5)?>
                                                                     <? endif;?></td>
 

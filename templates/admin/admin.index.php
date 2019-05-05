@@ -6,15 +6,15 @@
 </div><!-- /content-control -->
 
 <div class="content-body">
-    <div class="col-md-12">
+    <div class="col-md-12 text-center">
         <?php if($msg!='')
         { ?>
             <?= $msg ?>
             <?php
         }else{
 
-        ?>  <img src="<?php echo RELA_DIR;?>templates/<?php echo CURRENT_SKIN; ?>/images/logo@2x.png" >
-            <h1> کاربر گرامی؛  <?=$admin_info['name']?> <?=$admin_info['family']?> خوش آمدید</h1>
+        ?>  <img width="100" src="<?php echo RELA_DIR;?>templates/<?php echo CURRENT_SKIN; ?>/images/logo@2x.png" >
+            <span style="font-size: 2em"  > کاربر گرامی؛  <?=$admin_info['name']?> <?=$admin_info['family']?> خوش آمدید</span>
 
 <?}?>
 

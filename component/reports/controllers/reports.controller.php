@@ -150,7 +150,7 @@ class reportsController
             e.eghdam,e.eghdam_id,e.y,
             f.faaliat,f.faaliat_id,f.vahed_vazn_faaliat,f.x,f.f_v_uni,
             group_list.parent_id as admin_id,
-            aa.name as admin_name,group_list.admin_id as group_id , ag.name as group_name, ag.family as group_family, aa.flag,
+            aa.name as admin_name,group_list.admin_id as group_id , ag.name as group_name, ag.family as group_family, aa.flag, ag.status as group_status
             fv.faaliat_vazn,
             ev.eghdam_vazn,
             av.amaliati_vazn,
@@ -246,6 +246,7 @@ class reportsController
             $export['kalans'][$row['kalan_no']]['kalan_name'] = $row['kalan'];
             $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['admin_name'] = $row['admin_name'];
             $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['group_name'] = $row['group_name'].' '.$row['group_family'];
+            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['group_status'] = $row['group_status'];
             if($_GET['component'] == 'chart'){
                 $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['flag'] = $row['flag'];
                 $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['flag'] = $row['flag'];
@@ -257,6 +258,7 @@ class reportsController
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['amaliati_name'] = $row['amaliati'];
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['admin_name'] = $row['admin_name'];
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['group_name'] = $row['group_name'].' '.$row['group_family'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['group_status'] = $row['group_status'];
             /**
              * eghdam
              */
@@ -264,6 +266,7 @@ class reportsController
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['admin_name'] = $row['admin_name'];
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['eghdam_vazn'] = $row['eghdam_vazn'];
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['group_name'] = $row['group_name'].' '.$row['group_family'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['group_status'] = $row['group_status'];
             /**
              * faaliat
              */
@@ -272,6 +275,7 @@ class reportsController
             /*$export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['admin_family'] = $row['admin_family'];*/
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['faaliat_vazn'] = $row['faaliat_vazn'];
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['group_name'] = $row['group_name'].' '.$row['group_family'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['group_status'] = $row['group_status'];
             if($_GET['component'] == 'reports'){
                 $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['parent_id'] = $row['admin_id'];
             }

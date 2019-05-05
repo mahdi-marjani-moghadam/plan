@@ -93,7 +93,7 @@ class adminIndexController
         */
 
         include_once(ROOT_DIR."component/admin/admin/model/admin.admin.model.php");
-        $result = adminadminModel::query('select count(admin_id) as count from sessions_admin group by admin_id')->getList();
+        $result = adminadminModel::query('select count(distinct(admin_id)) as count from sessions_admin')->getList();
         $export['admin_count'] = $result['export']['list'][0]['count'];
 
         $this->fileName='admin.index.php';
