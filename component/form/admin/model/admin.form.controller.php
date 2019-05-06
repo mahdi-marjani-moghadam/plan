@@ -143,7 +143,7 @@ class adminFormController
     /** submit markaz arzyabi */
     function sabt($fields){
 
-        include_once ROOT_DIR.'component/kalan_tahlil/model/kalan_tahlil.model.php';
+        /*include_once ROOT_DIR.'component/kalan_tahlil/model/kalan_tahlil.model.php';
 
         foreach ($fields['manager'] as $admin_id => $v){
             foreach ($v as $kalan_no => $v2){
@@ -166,7 +166,7 @@ class adminFormController
                 $res['export']['list'][0]->save();
             }
 
-        }
+        }*/
         global $messageStack,$admin_info;
         include_once ROOT_DIR.'component/eghdam_vazn/model/eghdam_vazn.model.php';
 
