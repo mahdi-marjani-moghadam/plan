@@ -900,6 +900,7 @@
                                                     <td></td>
                                                 <? endif;?>
                                                 <td></td>
+
                                                 <td><?if(isset($_GET['dev']))echo "GG2'";?><?=substr($vAdmins['GG2'],0,5)?></td>
                                                 <td></td>
                                                 <td><? if($admin_info['parent_id']==0 ):?>
