@@ -962,9 +962,9 @@
                                                         <td></td>
                                                     <?endif;?>
                                                     <td>
-                                                        <div> :ارزیاب
+                                                        <div> ارزیاب:
                                                             <textarea name="kalan_tahlil[<?=$kalan_no?>][<?=$id?>]"><?=$vKGroup['kalan_tahlil']($kalan_no,$id)['kalan_tahlil_arzyab1']?></textarea></div>
-                                                        <div> :مدیر
+                                                        <div> مدیر:
                                                             <textarea name="kalan_tahlil[<?=$kalan_no?>][<?=$id?>]"><?=$vKGroup['kalan_tahlil']($kalan_no,$id)['kalan_tahlil_manager1']?></textarea></div>
                                                     </td>
 
@@ -982,9 +982,9 @@
                                                         <td></td>
                                                     <?endif;?>
                                                     <td>
-                                                        <div> :ارزیاب
+                                                        <div> ارزیاب:
                                                             <textarea name="kalan_tahlil[<?=$kalan_no?>][<?=$id?>]"><?=$vKGroup['kalan_tahlil']($kalan_no,$id)['kalan_tahlil_arzyab2']?></textarea></div>
-                                                        <div> :مدیر
+                                                        <div>مدیر:
                                                             <textarea name="kalan_tahlil[<?=$kalan_no?>][<?=$id?>]"><?=$vKGroup['kalan_tahlil']($kalan_no,$id)['kalan_tahlil_manager2']?></textarea></div>
                                                     </td>
                                                     <td><?if(isset($_GET['dev']))echo "QQ3-";?><?=substr($vKGroup['QQ3'],0,5)?></td>
@@ -999,9 +999,9 @@
                                                         <td></td>
                                                     <?endif;?>
                                                     <td>
-                                                        <div> :ارزیاب
+                                                        <div>ارزیاب:
                                                             <textarea name="kalan_tahlil[<?=$kalan_no?>][<?=$id?>]"><?=$vKGroup['kalan_tahlil']($kalan_no,$id)['kalan_tahlil_arzyab3']?></textarea></div>
-                                                        <div> :مدیر
+                                                        <div>مدیر:
                                                             <textarea name="kalan_tahlil[<?=$kalan_no?>][<?=$id?>]"><?=$vKGroup['kalan_tahlil']($kalan_no,$id)['kalan_tahlil_manager3']?></textarea></div>
                                                     </td>
                                                     <td><?if(isset($_GET['dev']))echo "QQ4-";?><?=substr($vKGroup['QQ4'],0,5)?></td>
@@ -1016,9 +1016,9 @@
                                                         <td></td>
                                                     <?endif;?>
                                                     <td>
-                                                        <div> :ارزیاب
+                                                        <div>     ارزیاب:
                                                             <textarea name="kalan_tahlil[<?=$kalan_no?>][<?=$id?>]"><?=$vKGroup['kalan_tahlil']($kalan_no,$id)['kalan_tahlil_arzyab4']?></textarea></div>
-                                                        <div> :مدیر
+                                                        <div> مدیر:
                                                             <textarea name="kalan_tahlil[<?=$kalan_no?>][<?=$id?>]"><?=$vKGroup['kalan_tahlil']($kalan_no,$id)['kalan_tahlil_manager4']?></textarea></div>
                                                     </td>
                                                 </tr>

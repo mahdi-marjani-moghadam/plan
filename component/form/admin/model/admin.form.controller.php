@@ -143,30 +143,55 @@ class adminFormController
     /** submit markaz arzyabi */
     function sabt($fields){
 
-        /*include_once ROOT_DIR.'component/kalan_tahlil/model/kalan_tahlil.model.php';
+        include_once ROOT_DIR.'component/kalan_tahlil/model/kalan_tahlil.model.php';
 
-        foreach ($fields['manager'] as $admin_id => $v){
+        foreach ($fields['kalan_tahlil'] as $admin_id => $v){
             foreach ($v as $kalan_no => $v2){
                 $res = kalan_tahlil::getBy_group_id_and_kalan_no($group_id,$kalan_no)->get();
+                //print_r($fields);
+
+                if($admin_info['admin_id'] == 1){
+                    $res['export']['list'][0]->kalan_tahlil_manager1 = $v2['kalan_tahlil_manager1'];
+                }
+                    else{
+                        $res['export']['list'][0]->kalan_tahlil_arzyab1 = $v2['kalan_tahlil_arzyab1'];
+                        $res['export']['list'][0]->kalan_tahlil_manager1 = $v2['kalan_tahlil_arzyab1'];
+                    }
 
 
-                $res['export']['list'][0]->kalan_tahlil_arzyab1 = $v2['1'];
-                $res['export']['list'][0]->kalan_tahlil_manager1 = $v2['1'];
+                if($admin_info['admin_id'] == 1){
+                    $res['export']['list'][0]->kalan_tahlil_manager2 = $v2['kalan_tahlil_manager2'];
+                }
+                else{
+                    $res['export']['list'][0]->kalan_tahlil_arzyab2 = $v2['kalan_tahlil_arzyab2'];
+                    $res['export']['list'][0]->kalan_tahlil_manager2 = $v2['kalan_tahlil_arzyab2'];
+                }
 
-                $res['export']['list'][0]->kalan_tahlil_arzyab2 = $v2['2'];
-                $res['export']['list'][0]->kalan_tahlil_manager2 = $v2['2'];
 
-                $res['export']['list'][0]->kalan_tahlil_arzyab3 = $v2['3'];
-                $res['export']['list'][0]->kalan_tahlil_manager3 = $v2['3'];
+                if($admin_info['admin_id'] == 1){
+                    $res['export']['list'][0]->kalan_tahlil_manager3 = $v2['kalan_tahlil_manager3'];
+                }
+                else{
+                    $res['export']['list'][0]->kalan_tahlil_arzyab3 = $v2['kalan_tahlil_arzyab3'];
+                    $res['export']['list'][0]->kalan_tahlil_manager3 = $v2['kalan_tahlil_arzyab3'];
+                }
 
-                $res['export']['list'][0]->kalan_tahlil_arzyab4 = $v2['4'];
-                $res['export']['list'][0]->kalan_tahlil_manager4 = $v2['4'];
+
+                if($admin_info['admin_id'] == 1){
+                    $res['export']['list'][0]->kalan_tahlil_manager4 = $v2['kalan_tahlil_manager4'];
+                }
+                else{
+                    $res['export']['list'][0]->kalan_tahlil_arzyab4 = $v2['kalan_tahlil_arzyab4'];
+                    $res['export']['list'][0]->kalan_tahlil_manager4 = $v2['kalan_tahlil_arzyab4'];
+                }
 
 
                 $res['export']['list'][0]->save();
+
+
             }
 
-        }*/
+        }
         global $messageStack,$admin_info;
         include_once ROOT_DIR.'component/eghdam_vazn/model/eghdam_vazn.model.php';
 
@@ -182,7 +207,6 @@ class adminFormController
                 $res['export']['list'][0]->max_manager1 = $max;
                 $res['export']['list'][0]->tarzyab1_4 = $v2['1_4'];
                 $res['export']['list'][0]->tmanager1_5 = $v2['1_5'];
-
 
                 $res['export']['list'][0]->manager2_1 = $v2['2_1'];
                 $res['export']['list'][0]->manager2_2 = $v2['2_2'];
