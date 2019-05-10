@@ -962,10 +962,14 @@
                                                         <td></td>
                                                     <?endif;?>
                                                     <td>
+                                                        <?if ($admin_info['parent_id'] == 0 && $admin_info['admin_id']!= 1):?>
                                                         <div> :ارزیاب
                                                             <textarea name="kalan_tahlil[<?=$kalan_no?>][<?=$id?>][1-a]"><?=$vKGroup['kalan_tahlil']($kalan_no,$id)['kalan_tahlil_arzyab1']?></textarea></div>
+                                                        <?endif;?>
+                                                        <?if ($admin_info['parent_id'] == 0 && $admin_info['admin_id']== 1):?>
                                                         <div> :مدیر
                                                             <textarea name="kalan_tahlil[<?=$kalan_no?>][<?=$id?>][1-m]"><?=$vKGroup['kalan_tahlil']($kalan_no,$id)['kalan_tahlil_manager1']?></textarea></div>
+                                                        <?endif;?>
                                                     </td>
 
                                                     <td><?if(isset($_GET['dev']))echo "QQ2-";?><?=substr($vKGroup['QQ2'],0,5)?></td>
@@ -982,10 +986,14 @@
                                                         <td></td>
                                                     <?endif;?>
                                                     <td>
+                                                        <?if ($admin_info['parent_id'] == 0 && $admin_info['admin_id']!= 1):?>
                                                         <div> :ارزیاب
                                                             <textarea name="kalan_tahlil[<?=$kalan_no?>][<?=$id?>][2-a]"><?=$vKGroup['kalan_tahlil']($kalan_no,$id)['kalan_tahlil_arzyab2']?></textarea></div>
+                                                        <?endif;?>
+                                                        <?if ($admin_info['parent_id'] == 0 && $admin_info['admin_id']== 1):?>
                                                         <div> :مدیر
                                                             <textarea name="kalan_tahlil[<?=$kalan_no?>][<?=$id?>][2-m]"><?=$vKGroup['kalan_tahlil']($kalan_no,$id)['kalan_tahlil_manager2']?></textarea></div>
+                                                        <?endif;?>
                                                     </td>
                                                     <td><?if(isset($_GET['dev']))echo "QQ3-";?><?=substr($vKGroup['QQ3'],0,5)?></td>
                                                     <td></td>
@@ -999,10 +1007,14 @@
                                                         <td></td>
                                                     <?endif;?>
                                                     <td>
+                                                        <?if ($admin_info['parent_id'] == 0 && $admin_info['admin_id']!= 1):?>
                                                         <div> :ارزیاب
                                                             <textarea name="kalan_tahlil[<?=$kalan_no?>][<?=$id?>][3-a]"><?=$vKGroup['kalan_tahlil']($kalan_no,$id)['kalan_tahlil_arzyab3']?></textarea></div>
+                                                        <?endif;?>
+                                                        <?if ($admin_info['parent_id'] == 0 && $admin_info['admin_id']== 1):?>
                                                         <div> :مدیر
                                                             <textarea name="kalan_tahlil[<?=$kalan_no?>][<?=$id?>][3-m]"><?=$vKGroup['kalan_tahlil']($kalan_no,$id)['kalan_tahlil_manager3']?></textarea></div>
+                                                        <?endif;?>
                                                     </td>
                                                     <td><?if(isset($_GET['dev']))echo "QQ4-";?><?=substr($vKGroup['QQ4'],0,5)?></td>
                                                     <td></td>
@@ -1016,10 +1028,14 @@
                                                         <td></td>
                                                     <?endif;?>
                                                     <td>
+                                                        <?if ($admin_info['parent_id'] == 0 && $admin_info['admin_id']!= 1):?>
                                                         <div> :ارزیاب
                                                             <textarea name="kalan_tahlil[<?=$kalan_no?>][<?=$id?>][4-a]"><?=$vKGroup['kalan_tahlil']($kalan_no,$id)['kalan_tahlil_arzyab4']?></textarea></div>
+                                                        <?endif;?>
+                                                        <?if ($admin_info['parent_id'] == 0 && $admin_info['admin_id']== 1):?>
                                                         <div> :مدیر
                                                             <textarea name="kalan_tahlil[<?=$kalan_no?>][<?=$id?>][4-m]"><?=$vKGroup['kalan_tahlil']($kalan_no,$id)['kalan_tahlil_manager4']?></textarea></div>
+                                                        <?endif;?>
                                                     </td>
                                                 </tr>
                                             <? endforeach;?>
