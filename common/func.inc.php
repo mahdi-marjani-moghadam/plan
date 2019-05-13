@@ -1415,4 +1415,19 @@ function translate($text,$lang='')
     return $result;
 
 }
+function readMore($text,$limit=70){
+    $string = strip_tags($text);
+    if (strlen($string) > $limit) {
+
+        // truncate string
+        $stringCut = substr($string, 0, $limit);
+        $endPoint = strrpos($stringCut, ' ');
+
+        //if the string doesn't contain any space then it will cut without word basis.
+        $string = $endPoint? substr($stringCut, 0, $endPoint) : substr($stringCut, 0);
+        $string .= '... <a  data-text="'.$text.'" class="readMore" href="">ادامه</a>';
+    }
+
+    return $string;
+}
 ?>

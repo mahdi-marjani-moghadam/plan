@@ -140,123 +140,138 @@ class adminFormController
     /** submit markaz arzyabi */
     function sabt($fields){
 
-        global $admin_info;
+        global $admin_info,$messageStack;
+
+
+
+        $q = ($fields['q']!= ',null,')?trim($fields['q'],','):'';
+
+
+
+      /*  include_once ROOT_DIR.'component/admin/model/admin.model.php';
+        $adminObj = admin::getAll()->where('admin_id','in',$q)->get();
+        foreach ($adminObj['export']['list'] as $admin){
+            $admin->status = 5;
+        }
+        */
+
 
         include_once ROOT_DIR.'component/kalan_tahlil/model/kalan_tahlil.model.php';
-
         foreach ($fields['kalan_tahlil'] as $kalan_no => $v){
             foreach ($v as $group_id => $v2){
 
                 $res = kalan_tahlil::getBy_group_id_and_kalan_no($group_id,$kalan_no)->get();
                 if($res['export']['recordsCount']>0){
 
+                    $kalanTahlilObj = $res['export']['list'][0];
+
                     if($admin_info['admin_id'] == 1){
-                        $res['export']['list'][0]->kalan_tahlil_manager1 = $v2['1-m'];
+                        $kalanTahlilObj->kalan_tahlil_manager1 = $v2['1-m'];
                     }else{
-                        $res['export']['list'][0]->kalan_tahlil_arzyab1 = $v2['1-a'];
-                        $res['export']['list'][0]->kalan_tahlil_manager1 = $v2['1-a'];
+                        $kalanTahlilObj->kalan_tahlil_arzyab1 = $v2['1-a'];
+                        $kalanTahlilObj->kalan_tahlil_manager1 = $v2['1-a'];
                     }
 
                     if($admin_info['admin_id'] == 1){
-                        $res['export']['list'][0]->kalan_tahlil_manager2 = $v2['2-m'];
+                        $kalanTahlilObj->kalan_tahlil_manager2 = $v2['2-m'];
                     }else{
-                        $res['export']['list'][0]->kalan_tahlil_arzyab2 = $v2['2-a'];
-                        $res['export']['list'][0]->kalan_tahlil_manager2 = $v2['2-a'];
+                        $kalanTahlilObj->kalan_tahlil_arzyab2 = $v2['2-a'];
+                        $kalanTahlilObj->kalan_tahlil_manager2 = $v2['2-a'];
                     }
 
                     if($admin_info['admin_id'] == 1){
-                        $res['export']['list'][0]->kalan_tahlil_manager3 = $v2['3-m'];
+                        $kalanTahlilObj->kalan_tahlil_manager3 = $v2['3-m'];
                     }else{
-                        $res['export']['list'][0]->kalan_tahlil_arzyab3 = $v2['3-a'];
-                        $res['export']['list'][0]->kalan_tahlil_manager3 = $v2['3-a'];
+                        $kalanTahlilObj->kalan_tahlil_arzyab3 = $v2['3-a'];
+                        $kalanTahlilObj->kalan_tahlil_manager3 = $v2['3-a'];
                     }
 
                     if($admin_info['admin_id'] == 1){
-                        $res['export']['list'][0]->kalan_tahlil_manager4 = $v2['4-m'];
+                        $kalanTahlilObj->kalan_tahlil_manager4 = $v2['4-m'];
                     }else{
-                        $res['export']['list'][0]->kalan_tahlil_arzyab4 = $v2['4-a'];
-                        $res['export']['list'][0]->kalan_tahlil_manager4 = $v2['4-a'];
+                        $kalanTahlilObj->kalan_tahlil_arzyab4 = $v2['4-a'];
+                        $kalanTahlilObj->kalan_tahlil_manager4 = $v2['4-a'];
                     }
-
-
-
-                    /*$res['export']['list'][0]->kalan_tahlil_arzyab1 = $v2['1-a'];
-                    $res['export']['list'][0]->kalan_tahlil_manager1 = $v2['1-m'];
-
-                    $res['export']['list'][0]->kalan_tahlil_arzyab2 = $v2['2-a'];
-                    $res['export']['list'][0]->kalan_tahlil_manager2 = $v2['2-m'];
-
-                    $res['export']['list'][0]->kalan_tahlil_arzyab3 = $v2['3-a'];
-                    $res['export']['list'][0]->kalan_tahlil_manager3 = $v2['3-m'];
-
-                    $res['export']['list'][0]->kalan_tahlil_arzyab4 = $v2['4-a'];
-                    $res['export']['list'][0]->kalan_tahlil_manager4 = $v2['4-m'];*/
-
-                    $res['export']['list'][0]->save();
                 }else{
-                    $res = new kalan_tahlil();
-                    $res->group_id = $group_id;
-                    $res->kalan_no = $kalan_no;
-                    $res->kalan_tahlil_arzyab1 = $v2['1-a'];
-                    $res->kalan_tahlil_manager1 = $v2['1-m'];
+                    $kalanTahlilObj = new kalan_tahlil();
+                    $kalanTahlilObj->group_id = $group_id;
+                    $kalanTahlilObj->kalan_no = $kalan_no;
+                    $kalanTahlilObj->kalan_tahlil_arzyab1 = $v2['1-a'];
+                    $kalanTahlilObj->kalan_tahlil_manager1 = $v2['1-m'];
 
-                    $res->kalan_tahlil_arzyab2 = $v2['2-a'];
-                    $res->kalan_tahlil_manager2 = $v2['2-m'];
+                    $kalanTahlilObj->kalan_tahlil_arzyab2 = $v2['2-a'];
+                    $kalanTahlilObj->kalan_tahlil_manager2 = $v2['2-m'];
 
-                    $res->kalan_tahlil_arzyab3 = $v2['3-a'];
-                    $res->kalan_tahlil_manager3 = $v2['3-m'];
+                    $kalanTahlilObj->kalan_tahlil_arzyab3 = $v2['3-a'];
+                    $kalanTahlilObj->kalan_tahlil_manager3 = $v2['3-m'];
 
-                    $res->kalan_tahlil_arzyab4 = $v2['4-a'];
-                    $res->kalan_tahlil_manager4 = $v2['4-m'];
-                    $res->save();
+                    $kalanTahlilObj->kalan_tahlil_arzyab4 = $v2['4-a'];
+                    $kalanTahlilObj->kalan_tahlil_manager4 = $v2['4-m'];
                 }
+                $kalanTahlilObj->save();
 
             }
 
         }
-        global $messageStack,$admin_info;
-        include_once ROOT_DIR.'component/eghdam_vazn/model/eghdam_vazn.model.php';
 
+        include_once ROOT_DIR.'component/eghdam_vazn/model/eghdam_vazn.model.php';
         foreach ($fields['manager'] as $admin_id => $v){
             foreach ($v as $eghdam_id => $v2){
                 $res = eghdam_vazn::getBy_admin_id_and_eghdam_id($admin_id,$eghdam_id)->get();
 
-                $res['export']['list'][0]->manager1_1 = $v2['1_1'];
-                $res['export']['list'][0]->manager1_2 = $v2['1_2'];
-                $res['export']['list'][0]->manager1_3 = $v2['1_3'];
-                $max = (($v2['1_1'] > $v2['1_2'])? $v2['1_1']:$v2['1_2']);
-                $max = (($max > $v2['1_3'])? $max:$v2['1_3']);
-                $res['export']['list'][0]->max_manager1 = $max;
-                $res['export']['list'][0]->tarzyab1_4 = $v2['1_4'];
-                $res['export']['list'][0]->tmanager1_5 = $v2['1_5'];
+                if($res['export']['recordsCount']==0){
+                    //print_r_debug($admin_id);
+                }
+
+                if($admin_info['admin_id'] == 1){
+                    $res['export']['list'][0]->max_manager1 = $v2['max_manager1'];
+                    $res['export']['list'][0]->tmanager1 = $v2['tmanager1'];
+                    $res['export']['list'][0]->max_manager2 = $v2['max_manager2'];
+                    $res['export']['list'][0]->tmanager2 = $v2['tmanager2'];
+                    $res['export']['list'][0]->max_manager3 = $v2['max_manager3'];
+                    $res['export']['list'][0]->tmanager3 = $v2['tmanager3'];
+                    $res['export']['list'][0]->max_manager4 = $v2['max_manager4'];
+                    $res['export']['list'][0]->tmanager4 = $v2['tmanager4'];
+                }
+                else{
+                    $res['export']['list'][0]->manager1_1 = $v2['1_1'];
+                    $res['export']['list'][0]->manager1_2 = $v2['1_2'];
+                    $res['export']['list'][0]->manager1_3 = $v2['1_3'];
+                    $max = (($v2['1_1'] > $v2['1_2'])? $v2['1_1']:$v2['1_2']);
+                    $max = (($max > $v2['1_3'])? $max:$v2['1_3']);
+                    $res['export']['list'][0]->max_arzyab1 = $max;
+                    $res['export']['list'][0]->tarzyab1 = $v2['tarzyab1'];
+                    $res['export']['list'][0]->tmanager1 = $v2['tarzyab1'];
+
+                    $res['export']['list'][0]->manager2_1 = $v2['2_1'];
+                    $res['export']['list'][0]->manager2_2 = $v2['2_2'];
+                    $res['export']['list'][0]->manager2_3 = $v2['2_3'];
+                    $max = (($v2['2_1'] > $v2['2_2'])? $v2['2_1']:$v2['2_2']);
+                    $max = (($max > $v2['2_3'])? $max:$v2['2_3']);
+                    $res['export']['list'][0]->max_manager2 = $max;
+                    $res['export']['list'][0]->tarzyab2 = $v2['tarzyab2'];
+                    $res['export']['list'][0]->tmanager2 = $v2['tarzyab2'];
+
+                    $res['export']['list'][0]->manager3_1 = $v2['3_1'];
+                    $res['export']['list'][0]->manager3_2 = $v2['3_2'];
+                    $res['export']['list'][0]->manager3_3 = $v2['3_3'];
+                    $max = (($v2['3_1'] > $v2['3_2'])? $v2['3_1']:$v2['3_2']);
+                    $max = (($max > $v2['3_3'])? $max:$v2['3_3']);
+                    $res['export']['list'][0]->max_manager3 = $max;
+                    $res['export']['list'][0]->tarzyab3 = $v2['tarzyab3'];
+                    $res['export']['list'][0]->tmanager3 = $v2['tarzyab3'];
+
+                    $res['export']['list'][0]->manager4_1 = $v2['4_1'];
+                    $res['export']['list'][0]->manager4_2 = $v2['4_2'];
+                    $res['export']['list'][0]->manager4_3 = $v2['4_3'];
+                    $max = (($v2['4_1'] > $v2['4_2'])? $v2['4_1']:$v2['4_2']);
+                    $max = (($max > $v2['4_3'])? $max:$v2['4_3']);
+                    $res['export']['list'][0]->max_manager4 = $max;
+                    $res['export']['list'][0]->tarzyab4 = $v2['tarzyab4'];
+                    $res['export']['list'][0]->tmanager4 = $v2['tarzyab4'];
+                }
 
 
-                $res['export']['list'][0]->manager2_1 = $v2['2_1'];
-                $res['export']['list'][0]->manager2_2 = $v2['2_2'];
-                $res['export']['list'][0]->manager2_3 = $v2['2_3'];
-                $max = (($v2['2_1'] > $v2['2_2'])? $v2['2_1']:$v2['2_2']);
-                $max = (($max > $v2['2_3'])? $max:$v2['2_3']);
-                $res['export']['list'][0]->max_manager2 = $max;
-                $res['export']['list'][0]->tarzyab2_4 = $v2['2_4'];
-                $res['export']['list'][0]->tmanager2_5 = $v2['2_5'];
-
-                $res['export']['list'][0]->manager3_1 = $v2['3_1'];
-                $res['export']['list'][0]->manager3_2 = $v2['3_2'];
-                $res['export']['list'][0]->manager3_3 = $v2['3_3'];
-                $max = (($v2['3_1'] > $v2['3_2'])? $v2['3_1']:$v2['3_2']);
-                $max = (($max > $v2['3_3'])? $max:$v2['3_3']);
-                $res['export']['list'][0]->max_manager3 = $max;
-                $res['export']['list'][0]->tarzyab3_4 = $v2['3_4'];
-                $res['export']['list'][0]->tmanager3_5 = $v2['3_5'];
-
-                $res['export']['list'][0]->manager4_1 = $v2['4_1'];
-                $res['export']['list'][0]->manager4_2 = $v2['4_2'];
-                $res['export']['list'][0]->manager4_3 = $v2['4_3'];
-                $max = (($v2['4_1'] > $v2['4_2'])? $v2['4_1']:$v2['4_2']);
-                $max = (($max > $v2['4_3'])? $max:$v2['4_3']);
-                $res['export']['list'][0]->max_manager4 = $max;
-                $res['export']['list'][0]->tarzyab4_4 = $v2['4_4'];
-                $res['export']['list'][0]->tmanager4_5 = $v2['4_5'];
 
 
                 $res['export']['list'][0]->save();
@@ -361,14 +376,32 @@ class adminFormController
             $obj->status = 1;
         }
         elseif(isset($_POST['submit2'])){
-            $obj->status = 4;
+            if($q!= ''){
+                $obj->status = 1;
+
+                /** if filter  */
+                include_once ROOT_DIR.'component/admin/model/admin.model.php';
+
+                $adminObj = admin::getAll()->where('admin_id','in',$q)->get();
+                foreach ($adminObj['export']['list'] as $admin){
+                    if($admin_info['admin_id'] == 1){ $admin->status = 6; }
+                    else{ $admin->status = 5; }
+                    $admin->save();
+                }
+
+
+
+            }else{
+                $obj->status = 4;
+            }
         }
+
 
 
         $obj->save();
 
         $messageStack->add_session('message','عملیات با موفقیت انجام شد','success');
-        redirectPage(RELA_DIR.'admin/?component=form&q=,null,','عملیات با موفقیت انجام شد');
+        redirectPage(RELA_DIR.'admin/?component=form&q=,'.$q.',','عملیات با موفقیت انجام شد');
 //        print_r_debug($fields);
     }
 

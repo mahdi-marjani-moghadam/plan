@@ -153,7 +153,7 @@ class reportsController
             group_list.parent_id as admin_id,
             aa.name as admin_name,group_list.admin_id as group_id , ag.name as group_name, ag.family as group_family, aa.flag, ag.status as group_status,
             fv.faaliat_vazn,
-            ev.eghdam_vazn,
+            ev.eghdam_vazn,ev.manager1_1,ev.manager1_2,ev.manager1_3,ev.manager2_1,ev.manager2_2,ev.manager2_3,ev.manager3_1,ev.manager3_2,ev.manager3_3,ev.manager4_1,ev.manager4_2,ev.manager4_3,ev.tarzyab1,ev.tmanager1,ev.tarzyab2,ev.tmanager2,ev.tarzyab3,ev.tmanager3,ev.tarzyab4,ev.tmanager4,
             av.amaliati_vazn,
             
             group_list.admin_percent1,
@@ -240,31 +240,37 @@ class reportsController
 
 
         $export = $sumOO = $sumO = $sumZZ = $sumZ = $sumMM = $sumM = $sumNN = $sumN = array();
-        foreach ($rows['export']['list'] as $row)
-        {
+        foreach ($rows['export']['list'] as $row) {
             /**
              * kalan
              */
             $export['kalans'][$row['kalan_no']]['kalan_name'] = $row['kalan'];
             $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['admin_name'] = $row['admin_name'];
-            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['group_name'] = $row['group_name'].' '.$row['group_family'];
+            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['group_name'] = $row['group_name'] . ' ' . $row['group_family'];
             $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['group_status'] = $row['group_status'];
 
 
-            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['kalan_tahlil'] = function ($kalan_no,$group_id){
-                include_once ROOT_DIR.'component/kalan_tahlil/model/kalan_tahlil.model.php';
+            $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['kalan_tahlil'] = function ($kalan_no, $group_id) {
+                include_once ROOT_DIR . 'component/kalan_tahlil/model/kalan_tahlil.model.php';
                 $kalanTahlilObj = new kalan_tahlil();
-                $resArr = $kalanTahlilObj::getAll()->where('kalan_no','=',$kalan_no)->andWhere('group_id','=',$group_id)->getList();
+                $resArr = $kalanTahlilObj::getAll()->where('kalan_no', '=', $kalan_no)->andWhere('group_id', '=', $group_id)->getList();
 
 
                 $result['kalan_tahlil_arzyab1'] = $resArr['export']['list'][0]['kalan_tahlil_arzyab1'];
                 $result['kalan_tahlil_manager1'] = $resArr['export']['list'][0]['kalan_tahlil_manager1'];
+                $result['kalan_tahlil_arzyab2'] = $resArr['export']['list'][0]['kalan_tahlil_arzyab2'];
+                $result['kalan_tahlil_manager2'] = $resArr['export']['list'][0]['kalan_tahlil_manager2'];
+                $result['kalan_tahlil_arzyab3'] = $resArr['export']['list'][0]['kalan_tahlil_arzyab3'];
+                $result['kalan_tahlil_manager3'] = $resArr['export']['list'][0]['kalan_tahlil_manager3'];
+                $result['kalan_tahlil_arzyab4'] = $resArr['export']['list'][0]['kalan_tahlil_arzyab4'];
+                $result['kalan_tahlil_manager4'] = $resArr['export']['list'][0]['kalan_tahlil_manager4'];
+
+
                 return $result;
             };
 
 
-
-            if($_GET['component'] == 'chart'){
+            if ($_GET['component'] == 'chart') {
                 $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['flag'] = $row['flag'];
                 $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['flag'] = $row['flag'];
             }
@@ -274,7 +280,7 @@ class reportsController
              */
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['amaliati_name'] = $row['amaliati'];
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['admin_name'] = $row['admin_name'];
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['group_name'] = $row['group_name'].' '.$row['group_family'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['group_name'] = $row['group_name'] . ' ' . $row['group_family'];
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['group_status'] = $row['group_status'];
             /**
              * eghdam
@@ -282,7 +288,38 @@ class reportsController
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['eghdam_name'] = $row['eghdam'];
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['admin_name'] = $row['admin_name'];
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['eghdam_vazn'] = $row['eghdam_vazn'];
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['group_name'] = $row['group_name'].' '.$row['group_family'];
+
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['manager1_1'] = $row['manager1_1'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['manager1_2'] = $row['manager1_2'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['manager1_3'] = $row['manager1_3'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['manager2_1'] = $row['manager2_1'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['manager2_2'] = $row['manager2_2'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['manager2_3'] = $row['manager2_3'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['manager3_1'] = $row['manager3_1'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['manager3_2'] = $row['manager3_2'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['manager3_3'] = $row['manager3_3'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['manager4_1'] = $row['manager4_1'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['manager4_2'] = $row['manager4_2'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['manager4_3'] = $row['manager4_3'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['tmanager1'] = $row['tmanager1'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['tmanager2'] = $row['tmanager2'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['tmanager3'] = $row['tmanager3'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['tmanager4'] = $row['tmanager4'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['tarzyab1'] = $row['tarzyab1'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['tarzyab2'] = $row['tarzyab2'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['tarzyab3'] = $row['tarzyab3'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['tarzyab4'] = $row['tarzyab4'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['max_manager1'] = $row['max_manager1'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['max_manager2'] = $row['max_manager2'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['max_manager3'] = $row['max_manager3'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['max_manager4'] = $row['max_manager4'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['max_arzyab1'] = $row['max_arzyab1'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['max_arzyab2'] = $row['max_arzyab2'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['max_arzyab3'] = $row['max_arzyab3'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['max_arzyab4'] = $row['max_arzyab4'];
+
+
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['group_name'] = $row['group_name'] . ' ' . $row['group_family'];
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['group_status'] = $row['group_status'];
             /**
              * faaliat
@@ -291,9 +328,9 @@ class reportsController
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['admin_name'] = $row['admin_name'];
             /*$export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['admin_family'] = $row['admin_family'];*/
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['faaliat_vazn'] = $row['faaliat_vazn'];
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['group_name'] = $row['group_name'].' '.$row['group_family'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['group_name'] = $row['group_name'] . ' ' . $row['group_family'];
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['group_status'] = $row['group_status'];
-            if($_GET['component'] == 'reports'){
+            if ($_GET['component'] == 'reports') {
                 $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['parent_id'] = $row['admin_id'];
             }
 
@@ -307,12 +344,21 @@ class reportsController
             /**
              * O
              */
+            if (STEP_FORM1 == 1 && $row['group_status'] == 6 || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O1'] = $row['admin_percent1'] * $row['max1'] / 100;
+            }
 
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O1'] = $row['admin_percent1'] * $row['max1'] /100;
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O2'] = $row['admin_percent2'] * $row['max2'] /100;
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O3'] = $row['admin_percent3'] * $row['max3'] /100;
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O4'] = $row['admin_percent4'] * $row['max4'] /100;
+            if (STEP_FORM1 == 2 && $row['group_status'] == 6 || STEP_FORM1 != 2 || $admin_info['parent_id'] == 0) {
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O2'] = $row['admin_percent2'] * $row['max2'] / 100;
+            }
 
+            if (STEP_FORM1 == 3 && $row['group_status'] == 6 || STEP_FORM1 != 3 || $admin_info['parent_id'] == 0) {
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O3'] = $row['admin_percent3'] * $row['max3'] / 100;
+            }
+
+            if(STEP_FORM1 == 4 && $row['group_status'] == 6  || STEP_FORM1 != 4 || $admin_info['parent_id'] == 0) {
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O4'] = $row['admin_percent4'] * $row['max4'] / 100;
+            }
             /**
              * AA
              */
@@ -337,24 +383,30 @@ class reportsController
             /**
              * A
              */
-            $sumO[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']][$row['admin_id']][1] += $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O1'] ;
-            $sumO[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']][$row['admin_id']][2] += $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O2'];
-            $sumO[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']][$row['admin_id']][3] += $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O3'];
-            $sumO[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']][$row['admin_id']][4] += $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O4'];
 
+            if(STEP_FORM1 == 1 && $row['group_status'] == 6  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
+                $sumO[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']][$row['admin_id']][1] += $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O1'];
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A1'] =
+                    $sumO[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']][$row['admin_id']][1] / $groupCounts;
+            }
 
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A1'] =
-                $sumO[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']][$row['admin_id']][1] / $groupCounts;
+            if(STEP_FORM1 == 2 && $row['group_status'] == 6  || STEP_FORM1 != 2 || $admin_info['parent_id'] == 0) {
+                $sumO[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']][$row['admin_id']][2] += $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O2'];
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A2'] =
+                    $sumO[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']][$row['admin_id']][2] / $groupCounts;
+            }
 
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A2'] =
-                $sumO[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']][$row['admin_id']][2] / $groupCounts;
+            if(STEP_FORM1 == 3 && $row['group_status'] == 6  || STEP_FORM1 != 3 || $admin_info['parent_id'] == 0) {
+                $sumO[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']][$row['admin_id']][3] += $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O3'];
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A3'] =
+                    $sumO[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']][$row['admin_id']][3] / $groupCounts;
+            }
 
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A3'] =
-                $sumO[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']][$row['admin_id']][3] / $groupCounts;
-
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A4'] =
-                $sumO[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']][$row['admin_id']][4] / $groupCounts;
-
+            if(STEP_FORM1 == 4 && $row['group_status'] == 6  || STEP_FORM1 != 4 || $admin_info['parent_id'] == 0) {
+                $sumO[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']][$row['admin_id']][4] += $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O4'];
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A4'] =
+                    $sumO[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']][$row['admin_id']][4] / $groupCounts;
+            }
 
 
 
@@ -473,6 +525,7 @@ class reportsController
 
 
         }
+
         $nextFaaliatAdmin2 = $nextEghdamAdmin2 = $nextAmaliatiAdmin2 = $nextKalanAdmin2 = array();
         $nextFaaliatAdmin = 0;
         $nextEghdamAdmin = 1;
@@ -643,19 +696,31 @@ class reportsController
             /**
              * R
              */
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R1'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O1'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['ZZ'];
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R2'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O2'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['ZZ'];
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R3'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O3'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['ZZ'];
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R4'] +=
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O4'] *
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['ZZ'];
+            if(STEP_FORM1 == 1 && $row['group_status'] == 6  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
 
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R1'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O1'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['ZZ'];
+            }
+
+            if(STEP_FORM1 == 2 && $row['group_status'] == 6  || STEP_FORM1 != 2 || $admin_info['parent_id'] == 0) {
+
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R2'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O2'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['ZZ'];
+            }
+
+            if(STEP_FORM1 == 3 && $row['group_status'] == 6  || STEP_FORM1 != 3 || $admin_info['parent_id'] == 0) {
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R3'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O3'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['ZZ'];
+            }
+
+            if(STEP_FORM1 == 4 && $row['group_status'] == 6  || STEP_FORM1 != 4 || $admin_info['parent_id'] == 0) {
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R4'] +=
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O4'] *
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['ZZ'];
+            }
 
 
             /**
@@ -680,18 +745,26 @@ class reportsController
                /**
                 * C
                 */
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C1'] +=
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A1'] *
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['Z'];
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C2'] +=
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A2'] *
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['Z'];
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C3'] +=
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A3'] *
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['Z'];
+                if(STEP_FORM1 == 1 && $row['group_status'] == 6  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C1'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A1'] *
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['Z'];
+                }
+                if(STEP_FORM1 == 2 && $row['group_status'] == 6  || STEP_FORM1 != 2 || $admin_info['parent_id'] == 0) {
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C2'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A2'] *
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['Z'];
+                }
+                if(STEP_FORM1 == 3 && $row['group_status'] == 6  || STEP_FORM1 != 3 || $admin_info['parent_id'] == 0) {
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C3'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A3'] *
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['Z'];
+                }
+                if(STEP_FORM1 == 4 && $row['group_status'] == 6  || STEP_FORM1 != 4 || $admin_info['parent_id'] == 0) {
                 $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C4'] +=
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A4'] *
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['Z'];
+            }
             }
 
 
@@ -842,18 +915,27 @@ class reportsController
                 /**
                  * E
                  */
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E1'] +=
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C1'] *
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E2'] +=
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C2'] *
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E3'] +=
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C3'] *
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E4'] +=
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C4'] *
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
+                if(STEP_FORM1 == 1 && $row['group_status'] == 6  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E1'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C1'] *
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
+                }
+                if(STEP_FORM1 == 2 && $row['group_status'] == 6  || STEP_FORM1 != 2 || $admin_info['parent_id'] == 0) {
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E2'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C2'] *
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
+                }
+                if(STEP_FORM1 == 3 && $row['group_status'] == 6  || STEP_FORM1 != 3 || $admin_info['parent_id'] == 0) {
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E3'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C3'] *
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
+
+                }
+                if(STEP_FORM1 == 4 && $row['group_status'] == 6  || STEP_FORM1 != 4 || $admin_info['parent_id'] == 0) {
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E4'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C4'] *
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
+                }
             }
 
 
@@ -908,19 +990,30 @@ class reportsController
                 /**
                  * P
                  */
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P1'] +=
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R1'] *
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P2'] +=
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R2'] *
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P3'] +=
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R3'] *
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
+                if(STEP_FORM1 == 1 && $row['group_status'] == 6  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P1'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R1'] *
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
+                }
+
+                if(STEP_FORM1 == 2 && $row['group_status'] == 6  || STEP_FORM1 != 2 || $admin_info['parent_id'] == 0) {
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P2'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R2'] *
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
+                }
+
+                if(STEP_FORM1 == 3 && $row['group_status'] == 6  || STEP_FORM1 != 3 || $admin_info['parent_id'] == 0) {
+                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P3'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R3'] *
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
+                }
+
+                if(STEP_FORM1 == 4 && $row['group_status'] == 6  || STEP_FORM1 != 4 || $admin_info['parent_id'] == 0) {
                 $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P4'] +=
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R4'] *
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
 
+                }
             }
 
 
@@ -1015,18 +1108,26 @@ class reportsController
                 /**
                  * G
                  */
-                $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['G1'] +=
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E1'] *
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
-                $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['G2'] +=
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E2'] *
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
-                $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['G3'] +=
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E3'] *
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
-                $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['G4'] +=
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E4'] *
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
+                if(STEP_FORM1 == 1 && $row['group_status'] == 6  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0){
+                    $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['G1'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E1'] *
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
+                }
+                if(STEP_FORM1 == 2 && $row['group_status'] == 6  || STEP_FORM1 != 2 || $admin_info['parent_id'] == 0) {
+                    $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['G2'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E2'] *
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
+                }
+                if(STEP_FORM1 == 3 && $row['group_status'] == 6  || STEP_FORM1 != 3 || $admin_info['parent_id'] == 0) {
+                    $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['G3'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E3'] *
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
+                }
+                if(STEP_FORM1 == 4 && $row['group_status'] == 6  || STEP_FORM1 != 4 || $admin_info['parent_id'] == 0) {
+                    $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['G4'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E4'] *
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
+                }
 
             }
 
@@ -1068,19 +1169,27 @@ class reportsController
                 /**
                  * Q
                  */
-                $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['Q1'] +=
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P1'] *
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
-                $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['Q2'] +=
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P2'] *
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
-                $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['Q3'] +=
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P3'] *
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
-                $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['Q4'] +=
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P4'] *
-                    $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
+                if(STEP_FORM1 == 1 && $row['group_status'] == 6  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
+                    $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['Q1'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P1'] *
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
 
+                }
+                if(STEP_FORM1 == 2 && $row['group_status'] == 6  || STEP_FORM1 != 2 || $admin_info['parent_id'] == 0) {
+                    $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['Q2'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P2'] *
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
+                }
+                if(STEP_FORM1 == 3 && $row['group_status'] == 6  || STEP_FORM1 != 3 || $admin_info['parent_id'] == 0) {
+                    $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['Q3'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P3'] *
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
+                }
+                if(STEP_FORM1 == 4 && $row['group_status'] == 6  || STEP_FORM1 != 4 || $admin_info['parent_id'] == 0) {
+                    $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['Q4'] +=
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P4'] *
+                        $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
+                }
 
             }
 
@@ -1451,20 +1560,29 @@ class reportsController
 
 
                                 /** (A) */
-                                $Eo1[$faaliat_id] += $o1;
-                                $Eo2[$faaliat_id] += $o2;
-                                $Eo3[$faaliat_id] += $o3;
-                                $Eo4[$faaliat_id] += $o4;
+                                if(STEP_FORM1 == 1 && $row['group_status'] == 6  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
+                                    $Eo1[$faaliat_id] += $o1;
+                                    $a1[$faaliat_id] = $Eo1[$faaliat_id] / $oCount;
+                                    $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id]['faaliat'][$faaliat_id]['admins'][$id]['A1'] = $a1[$faaliat_id];
+                                }
 
-                                $a1[$faaliat_id] = $Eo1[$faaliat_id]/$oCount;
-                                $a2[$faaliat_id] = $Eo2[$faaliat_id]/$oCount;
-                                $a3[$faaliat_id] = $Eo3[$faaliat_id]/$oCount;
-                                $a4[$faaliat_id] = $Eo4[$faaliat_id]/$oCount;
-                                $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id]['faaliat'][$faaliat_id]['admins'][$id]['A1'] = $a1[$faaliat_id];
-                                $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id]['faaliat'][$faaliat_id]['admins'][$id]['A2'] = $a2[$faaliat_id];
-                                $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id]['faaliat'][$faaliat_id]['admins'][$id]['A3'] = $a3[$faaliat_id];
-                                $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id]['faaliat'][$faaliat_id]['admins'][$id]['A4'] = $a4[$faaliat_id];
+                                if(STEP_FORM1 == 1 && $row['group_status'] == 6  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
+                                    $Eo2[$faaliat_id] += $o2;
+                                    $a2[$faaliat_id] = $Eo2[$faaliat_id] / $oCount;
+                                    $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id]['faaliat'][$faaliat_id]['admins'][$id]['A2'] = $a2[$faaliat_id];
+                                }
 
+                                if(STEP_FORM1 == 1 && $row['group_status'] == 6  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
+                                    $Eo3[$faaliat_id] += $o3;
+                                    $a3[$faaliat_id] = $Eo3[$faaliat_id] / $oCount;
+                                    $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id]['faaliat'][$faaliat_id]['admins'][$id]['A3'] = $a3[$faaliat_id];
+                                }
+
+                                if(STEP_FORM1 == 1 && $row['group_status'] == 6  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
+                                    $Eo4[$faaliat_id] += $o4;
+                                    $a4[$faaliat_id] = $Eo4[$faaliat_id] / $oCount;
+                                    $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id]['faaliat'][$faaliat_id]['admins'][$id]['A4'] = $a4[$faaliat_id];
+                                }
 
                                 /** darsad elami faaliat / uni (B') */
                                 $vahed_vazn_faaliat = 1/$vFaaliat['vahed_vazn_faaliat'];
@@ -1560,19 +1678,26 @@ class reportsController
 
 
                             /** darsad tadili eghdam / vahed (C)*/
-                            $A1 = $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id]['faaliat'][$faaliat_id_2]['admins'][$id3]['A1'];
-                            $A2 = $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id]['faaliat'][$faaliat_id_2]['admins'][$id3]['A2'];
-                            $A3 = $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id]['faaliat'][$faaliat_id_2]['admins'][$id3]['A3'];
+                            if(STEP_FORM1 == 1 && $row['group_status'] == 6  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
+                                $A1 = $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id]['faaliat'][$faaliat_id_2]['admins'][$id3]['A1'];
+                                $c1[$valueAdmin3['admin_id']] = $A1 * $z;
+                                $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id]['admins'][$valueAdmin3['admin_id']]['C1'] += $c1[$valueAdmin3['admin_id']];
+                            }
+                            if(STEP_FORM1 == 2 && $row['group_status'] == 6  || STEP_FORM1 != 2 || $admin_info['parent_id'] == 0) {
+                                $A2 = $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id]['faaliat'][$faaliat_id_2]['admins'][$id3]['A2'];
+                                $c2[$valueAdmin3['admin_id']] = $A2 * $z;
+                                $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id]['admins'][$valueAdmin3['admin_id']]['C2'] += $c2[$valueAdmin3['admin_id']];
+                            }
+                            if(STEP_FORM1 == 3 && $row['group_status'] == 6  || STEP_FORM1 != 3 || $admin_info['parent_id'] == 0) {
+                                $A3 = $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id]['faaliat'][$faaliat_id_2]['admins'][$id3]['A3'];
+                                $c3[$valueAdmin3['admin_id']] = $A3 * $z;
+                                $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id]['admins'][$valueAdmin3['admin_id']]['C3'] += $c3[$valueAdmin3['admin_id']];
+                            }
+                            if(STEP_FORM1 == 4 && $row['group_status'] == 6  || STEP_FORM1 != 4 || $admin_info['parent_id'] == 0) {
                             $A4 = $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id]['faaliat'][$faaliat_id_2]['admins'][$id3]['A4'];
-                            $c1[$valueAdmin3['admin_id']] = $A1 * $z;
-                            $c2[$valueAdmin3['admin_id']] = $A2 * $z;
-                            $c3[$valueAdmin3['admin_id']] = $A3 * $z;
                             $c4[$valueAdmin3['admin_id']] = $A4 * $z;
-                            $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id]['admins'][$valueAdmin3['admin_id']]['C1'] += $c1[$valueAdmin3['admin_id']];
-                            $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id]['admins'][$valueAdmin3['admin_id']]['C2'] += $c2[$valueAdmin3['admin_id']];
-                            $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id]['admins'][$valueAdmin3['admin_id']]['C3'] += $c3[$valueAdmin3['admin_id']];
                             $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id]['admins'][$valueAdmin3['admin_id']]['C4'] += $c4[$valueAdmin3['admin_id']];
-
+                                }
                             /** darsad elami eghdam / vahed (c')*/
                             $aa1 = $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id]['faaliat'][$faaliat_id_2]['admins'][$id3]['AA1'];
                             $aa2 = $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id]['faaliat'][$faaliat_id_2]['admins'][$id3]['AA2'];
@@ -1646,23 +1771,35 @@ class reportsController
 
                         foreach ($valueAdmin3['group'] as $gid =>$groupDetail) {
 
+
                             $sum_mm = $list['list'][$kalan_no]['amaliati'][$amaliati_no]['admins'][$valueAdmin3['admin_id']]['group'][$gid]['sum_mm'];
                             $mm = $valueAdmin3['eghdam_vazn']['eghdam_vazn'] / $sum_mm;
                             $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id2]['admins'][$valueAdmin3['admin_id']]['group'][$gid]['MM'] = $mm;
 
                             /** P */
-                            $r1[$valueAdmin3['admin_id']] = $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id2]['admins'][$valueAdmin3['admin_id']]['group'][$groupDetail['admin_id']]['R1'];
-                            $r2[$valueAdmin3['admin_id']] = $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id2]['admins'][$valueAdmin3['admin_id']]['group'][$groupDetail['admin_id']]['R2'];
-                            $r3[$valueAdmin3['admin_id']] = $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id2]['admins'][$valueAdmin3['admin_id']]['group'][$groupDetail['admin_id']]['R3'];
-                            $r4[$valueAdmin3['admin_id']] = $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id2]['admins'][$valueAdmin3['admin_id']]['group'][$groupDetail['admin_id']]['R4'];
-                            $p1[$valueAdmin3['admin_id']] = $r1[$valueAdmin3['admin_id']] * $mm;
-                            $p2[$valueAdmin3['admin_id']] = $r2[$valueAdmin3['admin_id']] * $mm;
-                            $p3[$valueAdmin3['admin_id']] = $r3[$valueAdmin3['admin_id']] * $mm;
-                            $p4[$valueAdmin3['admin_id']] = $r4[$valueAdmin3['admin_id']] * $mm;
-                            $list['list'][$kalan_no]['amaliati'][$amaliati_no]['admins'][$adminid3]['group'][$groupDetail['admin_id']]['P1'] += $p1[$valueAdmin3['admin_id']];
-                            $list['list'][$kalan_no]['amaliati'][$amaliati_no]['admins'][$adminid3]['group'][$groupDetail['admin_id']]['P2'] += $p2[$valueAdmin3['admin_id']];
-                            $list['list'][$kalan_no]['amaliati'][$amaliati_no]['admins'][$adminid3]['group'][$groupDetail['admin_id']]['p3'] += $p3[$valueAdmin3['admin_id']];
-                            $list['list'][$kalan_no]['amaliati'][$amaliati_no]['admins'][$adminid3]['group'][$groupDetail['admin_id']]['P4'] += $p4[$valueAdmin3['admin_id']];
+                            if(STEP_FORM1 == 1 && $row['group_status'] == 6  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
+                                $r1[$valueAdmin3['admin_id']] = $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id2]['admins'][$valueAdmin3['admin_id']]['group'][$groupDetail['admin_id']]['R1'];
+                                $p1[$valueAdmin3['admin_id']] = $r1[$valueAdmin3['admin_id']] * $mm;
+                                $list['list'][$kalan_no]['amaliati'][$amaliati_no]['admins'][$adminid3]['group'][$groupDetail['admin_id']]['P1'] += $p1[$valueAdmin3['admin_id']];
+                            }
+
+                            if(STEP_FORM1 == 1 && $row['group_status'] == 6  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
+                                $r2[$valueAdmin3['admin_id']] = $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id2]['admins'][$valueAdmin3['admin_id']]['group'][$groupDetail['admin_id']]['R2'];
+                                $p2[$valueAdmin3['admin_id']] = $r2[$valueAdmin3['admin_id']] * $mm;
+                                $list['list'][$kalan_no]['amaliati'][$amaliati_no]['admins'][$adminid3]['group'][$groupDetail['admin_id']]['P2'] += $p2[$valueAdmin3['admin_id']];
+                            }
+
+                            if(STEP_FORM1 == 1 && $row['group_status'] == 6  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
+                                $r3[$valueAdmin3['admin_id']] = $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id2]['admins'][$valueAdmin3['admin_id']]['group'][$groupDetail['admin_id']]['R3'];
+                                $p3[$valueAdmin3['admin_id']] = $r3[$valueAdmin3['admin_id']] * $mm;
+                                $list['list'][$kalan_no]['amaliati'][$amaliati_no]['admins'][$adminid3]['group'][$groupDetail['admin_id']]['p3'] += $p3[$valueAdmin3['admin_id']];
+                            }
+
+                            if(STEP_FORM1 == 1 && $row['group_status'] == 6  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
+                                $r4[$valueAdmin3['admin_id']] = $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id2]['admins'][$valueAdmin3['admin_id']]['group'][$groupDetail['admin_id']]['R4'];
+                                $p4[$valueAdmin3['admin_id']] = $r4[$valueAdmin3['admin_id']] * $mm;
+                                $list['list'][$kalan_no]['amaliati'][$amaliati_no]['admins'][$adminid3]['group'][$groupDetail['admin_id']]['P4'] += $p4[$valueAdmin3['admin_id']];
+                            }
 
                             /** P' */
                             $rr1[$valueAdmin3['admin_id']] = $list['list'][$kalan_no]['amaliati'][$amaliati_no]['eghdam'][$eghdam_id2]['admins'][$valueAdmin3['admin_id']]['group'][$groupDetail['admin_id']]['RR1'];

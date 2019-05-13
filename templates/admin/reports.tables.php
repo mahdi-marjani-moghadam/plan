@@ -93,6 +93,11 @@
                                 <a href="<?=RELA_DIR?>admin/?component=reports&action=confirm&id=<?=$v['admin_id']?>&s=1" class="btn btn-primary btn-block">تایید</a>
                                 <a href="<?=RELA_DIR?>admin/?component=reports&action=confirm&id=<?=$v['admin_id']?>&s=2" class="btn btn-primary btn-block">نیازمند اصلاح</a>
                             </div>
+                            <?/* if($admin_info['status'] == 2):*/?><!--
+                                <div class="alert alert-success">
+                                    <strong >zzzzzz </strong>
+                                </div>
+                            --><?/* endif;*/?>
                         </div>
                     </div>
                 <? endif;?>
