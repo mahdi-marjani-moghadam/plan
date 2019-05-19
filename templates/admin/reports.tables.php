@@ -74,6 +74,38 @@
                 <option value="STEP_FORM4" <?=($_GET['s'] == 'STEP_FORM4')?'selected':'';?>>یکساله</option>
             </select>
         </div>
+        <div class="col-md-1 col-xs-12  pull-left">
+            <input type='button' class="btn btn-default btn-block pull-left" style="" id='btn' value='Print' onclick='printDiv();'>
+            <style>
+                @media print{
+                    table{direction: rtl;
+                        float: right;}
+                    td{
+                        float: right;}
+                }
+            </style>
+            <script>
+                function printDiv()
+                {
+
+                    var divToPrint=document.getElementById('table1');
+                    var divToPrint2=document.getElementById('table2');
+                    var divToPrint3=document.getElementById('table3');
+
+                    var newWin=window.open('','Print-Window');
+
+                    newWin.document.open();
+
+                    newWin.document.write('<html><body dir="rtl"  onload="window.print()"><style>td{font-family: Tahoma; font-size: 11px; padding: 5px}  table tr:nth-child(even){background: #f4f4f4}</style>'+divToPrint.innerHTML + divToPrint2.innerHTML + divToPrint3.innerHTML+'</body></html>');
+
+                    newWin.document.close();
+
+                    setTimeout(function(){newWin.close();},10);
+
+                }
+            </script>
+        </div>
+
         <div class="col-md-10 col-sm-12 col-sx-12">
             <?
             $msg = $messageStack->output('message');
@@ -105,6 +137,9 @@
         </div>
     </div>
 
+
+
+
     <!-- separator -->
     <div class="row xsmallSpace"></div>
     <div id="panel-1" class="panel panel-default border-green">
@@ -118,35 +153,8 @@
         </div>
         <div class="panel-body">
             <div id="container"  >
-                <input type='button' class="btn btn-info" id='btn' value='Print' onclick='printDiv();'>
-                <style>
-                    @media print{
-                        table{direction: rtl;
-                            float: right;}
-                        td{
-                            float: right;}
-                    }
-                </style>
-                <script>
-                    function printDiv()
-                    {
 
-                        var divToPrint=document.getElementById('table1');
-                        var divToPrint2=document.getElementById('table2');
-                        var divToPrint3=document.getElementById('table3');
 
-                        var newWin=window.open('','Print-Window');
-
-                        newWin.document.open();
-
-                        newWin.document.write('<html><body dir="rtl"  onload="window.print()"><style>td{font-family: Tahoma; font-size: 11px; padding: 5px}  table tr:nth-child(even){background: #f4f4f4}</style>'+divToPrint.innerHTML + divToPrint2.innerHTML + divToPrint3.innerHTML+'</body></html>');
-
-                        newWin.document.close();
-
-                        setTimeout(function(){newWin.close();},10);
-
-                    }
-                </script>
                 <div class='table-cont1' id="table1">
 
                 <table class="table  table-bordered " >
@@ -363,4 +371,5 @@
     <div class="panel-footer clearfix"></div>
 </div>
 </div>
+
 

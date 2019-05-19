@@ -105,10 +105,7 @@
         <script src="<?php echo RELA_DIR; ?>templates/<?php echo CURRENT_SKIN; ?>/assets/js/panel-setup.js"></script>
         <!-- endbuild -->
 
-        <!-- highchart.js -->
-        <script src="<?php echo RELA_DIR; ?>templates/<?php echo CURRENT_SKIN; ?>/assets/js/highcharts.js"></script>
-        <script src="<?php echo RELA_DIR; ?>templates/<?php echo CURRENT_SKIN; ?>/assets/js/exporting.src.js"></script>
-        <script src="<?php echo RELA_DIR; ?>templates/<?php echo CURRENT_SKIN; ?>/assets/js/highcharts-more.js"></script>
+
 
         <!-- This scripts will be reload after pjax or if popstate event is active (use with class .re-execute) -->
         <!-- build:js scripts/initializer.js -->

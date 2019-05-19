@@ -1214,8 +1214,7 @@
                                                 <tr style="background-color: rgb(212,247,255) !important;" class="tr-amaliati-admins amaliati-admin-<?=$amaliati_no?>">
                                                     <td></td>
                                                     <td></td>
-                                                    <td class="word-wrap" style="white-space:nowrap;"> <div><!--تجمیع--> <?=$vAdmins['admin_name'].' '.$vAdmins['family']?><a class="show-more-group-amaliati show-more-admin-<?=$amaliati_no?> a-show-group-kalan-<?=$kalan_no?> "
-                                                                                                                                                                        data-admin_id="<?=$AAId?>-<?=$amaliati_no?>"  href="">▼ </a></div></td>
+                                                    <td class="word-wrap" style="white-space:nowrap;"> <div><!--تجمیع--> <?=$vAdmins['admin_name'].' '.$vAdmins['family']?><a class="show-more-group-amaliati show-more-admin-<?=$amaliati_no?> a-show-group-kalan-<?=$kalan_no?> " data-admin_id="<?=$AAId?>-<?=$amaliati_no?>"  href="">▼ </a></div></td>
 
                                                     <td></td>
                                                     <td></td>
@@ -1452,7 +1451,6 @@
                                                         <? endif; ?>
                                                         <? endif; ?>
 
-
                                                         <td>
                                                         <? if($admin_info['parent_id']==0):?>
                                                             <? if($admin_info['admin_id']==1):?>
@@ -1638,9 +1636,7 @@
                                                                 <td></td>
                                                             <?endif;?>
                                                             <td>
-
                                                                 <?=$vEGroup['tahlil4_4']?>
-
                                                             </td>
                                                         </tr>
                                                     <? endforeach;?>

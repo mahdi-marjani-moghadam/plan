@@ -8,7 +8,7 @@
             </a>
         </li><!--/sidebar-item-->
         <li>
-            <a href="<?php print RELA_DIR; ?>admin/?component=reports">
+            <a href="<?php print RELA_DIR; ?>admin/?component=reports&s=STEP_FORM<?=STEP_FORM1?>">
                 <i class="sidebar-icon fa fa-list"></i>
                 <span class="sidebar-text">گزارش عملکرد</span>
             </a>
@@ -22,7 +22,7 @@
             </a>
             <ul class="sidebar-child animated fadeInRight">
                 <li>
-                    <a href="<?=RELA_DIR?>admin/?component=chart&action=1">
+                    <a href="<?=RELA_DIR?>admin/?component=chart&action=1&s=<?=STEP_FORM1?>">
                         <span class="sidebar-text text-16">مقایسه در سطح هدف</span>
                     </a>
                 </li><!--/child-item-->
