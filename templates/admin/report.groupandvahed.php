@@ -123,15 +123,27 @@
                         type: 'column'
                     },
                     title: {
-                        text: 'نمودار پیشرفت'
+                        text: ''
                     },
                     subtitle: {
                         text: ''
                     },
+
                     xAxis: {
                         categories: <?=$chart['categories']?>,
                         //crosshair: true,
-                        reversed: true
+                        reversed: true,
+                        labels: {
+                            x:20,
+                            y:20,
+                            position3d:"flap",
+                            rotation: -20,
+                            align:'left',
+                            style:{
+                                "direction":"rtl"
+
+                            }
+                        }
                     },
                     yAxis: {
                         min: 0,
@@ -141,6 +153,9 @@
                         },
                         opposite: true
                     },
+                   /* scrollbar: {
+                        enabled: true
+                    },*/
                     legend: {
                         reversed: true,
                         useHTML: Highcharts.hasBidiBug
@@ -166,22 +181,23 @@
                             plotOptions: {
                                 series: {
                                     dataLabels: {
-                                        enabled: true
+                                        enabled: true,
+
                                     }
                                 }
+
                             },
                             yAxis: {
+                                labels: {
+                                    style: {
+                                        fontSize: '5px'
+                                    }
+                                },
                                 scrollbar: {
                                     enabled: false
                                 }
                             },
-                            xAxis: {
-                                labels: {
-                                    style: {
-                                        fontSize: '15px'
-                                    }
-                                }
-                            }
+
                         },
                         scale: 2
                     },

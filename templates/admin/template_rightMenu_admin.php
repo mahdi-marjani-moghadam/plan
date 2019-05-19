@@ -26,21 +26,23 @@
                         <span class="sidebar-text text-16">مقایسه در سطح هدف</span>
                     </a>
                 </li><!--/child-item-->
-                <li>
-                    <a href="<?=RELA_DIR?>admin/?component=chart&action=2">
-                        <span class="sidebar-text text-16">مقایسه در سطح اقدام</span>
-                    </a>
-                </li><!--/child-item-->
-                <li>
-                    <a href="<?=RELA_DIR?>admin/?component=chart&action=3">
-                        <span class="sidebar-text text-16">مقایسه اقدامات در سطح هدف</span>
-                    </a>
-                </li><!--/child-item-->
-                <li>
-                    <a href="<?=RELA_DIR?>admin/?component=chart&action=4">
-                        <span class="sidebar-text text-16">مقایسه اقدامات در سطح هدف</span>
-                    </a>
-                </li>
+                <? if($admin_info['parent_id'] != 0):?>
+                    <li>
+                        <a href="<?=RELA_DIR?>admin/?component=chart&action=2&s=<?=STEP_FORM1?>">
+                            <span class="sidebar-text text-16">مقایسه در سطح اقدام</span>
+                        </a>
+                    </li><!--/child-item-->
+                    <li>
+                        <a href="<?=RELA_DIR?>admin/?component=chart&action=3&s=<?=STEP_FORM1?>">
+                            <span class="sidebar-text text-16">مقایسه اقدامات در سطح هدف</span>
+                        </a>
+                    </li><!--/child-item-->
+                    <li>
+                        <a href="<?=RELA_DIR?>admin/?component=chart&action=4&s=<?=STEP_FORM1?>">
+                            <span class="sidebar-text text-16">مقایسه اهداف</span>
+                        </a>
+                    </li>
+                <? endif; ?>
             </ul>
         </li>
         <? endif;?>
@@ -53,15 +55,16 @@
             </a>
             <ul class="sidebar-child animated fadeInRight">
                 <li>
-                    <a href="<?=RELA_DIR?>admin/?component=chart&action=1">
-                        <span class="sidebar-text text-16">مقایسه در سطح هدف</span>
-                    </a>
-                </li><!--/child-item-->
-                <li>
-                    <a href="<?=RELA_DIR?>admin/?component=chart&action=2">
-                        <span class="sidebar-text text-16">مقایسه در سطح اقدام</span>
+                    <a href="<?=RELA_DIR?>admin/?component=chart&action=1&s=<?=STEP_FORM1?>">
+                        <span class="sidebar-text text-16">مقایسه اهداف</span>
                     </a>
                 </li>
+                <li>
+                    <a href="<?=RELA_DIR?>admin/?component=chart&action=2&s=<?=STEP_FORM1?>">
+                        <span class="sidebar-text text-16">مقایسه اقدامات در سطح هدف</span>
+                    </a>
+                </li><!--/child-item-->
+
             </ul>
         </li>
         <? endif;?>

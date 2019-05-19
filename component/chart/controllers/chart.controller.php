@@ -5,9 +5,13 @@ class chartController
 {
     public $exportType;
     public $fileName;
+    private $_season;
+    private $_result;
     public function __construct()
     {
         $this->exportType = 'html';
+        $this->_season = (isset($_GET['s']))?handleData($_GET['s']):1;
+        $this->_result = (isset($_GET['r']))?handleData($_GET['r']):1;
     }
     public function template($list = array(), $msg='')
     {
@@ -40,132 +44,129 @@ class chartController
         }
     }
 
+    public function categoryName($season,$result){
+        if($season >= 1) {
+            if(in_array($result,[1,3])){
+                $i = (in_array($result,[2]))?0:0;
+                $temp2[$i]['name'] = 'خود اظهاری 1';
+                $temp2[$i]['color'] = 'url(#highcharts-default-pattern-3)';
+            }
+            if(in_array($result,[1,2] )){
+                $i = (in_array($result,[2]))?0:1;
+                $temp2[$i]['name'] = 'نهایی 1';
+                $temp2[$i]['color'] = '#654c97';
+            }
+
+        }
+        if($season >= 2){
+            if(in_array($result,[1,3])){
+                $i = (in_array($result,[3]))?1:2;
+                $temp2[$i]['name'] = 'خود اظهاری 2';
+                $temp2[$i]['color'] = 'url(#highcharts-default-pattern-3)';
+            }
+            if(in_array($result,[1,2] )) {
+                $i = (in_array($result,[2]))?1:3;
+                $temp2[$i]['name'] = 'نهایی 2';
+                $temp2[$i]['color'] = '#654c97';
+            }
+        }
+        if($season >= 3){
+            if(in_array($result,[1,3])){
+                $i = (in_array($result,[3]))?2:4;
+                $temp2[$i]['name'] = 'خود اظهاری 3';
+                $temp2[$i]['color'] = 'url(#highcharts-default-pattern-3)';
+            }
+            if(in_array($result,[1,2] )) {
+                $i = (in_array($result,[2]))?2:5;
+                $temp2[$i]['name'] = 'نهایی 3';
+                $temp2[$i]['color'] = '#654c97';
+            }
+        }
+        if($season >= 4){
+            if(in_array($result,[1,3])){
+                $i = (in_array($result,[3]))?3:6;
+                $temp2[$i]['name'] = 'خود اظهاری 4';
+                $temp2[$i]['color'] = 'url(#highcharts-default-pattern-3)';
+            }
+            if(in_array($result,[1,2] )) {
+                $i = (in_array($result,[2]))?3:7;
+                $temp2[$i]['name'] = 'نهایی 4';
+                $temp2[$i]['color'] = '#654c97';
+            }
+        }
+        return $temp2;
+    }
 
 
     public function groupChart1()
     {
-        //TODO get season
-        $season = 1;
-
-        include_once ROOT_DIR.'component/reports/controllers/reports.controller.php';
-        $reportsController = new reportsController();
-        $report = $reportsController->reportsProcess();
-        $charts = array();
-
-        foreach ($report['list'] as $kalan){
-            $temp = $temp2 = array();
-
-            $temp2[0]['name'] = 'خود اظهاری 1';
-            $temp2[0]['color'] = 'url(#highcharts-default-pattern-3)';
-            $temp2[1]['name'] = '(نهایی (تایید شده 1';
-            $temp2[1]['color'] = '#3F7FC7';
-
-            $temp2[2]['name'] = 'خود اظهاری 2';
-            $temp2[2]['color'] = 'url(#highcharts-default-pattern-3)';
-            $temp2[3]['name'] = '(نهایی (تایید شده 2';
-            $temp2[3]['color'] = '#3F7FC7';
-
-            $temp2[4]['name'] = 'خود اظهاری 3';
-            $temp2[4]['color'] = 'url(#highcharts-default-pattern-3)';
-            $temp2[5]['name'] = '(نهایی (تایید شده 3';
-            $temp2[5]['color'] = '#3F7FC7';
-
-            $temp2[6]['name'] = 'خود اظهاری 4';
-            $temp2[6]['color'] = 'url(#highcharts-default-pattern-3)';
-            $temp2[7]['name'] = '(نهایی (تایید شده 4';
-            $temp2[7]['color'] = "#3F7FC7";
-
-            foreach ($kalan['amaliati'] as $amaliati){
-                foreach ($amaliati['eghdam'] as $eghdam){
-
-
-                    $temp[] =  ($eghdam['eghdam']);
-
-
-                    foreach ($eghdam['admins'] as $admins){
-                        foreach ($admins['group'] as $group){
-
-
-
-                            $temp2[0]['data'][] = (float) substr($group['RR1'],0,5);
-                            $temp2[1]['data'][] = (float) substr($group['R1'],0,5);
-                            $temp2[2]['data'][] = (float) substr($group['RR2'],0,5);
-                            $temp2[3]['data'][] = (float) substr($group['R2'],0,5);
-                            $temp2[4]['data'][] = (float) substr($group['RR3'],0,5);
-                            $temp2[5]['data'][] = (float) substr($group['R3'],0,5);
-                            $temp2[6]['data'][] = (float) substr($group['RR4'],0,5);
-                            $temp2[7]['data'][] = (float) substr($group['R4'],0,5);
-                        }
-                    }
-
-
-                }// net eghdam
-
-            }// next amaliati
-
-            $charts[$kalan['kalan_no']]['name'] = $kalan['kalan'];
-            $charts[$kalan['kalan_no']]['series'] = json_encode($temp2,JSON_UNESCAPED_UNICODE);
-            $charts[$kalan['kalan_no']]['categories'] = json_encode($temp,JSON_UNESCAPED_UNICODE );
-
-
-        }//next kalan
-
-
-
-
-        $this->fileName = 'report.groupandvahed.php';
-        $this->template(compact('charts'));
-        die();
-    }
-    public function groupChart2()
-    {
         global $admin_info;
+        $season = $this->_season;
+        $result = $this->_result;
 
         include_once ROOT_DIR.'component/reports/controllers/reports.controller.php';
         $reportsController = new reportsController();
         $report = $reportsController->reportsProcess();
         $charts = array();
+        $temp2 = $this->categoryName($season,$result);
 
         $tempCat = array();
-        $temp2 = array();
-        foreach ($report['list'] as $kalan){
+
+
+        foreach ($report['kalans'] as $kalan){
 
 
 
-            $tempCat[] =  $kalan['kalan'];
+            $tempCat[] =  $kalan['kalan_name'];
 
-            $temp2[0]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['group'][$admin_info['admin_id']]['QQ1'],0,5);
-            $temp2[1]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['group'][$admin_info['admin_id']]['Q1'],0,5);
-            $temp2[2]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['group'][$admin_info['admin_id']]['QQ2'],0,5);
-            $temp2[3]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['group'][$admin_info['admin_id']]['Q2'],0,5);
-            $temp2[4]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['group'][$admin_info['admin_id']]['QQ3'],0,5);
-            $temp2[5]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['group'][$admin_info['admin_id']]['Q3'],0,5);
-            $temp2[6]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['group'][$admin_info['admin_id']]['QQ4'],0,5);
-            $temp2[7]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['group'][$admin_info['admin_id']]['Q4'],0,5);
+            if($season >= 1){
+                if(in_array($result,[1,3])){
+                    $i = (in_array($result,[3]))?0:0;
+                    $temp2[$i]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['groups'][$admin_info['admin_id']]['QQ1'],0,5);
+                }
+                if(in_array($result,[1,2] )) {
+                    $i = (in_array($result,[2]))?0:1;
+                    $temp2[$i]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['groups'][$admin_info['admin_id']]['Q1'],0,5);
+                }
+            }
+            if($season >= 2){
+                if(in_array($result,[1,3])){
+                    $i = (in_array($result,[3]))?1:2;
+                    $temp2[$i]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['groups'][$admin_info['admin_id']]['QQ2'],0,5);
+                }
+                if(in_array($result,[1,2] )) {
+                    $i = (in_array($result,[2]))?1:3;
+                    $temp2[$i]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['groups'][$admin_info['admin_id']]['Q2'],0,5);
+                }
+            }
+            if($season >= 3){
+                if(in_array($result,[1,3])){
+                    $i = (in_array($result,[3]))?2:4;
+                    $temp2[$i]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['groups'][$admin_info['admin_id']]['QQ3'],0,5);
+                }
+                if(in_array($result,[1,2] )) {
+                    $i = (in_array($result,[2]))?2:5;
+                    $temp2[$i]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['groups'][$admin_info['admin_id']]['Q3'],0,5);
+                }
+            }
+            if($season >=4){
+                if(in_array($result,[1,3])){
+                    $i = (in_array($result,[3]))?3:6;
+                    $temp2[$i]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['groups'][$admin_info['admin_id']]['QQ4'],0,5);
+                }
+                if(in_array($result,[1,2] )) {
+                    $i = (in_array($result,[2]))?3:7;
+                    $temp2[$i]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['groups'][$admin_info['admin_id']]['Q4'],0,5);
+                }
+            }
+
 
 
         }//next kalan
 
 
-        $temp2[0]['name'] = 'خود اظهاری 1';
-        $temp2[0]['color'] = 'url(#highcharts-default-pattern-3)';
-        $temp2[1]['name'] = '(نهایی (تایید شده 1';
-        $temp2[1]['color'] = '#3F7FC7';
 
-        $temp2[2]['name'] = 'خود اظهاری 2';
-        $temp2[2]['color'] = 'url(#highcharts-default-pattern-3)';
-        $temp2[3]['name'] = '(نهایی (تایید شده 2';
-        $temp2[3]['color'] = '#3F7FC7';
 
-        $temp2[4]['name'] = 'خود اظهاری 3';
-        $temp2[4]['color'] = 'url(#highcharts-default-pattern-3)';
-        $temp2[5]['name'] = '(نهایی (تایید شده 3';
-        $temp2[5]['color'] = '#3F7FC7';
-
-        $temp2[6]['name'] = 'خود اظهاری 4';
-        $temp2[6]['color'] = 'url(#highcharts-default-pattern-3)';
-        $temp2[7]['name'] = '(نهایی (تایید شده 4';
-        $temp2[7]['color'] = "#3F7FC7";
 
         $charts[0]['name'] = 'مقایسه اهداف';
         $charts[0]['series'] = json_encode($temp2,JSON_UNESCAPED_UNICODE);
@@ -176,11 +177,99 @@ class chartController
         $this->template(compact('charts'));
         die();
     }
+    public function groupChart2()
+    {
+        $season = $this->_season;
+        $result = $this->_result;
+
+        include_once ROOT_DIR.'component/reports/controllers/reports.controller.php';
+        $reportsController = new reportsController();
+        $report = $reportsController->reportsProcess();
+        $charts = array();
+
+        foreach ($report['kalans'] as $kalan_no => $kalan){
+            $tempCat = $temp2 = array();
+
+            $temp2 = $this->categoryName($season,$result);
+
+            foreach ($kalan['amaliatis'] as $amaliati){
+                foreach ($amaliati['eghdams'] as $eghdam){
+
+
+                    $tempCat[] =  ($eghdam['eghdam_name']);
+
+
+                    foreach ($eghdam['admins'] as $admins){
+                        foreach ($admins['groups'] as $group){
+
+
+                            if($season >= 1){
+                                if(in_array($result,[1,3])){
+                                    $i = (in_array($result,[3]))?0:0;
+                                    $temp2[$i]['data'][] = (float) substr($group['RR1'],0,5);
+                                }
+                                if(in_array($result,[1,2] )) {
+                                    $i = (in_array($result,[2]))?0:1;
+                                    $temp2[$i]['data'][] = (float) substr($group['R1'],0,5);
+                                }
+                            }
+                            if($season >= 2){
+                                if(in_array($result,[1,3])){
+                                    $i = (in_array($result,[3]))?1:2;
+                                    $temp2[$i]['data'][] = (float) substr($group['RR2'],0,5);
+                                }
+                                if(in_array($result,[1,2] )) {
+                                    $i = (in_array($result,[2]))?1:3;
+                                    $temp2[$i]['data'][] = (float) substr($group['R2'],0,5);
+                                }
+                            }
+                            if($season >= 3){
+                                if(in_array($result,[1,3])){
+                                    $i = (in_array($result,[3]))?2:4;
+                                    $temp2[$i]['data'][] = (float) substr($group['RR3'],0,5);
+                                }
+                                if(in_array($result,[1,2] )) {
+                                    $i = (in_array($result,[2]))?2:5;
+                                    $temp2[$i]['data'][] = (float) substr($group['R3'],0,5);
+                                }
+                            }
+                            if($season >=4){
+                                if(in_array($result,[1,3])){
+                                    $i = (in_array($result,[3]))?3:6;
+                                    $temp2[$i]['data'][] = (float) substr($group['RR4'],0,5);
+                                }
+                                if(in_array($result,[1,2] )) {
+                                    $i = (in_array($result,[2]))?3:7;
+                                    $temp2[$i]['data'][] = (float) substr($group['R4'],0,5);
+                                }
+                            }
+                        }
+                    }
+
+
+                }// net eghdam
+
+            }// next amaliati
+
+            $charts[$kalan_no]['name'] = $kalan['kalan_name'];
+            $charts[$kalan_no]['series'] = json_encode($temp2,JSON_UNESCAPED_UNICODE);
+            $charts[$kalan_no]['categories'] = json_encode($tempCat,JSON_UNESCAPED_UNICODE );
+
+
+        }//next kalan
+
+
+
+
+        $this->fileName = 'report.groupandvahed.php';
+        $this->template(compact('charts'));
+        die();
+    }
     public function vahedChart1()
     {
-        //TODO get season
-        $season = (isset($_GET['s']))?handleData($_GET['s']):1;
-        $result = (isset($_GET['r']))?handleData($_GET['r']):1;
+
+        $season = $this->_season;
+        $result = $this->_result;
 
         include_once ROOT_DIR.'component/reports/controllers/reports.controller.php';
         $reportsController = new reportsController();
@@ -190,55 +279,8 @@ class chartController
 
             $tempCat = $temp2 = array();
 
-            if($season >= 1) {
-                if(in_array($result,[1,3])){
-                    $i = (in_array($result,[2]))?0:0;
-                    $temp2[$i]['name'] = 'خود اظهاری 1';
-                    $temp2[$i]['color'] = 'url(#highcharts-default-pattern-3)';
-                }
-                if(in_array($result,[1,2] )){
-                    $i = (in_array($result,[2]))?0:1;
-                    $temp2[$i]['name'] = 'نهایی 1';
-                    $temp2[$i]['color'] = '#654c97';
-                }
+            $temp2 = $this->categoryName($season,$result);
 
-            }
-            if($season >= 2){
-                if(in_array($result,[1,3])){
-                    $i = (in_array($result,[3]))?1:2;
-                    $temp2[$i]['name'] = 'خود اظهاری 2';
-                    $temp2[$i]['color'] = 'url(#highcharts-default-pattern-3)';
-                }
-                if(in_array($result,[1,2] )) {
-                    $i = (in_array($result,[2]))?1:3;
-                    $temp2[$i]['name'] = 'نهایی 2';
-                    $temp2[$i]['color'] = '#654c97';
-                }
-            }
-            if($season >= 3){
-                if(in_array($result,[1,3])){
-                    $i = (in_array($result,[3]))?2:4;
-                    $temp2[$i]['name'] = 'خود اظهاری 3';
-                    $temp2[$i]['color'] = 'url(#highcharts-default-pattern-3)';
-                }
-                if(in_array($result,[1,2] )) {
-                    $i = (in_array($result,[2]))?2:5;
-                    $temp2[$i]['name'] = 'نهایی 3';
-                    $temp2[$i]['color'] = '#654c97';
-                }
-            }
-            if($season >= 4){
-                if(in_array($result,[1,3])){
-                    $i = (in_array($result,[3]))?3:6;
-                    $temp2[$i]['name'] = 'خود اظهاری 4';
-                    $temp2[$i]['color'] = 'url(#highcharts-default-pattern-3)';
-                }
-                if(in_array($result,[1,2] )) {
-                    $i = (in_array($result,[2]))?3:7;
-                    $temp2[$i]['name'] = 'نهایی 4';
-                    $temp2[$i]['color'] = '#654c97';
-                }
-            }
 
 
 
@@ -372,54 +414,74 @@ class chartController
     }
     public function vahedChart2()
     {
-        //TODO get season
-        $season = 1;
+        $season = $this->_season;
+        $result = $this->_result;
 
         include_once ROOT_DIR.'component/reports/controllers/reports.controller.php';
         $reportsController = new reportsController();
         $report = $reportsController->reportsProcess();
         $charts = array();
-        foreach ($report['list'] as $kalan){
-            foreach ($kalan['amaliati'] as $amaliati){
-                foreach ($amaliati['eghdam'] as $eghdam){
+        foreach ($report['kalans'] as $kalan){
+            foreach ($kalan['amaliatis'] as $amaliati){
+                foreach ($amaliati['eghdams'] as $eghdam_id => $eghdam){
                     $tempCat = $temp2 = array();
-
-                    $temp2[0]['name'] = 'خود اظهاری 1';
-                    $temp2[0]['color'] = '#45639b';
-                    $temp2[1]['name'] = '(نهایی (تایید شده 1';
-                    $temp2[1]['color'] = '#654c97';
-                    $temp2[2]['name'] = 'خود اظهاری 2';
-                    $temp2[2]['color'] = '#45639b';
-                    $temp2[3]['name'] = '(نهایی (تایید شده 2';
-                    $temp2[3]['color'] = '#654c97';
-                    $temp2[4]['name'] = 'خود اظهاری 3';
-                    $temp2[4]['color'] = '#45639b';
-                    $temp2[5]['name'] = '(نهایی (تایید شده 3';
-                    $temp2[5]['color'] = '#654c97';
-                    $temp2[6]['name'] = 'خود اظهاری 4';
-                    $temp2[6]['color'] = '#45639b';
-                    $temp2[7]['name'] = '(نهایی (تایید شده 4';
-                    $temp2[7]['color'] = '#654c97';
+                    
+                    $temp2 = $this->categoryName($season,$result);
+                    
                     foreach ($eghdam['admins'] as $admins){
-                        foreach ($admins['group'] as $group){
+                        foreach ($admins['groups'] as $group){
 
-                            $tempCat[] =  $group['name'].' '.$group['family'];
+                            $tempCat[] =  $group['group_name'].' '.$group['group_family'];
 
 
-                            $temp2[0]['data'][] = (float) substr($group['RR1'],0,5);
-                            $temp2[1]['data'][] = (float) substr($group['R1'],0,5);
-                            $temp2[2]['data'][] = (float) substr($group['RR2'],0,5);
-                            $temp2[3]['data'][] = (float) substr($group['R2'],0,5);
-                            $temp2[4]['data'][] = (float) substr($group['RR3'],0,5);
-                            $temp2[5]['data'][] = (float) substr($group['R3'],0,5);
-                            $temp2[6]['data'][] = (float) substr($group['RR4'],0,5);
-                            $temp2[7]['data'][] = (float) substr($group['R4'],0,5);
+
+                            if($season >= 1){
+                                if(in_array($result,[1,3])){
+                                    $i = (in_array($result,[3]))?0:0;
+                                    $temp2[$i]['data'][] = (float) substr($group['RR1'],0,5);
+                                }
+                                if(in_array($result,[1,2] )) {
+                                    $i = (in_array($result,[2]))?0:1;
+                                    $temp2[$i]['data'][] = (float) substr($group['R1'],0,5);
+                                }
+                            }
+                            if($season >= 2){
+                                if(in_array($result,[1,3])){
+                                    $i = (in_array($result,[3]))?1:2;
+                                    $temp2[$i]['data'][] = (float) substr($group['RR2'],0,5);
+                                }
+                                if(in_array($result,[1,2] )) {
+                                    $i = (in_array($result,[2]))?1:3;
+                                    $temp2[$i]['data'][] = (float) substr($group['R2'],0,5);
+                                }
+                            }
+                            if($season >= 3){
+                                if(in_array($result,[1,3])){
+                                    $i = (in_array($result,[3]))?2:4;
+                                    $temp2[$i]['data'][] = (float) substr($group['RR3'],0,5);
+                                }
+                                if(in_array($result,[1,2] )) {
+                                    $i = (in_array($result,[2]))?2:5;
+                                    $temp2[$i]['data'][] = (float)substr($group['R3'], 0, 5);
+                                }
+                            }
+                            if($season >=4){
+                                if(in_array($result,[1,3])){
+                                    $i = (in_array($result,[3]))?3:6;
+                                    $temp2[$i]['data'][] = (float) substr($group['RR4'],0,5);
+                                }
+                                if(in_array($result,[1,2] )) {
+                                    $i = (in_array($result,[2]))?3:7;
+                                    $temp2[$i]['data'][] = (float)substr($group['R4'], 0, 5);
+                                }
+                            }
+                            
                         }//next group
                     }//next admin
 
-                    $charts[$eghdam['eghdam_id']]['name'] = $eghdam['eghdam'];
-                    $charts[$eghdam['eghdam_id']]['series'] = json_encode($temp2,JSON_UNESCAPED_UNICODE);
-                    $charts[$eghdam['eghdam_id']]['categories'] = json_encode($tempCat,JSON_UNESCAPED_UNICODE );
+                    $charts[$eghdam_id]['name'] = $eghdam['eghdam_name'];
+                    $charts[$eghdam_id]['series'] = json_encode($temp2,JSON_UNESCAPED_UNICODE);
+                    $charts[$eghdam_id]['categories'] = json_encode($tempCat,JSON_UNESCAPED_UNICODE );
                 }//next eghdam
             }//next amaliati
         }//next kalan
@@ -433,59 +495,75 @@ class chartController
     }
     public function vahedChart3()
     {
-        //TODO get season
-        $season = 1;
+        $season = $this->_season;
+        $result = $this->_result;
 
         include_once ROOT_DIR.'component/reports/controllers/reports.controller.php';
         $reportsController = new reportsController();
         $report = $reportsController->reportsProcess();
         $charts = array();
-        foreach ($report['list'] as $kalan){
+        foreach ($report['kalans'] as $kalan_no => $kalan){
             $tempCat = $temp2 = array();
 
-            $temp2[0]['name'] = 'خود اظهاری 1';
-            $temp2[0]['color'] = '#45639b';
-            $temp2[1]['name'] = '(نهایی (تایید شده 1';
-            $temp2[1]['color'] = '#654c97';
+            $temp2 = $this->categoryName($season,$result);
 
-            $temp2[2]['name'] = 'خود اظهاری 2';
-            $temp2[2]['color'] = '#45639b';
-            $temp2[3]['name'] = '(نهایی (تایید شده 2';
-            $temp2[3]['color'] = '#654c97';
+            foreach ($kalan['amaliatis'] as $amaliati){
+                foreach ($amaliati['eghdams'] as $eghdam){
 
-            $temp2[4]['name'] = 'خود اظهاری 3';
-            $temp2[4]['color'] = '#45639b';
-            $temp2[5]['name'] = '(نهایی (تایید شده 3';
-            $temp2[5]['color'] = '#654c97';
-
-            $temp2[6]['name'] = 'خود اظهاری 4';
-            $temp2[6]['color'] = '#45639b';
-            $temp2[7]['name'] = '(نهایی (تایید شده 4';
-            $temp2[7]['color'] = '#654c97';
-
-            foreach ($kalan['amaliati'] as $amaliati){
-                foreach ($amaliati['eghdam'] as $eghdam){
-
-                    $tempCat[] =  ($eghdam['eghdam']);
+                    $tempCat[] =  ($eghdam['eghdam_name']);
 
                     foreach ($eghdam['admins'] as $admins){
 
-                            $temp2[0]['data'][] = (float) substr($admins['eghdam_vazn']['CC1'],0,5);
-                            $temp2[1]['data'][] = (float) substr($admins['C1'],0,5);
-                            $temp2[2]['data'][] = (float) substr($admins['eghdam_vazn']['CC2'],0,5);
-                            $temp2[3]['data'][] = (float) substr($admins['C2'],0,5);
-                            $temp2[4]['data'][] = (float) substr($admins['eghdam_vazn']['CC3'],0,5);
-                            $temp2[5]['data'][] = (float) substr($admins['C3'],0,5);
-                            $temp2[6]['data'][] = (float) substr($admins['eghdam_vazn']['CC4'],0,5);
-                            $temp2[7]['data'][] = (float) substr($admins['C4'],0,5);
+
+
+                        if($season >= 1){
+                            if(in_array($result,[1,3])){
+                                $i = (in_array($result,[3]))?0:0;
+                                $temp2[$i]['data'][] = (float) substr($admins['CC1'],0,5);
+                            }
+                            if(in_array($result,[1,2] )) {
+                                $i = (in_array($result,[2]))?0:1;
+                                $temp2[$i]['data'][] = (float) substr($admins['C1'],0,5);
+                            }
+                        }
+                        if($season >= 2){
+                            if(in_array($result,[1,3])){
+                                $i = (in_array($result,[3]))?1:2;
+                                $temp2[$i]['data'][] = (float) substr($admins['CC2'],0,5);
+                            }
+                            if(in_array($result,[1,2] )) {
+                                $i = (in_array($result,[2]))?1:3;
+                                $temp2[$i]['data'][] = (float) substr($admins['C2'],0,5);
+                            }
+                        }
+                        if($season >= 3){
+                            if(in_array($result,[1,3])){
+                                $i = (in_array($result,[3]))?2:4;
+                                $temp2[$i]['data'][] = (float) substr($admins['CC3'],0,5);
+                            }
+                            if(in_array($result,[1,2] )) {
+                                $i = (in_array($result,[2]))?2:5;
+                                $temp2[$i]['data'][] = (float)substr($admins['C3'], 0, 5);
+                            }
+                        }
+                        if($season >=4){
+                            if(in_array($result,[1,3])){
+                                $i = (in_array($result,[3]))?3:6;
+                                $temp2[$i]['data'][] = (float) substr($admins['CC4'],0,5);
+                            }
+                            if(in_array($result,[1,2] )) {
+                                $i = (in_array($result,[2]))?3:7;
+                                $temp2[$i]['data'][] = (float)substr($admins['C4'], 0, 5);
+                            }
+                        }
                         }
                 }// net eghdam
 
             }// next amaliati
 
-            $charts[$kalan['kalan_no']]['name'] = $kalan['kalan'];
-            $charts[$kalan['kalan_no']]['series'] = json_encode($temp2,JSON_UNESCAPED_UNICODE);
-            $charts[$kalan['kalan_no']]['categories'] = json_encode($tempCat,JSON_UNESCAPED_UNICODE );
+            $charts[$kalan_no]['name'] = $kalan['kalan_name'];
+            $charts[$kalan_no]['series'] = json_encode($temp2,JSON_UNESCAPED_UNICODE);
+            $charts[$kalan_no]['categories'] = json_encode($tempCat,JSON_UNESCAPED_UNICODE );
 
 
         }//next kalan
@@ -501,52 +579,72 @@ class chartController
     {
         global $admin_info;
 
+        $season = $this->_season;
+        $result = $this->_result;
+
         include_once ROOT_DIR.'component/reports/controllers/reports.controller.php';
         $reportsController = new reportsController();
         $report = $reportsController->reportsProcess();
         $charts = array();
 
+
         $tempCat = array();
-        $temp2 = array();
-        foreach ($report['list'] as $kalan){
+
+        $temp2 = $this->categoryName($season,$result);
+
+        foreach ($report['kalans'] as $kalan){
 
 
 
-            $tempCat[] =  $kalan['kalan'];
+            $tempCat[] =  $kalan['kalan_name'];
 
-            $temp2[0]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['GG1'],0,5);
-            $temp2[1]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['G1'],0,5);
-            $temp2[2]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['GG2'],0,5);
-            $temp2[3]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['G2'],0,5);
-            $temp2[4]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['GG3'],0,5);
-            $temp2[5]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['G3'],0,5);
-            $temp2[6]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['GG4'],0,5);
-            $temp2[7]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['G4'],0,5);
+            if($season >= 1){
+                if(in_array($result,[1,3])){
+                    $i = (in_array($result,[3]))?0:0;
+                    $temp2[$i]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['GG1'],0,5);
+                }
+                if(in_array($result,[1,2] )) {
+                    $i = (in_array($result,[2]))?0:1;
+                    $temp2[$i]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['G1'],0,5);
+                }
+            }
+            if($season >= 2){
+                if(in_array($result,[1,3])){
+                    $i = (in_array($result,[3]))?1:2;
+                    $temp2[$i]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['GG2'],0,5);
+                }
+                if(in_array($result,[1,2] )) {
+                    $i = (in_array($result,[2]))?1:3;
+                    $temp2[$i]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['G2'],0,5);
+                }
+            }
+            if($season >= 3){
+                if(in_array($result,[1,3])){
+                    $i = (in_array($result,[3]))?2:4;
+                    $temp2[$i]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['GG3'],0,5);
+                }
+                if(in_array($result,[1,2] )) {
+                    $i = (in_array($result,[2]))?2:5;
+                    $temp2[$i]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['G3'],0,5);
+                }
+            }
+            if($season >=4){
+                if(in_array($result,[1,3])){
+                    $i = (in_array($result,[3]))?3:6;
+                    $temp2[$i]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['GG4'],0,5);
+                }
+                if(in_array($result,[1,2] )) {
+                    $i = (in_array($result,[2]))?3:7;
+                    $temp2[$i]['data'][] = (float) substr($kalan['admins'][$admin_info['parent_id']]['G4'],0,5);
+                }
+            }
 
 
 
         }//next kalan
 
 
-        $temp2[0]['name'] = 'خود اظهاری 1';
-        $temp2[0]['color'] = 'url(#highcharts-default-pattern-3)';
-        $temp2[1]['name'] = '(نهایی (تایید شده 1';
-        $temp2[1]['color'] = '#3F7FC7';
 
-        $temp2[2]['name'] = 'خود اظهاری 2';
-        $temp2[2]['color'] = 'url(#highcharts-default-pattern-3)';
-        $temp2[3]['name'] = '(نهایی (تایید شده 2';
-        $temp2[3]['color'] = '#3F7FC7';
-
-        $temp2[4]['name'] = 'خود اظهاری 3';
-        $temp2[4]['color'] = 'url(#highcharts-default-pattern-3)';
-        $temp2[5]['name'] = '(نهایی (تایید شده 3';
-        $temp2[5]['color'] = '#3F7FC7';
-
-        $temp2[6]['name'] = 'خود اظهاری 4';
-        $temp2[6]['color'] = 'url(#highcharts-default-pattern-3)';
-        $temp2[7]['name'] = '(نهایی (تایید شده 4';
-        $temp2[7]['color'] = "#3F7FC7";
 
         $charts[0]['name'] = 'مقایسه اعداف';
         $charts[0]['series'] = json_encode($temp2,JSON_UNESCAPED_UNICODE);
@@ -558,6 +656,87 @@ class chartController
         die();
     }
     public function managerChart1()
+    {
+        $season = $this->_season;
+        $result = $this->_result;
+
+        include_once ROOT_DIR.'component/reports/controllers/reports.controller.php';
+        $reportsController = new reportsController();
+        $report = $reportsController->reportsProcess();
+        $charts = array();
+        foreach ($report['kalans'] as $kalan_no =>$kalan){
+
+            $tempCat = $temp2 = array();
+
+            $temp2 = $this->categoryName($season,$result);
+
+
+            foreach ($kalan['admins'] as $admins){
+
+                if($admins['flag'] == 3) {
+
+                    $tempCat[] = $admins['admin_name'] . ' ' . $admins['admin_family'];
+                    if($season >= 1){
+                        if(in_array($result,[1,3])) {
+                            $i = (in_array($result, [3])) ? 0 : 0;
+                            $temp2[$i]['data'][] = (float)substr($admins['GG1'], 0, 5);
+                        }
+                        if(in_array($result,[1,2] )) {
+                            $i = (in_array($result,[2]))?0:1;
+                            $temp2[$i]['data'][] = (float)substr($admins['G1'], 0, 5);
+                        }
+                    }
+                    if($season >= 2){
+                        if(in_array($result,[1,3])){
+                            $i = (in_array($result,[3]))?1:2;
+                            $temp2[$i]['data'][] = (float)substr($admins['GG2'], 0, 5);
+                        }
+                        if(in_array($result,[1,2] )) {
+                            $i = (in_array($result, [2])) ? 1 : 3;
+                            $temp2[$i]['data'][] = (float)substr($admins['G2'], 0, 5);
+                        }
+                    }
+                    if($season >= 3){
+                        if(in_array($result,[1,3])){
+                            $i = (in_array($result,[3]))?2:4;
+                            $temp2[$i]['data'][] = (float)substr($admins['GG3'], 0, 5);
+                        }
+                        if(in_array($result,[1,2] )) {
+                            $i = (in_array($result, [2])) ? 2 : 5;
+                            $temp2[$i]['data'][] = (float)substr($admins['G3'], 0, 5);
+                        }
+                    }
+                    if($season >= 4) {
+                        if(in_array($result,[1,3])){
+                            $i = (in_array($result,[3]))?3:6;
+                            $temp2[$i]['data'][] = (float)substr($admins['GG4'], 0, 5);
+                        }
+                        if(in_array($result,[1,2] )) {
+                            $i = (in_array($result, [2])) ? 3 : 7;
+                            $temp2[$i]['data'][] = (float)substr($admins['G4'], 0, 5);
+                        }
+                    }
+                }
+
+            }
+
+
+
+            $charts[$kalan_no]['name'] = $kalan['kalan_name'];
+            $charts[$kalan_no]['series'] = json_encode($temp2,JSON_UNESCAPED_UNICODE);
+            $charts[$kalan_no]['categories'] = json_encode($tempCat,JSON_UNESCAPED_UNICODE );
+
+
+        }//next kalan
+
+
+
+
+        $this->fileName = 'report.groupandvahed.php';
+        $this->template(compact('charts'));
+        die();
+    }
+    public function managerChart1Old()
     {
 
         include_once ROOT_DIR.'component/reports/controllers/reports.controller.php';
@@ -613,72 +792,6 @@ class chartController
             $charts[$kalan_no]['name'] = $kalan['kalan_name'];
             $charts[$kalan_no]['series'] = json_encode($temp2,JSON_UNESCAPED_UNICODE);
             $charts[$kalan_no]['categories'] = json_encode($tempCat,JSON_UNESCAPED_UNICODE );
-
-
-        }//next kalan
-
-
-
-
-        $this->fileName = 'report.groupandvahed.php';
-        $this->template(compact('charts'));
-        die();
-    }
-    public function managerChart1old()
-    {
-
-        include_once ROOT_DIR.'component/reports/controllers/reports.controller.php';
-        $reportsController = new reportsController();
-        $report = $reportsController->reportsProcess();
-        $charts = array();
-
-        foreach ($report['list'] as $kalan){
-
-            $tempCat = $temp2 = array();
-
-            $temp2[0]['name'] = 'خود اظهاری 1';
-            $temp2[0]['color'] = '#45639b';
-            $temp2[1]['name'] = '(نهایی (تایید شده 1';
-            $temp2[1]['color'] = '#654c97';
-            $temp2[2]['name'] = 'خود اظهاری 2';
-            $temp2[2]['color'] = '#45639b';
-            $temp2[3]['name'] = '(نهایی (تایید شده 2';
-            $temp2[3]['color'] = '#654c97';
-            $temp2[4]['name'] = 'خود اظهاری 3';
-            $temp2[4]['color'] = '#45639b';
-            $temp2[5]['name'] = '(نهایی (تایید شده 3';
-            $temp2[5]['color'] = '#654c97';
-            $temp2[6]['name'] = 'خود اظهاری 4';
-            $temp2[6]['color'] = '#45639b';
-            $temp2[7]['name'] = '(نهایی (تایید شده 4';
-            $temp2[7]['color'] = '#654c97';
-
-
-            foreach ($kalan['admins'] as $admins){
-                if($admins['flag'] == 3) {
-                    foreach ($admins['group'] as $group) {
-                        if ($group['flag'] == 2) {
-                            $tempCat[] = $group['name'] . ' ' . $group['family'];
-                        }
-                    }
-
-                    $temp2[0]['data'][] = (float)substr($admins['GG1'], 0, 5);
-                    $temp2[1]['data'][] = (float)substr($admins['G1'], 0, 5);
-                    $temp2[2]['data'][] = (float)substr($admins['GG2'], 0, 5);
-                    $temp2[3]['data'][] = (float)substr($admins['G2'], 0, 5);
-                    $temp2[4]['data'][] = (float)substr($admins['GG3'], 0, 5);
-                    $temp2[5]['data'][] = (float)substr($admins['G3'], 0, 5);
-                    $temp2[6]['data'][] = (float)substr($admins['GG4'], 0, 5);
-                    $temp2[7]['data'][] = (float)substr($admins['G4'], 0, 5);
-                }
-
-            }
-
-
-
-            $charts[$kalan['kalan_no']]['name'] = $kalan['kalan'];
-            $charts[$kalan['kalan_no']]['series'] = json_encode($temp2,JSON_UNESCAPED_UNICODE);
-            $charts[$kalan['kalan_no']]['categories'] = json_encode($tempCat,JSON_UNESCAPED_UNICODE );
 
 
         }//next kalan
