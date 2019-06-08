@@ -208,6 +208,100 @@
                     </tbody>
                 </table>
                 </div>
+
+
+                <div class="col-md-12">
+
+                    <style>
+                        .panel-group .panel {
+                            border-radius: 0;
+                            box-shadow: none;
+                            border-color: #EEEEEE;
+                        }
+
+                        .panel-group .panel-default > .panel-heading {
+                            padding: 0;
+                            border-radius: 0;
+                            color: #212121;
+                            background-color: #FAFAFA;
+                            border-color: #EEEEEE;
+                        }
+
+                        .panel-group .panel-title {
+                            font-size: 14px;
+                        }
+
+                        .panel-group .panel-title > a {
+                            display: block;
+                            padding: 15px;
+                            text-decoration: none;
+                        }
+
+                        .panel-group .more-less {
+                            float: right;
+                            color: #212121;
+                        }
+
+                        .panel-default > .panel-heading + .panel-collapse > .panel-body {
+                            border-top-color: #EEEEEE;
+                        }
+
+                    </style>
+                    <script>
+                        function toggleIcon(e) {
+                            $(e.target)
+                                .prev('.panel-heading')
+                                .find(".more-less")
+                                .toggleClass('glyphicon-plus glyphicon-minus');
+                        }
+                        $('.panel-group').on('hidden.bs.collapse', toggleIcon);
+                        $('.panel-group').on('shown.bs.collapse', toggleIcon);
+                    </script>
+
+                    <div class="">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs " role="tablist">
+                            <? foreach ($groups as $head_admin_id => $head_admin_info):?>
+                            <li role="presentation" class="pull-right"><a href="#home<?=$head_admin_id?>" aria-controls="home<?=$head_admin_id?>" role="tab" data-toggle="tab">
+                                    <?=$head_admin_info['name'].' '.$head_admin_info['family']?>
+                                </a></li>
+                            <? endforeach;?>
+                        </ul>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <? foreach ($groups as $head_admin_id => $head_admin_info):?>
+                                <div role="tabpanel" class="tab-pane fade" id="home<?=$head_admin_id?>">
+                                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                <? foreach ($reports as $kalan_no => $kalan_value):?>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="headingOne<?=$head_admin_id?>">
+                                            <h4 class="panel-title">
+                                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne<?=$head_admin_id?>" aria-expanded="true" aria-controls="collapseOne<?=$head_admin_id?>">
+                                                    <i class="more-less glyphicon glyphicon-plus"></i>
+                                                    <?=$kalan_value['kalan_name']?>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseOne<?=$head_admin_id?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne<?=$head_admin_id?>">
+                                            mmmm1
+                                        </div>
+
+                                    </div>
+                                <? endforeach;?>
+
+                                </div><!-- panel-group -->
+                            </div>
+                            <? endforeach;?>
+
+                        </div>
+
+                    </div>
+
+
+
+
+                </div>
             </div>
         </div>
     </div>
