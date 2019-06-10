@@ -2270,6 +2270,7 @@ WHERE group_list.faaliat_id = $faaliat_id and  group_list.parent_id = {$temp[$id
     function showTableReports(){
 
         global $admin_info;
+//        echo date('i:s -');
         $reports = $this->reportsProcess()['kalans'];
 
 
@@ -2315,8 +2316,32 @@ WHERE group_list.faaliat_id = $faaliat_id and  group_list.parent_id = {$temp[$id
         }
         $child = $this->myStaff($adminId);
 
+
+        /** kalan_tahlil */
+//        echo date('i:s -');
+        $groupString =  implode(', ', array_map(function ($entry) {
+            return $entry['admin_id'];
+        }, $groups));
+
+
+        include_once ROOT_DIR.'component/kalan_tahlil/model/kalan_tahlil.model.php';
+        $kalanTahlil = new kalan_tahlil();
+        $kalanTahlilObj = $kalanTahlil->getAll()
+            ->select('kalan_tahlil_manager'.$season,'group_id','kalan_no')
+            ->where('group_id','in',$groupString)
+            ->getList()['export']['list'];
+
+        $kalanTahlilArray = array();
+        foreach ($kalanTahlilObj as $v){
+            $kalanTahlilArray[$v['group_id']][$v['kalan_no']] = $v['kalan_tahlil_manager'.$season];
+        }
+
+//        echo date('i:s -');
+
+//        print_r_debug($kalanTahlilArray);
+
         $this->fileName = 'reports.tables.php';
-        $this->template(compact('reports','groups','season','child'));
+        $this->template(compact('reports','groups','season','child','kalanTahlilArray'));
     }
 
 

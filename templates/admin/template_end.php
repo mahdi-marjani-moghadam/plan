@@ -3,7 +3,7 @@
 
         <!-- javascript
         ================================================== -->
-        <?php require_once("scripts.php"); ?>
+        <?php // require_once("scripts.php"); ?>
 
         </body>
     </html>

@@ -76,3 +76,6 @@ table
 table tbody td {
     max-width: 100px;
 }
+@media print {
+    .yesPrint{ display: block !important;}
+}

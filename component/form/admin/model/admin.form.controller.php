@@ -282,6 +282,7 @@ class adminFormController
         }
 
         unset($res);
+
         include_once ROOT_DIR.'component/group_list/model/group_list.model.php';
         foreach ($fields['manager_group'] as $admin_id => $v){
 
@@ -289,7 +290,8 @@ class adminFormController
                 $res = group_list::getBy_admin_id_and_faaliat_id($admin_id,$faaliat_id)->get();
 
                 if($res['export']['recordsCount']==0){
-                    //print_r_debug($admin_id);
+                    echo $admin_id.' '.$faaliat_id;
+                    print_r_debug('not found.');
                 }
 
                 if($admin_info['admin_id'] == 1){

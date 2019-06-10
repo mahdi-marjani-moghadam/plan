@@ -382,11 +382,18 @@
         $('.show-columns').click(function (e) {
 
             var columns = $(this).val();
+            //Cookies.set('columns', columns);
+            //console.log(columns);
+            //localStorage.setItem('columns', columns);
+            localStorage.columns = columns;
+
+
+                //console.log(Cookies.get('columns'));
+
 
             $('table tbody tr td').hide();
             $('table thead th').hide();
             $.each(columns,function (i,column) {
-                //console.log(column);
 
                 $('table tbody tr').find('td:eq('+column+')').show()
                 $('table thead tr').find('th:eq('+column+')').show()
@@ -394,6 +401,32 @@
             })
             $('table').attr({'style':'width: auto;'});
         });
+
+        if(localStorage.length !== 0) {
+            var local = localStorage.columns;
+
+            var columns = local.split(',');
+
+            //console.log(columns);
+
+            $('table tbody tr td').hide();
+            $('table thead th').hide();
+            //console.log('ss');
+            $.each(columns,function (i,column) {
+                //console.log(column);
+                $('table tbody tr').find('td:eq('+column+')').show()
+                $('table thead tr').find('th:eq('+column+')').show()
+
+            })
+            $('table').attr({'style':'width: auto;'});
+
+            $(window).on('load', function() {
+                $('.show-columns').select2('val',columns);
+            });
+
+        }
+
+
 
         /** +/- */
         $('.show-more-admin').click(function (e) {
@@ -591,6 +624,12 @@
             <? endforeach; ?>
         </select>
 
+        <!--<p:selectCheckboxMenu id="menu" value="#{itemsBean.selectedItems}" label="Items"
+                              filter="true" filterMatchMode="contains">
+            <f:selectItems value="#{itemsBean.items}"/>
+            <p:ajax event="change" update="selectedItemText"/>
+        </p:selectCheckboxMenu>
+        <h:outputText id="selectedItemText" value=" #{itemsBean.selectedItems}"/>-->
 
         <label for="level"> سطح:</label>
 
@@ -1456,7 +1495,7 @@
                                                                 <span>ارزیاب</span>: <?=substr($vEAdmins['max_arzyab1'],0,5)?><br>
                                                                 <span>مدیر</span>:
                                                                     <?if($vEAdmins['group_status'] < 6):?>
-                                                                        <input class="w100" name="manager_group[<?=$EAId?>][<?=$eghdam_id?>][max_manager1]" value="<?=$vEAdmins['max_manager1']?>">
+                                                                        <input class="w100" name="manager[<?=$EAId?>][<?=$eghdam_id?>][max_manager1]" value="<?=$vEAdmins['max_manager1']?>">
                                                                     <?else:?>
                                                                         <?=$vEAdmins['max_manager1']?>
                                                                     <? endif;?>
@@ -1503,7 +1542,7 @@
                                                                     <span>ارزیاب</span>: <?=substr($vEAdmins['max_arzyab2'],0,5)?><br>
                                                                     <span>مدیر</span>:
                                                                     <?if($vEAdmins['group_status'] < 6):?>
-                                                                        <input class="w100" name="manager_group[<?=$EAId?>][<?=$eghdam_id?>][max_manager2]" value="<?=$vEAdmins['max_manager2']?>">
+                                                                        <input class="w100" name="manager[<?=$EAId?>][<?=$eghdam_id?>][max_manager2]" value="<?=$vEAdmins['max_manager2']?>">
                                                                     <?else:?>
                                                                         <?=$vEAdmins['max_manager2']?>
                                                                     <? endif;?>
@@ -1551,7 +1590,7 @@
                                                                     <span>ارزیاب</span>: <?=substr($vEAdmins['max_arzyab3'],0,5)?><br>
                                                                     <span>مدیر</span>:
                                                                     <?if($vEAdmins['group_status'] < 6):?>
-                                                                        <input class="w100" name="manager_group[<?=$EAId?>][<?=$eghdam_id?>][max_manager3]" value="<?=$vEAdmins['max_manager3']?>">
+                                                                        <input class="w100" name="manager[<?=$EAId?>][<?=$eghdam_id?>][max_manager3]" value="<?=$vEAdmins['max_manager3']?>">
                                                                     <?else:?>
                                                                         <?=$vEAdmins['max_manager3']?>
                                                                     <? endif;?>
@@ -1599,7 +1638,7 @@
                                                                     <span>ارزیاب</span>: <?=substr($vEAdmins['max_arzyab4'],0,5)?><br>
                                                                     <span>مدیر</span>:
                                                                     <?if($vEAdmins['group_status'] < 6):?>
-                                                                        <input class="w100" name="manager_group[<?=$EAId?>][<?=$eghdam_id?>][max_manager4]" value="<?=$vEAdmins['max_manager4']?>">
+                                                                        <input class="w100" name="manager[<?=$EAId?>][<?=$eghdam_id?>][max_manager4]" value="<?=$vEAdmins['max_manager4']?>">
                                                                     <?else:?>
                                                                         <?=$vEAdmins['max_manager4']?>
                                                                     <? endif;?>
@@ -2314,15 +2353,16 @@
 </div>
 
 
+
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
 
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Modal Header</h4>
+                <h4 class="modal-title">تحلیل</h4>
             </div>
             <div class="modal-body">
                 <p>Some text in the modal.</p>
@@ -2335,7 +2375,6 @@
     </div>
 </div>
 
-
 <script>
     $(document).ready(function () {
         $('.readMore').click(function (e) {
@@ -2343,10 +2382,18 @@
             $('myModal').modal('hide');
 
             var text = $(this).data("text");
-            alert(text);
-            $('#myModal .modal-body').html("<p>" + text + "</p>")
-            $('myModal').modal('show');
+            //alert(text);
+            $('#myModal .modal-body').html("<p>" + nl2br(text) + "</p>");
+            $('#myModal').modal('show');
         })
     });
+
+    function nl2br (str, replaceMode, isXhtml) {
+
+        var breakTag = (isXhtml) ? '<br />' : '<br>';
+        var replaceStr = (replaceMode) ? '$1'+ breakTag : '$1'+ breakTag +'$2';
+        return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, replaceStr);
+    }
+
 </script>
 

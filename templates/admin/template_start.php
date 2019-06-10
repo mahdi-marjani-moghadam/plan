@@ -59,6 +59,8 @@
 
 
 
+    <?php require_once("scripts.php"); ?>
+
 </head>
 
 <body class="animated fadeIn">

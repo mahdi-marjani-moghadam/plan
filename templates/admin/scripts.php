@@ -127,3 +127,4 @@
         <!-- custom.js -->
         <script src="<?php echo RELA_DIR; ?>templates/<?php echo CURRENT_SKIN; ?>/assets/js/campains.js"></script>
 
+        <script src="<?php echo RELA_DIR; ?>templates/<?php echo CURRENT_SKIN; ?>/assets/js/js.cookie.min.js"></script>

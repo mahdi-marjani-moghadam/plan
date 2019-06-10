@@ -88,7 +88,10 @@
                 function printDiv()
                 {
 
+                    //$('.yesPrint').show();
+
                     var divToPrint=document.getElementById('table1');
+                    var tahlilKalan=document.getElementById('tahlil-kalan');
                     var divToPrint2=document.getElementById('table2');
                     var divToPrint3=document.getElementById('table3');
 
@@ -96,7 +99,7 @@
 
                     newWin.document.open();
 
-                    newWin.document.write('<html><body dir="rtl"  onload="window.print()"><style>td{font-family: Tahoma; font-size: 11px; padding: 5px}  table tr:nth-child(even){background: #f4f4f4}</style>'+divToPrint.innerHTML + divToPrint2.innerHTML + divToPrint3.innerHTML+'</body></html>');
+                    newWin.document.write('<html><body dir="rtl"  onload="window.print()"><style>td{font-family: Tahoma; font-size: 11px; padding: 5px}  table tr:nth-child(even){background: #f4f4f4}</style>'+divToPrint.innerHTML + tahlilKalan.innerHTML + divToPrint2.innerHTML + divToPrint3.innerHTML+'</body></html>');
 
                     newWin.document.close();
 
@@ -211,8 +214,16 @@
 
 
                 <div class="col-md-12">
+                    <style media="print">
+                        .noPrint{ display: none; }
+                        .yesPrint{ display: block !important; }
+                    </style>
 
-                    <style>
+                    <style  type="text/css">
+                        @media print {
+                            .noPrint {display:none;}
+                            .yesPrint{ display: block !important; }
+                        }
                         .panel-group .panel {
                             border-radius: 0;
                             box-shadow: none;
@@ -258,10 +269,10 @@
                         $('.panel-group').on('shown.bs.collapse', toggleIcon);
                     </script>
 
-                    <div class="">
+                    <div >
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs " role="tablist">
-                            <? foreach ($groups as $head_admin_id => $head_admin_info):?>
+                            <? foreach ($groups as $head_admin_id => $head_admin_info): if($head_admin_info['parent_id'] == 1 ){ continue; }?>
                             <li role="presentation" class="pull-right"><a href="#home<?=$head_admin_id?>" aria-controls="home<?=$head_admin_id?>" role="tab" data-toggle="tab">
                                     <?=$head_admin_info['name'].' '.$head_admin_info['family']?>
                                 </a></li>
@@ -269,30 +280,40 @@
                         </ul>
 
                         <!-- Tab panes -->
-                        <div class="tab-content">
-                            <? foreach ($groups as $head_admin_id => $head_admin_info):?>
+                        <div class="tab-content" id="tahlil-kalan">
+                            <?  foreach ($groups as $head_admin_id => $head_admin_info):
+
+                                if($head_admin_info['parent_id'] == 1 ){ continue; } ?>
+
                                 <div role="tabpanel" class="tab-pane fade" id="home<?=$head_admin_id?>">
-                                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                                <? foreach ($reports as $kalan_no => $kalan_value):?>
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading" role="tab" id="headingOne<?=$head_admin_id?>">
-                                            <h4 class="panel-title">
-                                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne<?=$head_admin_id?>" aria-expanded="true" aria-controls="collapseOne<?=$head_admin_id?>">
-                                                    <i class="more-less glyphicon glyphicon-plus"></i>
-                                                    <?=$kalan_value['kalan_name']?>
-                                                </a>
-                                            </h4>
-                                        </div>
-                                        <div id="collapseOne<?=$head_admin_id?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne<?=$head_admin_id?>">
-                                            mmmm1
-                                        </div>
+                                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                    <? foreach ($reports as $kalan_no => $kalan_value):?>
+                                        <? if(isset($kalanTahlilArray[$head_admin_id][$kalan_no])):?>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading" role="tab" id="headingOne<?=$head_admin_id.$kalan_no?>">
+                                                    <h4 class="panel-title">
+                                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne<?=$head_admin_id.$kalan_no?>" aria-expanded="true"
+                                                           aria-controls="collapseOne<?=$head_admin_id.$kalan_no?>">
+                                                            <? if( $kalanTahlilArray[$head_admin_id][$kalan_no] != ''):?>
+                                                            <i class="more-less glyphicon glyphicon-plus"></i>
+                                                            <? endif;?>
+                                                            <span class="yesPrint" style="display: ">  <?=$head_admin_info['name'].' '.$head_admin_info['family']?> | </span>
+                                                            <?=' '.$kalan_value['kalan_name']?>
+                                                        </a>
+                                                    </h4>
+                                                </div>
 
-                                    </div>
-                                <? endforeach;?>
+                                                <div id="collapseOne<?=$head_admin_id.$kalan_no?>" class="panel-collapse collapse " style="padding: 15px" role="tabpanel"
+                                                     aria-labelledby="headingOne<?=$head_admin_id.$kalan_no?>">
+                                                    <?=nl2br($kalanTahlilArray[$head_admin_id][$kalan_no]) ?>
+                                                </div>
 
-                                </div><!-- panel-group -->
-                            </div>
-                            <? endforeach;?>
+                                            </div>
+                                        <? endif; ?>
+                                    <?  endforeach;?>
+                                    </div><!-- panel-group -->
+                                </div>
+                            <?  endforeach; ?>
 
                         </div>
 

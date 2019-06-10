@@ -773,7 +773,7 @@ div.tagsinput div {
     margin-top: 4px;
 }
 .select2-search input.select2-active {
-    background: #ecf0f1 url('../templates/images/select2-spinner.gif') no-repeat 100%;
+    background: #ecf0f1 url('../../images/select2-spinner.gif') no-repeat 100%;
 }
 
 .select2-container-active .select2-choice,
@@ -890,7 +890,7 @@ disabled look for disabled choices in the results dropdown
 }
 
 .select2-more-results.select2-active {
-    background: #ecf0f1 url('../templates/images/select2-spinner.gif') no-repeat 100%;
+    background: #ecf0f1 url('../../images/select2-spinner.gif') no-repeat 100%;
 }
 .select2-more-results {
     background: #ecf0f1;
@@ -975,7 +975,7 @@ disabled look for disabled choices in the results dropdown
     background: transparent !important;
 }
 .select2-container-multi .select2-choices .select2-search-field input.select2-active {
-    background: #ffffff url('../templates/images/select2-spinner.gif') no-repeat 100% !important;
+    background: #ffffff url('../../images/select2-spinner.gif') no-repeat 100% !important;
 }
 .select2-default {
     color: #95a5a6 !important;
