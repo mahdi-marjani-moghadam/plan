@@ -42,7 +42,7 @@
         </div><!--/cols-->
     <? endif;?>
 
-  <div class="col-md-12" >
+        <div class="col-md-12" >
     <div id="overall-visitor" class="panel panel-animated panel-success bg-cloud">
       <div class="panel-body">
 
@@ -59,7 +59,12 @@
 
                   $('#status').change(function () {
                       $('.admins div').hide();
-                      $('.admins div[data-status='+$(this).val()+']').show();
+                      if($(this).val() == '0,1,2,3'){
+
+                          $('.admins div[data-status=0],.admins div[data-status=1] , .admins div[data-status=2] ,.admins div[data-status=3]').show();
+                      }else{
+                          $('.admins div[data-status='+$(this).val()+']').show();
+                      }
 
                   });
               });
@@ -72,9 +77,13 @@
               <option value="1">ثبت موقت اطلاعات</option>
               <option value="2">ارسال به مافوق</option>
               <option value="3">تایید  توسط مافوق</option>
-              <option value="4">ثبت نهایی اطلاعات</option>
-              <option value="5">ارزیاب</option>
-              <option value="6">ثبت نهایی مرکز ارزیابی</option>
+              <option value="0,1,2,3">عدم ثبت نهایی اطلاعات</option>
+              <option value="4"> ثبت نهایی اطلاعات توسط واحد</option>
+              <?if($admin_info['parent_id'] == 0):?>
+                  <option value="5">ارزیاب</option>
+                  <option value="6">تایید اولیه</option>
+                  <option value="7">تایید نهایی مرکز ارزیابی</option>
+              <? endif;?>
           </select>
 
           <div class="admins row">

@@ -272,7 +272,7 @@
                     <div >
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs " role="tablist">
-                            <? foreach ($groups as $head_admin_id => $head_admin_info): if($head_admin_info['parent_id'] == 1 ){ continue; }?>
+                            <? foreach ($groups as $head_admin_id => $head_admin_info): if($head_admin_info['parent_id'] == 1  || $head_admin_info['status'.STEP_FORM1]  !=7){ continue; }?>
                             <li role="presentation" class="pull-right"><a href="#home<?=$head_admin_id?>" aria-controls="home<?=$head_admin_id?>" role="tab" data-toggle="tab">
                                     <?=$head_admin_info['name'].' '.$head_admin_info['family']?>
                                 </a></li>
@@ -281,9 +281,11 @@
 
                         <!-- Tab panes -->
                         <div class="tab-content" id="tahlil-kalan">
+
                             <?  foreach ($groups as $head_admin_id => $head_admin_info):
 
-                                if($head_admin_info['parent_id'] == 1 ){ continue; } ?>
+                                if($head_admin_info['parent_id'] == 1 || $head_admin_info['status'.STEP_FORM1]  !=7 ){ continue; } ?>
+                                <?/* if ($vKGroup['group_status'] == 6):*/?>
 
                                 <div role="tabpanel" class="tab-pane fade" id="home<?=$head_admin_id?>">
                                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -305,6 +307,7 @@
 
                                                 <div id="collapseOne<?=$head_admin_id.$kalan_no?>" class="panel-collapse collapse " style="padding: 15px" role="tabpanel"
                                                      aria-labelledby="headingOne<?=$head_admin_id.$kalan_no?>">
+
                                                     <?=nl2br($kalanTahlilArray[$head_admin_id][$kalan_no]) ?>
                                                 </div>
 
@@ -313,6 +316,8 @@
                                     <?  endforeach;?>
                                     </div><!-- panel-group -->
                                 </div>
+                            <?/* endif; */?>
+
                             <?  endforeach; ?>
 
                         </div>

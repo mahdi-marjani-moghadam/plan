@@ -85,8 +85,10 @@ class adminFormController
     public function showList($fields=array()){
 
         global $admin_info;
+
         include_once ROOT_DIR.'component/reports/controllers/reports.controller.php';
         $obj = new reportsController();
+
         if (isset($_GET['old'])) {
             $list = $obj->reportsProcess2();
         }else
@@ -122,7 +124,27 @@ class adminFormController
 
         $list['showAdmin'] = $result3['export']['list'];
 
-//        print_r_debug($list);
+
+        $q = ($_GET['q']!= ',null,')?trim($_GET['q'],','):'';
+        if($q!='' ){
+            include_once ROOT_DIR.'component/admin_faaliat/admin/model/admin.admin_faaliat.model.php';
+            $objadmin_faaliat = admin_faaliat::getAll()
+                ->select('count(*) as count')
+                ->where('admin_id' ,'=',$admin_info['admin_id'])
+                ->andWhere('child' ,'=',$q)
+                ->andWhere('status'.STEP_FORM1 ,'=',0)
+                ->getList();
+            if($objadmin_faaliat['export']['recordsCount']>0){
+                $list['editable'] = ($objadmin_faaliat['export']['list'][0]['count'] > 0)?1:0;
+            }else{
+                $list['editable'] = 0;
+            }
+
+        }else{$list['editable'] = 0;}
+
+
+
+
 
         if (isset($_GET['old'])) {
             $this->fileName = 'admin.form1.showList.old.php';
@@ -143,17 +165,11 @@ class adminFormController
         global $admin_info,$messageStack;
 
 
-
         $q = ($fields['q']!= ',null,')?trim($fields['q'],','):'';
+        if($q == ''){ redirectPage(RELA_DIR.'admin/','واحد یا گروه را انتخاب نمایید.');}
 
 
 
-      /*  include_once ROOT_DIR.'component/admin/model/admin.model.php';
-        $adminObj = admin::getAll()->where('admin_id','in',$q)->get();
-        foreach ($adminObj['export']['list'] as $admin){
-            $admin->status = 5;
-        }
-        */
 
 
         include_once ROOT_DIR.'component/kalan_tahlil/model/kalan_tahlil.model.php';
@@ -169,28 +185,28 @@ class adminFormController
                         $kalanTahlilObj->kalan_tahlil_manager1 = $v2['1-m'];
                     }else{
                         $kalanTahlilObj->kalan_tahlil_arzyab1 = $v2['1-a'];
-                        $kalanTahlilObj->kalan_tahlil_manager1 = $v2['1-a'];
+                        //$kalanTahlilObj->kalan_tahlil_manager1 = $v2['1-a'];
                     }
 
                     if($admin_info['admin_id'] == 1){
                         $kalanTahlilObj->kalan_tahlil_manager2 = $v2['2-m'];
                     }else{
                         $kalanTahlilObj->kalan_tahlil_arzyab2 = $v2['2-a'];
-                        $kalanTahlilObj->kalan_tahlil_manager2 = $v2['2-a'];
+                        //$kalanTahlilObj->kalan_tahlil_manager2 = $v2['2-a'];
                     }
 
                     if($admin_info['admin_id'] == 1){
                         $kalanTahlilObj->kalan_tahlil_manager3 = $v2['3-m'];
                     }else{
                         $kalanTahlilObj->kalan_tahlil_arzyab3 = $v2['3-a'];
-                        $kalanTahlilObj->kalan_tahlil_manager3 = $v2['3-a'];
+                        //$kalanTahlilObj->kalan_tahlil_manager3 = $v2['3-a'];
                     }
 
                     if($admin_info['admin_id'] == 1){
                         $kalanTahlilObj->kalan_tahlil_manager4 = $v2['4-m'];
                     }else{
                         $kalanTahlilObj->kalan_tahlil_arzyab4 = $v2['4-a'];
-                        $kalanTahlilObj->kalan_tahlil_manager4 = $v2['4-a'];
+                        //$kalanTahlilObj->kalan_tahlil_manager4 = $v2['4-a'];
                     }
                 }else{
                     $kalanTahlilObj = new kalan_tahlil();
@@ -241,7 +257,7 @@ class adminFormController
                     $max = (($max > $v2['1_3'])? $max:$v2['1_3']);
                     $res['export']['list'][0]->max_arzyab1 = $max;
                     $res['export']['list'][0]->tarzyab1 = $v2['tarzyab1'];
-                    $res['export']['list'][0]->tmanager1 = $v2['tarzyab1'];
+                    //$res['export']['list'][0]->tmanager1 = $v2['tarzyab1'];
 
                     $res['export']['list'][0]->manager2_1 = $v2['2_1'];
                     $res['export']['list'][0]->manager2_2 = $v2['2_2'];
@@ -250,7 +266,7 @@ class adminFormController
                     $max = (($max > $v2['2_3'])? $max:$v2['2_3']);
                     $res['export']['list'][0]->max_manager2 = $max;
                     $res['export']['list'][0]->tarzyab2 = $v2['tarzyab2'];
-                    $res['export']['list'][0]->tmanager2 = $v2['tarzyab2'];
+                    //$res['export']['list'][0]->tmanager2 = $v2['tarzyab2'];
 
                     $res['export']['list'][0]->manager3_1 = $v2['3_1'];
                     $res['export']['list'][0]->manager3_2 = $v2['3_2'];
@@ -259,7 +275,7 @@ class adminFormController
                     $max = (($max > $v2['3_3'])? $max:$v2['3_3']);
                     $res['export']['list'][0]->max_manager3 = $max;
                     $res['export']['list'][0]->tarzyab3 = $v2['tarzyab3'];
-                    $res['export']['list'][0]->tmanager3 = $v2['tarzyab3'];
+                    //$res['export']['list'][0]->tmanager3 = $v2['tarzyab3'];
 
                     $res['export']['list'][0]->manager4_1 = $v2['4_1'];
                     $res['export']['list'][0]->manager4_2 = $v2['4_2'];
@@ -268,7 +284,7 @@ class adminFormController
                     $max = (($max > $v2['4_3'])? $max:$v2['4_3']);
                     $res['export']['list'][0]->max_manager4 = $max;
                     $res['export']['list'][0]->tarzyab4 = $v2['tarzyab4'];
-                    $res['export']['list'][0]->tmanager4 = $v2['tarzyab4'];
+                    //$res['export']['list'][0]->tmanager4 = $v2['tarzyab4'];
                 }
 
 
@@ -294,6 +310,8 @@ class adminFormController
                     print_r_debug('not found.');
                 }
 
+
+
                 if($admin_info['admin_id'] == 1){
                     $res['export']['list'][0]->max_manager1 = $v2['max_manager1'];
                     $res['export']['list'][0]->tahlil_manager1 = $v2['tahlil_manager1'];
@@ -307,8 +325,8 @@ class adminFormController
                     $res['export']['list'][0]->max1 = $max;
                     $res['export']['list'][0]->tahlil1 = $v2['tahlil1'];
                     //if($res['export']['list'][0]->max_manager1 == 0.00 || $res['export']['list'][0]->max_manager1 == ''){
-                        $res['export']['list'][0]->max_manager1 = $max;
-                        $res['export']['list'][0]->tahlil_manager1 = $v2['tahlil1'];
+                    //$res['export']['list'][0]->max_manager1 = $max;
+                    //$res['export']['list'][0]->tahlil_manager1 = $v2['tahlil1'];
                     //}
                 }
 
@@ -325,8 +343,8 @@ class adminFormController
                     $res['export']['list'][0]->max2 = $max;
                     $res['export']['list'][0]->tahlil2 = $v2['tahlil2'];
                     //if($res['export']['list'][0]->max_manager2 == 0.00 || $res['export']['list'][0]->max_manager2 == ''){
-                        $res['export']['list'][0]->max_manager2 = $max;
-                        $res['export']['list'][0]->tahlil_manager2 = $v2['tahlil2'];
+                    //$res['export']['list'][0]->max_manager2 = $max;
+                    //$res['export']['list'][0]->tahlil_manager2 = $v2['tahlil2'];
                     //}
                 }
 
@@ -343,8 +361,8 @@ class adminFormController
                     $res['export']['list'][0]->max3 = $max;
                     $res['export']['list'][0]->tahlil3 = $v2['tahlil3'];
                     //if($res['export']['list'][0]->max_manager3 == 0.00 || $res['export']['list'][0]->max_manager3 == ''){
-                        $res['export']['list'][0]->max_manager3 = $max;
-                        $res['export']['list'][0]->tahlil_manager3 = $v2['tahlil3'];
+                    //$res['export']['list'][0]->max_manager3 = $max;
+                    //$res['export']['list'][0]->tahlil_manager3 = $v2['tahlil3'];
                     //}
                 }
 
@@ -361,8 +379,8 @@ class adminFormController
                     $res['export']['list'][0]->max4 = $max;
                     $res['export']['list'][0]->tahlil4 = $v2['tahlil4'];
                     //if($res['export']['list'][0]->max_manager4 == 0.00 || $res['export']['list'][0]->max_manager4 == ''){
-                        $res['export']['list'][0]->max_manager4 = $max;
-                        $res['export']['list'][0]->tahlil_manager4 = $v2['tahlil4'];
+                    //$res['export']['list'][0]->max_manager4 = $max;
+                    //$res['export']['list'][0]->tahlil_manager4 = $v2['tahlil4'];
                     //}
                 }
                 $res['export']['list'][0]->save();
@@ -371,40 +389,56 @@ class adminFormController
         }
 
 
-        include_once ROOT_DIR.'component/admin/model/admin.model.php';
-        $obj = admin::find($admin_info['admin_id']);
 
-        if(isset($_POST['submit'])){
-            $obj->status = 1;
+
+        include_once ROOT_DIR.'component/admin/model/admin.model.php';
+        $adminObj = admin::getAll()->where('admin_id','=',$q)->get();
+        $admin = $adminObj['export']['list'][0];
+
+        if(isset($_POST['submit1'])){
+            /** sabt avalie */
+
+            $s = 'status'.STEP_FORM1;
+            $admin->$s = 6;
         }
         elseif(isset($_POST['submit2'])){
-            if($q!= ''){
-                $obj->status = 1;
+            /** sabt nahaie */
 
-                /** if filter  */
-                include_once ROOT_DIR.'component/admin/model/admin.model.php';
+            /** update status 1 in admin_faaliat  */
+            $conn = dbConn::getConnection();
+            $query = 'update admin_faaliat set status'.STEP_FORM1.' = 1 where admin_id = '.$admin_info['admin_id'].' and child = '.$q;
+            $stmt = $conn->prepare($query);
+            $stmt->execute();
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            if (!$stmt) {
+                $result['result'] = -1;
+                $result['Number'] = 1;
+                $result['msg'] = $conn->errorInfo();
+                print_r_debug($result);
+            }
 
-                $adminObj = admin::getAll()->where('admin_id','in',$q)->get();
-                foreach ($adminObj['export']['list'] as $admin){
-                    if($admin_info['admin_id'] == 1){ $admin->status = 6; }
-                    else{ $admin->status = 5; }
-                    $admin->save();
+            if($admin_info['admin_id'] == 1){ $s = 'status'.STEP_FORM1; $admin->$s = 7; }
+            else{
+                include_once ROOT_DIR.'component/admin_faaliat/admin/model/admin.admin_faaliat.model.php';
+                $adminObj = admin_faaliat::getAll()
+                    ->select('admin_id,faaliat_id,status'.STEP_FORM1.' as status')
+                    ->where('child','=',$q)
+                    ->andWhere('status'.STEP_FORM1,'=',0)
+                    ->andWhere('admin_id','<>',1)
+                    ->groupBy('admin_id')
+                    ->getList();
+
+                if($adminObj['export']['recordsCount']==0){
+                    $s = 'status'.STEP_FORM1;
+                    $admin->$s = 5;
                 }
-
-
-
-            }else{
-                $obj->status = 4;
             }
         }
 
-
-
-        $obj->save();
+        $admin->save();
 
         $messageStack->add_session('message','عملیات با موفقیت انجام شد','success');
         redirectPage(RELA_DIR.'admin/?component=form&q=,'.$q.',','عملیات با موفقیت انجام شد');
-//        print_r_debug($fields);
     }
 
 
@@ -489,7 +523,7 @@ class adminFormController
   `group_list`.`admin_file4`,
   admin.start_date,
   admin.finish_date,
-  admin.status,
+  admin.status".STEP_FORM1." as status,
   admin.group_admin
  from group_list 
   LEFT JOIN faaliat ON `faaliat`.`faaliat_id` = group_list.faaliat_id
@@ -498,7 +532,6 @@ class adminFormController
   where group_list.admin_id = {$admin_info['admin_id']}";
 
         $result = $obj->getByFilter('', $query);
-
 
         $list['list'] = $result['export']['list'];
 
@@ -889,13 +922,16 @@ class adminFormController
 
         $adminObj = admin::find($admin_info['admin_id']);
         if(isset($_POST['submit'])){
-            $adminObj->status = 1;
+            $s = 'status'.STEP_FORM1;
+            $adminObj->$s = 1;
         }
         elseif(isset($_POST['submit1'])){
-            $adminObj->status = 2;
+            $s = 'status'.STEP_FORM1;
+            $adminObj->$s = 2;
         }
         elseif(isset($fields['submit2'])){
-            $adminObj->status = 4;
+            $s = 'status'.STEP_FORM1;
+            $adminObj->$s = 4;
         }
 
         if(STEP_FORM1 == 1) {
@@ -925,23 +961,7 @@ class adminFormController
 
 
 
-
-
-
-
-
-    function chart()
-    {
-        global $admin_info, $messageStack, $dataStack;
-
-        $list = '';
-        $this->fileName = 'chart.php';
-        $this->template($list);
-        die();
-    }
-
-
-
+    /** khod ezhari */
     function deleteFile($input){
         global $admin_info,$messageStack;
 
@@ -987,6 +1007,23 @@ class adminFormController
         return $result;
 
     }
+
+
+
+
+    function chart()
+    {
+        die('3/4/98');
+        global $admin_info, $messageStack, $dataStack;
+
+        $list = '';
+        $this->fileName = 'chart.php';
+        $this->template($list);
+        die();
+    }
+
+
+
 
 
 }

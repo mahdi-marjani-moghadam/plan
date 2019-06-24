@@ -38,6 +38,9 @@ if($admin_info['parent_id'] != 0  ){
         case '1':
             $controller->managerChart1();
             break;
+        case '2':
+            $controller->managerChart2();
+        break;
     }
 }
 

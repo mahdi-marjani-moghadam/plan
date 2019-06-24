@@ -30,7 +30,7 @@
             "paging": false,
             "processing": true,
             "serverSide": true,
-            "ajax": "<?=RELA_DIR?>admin/?component=form&action=search&status=<?=$list['status']?>",
+            "ajax": "<?=RELA_DIR?>admin/?component=form&action=search&status=<?=$list['status'.STEP_FORM1]?>",
             "ordering": false
         });
 
@@ -183,13 +183,13 @@
                 <? endif;?>
                 <style>td{white-space: nowrap;}</style>
                 <form action="" method="post" enctype="multipart/form-data">
-                    <? if($admin_info['status'] == 2):?>
+                    <? if($admin_info['status'.STEP_FORM1] == 2):?>
                         <div class="alert alert-success">
                             <strong >شما در حال حاضر«منتظر نظر مافوق»هستید. درصورت (تائید مافوق)، دکمه "ثبت نهایی" فعال خواهد شد و در صورت (نیازمند اصلاح) دکمه های "ویرایش/ذخیره" و "ارسال به مافوق" مجددا فعال می گردند. </strong>
                         </div>
                     <? endif;?>
 
-                    <? if($admin_info['status'] == 3):?>
+                    <? if($admin_info['status'.STEP_FORM1] == 3):?>
                         <div class="alert alert-success">
                             <strong>اطلاعات مورد تائید است. شما میتوانید نسبت به ثبت نهایی اقدام نمائید. </strong>
                         </div>
@@ -259,15 +259,15 @@
                     </div>
                     </div>
 
-                    <? if($admin_info['status'] == 0 || ($admin_info['status'] == 1 ) && $admin_info['start_date'] <= date('Y-m-d') and $admin_info['finish_date'] >= date('Y-m-d') ): ?>
+                    <? if($admin_info['status'.STEP_FORM1] == 0 || ($admin_info['status'.STEP_FORM1] == 1 ) && $admin_info['start_date'] <= date('Y-m-d') and $admin_info['finish_date'] >= date('Y-m-d') ): ?>
                         <input type="submit" class="btn btn-info btn-white btn-large " style="font-size: 20px" name="submit" value="ویرایش/ ذخیره" />
                     <? endif;?>
 
-                    <? if ($admin_info['group_admin'] == 0 && $admin_info['status'] == 1 && $admin_info['start_date'] <= date('Y-m-d') and $admin_info['finish_date'] >= date('Y-m-d')): ?>
+                    <? if ($admin_info['group_admin'] == 0 && $admin_info['status'.STEP_FORM1] == 1 && $admin_info['start_date'] <= date('Y-m-d') and $admin_info['finish_date'] >= date('Y-m-d')): ?>
                         <input type="submit" class="btn btn-success btn-white btn-large" style="font-size: 20px" name="submit1" onclick="return confirm('{توجه:بارگذاری مستندات درخواستی در این دوره از ارزیابی الزامی می باشد.} پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')"  value="ارسال به مافوق" />
                     <? endif;?>
 
-                    <? if( $admin_info['status'] == 3 || ($admin_info['group_admin'] == 1 && $admin_info['status'] == 1) && $admin_info['start_date'] <= date('Y-m-d') and $admin_info['finish_date'] >= date('Y-m-d') ): ?>
+                    <? if( $admin_info['status'.STEP_FORM1] == 3 || ($admin_info['group_admin'] == 1 && $admin_info['status'.STEP_FORM1] == 1) && $admin_info['start_date'] <= date('Y-m-d') and $admin_info['finish_date'] >= date('Y-m-d') ): ?>
                         <input type="submit" class="btn btn-success btn-white btn-large " style="font-size: 25px" name="submit2" onclick="return confirm('{توجه:بارگذاری مستندات درخواستی در این دوره از ارزیابی الزامی می باشد.} پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد.آیا مطمئن هستید؟')"  value="ثبت نهایی" />
                     <? endif;?>
 

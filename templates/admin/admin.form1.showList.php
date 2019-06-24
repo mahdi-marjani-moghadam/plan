@@ -1904,58 +1904,41 @@
 
 
                                                                 <? if($admin_info['parent_id']==0 ):?>
-
                                                                         <td>
-                                                                            <? if($admin_info['admin_id']!=1):?>
-                                                                                <?if($vFGroup['group_status'] < 5 ):?>
-                                                                                    <input class="w100"
-                                                                                           data-input="manager_faaliat_<?=$eghdam_id?>_<?=$fAId?>_1_1"
-                                                                                           name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][1_1]"
-                                                                                           value="<?=$vFGroup['manager1_1']?>">
-                                                                                <?else:?>
-                                                                                    <?=$vFGroup['manager1_1']?>
-                                                                                <? endif;?>
-
+                                                                            <?if( $list['editable']==1):?>
+                                                                                <input class="w100"
+                                                                                       data-input="manager_faaliat_<?=$eghdam_id?>_<?=$fAId?>_1_1"
+                                                                                       name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][1_1]"
+                                                                                       value="<?=$vFGroup['manager1_1']?>">
                                                                             <?else:?>
                                                                                 <?=$vFGroup['manager1_1']?>
-                                                                            <?endif;?>
+                                                                            <? endif;?>
                                                                         </td>
                                                                     <td>
-                                                                        <? if($admin_info['admin_id']!=1 ):?>
-                                                                            <?if($vFGroup['group_status'] < 5):?>
-                                                                                <input class="w100"
-                                                                                       data-input="manager_faaliat_<?=$eghdam_id?>_<?=$fAId?>_1_2"
-                                                                                       name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][1_2]"
-                                                                                       value="<?=$vFGroup['manager1_2']?>">
-                                                                            <?else:?>
-                                                                                <?=$vFGroup['manager1_2']?>
-                                                                            <? endif;?>
-
+                                                                        <?if($list['editable']==1):?>
+                                                                            <input class="w100"
+                                                                                   data-input="manager_faaliat_<?=$eghdam_id?>_<?=$fAId?>_1_2"
+                                                                                   name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][1_2]"
+                                                                                   value="<?=$vFGroup['manager1_2']?>">
                                                                         <?else:?>
                                                                             <?=$vFGroup['manager1_2']?>
-                                                                        <?endif;?>
+                                                                        <? endif;?>
                                                                     </td>
-
                                                                         <td>
-                                                                            <? if($admin_info['admin_id']!=1 ):?>
-                                                                                <?if($vFGroup['group_status'] < 5):?>
-                                                                                    <input class="w100"
-                                                                                           data-input="manager_faaliat_<?=$eghdam_id?>_<?=$fAId?>_1_3"
-                                                                                           name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][1_3]"
-                                                                                           value="<?=$vFGroup['manager1_3']?>">
-                                                                                <?else:?>
-                                                                                    <?=$vFGroup['manager1_3']?>
-                                                                                <? endif;?>
-
+                                                                            <?if( $list['editable']==1):?>
+                                                                                <input class="w100"
+                                                                                       data-input="manager_faaliat_<?=$eghdam_id?>_<?=$fAId?>_1_3"
+                                                                                       name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][1_3]"
+                                                                                       value="<?=$vFGroup['manager1_3']?>">
                                                                             <?else:?>
                                                                                 <?=$vFGroup['manager1_3']?>
-                                                                            <?endif;?>
+                                                                            <? endif;?>
                                                                         </td>
-                                                                <td>
+                                                                        <td>
                                                                         <? if($admin_info['admin_id']==1):?>
                                                                             <span>ارزیاب</span>: <?=substr($vFGroup['max1'],0,5)?><br>
                                                                             <span>مدیر</span>:
-                                                                            <?if($vFGroup['group_status'] < 6):?>
+                                                                            <?if( $list['editable']==1):?>
                                                                                 <input class="w100" name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][max_manager1]" value="<?=$vFGroup['max_manager1']?>">
                                                                             <?else:?>
                                                                                 <?=$vFGroup['max_manager1']?>
@@ -1967,19 +1950,20 @@
                                                                     </td>
                                                                 <?endif;?>
                                                                 <td class="word-wrap">
+
                                                                     <? if($admin_info['parent_id']==0):?>
                                                                         <? if($admin_info['admin_id']==1):?>
                                                                             <span>ارزیاب</span>: <? if($vFGroup['tahlil1']!=''):?> <br>
                                                                             <?=readMore($vFGroup['tahlil1'])?><? endif;?>
                                                                             <span>مدیر</span>:
-                                                                            <?if($vFGroup['group_status'] < 6):?>
+                                                                            <?if($vFGroup['group_status'] < 7 && $list['editable']==1):?>
                                                                                 <textarea   name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][tahlil_manager1]" ><?=$vFGroup['tahlil_manager1']?></textarea>
                                                                             <?else:?>
                                                                                 <?=readMore($vFGroup['tahlil_manager1'])?>
                                                                             <? endif;?>
                                                                         <? else :?>
                                                                             <span>ارزیاب</span>:
-                                                                            <?if($vFGroup['group_status'] < 5):?>
+                                                                            <?if($vFGroup['group_status'] < 5 && $list['editable']==1):?>
                                                                                 <textarea   name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][tahlil1]" ><?=$vFGroup['tahlil1']?></textarea><br>
                                                                             <?else:?>
                                                                                 <?=readMore($vFGroup['tahlil1'])?>
@@ -1989,7 +1973,7 @@
                                                                                 <?=readMore($vFGroup['tahlil_manager1'])?><? endif;?>
                                                                         <? endif;?>
                                                                     <? else:?>
-                                                                        <? if ($vFGroup['group_status'] == 6):?>
+                                                                        <? if ($vFGroup['group_status'] == 7):?>
                                                                             <? if($vFGroup['tahlil_manager1']!=''):?>
                                                                                 <?=readMore($vFGroup['tahlil_manager1'])?>
                                                                             <? endif; ?>
@@ -2014,8 +1998,8 @@
                                                                     <? endif;?></td>
 
                                                                 <? if($admin_info['parent_id']==0):?>
-                                                                    <td><? if($admin_info['admin_id']!=1 ):?>
-                                                                            <?if($vFGroup['group_status'] < 5):?>
+                                                                    <td>
+                                                                            <?if($list['editable']==1):?>
                                                                                 <input class="w100"
                                                                                        data-input="manager_faaliat_<?=$eghdam_id?>_<?=$fAId?>_2_1"
                                                                                        name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][2_1]"
@@ -2025,13 +2009,9 @@
                                                                             <? endif;?>
 
 
-                                                                        <?else:?>
-                                                                            <?=$vFGroup['manager2_1']?>
-                                                                        <?endif;?>
-
                                                                     </td>
-                                                                    <td><? if($admin_info['admin_id']!=1 ):?>
-                                                                            <?if($vFGroup['group_status'] < 5):?>
+                                                                    <td>
+                                                                            <?if( $list['editable']==1):?>
                                                                                 <input class="w100" data-input="manager_faaliat_<?=$eghdam_id?>_<?=$fAId?>_2_2"
                                                                                        name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][2_2]"
                                                                                        value="<?=$vFGroup['manager2_2']?>">
@@ -2039,11 +2019,10 @@
                                                                                 <?=$vFGroup['manager2_2']?>
                                                                             <? endif;?>
 
-                                                                        <?else:?><?=$vFGroup['manager2_2']?><?endif;?>
                                                                     </td>
 
-                                                                    <td><? if($admin_info['admin_id']!=1 ):?>
-                                                                            <?if($vFGroup['group_status'] < 5):?>
+                                                                    <td>
+                                                                            <?if( $list['editable']==1):?>
                                                                                 <input class="w100" data-input="manager_faaliat_<?=$eghdam_id?>_<?=$fAId?>_2_3"
                                                                                        name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][2_3]"
                                                                                        value="<?=$vFGroup['manager2_3']?>">
@@ -2051,14 +2030,13 @@
                                                                                 <?=$vFGroup['manager2_3']?>
                                                                             <? endif;?>
 
-                                                                        <?else:?><?=$vFGroup['manager2_3']?><?endif;?>
 
                                                                     </td>
                                                                     <td>
                                                                         <? if($admin_info['admin_id']==1):?>
                                                                             <span>ارزیاب</span>: <?=substr($vFGroup['max2'],0,5)?><br>
                                                                             <span>مدیر</span>:
-                                                                            <?if($vFGroup['group_status'] < 6):?>
+                                                                            <?if($vFGroup['group_status'] < 7 && $list['editable']==1):?>
                                                                                 <input class="w100" name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][max_manager2]" value="<?=$vFGroup['max_manager2']?>">
                                                                             <?else:?>
                                                                                 <?=$vFGroup['max_manager2']?>
@@ -2079,15 +2057,15 @@
                                                                                 <?=readMore($vFGroup['tahlil2'])?>
                                                                             <? endif;?>
                                                                             <span>مدیر</span>:
-                                                                            <?if($vFGroup['group_status'] < 6):?>
+                                                                            <?if($vFGroup['group_status'] < 7 && $list['editable']==1):?>
                                                                                 <textarea   name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][tahlil_manager2]" ><?=$vFGroup['tahlil_manager2']?></textarea>
                                                                             <?else:?>
-                                                                                <?=readMore($vFGroup['max_manager2'])?>
+                                                                                <?=readMore($vFGroup['tahlil_manager2'])?>
                                                                             <? endif;?>
 
                                                                         <? else :?>
                                                                             <span>ارزیاب</span>:
-                                                                            <?if($vFGroup['group_status'] < 5):?>
+                                                                            <?if($vFGroup['group_status'] < 5 && $list['editable']==1):?>
                                                                                 <textarea   name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][tahlil2]" ><?=$vFGroup['tahlil2']?></textarea><br>
                                                                             <?else:?>
                                                                                 <?=readMore($vFGroup['tahlil2'])?>
@@ -2098,7 +2076,7 @@
                                                                             <? endif;?>
                                                                         <? endif;?>
                                                                     <? else:?>
-                                                                    <? if ($vFGroup['group_status'] == 6):?>
+                                                                    <? if ($vFGroup['group_status'] == 7):?>
                                                                         <? if($vFGroup['tahlil_manager2']!=''):?>
                                                                            <?=readMore($vFGroup['tahlil_manager2'])?><? endif; ?>
                                                                         <? endif; ?>
@@ -2120,8 +2098,8 @@
                                                                         <?if(isset($_GET['dev']))echo "O3-";?><?=substr($vFGroup['O3'],0,5)?>
                                                                     <? endif;?></td>                                                                <? if($admin_info['parent_id']==0):?>
                                                                     <td>
-                                                                        <? if($admin_info['admin_id']!=1 ):?>
-                                                                            <?if($vFGroup['group_status'] < 5):?>
+
+                                                                            <?if( $list['editable']==1):?>
                                                                                 <input class="w100"
                                                                                        data-input="manager_faaliat_<?=$eghdam_id?>_<?=$fAId?>_3_1"
                                                                                        name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][3_1]"
@@ -2130,13 +2108,11 @@
                                                                                 <?=$vFGroup['manager3_1']?>
                                                                             <? endif;?>
 
-                                                                        <?else:?><?=$vFGroup['manager3_1']?><?endif;?>
-
 
                                                                     </td>
                                                                     <td>
-                                                                        <? if($admin_info['admin_id']!=1 ):?>
-                                                                            <?if($vFGroup['group_status'] < 5):?>
+
+                                                                            <?if( $list['editable']==1):?>
                                                                                 <input class="w100"
                                                                                        data-input="manager_faaliat_<?=$eghdam_id?>_<?=$fAId?>_3_2"
                                                                                        name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][3_2]"
@@ -2145,12 +2121,11 @@
                                                                                 <?=$vFGroup['manager3_2']?>
                                                                             <? endif;?>
 
-                                                                        <?else:?><?=$vFGroup['manager3_2']?><?endif;?>
 
                                                                     </td>
                                                                     <td>
-                                                                        <? if($admin_info['admin_id']!=1 ):?>
-                                                                            <?if($vFGroup['group_status'] < 5):?>
+
+                                                                            <?if( $list['editable']==1):?>
                                                                                 <input class="w100"
                                                                                        data-input="manager_faaliat_<?=$eghdam_id?>_<?=$fAId?>_3_3"
                                                                                        name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][3_3]"
@@ -2159,14 +2134,13 @@
                                                                                 <?=$vFGroup['manager3_3']?>
                                                                             <? endif;?>
 
-                                                                        <?else:?><?=$vFGroup['manager3_3']?><?endif;?>
 
                                                                     </td>
                                                                     <td>
                                                                         <? if($admin_info['admin_id']==1):?>
                                                                             <span>ارزیاب</span>: <?=substr($vFGroup['max3'],0,5)?><br>
                                                                             <span>مدیر</span>:
-                                                                            <?if($vFGroup['group_status'] < 6):?>
+                                                                            <?if($vFGroup['group_status'] < 7 && $list['editable']==1):?>
                                                                                 <input class="w100" name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][max_manager3]" value="<?=$vFGroup['max_manager3']?>">
                                                                             <?else:?>
                                                                                 <?=$vFGroup['max_manager3']?>
@@ -2187,7 +2161,7 @@
                                                                                 <?=readMore($vFGroup['tahlil3'])?>
                                                                             <? endif;?>
                                                                             <span>مدیر</span>:
-                                                                            <?if($vFGroup['group_status'] < 6):?>
+                                                                            <?if($vFGroup['group_status'] < 7 && $list['editable']==1):?>
                                                                                 <textarea   name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][tahlil_manager3]" ><?=$vFGroup['tahlil_manager3']?></textarea>
                                                                             <?else:?>
                                                                                 <?=readMore($vFGroup['tahlil_manager3'])?>
@@ -2195,7 +2169,7 @@
 
                                                                         <? else :?>
                                                                             <span>ارزیاب</span>:
-                                                                            <?if($vFGroup['group_status'] < 5):?>
+                                                                            <?if($vFGroup['group_status'] < 5 && $list['editable']==1):?>
                                                                                 <textarea   name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][tahlil3]" ><?=$vFGroup['tahlil3']?></textarea><br>
                                                                             <?else:?>
                                                                                 <?=readMore($vFGroup['tahlil3'])?>
@@ -2206,7 +2180,7 @@
                                                                             <? endif;?>
                                                                         <? endif;?>
                                                                     <? else:?>
-                                                                    <? if ($vFGroup['group_status'] == 6):?>
+                                                                    <? if ($vFGroup['group_status'] == 7):?>
                                                                         <? if($vFGroup['tahlil_manager3']!=''):?>
                                                                             <?=readMore($vFGroup['tahlil_manager3'])?><? endif; ?>
                                                                         <? endif; ?>
@@ -2226,14 +2200,14 @@
                                                                     <? endif;?>
                                                                 </td>
                                                                 <td>
-                                                                        <? if($admin_info['parent_id']==0  || $vFGroup['group_status'] == 6 ):?>
+                                                                        <? if($admin_info['parent_id']==0  || $vFGroup['group_status'] == 7 ):?>
                                                                         <?if(isset($_GET['dev']))echo "O4-";?><?=substr($vFGroup['O4'],0,5)?>
                                                                     <? endif;?>
                                                                 </td>
                                                                 <? if($admin_info['parent_id']==0):?>
 
-                                                                    <td><? if($admin_info['admin_id']!=1 ):?>
-                                                                            <?if($vFGroup['group_status'] < 5):?>
+                                                                    <td>
+                                                                            <?if( $list['editable']==1):?>
                                                                                 <input class="w100"
                                                                                        data-input="manager_faaliat_<?=$eghdam_id?>_<?=$fAId?>_4_1"
                                                                                        name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][4_1]"
@@ -2242,13 +2216,11 @@
                                                                                 <?=$vFGroup['manager4_1']?>
                                                                             <? endif;?>
 
-                                                                        <?else:?>
-                                                                            <?=$vFGroup['manager4_1']?><?endif;?>
 
                                                                     </td>
 
-                                                                    <td><? if($admin_info['admin_id']!=1 ):?>
-                                                                            <?if($vFGroup['group_status'] < 5):?>
+                                                                    <td>
+                                                                            <?if( $list['editable']==1):?>
                                                                                 <input class="w100"
                                                                                        data-input="manager_faaliat_<?=$eghdam_id?>_<?=$fAId?>_4_2"
                                                                                        name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][4_2]"
@@ -2257,13 +2229,11 @@
                                                                                 <?=$vFGroup['manager4_2']?>
                                                                             <? endif;?>
 
-                                                                        <?else:?>
-                                                                            <?=$vFGroup['manager4_2']?><?endif;?>
 
                                                                     </td>
 
-                                                                    <td><? if($admin_info['admin_id']!=1 ):?>
-                                                                            <?if($vFGroup['group_status'] < 5):?>
+                                                                    <td>
+                                                                            <?if( $list['editable']==1):?>
                                                                                 <input class="w100"
                                                                                        data-input="manager_faaliat_<?=$eghdam_id?>_<?=$fAId?>_4_3"
                                                                                        name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][4_3]"
@@ -2272,8 +2242,6 @@
                                                                                 <?=$vFGroup['manager4_3']?>
                                                                             <? endif;?>
 
-                                                                    <?else:?>
-                                                                            <?=$vFGroup['manager4_3']?><?endif;?>
 
                                                                     </td>
 
@@ -2281,7 +2249,7 @@
                                                                         <? if($admin_info['admin_id']==1):?>
                                                                             <span>ارزیاب</span>: <?=substr($vFGroup['max4'],0,5)?><br>
                                                                             <span>مدیر</span>:
-                                                                            <?if($vFGroup['group_status'] < 6):?>
+                                                                            <?if($vFGroup['group_status'] < 7 && $list['editable']==1):?>
                                                                                 <input class="w100" name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][max_manager4]" value="<?=$vFGroup['max_manager4']?>">
                                                                             <?else:?>
                                                                                 <?=$vFGroup['max_manager4']?>
@@ -2301,7 +2269,7 @@
                                                                                 <?=readMore($vFGroup['tahlil4'])?>
                                                                             <? endif;?>
                                                                             <span>مدیر</span>:
-                                                                            <?if($vFGroup['group_status'] < 6):?>
+                                                                            <?if($vFGroup['group_status'] < 7 && $list['editable']==1):?>
                                                                                 <textarea   name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][tahlil_manager4]" ><?=$vFGroup['tahlil_manager4']?></textarea>
                                                                             <?else:?>
                                                                                 <?=readMore($vFGroup['tahlil_manager4'])?>
@@ -2309,7 +2277,7 @@
 
                                                                         <? else :?>
                                                                             <span>ارزیاب</span>:
-                                                                            <?if($vFGroup['group_status'] < 5):?>
+                                                                            <?if($vFGroup['group_status'] < 5 && $list['editable']==1):?>
                                                                                 <textarea   name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][tahlil4]" ><?=$vFGroup['tahlil4']?></textarea><br>
                                                                             <?else:?>
                                                                                 <?=readMore($vFGroup['tahlil4'])?>
@@ -2320,7 +2288,7 @@
                                                                             <? endif;?>
                                                                         <? endif;?>
                                                                     <? else:?>
-                                                                    <? if ($vFGroup['group_status'] == 6):?>
+                                                                    <? if ($vFGroup['group_status'] == 7):?>
                                                                         <? if($vFGroup['tahlil_manager4']!=''):?>
                                                                             <?=readMore($vFGroup['tahlil_manager4'])?><? endif; ?>
                                                                         <? endif; ?>
@@ -2341,10 +2309,12 @@
 
                             </div>
                         </div>
-                        <? if(($admin_info['status'] == 0 || $admin_info['status'] == 1) && $admin_info['parent_id']==0 && $_GET['q'] != ',null,' ): ?>
-                            <button name="submit" class="btn btn-block btn-primary fixed">ثبت موقت</button>
-                            <!--<button name="submit2" class="btn btn-block btn-info">ثبت نهایی</button>-->
-                            <input type="submit" class="btn btn-block btn-info" style="font-size: 20px" name="submit2" onclick="return confirm('جهت ثبت نهایی مطمئن هستید؟')"  value="ثبت نهایی" />
+                        <? if($list['editable'] == 1): ?>
+                            <button name="submit" class="btn  btn-primary fixed pull-right" style="font-size: 20px">ثبت موقت</button>
+                            <input name="submit2" type="submit" class="btn  btn-info pull-left" style="font-size: 20px; margin-right: 50px"  onclick="return confirm('جهت ثبت نهایی مطمئن هستید؟')"  value="ثبت نهایی" />
+                            <? if($admin_info['admin_id'] == 1 ):?>
+                                <button name="submit1" class="btn  btn-warning fixed pull-left" style="font-size: 20px; ">ثبت اولیه</button>
+                            <? endif; ?>
 
                         <? endif;?>
     </form>

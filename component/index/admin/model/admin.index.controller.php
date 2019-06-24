@@ -85,7 +85,7 @@ class adminIndexController
 
         include_once ROOT_DIR.'component/admin/model/admin.model.php';
 
-        $result = admin::getAll()->select('status,admin_id,name,family')->keyBy('admin_id');
+        $result = admin::getAll()->select('status'.STEP_FORM1.' as status,admin_id,name,family')->keyBy('admin_id');
 
         if($admin_info['parent_id'] == 0){
             /** manager , arzyab */
@@ -100,6 +100,7 @@ class adminIndexController
 
 
         $result = $result->getList()['export']['list'];
+
 //        $arr = array();
 //        foreach ($result as $v){
 //            $arr[$v['status']][]['name'] = $v['name'].' '.$v['family'];

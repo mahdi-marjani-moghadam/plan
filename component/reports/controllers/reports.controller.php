@@ -151,7 +151,7 @@ class reportsController
             e.eghdam,e.eghdam_id,e.y,
             f.faaliat,f.faaliat_id,f.vahed_vazn_faaliat,f.x,f.f_v_uni,
             group_list.parent_id as admin_id,
-            aa.name as admin_name,group_list.admin_id as group_id , ag.name as group_name, ag.family as group_family, aa.flag, ag.status as group_status,
+            aa.name as admin_name,group_list.admin_id as group_id , ag.name as group_name, ag.family as group_family, aa.flag, ag.status'.STEP_FORM1.' as group_status,
             fv.faaliat_vazn,
             ev.eghdam_vazn,ev.manager1_1,ev.manager1_2,ev.manager1_3,ev.manager2_1,ev.manager2_2,ev.manager2_3,ev.manager3_1,ev.manager3_2,ev.manager3_3,ev.manager4_1,ev.manager4_2,ev.manager4_3,ev.tarzyab1,ev.tmanager1,ev.tarzyab2,ev.tmanager2,ev.tarzyab3,ev.tmanager3,ev.tarzyab4,ev.tmanager4,
             av.amaliati_vazn,
@@ -344,20 +344,20 @@ class reportsController
             /**
              * O
              */
-            if (STEP_FORM1 == 1 && $row['group_status'] == 6 || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O1'] = $row['admin_percent1'] * $row['max1'] / 100;
+            if (STEP_FORM1 == 1 && $row['group_status'] == 7 || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O1'] = $row['admin_percent1'] * $row['max_manager1'] / 100;
             }
 
-            if (STEP_FORM1 == 2 && $row['group_status'] == 6 || STEP_FORM1 != 2 || $admin_info['parent_id'] == 0) {
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O2'] = $row['admin_percent2'] * $row['max2'] / 100;
+            if (STEP_FORM1 == 2 && $row['group_status'] == 7 || STEP_FORM1 != 2 || $admin_info['parent_id'] == 0) {
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O2'] = $row['admin_percent2'] * $row['max_manager2'] / 100;
             }
 
-            if (STEP_FORM1 == 3 && $row['group_status'] == 6 || STEP_FORM1 != 3 || $admin_info['parent_id'] == 0) {
-                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O3'] = $row['admin_percent3'] * $row['max3'] / 100;
+            if (STEP_FORM1 == 3 && $row['group_status'] == 7 || STEP_FORM1 != 3 || $admin_info['parent_id'] == 0) {
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O3'] = $row['admin_percent3'] * $row['max_manager3'] / 100;
             }
 
-            if(STEP_FORM1 == 4 && $row['group_status'] == 6  || STEP_FORM1 != 4 || $admin_info['parent_id'] == 0) {
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O4'] = $row['admin_percent4'] * $row['max4'] / 100;
+            if(STEP_FORM1 == 4 && $row['group_status'] == 7  || STEP_FORM1 != 4 || $admin_info['parent_id'] == 0) {
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O4'] = $row['admin_percent4'] * $row['max_manager4'] / 100;
             }
             /**
              * AA
@@ -384,25 +384,25 @@ class reportsController
              * A
              */
 
-            if(STEP_FORM1 == 1 && $row['group_status'] == 6  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
+            if(STEP_FORM1 == 1 && $row['group_status'] == 7  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
                 $sumO[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']][$row['admin_id']][1] += $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O1'];
                 $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A1'] =
                     $sumO[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']][$row['admin_id']][1] / $groupCounts;
             }
 
-            if(STEP_FORM1 == 2 && $row['group_status'] == 6  || STEP_FORM1 != 2 || $admin_info['parent_id'] == 0) {
+            if(STEP_FORM1 == 2 && $row['group_status'] == 7  || STEP_FORM1 != 2 || $admin_info['parent_id'] == 0) {
                 $sumO[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']][$row['admin_id']][2] += $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O2'];
                 $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A2'] =
                     $sumO[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']][$row['admin_id']][2] / $groupCounts;
             }
 
-            if(STEP_FORM1 == 3 && $row['group_status'] == 6  || STEP_FORM1 != 3 || $admin_info['parent_id'] == 0) {
+            if(STEP_FORM1 == 3 && $row['group_status'] == 7  || STEP_FORM1 != 3 || $admin_info['parent_id'] == 0) {
                 $sumO[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']][$row['admin_id']][3] += $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O3'];
                 $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A3'] =
                     $sumO[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']][$row['admin_id']][3] / $groupCounts;
             }
 
-            if(STEP_FORM1 == 4 && $row['group_status'] == 6  || STEP_FORM1 != 4 || $admin_info['parent_id'] == 0) {
+            if(STEP_FORM1 == 4 && $row['group_status'] == 7  || STEP_FORM1 != 4 || $admin_info['parent_id'] == 0) {
                 $sumO[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']][$row['admin_id']][4] += $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O4'];
                 $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A4'] =
                     $sumO[$row['kalan_no']][$row['amaliati_no']][$row['eghdam_id']][$row['faaliat_id']][$row['admin_id']][4] / $groupCounts;
@@ -696,27 +696,27 @@ class reportsController
             /**
              * R
              */
-            if(STEP_FORM1 == 1 && $row['group_status'] == 6  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
+            if(STEP_FORM1 == 1 && $row['group_status'] == 7  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
 
                 $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R1'] +=
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O1'] *
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['ZZ'];
             }
 
-            if(STEP_FORM1 == 2 && $row['group_status'] == 6  || STEP_FORM1 != 2 || $admin_info['parent_id'] == 0) {
+            if(STEP_FORM1 == 2 && $row['group_status'] == 7  || STEP_FORM1 != 2 || $admin_info['parent_id'] == 0) {
 
                 $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R2'] +=
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O2'] *
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['ZZ'];
             }
 
-            if(STEP_FORM1 == 3 && $row['group_status'] == 6  || STEP_FORM1 != 3 || $admin_info['parent_id'] == 0) {
+            if(STEP_FORM1 == 3 && $row['group_status'] == 7  || STEP_FORM1 != 3 || $admin_info['parent_id'] == 0) {
                 $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R3'] +=
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O3'] *
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['ZZ'];
             }
 
-            if(STEP_FORM1 == 4 && $row['group_status'] == 6  || STEP_FORM1 != 4 || $admin_info['parent_id'] == 0) {
+            if(STEP_FORM1 == 4 && $row['group_status'] == 7  || STEP_FORM1 != 4 || $admin_info['parent_id'] == 0) {
                 $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R4'] +=
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O4'] *
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['ZZ'];
@@ -745,22 +745,22 @@ class reportsController
                /**
                 * C
                 */
-                if(STEP_FORM1 == 1 && $row['group_status'] == 6  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
+                if(STEP_FORM1 == 1 && $row['group_status'] == 7  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C1'] +=
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A1'] *
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['Z'];
                 }
-                if(STEP_FORM1 == 2 && $row['group_status'] == 6  || STEP_FORM1 != 2 || $admin_info['parent_id'] == 0) {
+                if(STEP_FORM1 == 2 && $row['group_status'] == 7  || STEP_FORM1 != 2 || $admin_info['parent_id'] == 0) {
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C2'] +=
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A2'] *
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['Z'];
                 }
-                if(STEP_FORM1 == 3 && $row['group_status'] == 6  || STEP_FORM1 != 3 || $admin_info['parent_id'] == 0) {
+                if(STEP_FORM1 == 3 && $row['group_status'] == 7  || STEP_FORM1 != 3 || $admin_info['parent_id'] == 0) {
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C3'] +=
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A3'] *
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['Z'];
                 }
-                if(STEP_FORM1 == 4 && $row['group_status'] == 6  || STEP_FORM1 != 4 || $admin_info['parent_id'] == 0) {
+                if(STEP_FORM1 == 4 && $row['group_status'] == 7  || STEP_FORM1 != 4 || $admin_info['parent_id'] == 0) {
                 $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C4'] +=
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['A4'] *
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['Z'];
@@ -915,23 +915,23 @@ class reportsController
                 /**
                  * E
                  */
-                if(STEP_FORM1 == 1 && $row['group_status'] == 6  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
+                if(STEP_FORM1 == 1 && $row['group_status'] == 7  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E1'] +=
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C1'] *
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
                 }
-                if(STEP_FORM1 == 2 && $row['group_status'] == 6  || STEP_FORM1 != 2 || $admin_info['parent_id'] == 0) {
+                if(STEP_FORM1 == 2 && $row['group_status'] == 7  || STEP_FORM1 != 2 || $admin_info['parent_id'] == 0) {
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E2'] +=
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C2'] *
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
                 }
-                if(STEP_FORM1 == 3 && $row['group_status'] == 6  || STEP_FORM1 != 3 || $admin_info['parent_id'] == 0) {
+                if(STEP_FORM1 == 3 && $row['group_status'] == 7  || STEP_FORM1 != 3 || $admin_info['parent_id'] == 0) {
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E3'] +=
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C3'] *
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
 
                 }
-                if(STEP_FORM1 == 4 && $row['group_status'] == 6  || STEP_FORM1 != 4 || $admin_info['parent_id'] == 0) {
+                if(STEP_FORM1 == 4 && $row['group_status'] == 7  || STEP_FORM1 != 4 || $admin_info['parent_id'] == 0) {
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E4'] +=
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['C4'] *
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['M'];
@@ -990,25 +990,25 @@ class reportsController
                 /**
                  * P
                  */
-                if(STEP_FORM1 == 1 && $row['group_status'] == 6  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
+                if(STEP_FORM1 == 1 && $row['group_status'] == 7  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P1'] +=
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R1'] *
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
                 }
 
-                if(STEP_FORM1 == 2 && $row['group_status'] == 6  || STEP_FORM1 != 2 || $admin_info['parent_id'] == 0) {
+                if(STEP_FORM1 == 2 && $row['group_status'] == 7  || STEP_FORM1 != 2 || $admin_info['parent_id'] == 0) {
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P2'] +=
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R2'] *
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
                 }
 
-                if(STEP_FORM1 == 3 && $row['group_status'] == 6  || STEP_FORM1 != 3 || $admin_info['parent_id'] == 0) {
+                if(STEP_FORM1 == 3 && $row['group_status'] == 7  || STEP_FORM1 != 3 || $admin_info['parent_id'] == 0) {
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P3'] +=
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R3'] *
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
                 }
 
-                if(STEP_FORM1 == 4 && $row['group_status'] == 6  || STEP_FORM1 != 4 || $admin_info['parent_id'] == 0) {
+                if(STEP_FORM1 == 4 && $row['group_status'] == 7  || STEP_FORM1 != 4 || $admin_info['parent_id'] == 0) {
                 $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P4'] +=
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['R4'] *
                     $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['MM'];
@@ -1108,22 +1108,22 @@ class reportsController
                 /**
                  * G
                  */
-                if(STEP_FORM1 == 1 && $row['group_status'] == 6  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0){
+                if(STEP_FORM1 == 1 && $row['group_status'] == 7  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0){
                     $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['G1'] +=
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E1'] *
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
                 }
-                if(STEP_FORM1 == 2 && $row['group_status'] == 6  || STEP_FORM1 != 2 || $admin_info['parent_id'] == 0) {
+                if(STEP_FORM1 == 2 && $row['group_status'] == 7  || STEP_FORM1 != 2 || $admin_info['parent_id'] == 0) {
                     $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['G2'] +=
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E2'] *
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
                 }
-                if(STEP_FORM1 == 3 && $row['group_status'] == 6  || STEP_FORM1 != 3 || $admin_info['parent_id'] == 0) {
+                if(STEP_FORM1 == 3 && $row['group_status'] == 7  || STEP_FORM1 != 3 || $admin_info['parent_id'] == 0) {
                     $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['G3'] +=
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E3'] *
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
                 }
-                if(STEP_FORM1 == 4 && $row['group_status'] == 6  || STEP_FORM1 != 4 || $admin_info['parent_id'] == 0) {
+                if(STEP_FORM1 == 4 && $row['group_status'] == 7  || STEP_FORM1 != 4 || $admin_info['parent_id'] == 0) {
                     $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['G4'] +=
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['E4'] *
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['N'];
@@ -1169,23 +1169,23 @@ class reportsController
                 /**
                  * Q
                  */
-                if(STEP_FORM1 == 1 && $row['group_status'] == 6  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
+                if(STEP_FORM1 == 1 && $row['group_status'] == 7  || STEP_FORM1 != 1 || $admin_info['parent_id'] == 0) {
                     $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['Q1'] +=
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P1'] *
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
 
                 }
-                if(STEP_FORM1 == 2 && $row['group_status'] == 6  || STEP_FORM1 != 2 || $admin_info['parent_id'] == 0) {
+                if(STEP_FORM1 == 2 && $row['group_status'] == 7  || STEP_FORM1 != 2 || $admin_info['parent_id'] == 0) {
                     $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['Q2'] +=
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P2'] *
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
                 }
-                if(STEP_FORM1 == 3 && $row['group_status'] == 6  || STEP_FORM1 != 3 || $admin_info['parent_id'] == 0) {
+                if(STEP_FORM1 == 3 && $row['group_status'] == 7  || STEP_FORM1 != 3 || $admin_info['parent_id'] == 0) {
                     $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['Q3'] +=
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P3'] *
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
                 }
-                if(STEP_FORM1 == 4 && $row['group_status'] == 6  || STEP_FORM1 != 4 || $admin_info['parent_id'] == 0) {
+                if(STEP_FORM1 == 4 && $row['group_status'] == 7  || STEP_FORM1 != 4 || $admin_info['parent_id'] == 0) {
                     $export['kalans'][$row['kalan_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['Q4'] +=
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['P4'] *
                         $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['NN'];
@@ -2287,8 +2287,10 @@ WHERE group_list.faaliat_id = $faaliat_id and  group_list.parent_id = {$temp[$id
 
         if($admin_info['group_admin'] == 1 && $admin_info['parent_id'] !=0)
         {
-            /** login by daneshkade get daneshkade and group */
+            /** login by daneshkade get danesdhkae and group */
             $admin->andWhere('parent_id','=',$admin_info['parent_id']);
+
+
 
             /** get tajmi admin*/
             $admin->orWhere('admin_id','=',$admin_info['parent_id']);
@@ -2297,6 +2299,7 @@ WHERE group_list.faaliat_id = $faaliat_id and  group_list.parent_id = {$temp[$id
         {
             /** login by group */
             $admin->andWhere('admin_id','=',$admin_info['admin_id']);
+            
         }
 
         $groups = $admin->getList()['export']['list'];
@@ -2351,7 +2354,7 @@ WHERE group_list.faaliat_id = $faaliat_id and  group_list.parent_id = {$temp[$id
         include_once ROOT_DIR.'component/admin/admin/model/admin.admin.model.php';
         $result = adminadminModel::getAll()
             ->where('parent_id','=',$admin_id)
-            ->andWhere('status','=',2)
+            ->andWhere('status'.STEP_FORM1,'=',2)
             ->andWhere('group_admin','<>',1);
         if($child != ''){
             $result = $result->andWhere('admin_id','=',$child);

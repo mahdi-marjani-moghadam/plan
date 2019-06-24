@@ -646,7 +646,7 @@ class chartController
 
 
 
-        $charts[0]['name'] = 'مقایسه اعداف';
+        $charts[0]['name'] = 'مقایسه اهداف';
         $charts[0]['series'] = json_encode($temp2,JSON_UNESCAPED_UNICODE);
         $charts[0]['categories'] = json_encode($tempCat,JSON_UNESCAPED_UNICODE );
 
@@ -736,6 +736,86 @@ class chartController
         $this->template(compact('charts'));
         die();
     }
+
+
+    public function managerChart2()
+    {
+        $season = $this->_season;
+        $result = $this->_result;
+
+        include_once ROOT_DIR.'component/reports/controllers/reports.controller.php';
+        $reportsController = new reportsController();
+        $report = $reportsController->reportsProcess();
+        $charts = array();
+        foreach ($report['kalans'] as $kalan_no =>$kalan){
+
+            $tempCat = $temp2 = array();
+
+            $temp2 = $this->categoryName($season,$result);
+
+
+            foreach ($kalan['kalans'] as $kalan){
+
+                $tempCat[] =  ($kalan['kalan_name']);
+
+                    if($season >= 1){
+                        if(in_array($result,[1,3])) {
+                            $i = (in_array($result, [3])) ? 0 : 0;
+                            $temp2[$i]['data'][] = (float)substr($admins['HH1'], 0, 5);
+                        }
+                        if(in_array($result,[1,2] )) {
+                            $i = (in_array($result,[2]))?0:1;
+                            $temp2[$i]['data'][] = (float)substr($admins['H1'], 0, 5);
+                        }
+                    }
+                    if($season >= 2){
+                        if(in_array($result,[1,3])){
+                            $i = (in_array($result,[3]))?1:2;
+                            $temp2[$i]['data'][] = (float)substr($admins['HH2'], 0, 5);
+                        }
+                        if(in_array($result,[1,2] )) {
+                            $i = (in_array($result, [2])) ? 1 : 3;
+                            $temp2[$i]['data'][] = (float)substr($admins['H2'], 0, 5);
+                        }
+                    }
+                    if($season >= 3){
+                        if(in_array($result,[1,3])){
+                            $i = (in_array($result,[3]))?2:4;
+                            $temp2[$i]['data'][] = (float)substr($admins['HH3'], 0, 5);
+                        }
+                        if(in_array($result,[1,2] )) {
+                            $i = (in_array($result, [2])) ? 2 : 5;
+                            $temp2[$i]['data'][] = (float)substr($admins['H3'], 0, 5);
+                        }
+                    }
+                    if($season >= 4) {
+                        if(in_array($result,[1,3])){
+                            $i = (in_array($result,[3]))?3:6;
+                            $temp2[$i]['data'][] = (float)substr($admins['HH4'], 0, 5);
+                        }
+                        if(in_array($result,[1,2] )) {
+                            $i = (in_array($result, [2])) ? 3 : 7;
+                            $temp2[$i]['data'][] = (float)substr($admins['H4'], 0, 5);
+                        }
+                    }
+                }
+
+
+
+
+
+        }//next kalan
+        $charts[$kalan_no]['name'] = $kalan['kalan_name'];
+        $charts[$kalan_no]['series'] = json_encode($temp2,JSON_UNESCAPED_UNICODE);
+        $charts[$kalan_no]['categories'] = json_encode($tempCat,JSON_UNESCAPED_UNICODE );
+
+        $this->fileName = 'report.groupandvahed.php';
+        $this->template(compact('charts'));
+        die();
+    }
+
+
+
     public function managerChart1Old()
     {
 

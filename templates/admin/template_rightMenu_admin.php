@@ -14,7 +14,7 @@
             </a>
 
         </li><!--/sidebar-item-->
-        <? if($admin_info['group_admin'] == '1' ):?>
+        <? if($admin_info['group_admin'] == '1'):?>
         <li>
             <a class="Download">
                 <i class="sidebar-icon fa fa-bar-chart"></i>
@@ -26,8 +26,12 @@
                         <span class="sidebar-text text-16">مقایسه در سطح هدف</span>
                     </a>
                 </li><!--/child-item-->
-                <? if($admin_info['parent_id'] != 0):?>
-                    <li>
+                <li>
+                    <a href="<?=RELA_DIR?>admin/?component=chart&action=2&s=<?=STEP_FORM1?>">
+                        <span class="sidebar-text text-16">وضعیت دانشگاه در سطح هدف</span>
+                    </a>
+                </li><!--/child-item-->
+                                    <li>
                         <a href="<?=RELA_DIR?>admin/?component=chart&action=2&s=<?=STEP_FORM1?>">
                             <span class="sidebar-text text-16">مقایسه در سطح اقدام</span>
                         </a>
@@ -42,12 +46,11 @@
                             <span class="sidebar-text text-16">مقایسه اهداف</span>
                         </a>
                     </li>
-                <? endif; ?>
             </ul>
         </li>
         <? endif;?>
 
-        <? if($admin_info['group_admin'] == '0' ):?>
+        <? if($admin_info['group_admin'] == '0' || $admin_info['parent_id'] == '0'):?>
         <li>
             <a class="Download">
                 <i class="sidebar-icon fa fa-bar-chart"></i>
@@ -56,12 +59,12 @@
             <ul class="sidebar-child animated fadeInRight">
                 <li>
                     <a href="<?=RELA_DIR?>admin/?component=chart&action=1&s=<?=STEP_FORM1?>">
-                        <span class="sidebar-text text-16">مقایسه اهداف</span>
+                        <span class="sidebar-text text-16">مقایسه اهداف برای گروه</span>
                     </a>
                 </li>
                 <li>
                     <a href="<?=RELA_DIR?>admin/?component=chart&action=2&s=<?=STEP_FORM1?>">
-                        <span class="sidebar-text text-16">مقایسه اقدامات در سطح هدف</span>
+                        <span class="sidebar-text text-16"> مقایسه اقدامات در سطح هدف در گروه</span>
                     </a>
                 </li><!--/child-item-->
 
