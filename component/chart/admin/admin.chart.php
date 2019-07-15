@@ -35,12 +35,38 @@ if($admin_info['parent_id'] != 0  ){
 
 }else{
     switch ($_GET['action']){
+        case 'g1':
+            $controller->groupChart1();
+            break;
+        case 'g2':
+            $controller->groupChart2();
+            break;
+
+        case 'v1':
+            $controller->vahedChart1();
+            break;
+        case 'v2':
+            $controller->vahedChart2();
+            break;
+        case 'v3':
+            $controller->vahedChart3();
+            break;
+        case 'v4':
+            $controller->vahedChart4();
+            break;
+
         case '1':
             $controller->managerChart1();
             break;
         case '2':
             $controller->managerChart2();
-        break;
+            break;
+        case '3':
+            $controller->managerChart3();
+            break;
+
+
+
     }
 }
 

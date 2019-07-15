@@ -4,17 +4,27 @@
         $('#season').change(function () {
             var season = $(this).val();
 
-            location.href = window.location.origin + '/admin/?component=chart&action=' + <?=$_GET['action']?> + '&s=' + season <?=(isset($_GET['r']))?"+'&r=".$_GET['r']."'":'';?>;
+            location.href = window.location.origin + '/admin/?component=chart&action=<?=$_GET['action']?>&s=' + season <?=(isset($_GET['r']))?"+'&r=".$_GET['r']."'":'';?> <?=(isset($_GET['qq']))?"+'&qq=".$_GET['qq']."'":'';?>;
         });
 
         /** change result event */
         $('#result').change(function () {
             var result = $(this).val();
 
-            location.href = window.location.origin + '/admin/?component=chart&action=' + <?=$_GET['action']?> + '&r=' + result <?=(isset($_GET['s']))?"+'&s=".$_GET['s']."'":'';?>;
+            location.href = window.location.origin + '/admin/?component=chart&action=<?=$_GET['action']?>&r=' + result <?=(isset($_GET['s']))?"+'&s=".$_GET['s']."'":'';?> <?=(isset($_GET['qq']))?"+'&qq=".$_GET['qq']."'":'';?>;
         });
 
+        /** change admin event */
+        $('#admin').change(function () {
 
+            var adminId = ','+$(this).val()+',';
+            if($(this).val() == 0){
+                location.href = window.location.origin + '/admin/?component=chart&action=<?=$_GET['action']?>'  <?=(isset($_GET['s']))?"+'&s=".$_GET['s']."'":'';?> <?=(isset($_GET['r']))?"+'&r=".$_GET['r']."'":'';?>;
+            }
+            else{
+                location.href = window.location.origin + '/admin/?component=chart&action=<?=$_GET['action']?>&qq=' + adminId <?=(isset($_GET['s']))?"+'&s=".$_GET['s']."'":'';?> <?=(isset($_GET['r']))?"+'&r=".$_GET['r']."'":'';?>;
+            }
+        });
 
 
     });
@@ -48,13 +58,24 @@
                 </select>
             </div>
             <div class="col-md-2 col-sm-6 col-xs-12" >
-                <label for="result">دوره :</label>
+                <label for="result">اعلامی / نهایی :</label>
                 <select name="season" id="result" >
                     <option value="1" <?=($_GET['r'] == '1')?'selected':'';?>> همه</option>
                     <option value="2" <?=($_GET['r'] == '2')?'selected':'';?>> نهایی (تایید شده)</option>
                     <option value="3" <?=($_GET['r'] == '3')?'selected':'';?>>خود اظهاری</option>
                 </select>
             </div>
+            <? if($admin_info['parent_id'] == 0):?>
+                <div class="col-md-2 col-sm-6 col-xs-12" >
+                    <label for="result">واحد :</label>
+                    <select id="admin"   >
+                        <option value="0">انتخاب کنید</option>
+                        <? foreach ($list['showAdmin'] as $k => $admins):?>
+                            <option <? if(strpos($_GET['qq'], ','.$admins['admin_id'].',') !== false){ echo 'selected';}?> value="<?=$admins['admin_id']?>"><?=$admins['name'].' '.$admins['family']?></option>
+                        <? endforeach; ?>
+                    </select>
+                </div>
+            <? endif;?>
             <div class="col-md-1 pull-left">
                 <input type='button' class="btn btn-default btn-block pull-left" style="" id='btn' value='Print' onclick='printDiv();'>
                 <style>
@@ -163,7 +184,7 @@
                     tooltip: {
                         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
                         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                        '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
+                        '<td style="padding:0"><b>{point.y:.2f} </b></td></tr>',
                         footerFormat: '</table>',
                         shared: true,
                         useHTML: true

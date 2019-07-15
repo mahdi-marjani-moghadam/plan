@@ -82,8 +82,8 @@
               <?if($admin_info['parent_id'] == 0):?>
                   <option value="5">ارزیاب</option>
                   <option value="6">تایید اولیه</option>
-                  <option value="7">تایید نهایی مرکز ارزیابی</option>
               <? endif;?>
+              <option value="7">تایید نهایی مرکز ارزیابی</option>
           </select>
 
           <div class="admins row">

@@ -14,7 +14,29 @@
             </a>
 
         </li><!--/sidebar-item-->
-        <? if($admin_info['group_admin'] == '1'):?>
+
+
+        <? if($admin_info['group_admin'] == '0'):?>
+            <li>
+                <a class="Download">
+                    <i class="sidebar-icon fa fa-bar-chart"></i>
+                    <span class="sidebar-text">نمودار گروه های آموزشی</span>
+                </a>
+                <ul class="sidebar-child animated fadeInRight">
+                    <li>
+                        <a href="<?=RELA_DIR?>admin/?component=chart&action=1&s=<?=STEP_FORM1?>">
+                            <span class="sidebar-text text-16">مقایسه در سطح هدف</span>
+                        </a>
+                    </li><!--/child-item-->
+                    <li>
+                        <a href="<?=RELA_DIR?>admin/?component=chart&action=2&s=<?=STEP_FORM1?>">
+                            <span class="sidebar-text text-16">وضعیت دانشگاه در سطح هدف</span>
+                        </a>
+                    </li><!--/child-item-->
+                </ul>
+            </li>
+        <? endif;?>
+        <? if($admin_info['group_admin'] == '1' && $admin_info['parent_id'] != 0):?>
         <li>
             <a class="Download">
                 <i class="sidebar-icon fa fa-bar-chart"></i>
@@ -25,74 +47,103 @@
                     <a href="<?=RELA_DIR?>admin/?component=chart&action=1&s=<?=STEP_FORM1?>">
                         <span class="sidebar-text text-16">مقایسه در سطح هدف</span>
                     </a>
-                </li><!--/child-item-->
+                </li>
                 <li>
                     <a href="<?=RELA_DIR?>admin/?component=chart&action=2&s=<?=STEP_FORM1?>">
-                        <span class="sidebar-text text-16">وضعیت دانشگاه در سطح هدف</span>
+                        <span class="sidebar-text text-16">مقایسه در سطح اقدام</span>
                     </a>
                 </li><!--/child-item-->
-                                    <li>
-                        <a href="<?=RELA_DIR?>admin/?component=chart&action=2&s=<?=STEP_FORM1?>">
+                <li>
+                    <a href="<?=RELA_DIR?>admin/?component=chart&action=3&s=<?=STEP_FORM1?>">
+                        <span class="sidebar-text text-16">مقایسه اقدامات در سطح هدف</span>
+                    </a>
+                </li><!--/child-item-->
+                <li>
+                    <a href="<?=RELA_DIR?>admin/?component=chart&action=4&s=<?=STEP_FORM1?>">
+                        <span class="sidebar-text text-16">مقایسه اهداف</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <? endif;?>
+
+        <? if( $admin_info['parent_id'] == '0'):?>
+            <li>
+                <a class="Download">
+                    <i class="sidebar-icon fa fa-bar-chart"></i>
+                    <span class="sidebar-text">نمودار گروه های آموزشی</span>
+                </a>
+                <ul class="sidebar-child animated fadeInRight">
+                    <li>
+                        <a href="<?=RELA_DIR?>admin/?component=chart&action=g1&s=<?=STEP_FORM1?>">
+                            <span class="sidebar-text text-16">مقایسه در سطح هدف</span>
+                        </a>
+                    </li><!--/child-item-->
+                    <li>
+                        <a href="<?=RELA_DIR?>admin/?component=chart&action=g2&s=<?=STEP_FORM1?>">
+                            <span class="sidebar-text text-16">وضعیت دانشگاه در سطح هدف</span>
+                        </a>
+                    </li><!--/child-item-->
+                </ul>
+            </li>
+            <li>
+                <a class="Download">
+                    <i class="sidebar-icon fa fa-bar-chart"></i>
+                    <span class="sidebar-text">نمودار دانشکده و ستاد</span>
+                </a>
+                <ul class="sidebar-child animated fadeInRight">
+                    <li>
+                        <a href="<?=RELA_DIR?>admin/?component=chart&action=v1&s=<?=STEP_FORM1?>">
+                            <span class="sidebar-text text-16">مقایسه در سطح هدف</span>
+                        </a>
+                    </li><!--/child-item-->
+                    <li>
+                        <a href="<?=RELA_DIR?>admin/?component=chart&action=v2&s=<?=STEP_FORM1?>">
                             <span class="sidebar-text text-16">مقایسه در سطح اقدام</span>
                         </a>
                     </li><!--/child-item-->
                     <li>
-                        <a href="<?=RELA_DIR?>admin/?component=chart&action=3&s=<?=STEP_FORM1?>">
+                        <a href="<?=RELA_DIR?>admin/?component=chart&action=v3&s=<?=STEP_FORM1?>">
                             <span class="sidebar-text text-16">مقایسه اقدامات در سطح هدف</span>
                         </a>
                     </li><!--/child-item-->
                     <li>
-                        <a href="<?=RELA_DIR?>admin/?component=chart&action=4&s=<?=STEP_FORM1?>">
+                        <a href="<?=RELA_DIR?>admin/?component=chart&action=v4&s=<?=STEP_FORM1?>">
                             <span class="sidebar-text text-16">مقایسه اهداف</span>
-                        </a>
-                    </li>
-            </ul>
-        </li>
-        <? endif;?>
-
-        <? if($admin_info['group_admin'] == '0' || $admin_info['parent_id'] == '0'):?>
-        <li>
-            <a class="Download">
-                <i class="sidebar-icon fa fa-bar-chart"></i>
-                <span class="sidebar-text">نمودار</span>
-            </a>
-            <ul class="sidebar-child animated fadeInRight">
-                <li>
-                    <a href="<?=RELA_DIR?>admin/?component=chart&action=1&s=<?=STEP_FORM1?>">
-                        <span class="sidebar-text text-16">مقایسه اهداف برای گروه</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="<?=RELA_DIR?>admin/?component=chart&action=2&s=<?=STEP_FORM1?>">
-                        <span class="sidebar-text text-16"> مقایسه اقدامات در سطح هدف در گروه</span>
-                    </a>
-                </li><!--/child-item-->
-
-            </ul>
-        </li>
-        <? endif;?>
-
-
-        <? if($admin_info['flag'] == '100' ):?>
-            <li>
-                <a class="Download">
-                    <i class="sidebar-icon fa fa-bar-chart"></i>
-                    <span class="sidebar-text">نمودار</span>
-                </a>
-                <ul class="sidebar-child animated fadeInRight">
-                    <li>
-                        <a href="<?=RELA_DIR?>admin/?component=Chart&action=1">
-                            <span class="sidebar-text text-16">مقایسه دانشکده ها در سطح هدف</span>
-                        </a>
-                    </li><!--/child-item-->
-                    <li>
-                        <a href="<?=RELA_DIR?>admin/?component=chart&action=">
-                            <span class="sidebar-text text-16">...</span>
                         </a>
                     </li>
                 </ul>
             </li>
+
+            <li>
+                <a class="Download">
+                    <i class="sidebar-icon fa fa-bar-chart"></i>
+                    <span class="sidebar-text">نمودار کل دانشگاه</span>
+                </a>
+                <ul class="sidebar-child animated fadeInRight">
+                    <li>
+                        <a href="<?=RELA_DIR?>admin/?component=chart&action=1&s=<?=STEP_FORM1?>">
+                            <span class="sidebar-text text-16">مقایسه واحدها در سطح هدف</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?=RELA_DIR?>admin/?component=chart&action=2&s=<?=STEP_FORM1?>">
+                            <span class="sidebar-text text-16">وضعیت دانشگاه در سطح هدف کلان</span>
+                        </a>
+                    </li><!--/child-item-->
+                    <li>
+                        <a href="<?=RELA_DIR?>admin/?component=chart&action=3&s=<?=STEP_FORM1?>">
+                            <span class="sidebar-text text-16">میانگین دانشکده ها</span>
+                        </a>
+                    </li><!--/child-item-->
+
+
+                </ul>
+            </li>
         <? endif;?>
+
+
+
 
 
         <li>

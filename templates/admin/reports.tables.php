@@ -376,7 +376,7 @@
                                         <td><?
                                             if($head_admin_info['parent_id'] == 1 ){
                                                 /** tajmi */
-                                                echo substr($eghdam_value['admins'][$head_admin_id]['eghdam_vazn']['CC'.$season],0,5);
+                                                echo substr($eghdam_value['admins'][$head_admin_id]['CC'.$season],0,5);
                                             }
                                             else{
                                                 /**  */
