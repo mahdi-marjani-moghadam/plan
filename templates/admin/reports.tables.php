@@ -40,6 +40,17 @@
         tableCont3.addEventListener('scroll',scrollHandle)
     }
 
+        /** change admin event */
+        $('#admin').change(function () {
+
+            var adminId = ','+$(this).val()+',';
+            if($(this).val() == 0){
+                location.href = window.location.origin + '/admin/?component=reports&action=<?=$_GET['action']?>'  <?=(isset($_GET['s']))?"+'&s=".$_GET['s']."'":'';?> ;
+            }
+            else{
+                location.href = window.location.origin + '/admin/?component=reports&action=<?=$_GET['action']?>&q=' + adminId <?=(isset($_GET['s']))?"+'&s=".$_GET['s']."'":'';?> ;
+            }
+        });
     });
 </script>
 
@@ -74,6 +85,17 @@
                 <option value="STEP_FORM4" <?=($_GET['s'] == 'STEP_FORM4')?'selected':'';?>>یکساله</option>
             </select>
         </div>
+        <? if($admin_info['parent_id'] == 0):?>
+            <div class="col-md-2 col-sm-6 col-xs-12" >
+                <label for="result">واحد :</label>
+                <select id="admin"   >
+                    <option value="0">انتخاب کنید</option>
+                    <? foreach ($list['showAdmin'] as $k => $admins):?>
+                        <option <? if(strpos($_GET['q'], ','.$admins['admin_id'].',') !== false){ echo 'selected';}?> value="<?=$admins['admin_id']?>"><?=$admins['name'].' '.$admins['family']?></option>
+                    <? endforeach; ?>
+                </select>
+            </div>
+        <? endif;?>
         <div class="col-md-1 col-xs-12  pull-left">
             <input type='button' class="btn btn-default btn-block pull-left" style="" id='btn' value='Print' onclick='printDiv();'>
             <style>

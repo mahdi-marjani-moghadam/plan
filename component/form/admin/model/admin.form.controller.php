@@ -500,10 +500,10 @@ class adminFormController
   `group_list`.`id` AS `fid`,
   `group_list`.`faaliat_id`,
   `group_list`.`admin_id`,
-   group_list.admin_percent1 * group_list.max_manager1 as O1,
-   group_list.admin_percent2 * group_list.max_manager2 as O2,
-   group_list.admin_percent3 * group_list.max_manager3 as O3,
-   group_list.admin_percent4 * group_list.max_manager4 as O4,
+   group_list.admin_percent1 * group_list.max_manager1/100 as O1,
+   group_list.admin_percent2 * group_list.max_manager2/100 as O2,
+   group_list.admin_percent3 * group_list.max_manager3/100 as O3,
+   group_list.admin_percent4 * group_list.max_manager4/100 as O4,
    eghdam.eghdam_id,
    eghdam.kalan,
    eghdam.amaliati,
@@ -571,7 +571,7 @@ class adminFormController
                         $st .= "<input  name='menu[$plan_id][1]' type='file'   >";
                     }
                     else{
-                        $st .= 'اعلامی: <br>'.$list['admin_percent1'].'<br> نهایی: ' ." <div data-season='1-{$list['fid']}'>".$list['O1']."</div>";
+                        $st .= 'اعلامی: <br>'.$list['admin_percent1'].'<br> نهایی: ' ." <div data-season='1-{$list['fid']}'>".substr($list['O1'],0,4)."</div>";
                     }
 
 
@@ -632,7 +632,7 @@ class adminFormController
                         $st .= "<input  name='menu[$plan_id][2]' type='file'   >";
                     }
                     else{
-                        $st .= 'اعلامی: <br>'.$list['admin_percent2'].'<br> نهایی: ' ." <div data-season='2-{$list['fid']}'>".$list['O2']."</div>";
+                        $st .= 'اعلامی: <br>'.$list['admin_percent2'].'<br> نهایی: ' ." <div data-season='2-{$list['FGId']}'>".substr($list['O2'],0,4)."</div>";
 
                     }
                     if ($list['admin_file2']){
@@ -692,7 +692,7 @@ class adminFormController
                         $st .= "<input  name='menu[$plan_id][3]' type='file'   >";
                     }
                     else{
-                        $st .= 'اعلامی: <br>'.$list['admin_percent3'].'<br> نهایی: ' ." <div data-season='3-{$list['fid']}'>".$list['O3']."</div>";
+                        $st .= 'اعلامی: <br>'.$list['admin_percent3'].'<br> نهایی: ' ." <div data-season='3-{$list['fid']}'>".substr($list['O3'],0,4)."</div>";
 
                     }
                     if ($list['admin_file3']){
@@ -748,7 +748,7 @@ class adminFormController
                         $st .= "<input  name='menu[$plan_id][4]' type='file'   >";
                     }
                     else{
-                        $st .= 'اعلامی: <br>'.$list['admin_percent4'].'<br> نهایی: ' ." <div data-season='4-{$list['fid']}'>".$list['O4']."</div>";
+                        $st .= 'اعلامی: <br>'.$list['admin_percent4'].'<br> نهایی: ' ." <div data-season='4-{$list['fid']}'>".substr($list['O4'],0,4)."</div>";
                     }
                     if ($list['admin_file4']){
                         $st .="<br>"."<a   class='btn btn-success btn-xs' data-season='4' href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season4/{$list['eghdam_id']}/{$list['admin_file4']}"."'>دانلود فایل</a>";

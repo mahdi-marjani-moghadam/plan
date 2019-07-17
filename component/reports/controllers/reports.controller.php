@@ -357,7 +357,7 @@ class reportsController
             }
 
             if(STEP_FORM1 == 4 && $row['group_status'] == 7  || STEP_FORM1 != 4 || $admin_info['parent_id'] == 0) {
-            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O4'] = $row['admin_percent4'] * $row['max_manager4'] / 100;
+                $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['O4'] = $row['admin_percent4'] * $row['max_manager4'] / 100;
             }
             /**
              * AA
@@ -2265,7 +2265,24 @@ WHERE group_list.faaliat_id = $faaliat_id and  group_list.parent_id = {$temp[$id
     }
 
 
+    private function showAdmin()
+    {
+        global $admin_info;
+        if($admin_info['parent_id'] == 0){
+            include_once ROOT_DIR.'component/admin/model/admin.model.php';
+            $objAdmin = new admin();
+            $result3 = $objAdmin->getAll()
+                ->select('admin_id,name,family');
 
+
+            $result3 = $result3->getList();
+
+            $list['showAdmin'] = $result3['export']['list'];
+            return $list['showAdmin'];
+        }
+        return true;
+
+    }
 
     function showTableReports(){
 
@@ -2273,36 +2290,60 @@ WHERE group_list.faaliat_id = $faaliat_id and  group_list.parent_id = {$temp[$id
 //        echo date('i:s -');
         $reports = $this->reportsProcess()['kalans'];
 
-
-
+        /** filter by q  */
+        $admin_id = $admin_info['admin_id'];
+        $parent_id = $admin_info['parent_id'];
+        $group_admin = $admin_info['group_admin'];
         include_once ROOT_DIR.'component/admin/model/admin.model.php';
+        if($admin_info['parent_id'] == 0){
+
+            $admin = new admin();
+            $admininfo = $admin->getAll()
+                ->select('admin_id,parent_id,group_admin')
+                ->where('admin_id','in',trim($_GET['q'],','))
+                ->getList()['export']['list'][0];
+            $admin_id = $admininfo['admin_id'];
+            $parent_id = $admininfo['parent_id'];
+            $group_admin = $admininfo['group_admin'];
+        }
+
+
         $admin = new admin();
 
-        $admin->getAll()
-            ->select('admin_id,name,family,group_admin,parent_id');
+        $admin->getAll()->select('admin_id,name,family,group_admin,parent_id');
         $admin->keyBy('admin_id');
         $admin->where('parent_id','<>','0');
         $admin->orderBy('groups,flag','asc');
 
 
-        if($admin_info['group_admin'] == 1 && $admin_info['parent_id'] !=0)
+
+        if($group_admin == 1 && $parent_id !=0)
         {
             /** login by daneshkade get danesdhkae and group */
-            $admin->andWhere('parent_id','=',$admin_info['parent_id']);
-
-
+            $admin->andWhere('parent_id','=',$parent_id);
 
             /** get tajmi admin*/
-            $admin->orWhere('admin_id','=',$admin_info['parent_id']);
+            $admin->orWhere('admin_id','=',$parent_id);
         }
         else if($admin_info['group_admin'] != 1 )
         {
             /** login by group */
-            $admin->andWhere('admin_id','=',$admin_info['admin_id']);
+            $admin->andWhere('admin_id','=',$admin_id);
             
         }
 
+        if($admin_info['parent_id']==0 && isset($_GET['q'])){
+            $admin = new admin();
+
+            $admin->getAll()->select('admin_id,name,family,group_admin,parent_id');
+            $admin->keyBy('admin_id');
+            $admin->where('admin_id','=',$admin_id);
+
+        }
+
         $groups = $admin->getList()['export']['list'];
+
+
 
         $rules = array('STEP_FORM1','STEP_FORM2','STEP_FORM3','STEP_FORM4');
         if(in_array($_GET['s'],$rules)){
@@ -2343,8 +2384,10 @@ WHERE group_list.faaliat_id = $faaliat_id and  group_list.parent_id = {$temp[$id
 
 //        print_r_debug($kalanTahlilArray);
 
+        $list['showAdmin'] = $this->showAdmin();
+
         $this->fileName = 'reports.tables.php';
-        $this->template(compact('reports','groups','season','child','kalanTahlilArray'));
+        $this->template(compact('reports','groups','list','season','child','kalanTahlilArray'));
     }
 
 

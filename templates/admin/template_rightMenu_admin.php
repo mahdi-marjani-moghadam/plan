@@ -20,7 +20,7 @@
             <li>
                 <a class="Download">
                     <i class="sidebar-icon fa fa-bar-chart"></i>
-                    <span class="sidebar-text">نمودار گروه های آموزشی</span>
+                    <span class="sidebar-text">نمودار گروه</span>
                 </a>
                 <ul class="sidebar-child animated fadeInRight">
                     <li>
@@ -71,7 +71,7 @@
             <li>
                 <a class="Download">
                     <i class="sidebar-icon fa fa-bar-chart"></i>
-                    <span class="sidebar-text">نمودار گروه های آموزشی</span>
+                    <span class="sidebar-text">نمودار گروه‌ها</span>
                 </a>
                 <ul class="sidebar-child animated fadeInRight">
                     <li>
@@ -118,7 +118,7 @@
             <li>
                 <a class="Download">
                     <i class="sidebar-icon fa fa-bar-chart"></i>
-                    <span class="sidebar-text">نمودار کل دانشگاه</span>
+                    <span class="sidebar-text">نمودار دانشگاه</span>
                 </a>
                 <ul class="sidebar-child animated fadeInRight">
                     <li>

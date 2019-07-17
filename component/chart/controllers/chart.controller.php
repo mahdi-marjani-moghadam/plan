@@ -49,12 +49,12 @@ class chartController
         if($season >= 1) {
             if(in_array($result,[1,3])){
                 $i = (in_array($result,[2]))?0:0;
-                $temp2[$i]['name'] = 'خود اظهاری 1';
+                $temp2[$i]['name'] = 'خود اظهاری سه ماهه';
                 $temp2[$i]['color'] = 'url(#highcharts-default-pattern-3)';
             }
             if(in_array($result,[1,2] )){
                 $i = (in_array($result,[2]))?0:1;
-                $temp2[$i]['name'] = 'نهایی 1';
+                $temp2[$i]['name'] = 'نهایی سه ماهه';
                 $temp2[$i]['color'] = '#654c97';
             }
 
@@ -62,36 +62,36 @@ class chartController
         if($season >= 2){
             if(in_array($result,[1,3])){
                 $i = (in_array($result,[3]))?1:2;
-                $temp2[$i]['name'] = 'خود اظهاری 2';
+                $temp2[$i]['name'] = 'خود اظهاری شش ماهه';
                 $temp2[$i]['color'] = 'url(#highcharts-default-pattern-3)';
             }
             if(in_array($result,[1,2] )) {
                 $i = (in_array($result,[2]))?1:3;
-                $temp2[$i]['name'] = 'نهایی 2';
+                $temp2[$i]['name'] = 'نهایی شش ماهه';
                 $temp2[$i]['color'] = '#654c97';
             }
         }
         if($season >= 3){
             if(in_array($result,[1,3])){
                 $i = (in_array($result,[3]))?2:4;
-                $temp2[$i]['name'] = 'خود اظهاری 3';
+                $temp2[$i]['name'] = 'خود اظهاری نه ماهه';
                 $temp2[$i]['color'] = 'url(#highcharts-default-pattern-3)';
             }
             if(in_array($result,[1,2] )) {
                 $i = (in_array($result,[2]))?2:5;
-                $temp2[$i]['name'] = 'نهایی 3';
+                $temp2[$i]['name'] = 'نهایی نه ماهه';
                 $temp2[$i]['color'] = '#654c97';
             }
         }
         if($season >= 4){
             if(in_array($result,[1,3])){
                 $i = (in_array($result,[3]))?3:6;
-                $temp2[$i]['name'] = 'خود اظهاری 4';
+                $temp2[$i]['name'] = 'خود اظهاری یکساله';
                 $temp2[$i]['color'] = 'url(#highcharts-default-pattern-3)';
             }
             if(in_array($result,[1,2] )) {
                 $i = (in_array($result,[2]))?3:7;
-                $temp2[$i]['name'] = 'نهایی 4';
+                $temp2[$i]['name'] = 'نهایی یکساله';
                 $temp2[$i]['color'] = '#654c97';
             }
         }

@@ -1911,7 +1911,6 @@
                                                                     <? endif;?>
                                                                 </td>
 
-                                                                <td>
                                                                 <td><? if($admin_info['parent_id']==0  || $vFGroup['group_status'] == 7 ):?>
                                                                         <?if(isset($_GET['dev']))echo "O1-";?><?=substr($vFGroup['O1'],0,5)?>
                                                                     <? endif;?>
