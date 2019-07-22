@@ -58,9 +58,9 @@
 
                 if(inputVal < aData){
                     this.setCustomValidity('مقدار وارد شده نباید از درصد نهایی دوره قبل کمتر باشد.');
-                    //$(this).setAttribute('novalidate', true);
-                    console.log(result[1]);
-
+                }
+                else if(inputVal > 100 ){
+                    this.setCustomValidity('مقدار وارد شده نباید از 100 بیشتر باشد.');
                 }
                 else {
                     this.setCustomValidity('');
@@ -79,13 +79,13 @@
 
                 if(inputVal < aData ){
                     this.setCustomValidity('مقدار وارد شده نباید از درصد نهایی دوره قبل کمتر باشد.');
-                    //$(this).setAttribute('novalidate', true);
-                    console.log(result[1]);
 
+                }
+                else if(inputVal > 100 ){
+                    this.setCustomValidity('مقدار وارد شده نباید از 100 بیشتر باشد.');
                 }
                 else {
                     this.setCustomValidity('');
-                    console.log(result[1] + 'clear');
                 }
 
             });

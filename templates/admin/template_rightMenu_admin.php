@@ -20,7 +20,7 @@
             <li>
                 <a class="Download">
                     <i class="sidebar-icon fa fa-bar-chart"></i>
-                    <span class="sidebar-text">نمودار گروه</span>
+                    <span class="sidebar-text">نمودار</span>
                 </a>
                 <ul class="sidebar-child animated fadeInRight">
                     <li>
@@ -30,7 +30,7 @@
                     </li><!--/child-item-->
                     <li>
                         <a href="<?=RELA_DIR?>admin/?component=chart&action=2&s=<?=STEP_FORM1?>">
-                            <span class="sidebar-text text-16">وضعیت دانشگاه در سطح هدف</span>
+                            <span class="sidebar-text text-16">مقایسه اقدامات در سطح هدف</span>
                         </a>
                     </li><!--/child-item-->
                 </ul>
@@ -81,7 +81,7 @@
                     </li><!--/child-item-->
                     <li>
                         <a href="<?=RELA_DIR?>admin/?component=chart&action=g2&s=<?=STEP_FORM1?>">
-                            <span class="sidebar-text text-16">وضعیت دانشگاه در سطح هدف</span>
+                            <span class="sidebar-text text-16">مقایسه اقدامات در سطح هدف</span>
                         </a>
                     </li><!--/child-item-->
                 </ul>

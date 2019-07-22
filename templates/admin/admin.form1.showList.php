@@ -1023,7 +1023,7 @@
                                                                 <?=readMore($vKGroup['kalan_tahlil']($kalan_no,$id)['kalan_tahlil_arzyab1'])?><? endif;?>
                                                             <?endif;?>
                                                         <? else:?>
-                                                            <? if ($vKGroup['group_status'] == 7):?>
+                                                            <? if ($vKGroup['group_status1'] == 7):?>
                                                                 <? if($vKGroup['kalan_tahlil']($kalan_no,$id)['kalan_tahlil_manager1']!=''):?> <br>
                                                                 <?=readMore($vKGroup['kalan_tahlil']($kalan_no,$id)['kalan_tahlil_manager1'])?><? endif;?>
                                                             <? endif; ?>
@@ -1071,7 +1071,7 @@
                                                                 <? endif;?>
                                                             <?endif;?>
                                                         <? else:?>
-                                                            <? if ($vKGroup['group_status'] == 7):?>
+                                                            <? if ($vKGroup['group_status2'] == 7):?>
                                                                 <? if($vKGroup['kalan_tahlil']($kalan_no,$id)['kalan_tahlil_manager2']!=''):?> <br>
                                                                 <?=readMore($vKGroup['kalan_tahlil']($kalan_no,$id)['kalan_tahlil_manager2'])?><? endif;?>
                                                             <? endif; ?>
@@ -1111,7 +1111,7 @@
                                                                 <?=readMore($vKGroup['kalan_tahlil']($kalan_no,$id)['kalan_tahlil_arzyab3'])?><? endif;?>
                                                             <?endif;?>
                                                         <? else:?>
-                                                            <? if ($vKGroup['group_status'] == 7):?>
+                                                            <? if ($vKGroup['group_status3'] == 7):?>
                                                                 <? if($vKGroup['kalan_tahlil']($kalan_no,$id)['kalan_tahlil_manager3']!=''):?> <br>
                                                                 <?=readMore($vKGroup['kalan_tahlil']($kalan_no,$id)['kalan_tahlil_manager3'])?><? endif;?>
                                                             <? endif; ?>
@@ -1150,7 +1150,7 @@
                                                                 <?=readMore($vKGroup['kalan_tahlil']($kalan_no,$id)['kalan_tahlil_arzyab4'])?><? endif;?>
                                                             <?endif;?>
                                                         <? else:?>
-                                                        <? if ($vKGroup['group_status'] == 7):?>
+                                                        <? if ($vKGroup['group_status4'] == 7):?>
                                                             <? if($vKGroup['kalan_tahlil']($kalan_no,$id)['kalan_tahlil_manager4']!=''):?> <br>
                                                             <?=readMore($vKGroup['kalan_tahlil']($kalan_no,$id)['kalan_tahlil_manager4'])?><? endif;?>
                                                         <? endif; ?>
@@ -1985,7 +1985,7 @@
                                                                                 <?=readMore($vFGroup['tahlil_manager1'])?><? endif;?>
                                                                         <? endif;?>
                                                                     <? else:?>
-                                                                        <? if ($vFGroup['group_status'] == 7):?>
+                                                                        <? if ($vFGroup['group_status1'] == 7):?>
                                                                             <? if($vFGroup['tahlil_manager1']!=''):?>
                                                                                 <?=readMore($vFGroup['tahlil_manager1'])?>
                                                                             <? endif; ?>
@@ -2083,7 +2083,7 @@
                                                                             <? endif;?>
                                                                         <? endif;?>
                                                                     <? else:?>
-                                                                    <? if ($vFGroup['group_status'] == 7):?>
+                                                                    <? if ($vFGroup['group_status2'] == 7):?>
                                                                         <? if($vFGroup['tahlil_manager2']!=''):?>
                                                                            <?=readMore($vFGroup['tahlil_manager2'])?><? endif; ?>
                                                                         <? endif; ?>
@@ -2184,7 +2184,7 @@
                                                                             <? endif;?>
                                                                         <? endif;?>
                                                                     <? else:?>
-                                                                    <? if ($vFGroup['group_status'] == 7):?>
+                                                                    <? if ($vFGroup['group_status3'] == 7):?>
                                                                         <? if($vFGroup['tahlil_manager3']!=''):?>
                                                                             <?=readMore($vFGroup['tahlil_manager3'])?><? endif; ?>
                                                                         <? endif; ?>
@@ -2286,7 +2286,7 @@
                                                                             <? endif;?>
                                                                         <? endif;?>
                                                                     <? else:?>
-                                                                    <? if ($vFGroup['group_status'] == 7):?>
+                                                                    <? if ($vFGroup['group_status4'] == 7):?>
                                                                         <? if($vFGroup['tahlil_manager4']!=''):?>
                                                                             <?=readMore($vFGroup['tahlil_manager4'])?><? endif; ?>
                                                                         <? endif; ?>

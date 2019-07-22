@@ -577,7 +577,9 @@ class adminFormController
 
                     if ($list['admin_file1']){
                         $st .= "<br>"."<a class='btn btn-default'  href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season1/{$list['eghdam_id']}/{$list['admin_file1']}"."'>دانلود فایل</a>";
-                        $st .= "<a class='btn btn-danger text-white btn-xs'  href='".RELA_DIR."admin/?component=form&action=deleteFile&s=1&e={$list['eghdam_id']}&f={$list['faaliat_id']}' style='color: red;'>حذف فایل</a>";
+                        if(STEP_FORM1==1 ) {
+                            $st .= "<a class='btn btn-danger text-white btn-xs'  href='" . RELA_DIR . "admin/?component=form&action=deleteFile&s=1&e={$list['eghdam_id']}&f={$list['faaliat_id']}' style='color: red;'>حذف فایل</a>";
+                        }
 
                     }
                 }
@@ -632,12 +634,14 @@ class adminFormController
                         $st .= "<input  name='menu[$plan_id][2]' type='file'   >";
                     }
                     else{
-                        $st .= 'اعلامی: <br>'.$list['admin_percent2'].'<br> نهایی: ' ." <div data-season='2-{$list['FGId']}'>".substr($list['O2'],0,4)."</div>";
+                        $st .= 'اعلامی: <br>'.$list['admin_percent2'].'<br> نهایی: ' ." <div data-season='2-{$list['fid']}'>".substr($list['O2'],0,4)."</div>";
 
                     }
-                    if ($list['admin_file2']){
+                    if ( $list['admin_file2']){
                         $st .="<br>"."<a  class='btn btn-success btn-xs' data-season='2' href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season2/{$list['eghdam_id']}/{$list['admin_file2']}"."'>دانلود فایل</a>";
-                        $st .= "<a class='btn btn-danger text-white btn-xs'  onclick=\" return confirm('آیا میخواهید فایل را حذف نمایید؟');\"     href='".RELA_DIR."admin/?component=form&action=deleteFile&s=2&e={$list['eghdam_id']}&f={$list['faaliat_id']}' style='color: red;'>حذف فایل</a>";
+                        if(STEP_FORM1==2 ){
+                            $st .= "<a class='btn btn-danger text-white btn-xs'  onclick=\" return confirm('آیا میخواهید فایل را حذف نمایید؟');\"     href='".RELA_DIR."admin/?component=form&action=deleteFile&s=2&e={$list['eghdam_id']}&f={$list['faaliat_id']}' style='color: red;'>حذف فایل</a>";
+                        }
                     }
                 }
                 else
@@ -688,16 +692,17 @@ class adminFormController
                     $plan_id = $list['fid'];
                     $st='';
                     if(STEP_FORM1==3 and $list['start_date'] <= date('Y-m-d') and $list['finish_date'] >= date('Y-m-d')) {
-                        $st .= "<input data-season='3-{$list['fid']}' class='form-control ltr percent-input' pattern='^([0-9]|[1-9][0-9]|100)$' title='.درصد پیشرفت وارد شده مجاز نمی باشد' autocomplete='off'  name='menu[$plan_id][3]' type='text'  value='{$list['admin_percent3']}' style='width: 150px'>";
+                        $st .= "<input data-season='3-{$list['fid']}' class='form-control ltr percent-input'  title='.درصد پیشرفت وارد شده نباید از درصد نهایی دوره قبل کوچکتر باشد'  autocomplete='off'  name='menu[$plan_id][3]' type='text'  value='{$list['admin_percent3']}' style='width: 150px'>";
                         $st .= "<input  name='menu[$plan_id][3]' type='file'   >";
                     }
                     else{
                         $st .= 'اعلامی: <br>'.$list['admin_percent3'].'<br> نهایی: ' ." <div data-season='3-{$list['fid']}'>".substr($list['O3'],0,4)."</div>";
-
                     }
                     if ($list['admin_file3']){
                         $st .="<br>"."<a  class='btn btn-success btn-xs' data-season='3' href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season1/{$list['eghdam_id']}/{$list['admin_file3']}"."'>دانلود فایل</a>";
-                        $st .= "<a class='btn btn-danger text-white btn-xs' onclick=\" return confirm('آیا میخواهید فایل را حذف نمایید؟');\"   href='".RELA_DIR."admin/?component=form&action=deleteFile&s=3&e={$list['eghdam_id']}&f={$list['faaliat_id']}' style='color: red;'>حذف فایل</a>";
+                        if(STEP_FORM1==3 ) {
+                            $st .= "<a class='btn btn-danger text-white btn-xs' onclick=\" return confirm('آیا میخواهید فایل را حذف نمایید؟');\"   href='" . RELA_DIR . "admin/?component=form&action=deleteFile&s=3&e={$list['eghdam_id']}&f={$list['faaliat_id']}' style='color: red;'>حذف فایل</a>";
+                        }
                     }
                 }
                 else

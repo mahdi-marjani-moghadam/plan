@@ -294,7 +294,7 @@
                     <div >
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs " role="tablist">
-                            <? foreach ($groups as $head_admin_id => $head_admin_info): if($head_admin_info['parent_id'] == 1  || $head_admin_info['status'.STEP_FORM1]  !=7){ continue; }?>
+                            <? foreach ($groups as $head_admin_id => $head_admin_info): if($head_admin_info['parent_id'] == 1  || $head_admin_info['status'.$season]  !=7){ continue; }?>
                             <li role="presentation" class="pull-right"><a href="#home<?=$head_admin_id?>" aria-controls="home<?=$head_admin_id?>" role="tab" data-toggle="tab">
                                     <?=$head_admin_info['name'].' '.$head_admin_info['family']?>
                                 </a></li>
@@ -306,7 +306,7 @@
 
                             <?  foreach ($groups as $head_admin_id => $head_admin_info):
 
-                                if($head_admin_info['parent_id'] == 1 || $head_admin_info['status'.STEP_FORM1]  !=7 ){ continue; } ?>
+                                if($head_admin_info['parent_id'] == 1 || $head_admin_info['status'.$season]  !=7 ){ continue; } ?>
                                 <?/* if ($vKGroup['group_status'] == 6):*/?>
 
                                 <div role="tabpanel" class="tab-pane fade" id="home<?=$head_admin_id?>">
