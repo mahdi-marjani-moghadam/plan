@@ -31,6 +31,8 @@
 
             </form><!--/#signin-form-->
 
+            <a style="font-weight: bold" target="_blank" href="<?=RELA_DIR?>statics/sample/Portal GuideLine.pdf">دانلود راهنمای سامانه</a>
+
         </div>
     </div>
 </div>

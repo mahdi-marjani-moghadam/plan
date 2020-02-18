@@ -2280,8 +2280,8 @@ WHERE group_list.faaliat_id = $faaliat_id and  group_list.parent_id = {$temp[$id
             include_once ROOT_DIR.'component/admin/model/admin.model.php';
             $objAdmin = new admin();
             $result3 = $objAdmin->getAll()
-                ->select('admin_id,name,family');
-
+                ->select('admin_id,name,family')
+                ->where('parent_id','=',1);
 
             $result3 = $result3->getList();
 
@@ -2304,17 +2304,21 @@ WHERE group_list.faaliat_id = $faaliat_id and  group_list.parent_id = {$temp[$id
         $group_admin = $admin_info['group_admin'];
         include_once ROOT_DIR.'component/admin/model/admin.model.php';
         if($admin_info['parent_id'] == 0){
+            /** login by manager */
 
+            $admin_id = '';
+            $parent_id = trim($_GET['qq'],',');
             $admin = new admin();
-            $admininfo = $admin->getAll()
+            $adminsinfo = $admin->getAll()
                 ->select('admin_id,parent_id,group_admin')
-                ->where('admin_id','in',trim($_GET['q'],','))
-                ->getList()['export']['list'][0];
-            $admin_id = $admininfo['admin_id'];
-            $parent_id = $admininfo['parent_id'];
-            $group_admin = $admininfo['group_admin'];
-        }
+                ->where('parent_id','in',$parent_id)
+                ->getList()['export']['list'];
+            foreach ($adminsinfo as $admininfo){
+                $admin_id    .= $admininfo['admin_id'].',';
+            }
+            $admin_id = trim($admin_id,',').','.$parent_id;
 
+        }
 
         $admin = new admin();
 
@@ -2337,15 +2341,18 @@ WHERE group_list.faaliat_id = $faaliat_id and  group_list.parent_id = {$temp[$id
         {
             /** login by group */
             $admin->andWhere('admin_id','=',$admin_id);
-            
         }
 
-        if($admin_info['parent_id']==0 && isset($_GET['q'])){
+        if($admin_info['parent_id']==0 && isset($_GET['qq'])){
+            /** login by manager */
             $admin = new admin();
 
             $admin->getAll()->select('admin_id,name,family,group_admin,parent_id');
             $admin->keyBy('admin_id');
-            $admin->where('admin_id','=',$admin_id);
+            if(isset($_GET['qq'])){
+                $admin->where('admin_id','in',$admin_id);
+            }
+            $admin->orderBy('groups,flag','asc');
 
         }
 
@@ -2353,6 +2360,7 @@ WHERE group_list.faaliat_id = $faaliat_id and  group_list.parent_id = {$temp[$id
 
 
 
+        /** season */
         $rules = array('STEP_FORM1','STEP_FORM2','STEP_FORM3','STEP_FORM4');
         if(in_array($_GET['s'],$rules)){
             $season = str_replace('STEP_FORM','',handleData($_GET['s']));
@@ -2360,6 +2368,8 @@ WHERE group_list.faaliat_id = $faaliat_id and  group_list.parent_id = {$temp[$id
         else{
             $season = '1';
         }
+
+        /** child for eslah */
         $adminId = '' ;
         if($admin_info['parent_id'] == 0){
             $adminId = 1;
@@ -2370,11 +2380,9 @@ WHERE group_list.faaliat_id = $faaliat_id and  group_list.parent_id = {$temp[$id
 
 
         /** kalan_tahlil */
-//        echo date('i:s -');
         $groupString =  implode(', ', array_map(function ($entry) {
             return $entry['admin_id'];
         }, $groups));
-
 
         include_once ROOT_DIR.'component/kalan_tahlil/model/kalan_tahlil.model.php';
         $kalanTahlil = new kalan_tahlil();
@@ -2388,11 +2396,10 @@ WHERE group_list.faaliat_id = $faaliat_id and  group_list.parent_id = {$temp[$id
             $kalanTahlilArray[$v['group_id']][$v['kalan_no']] = $v['kalan_tahlil_manager'.$season];
         }
 
-//        echo date('i:s -');
-
-//        print_r_debug($kalanTahlilArray);
-
+        /** admins filter */
         $list['showAdmin'] = $this->showAdmin();
+
+
 
         $this->fileName = 'reports.tables.php';
         $this->template(compact('reports','groups','list','season','child','kalanTahlilArray'));
@@ -2451,10 +2458,15 @@ WHERE group_list.faaliat_id = $faaliat_id and  group_list.parent_id = {$temp[$id
         include_once ROOT_DIR.'component/admin/admin/model/admin.admin.model.php';
         $admin = adminadminModel::find($id);
         if($_GET['s']==1){
-            $admin->status = 3;
+            /*$admin->status.STEP_FORM1 = 3;*/
+            $stepForm = 'status'.STEP_FORM1;
+            $admin->$stepForm = 4;
+
         }
         else if($_GET['s']==2){
-            $admin->status = 1;
+            /*$admin->status.STEP_FORM1 = 1;*/
+            $stepForm = 'status'.STEP_FORM1;
+            $admin->$stepForm = 1;
         }
         $admin->save();
 

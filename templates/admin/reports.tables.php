@@ -10,7 +10,7 @@
         $('#level').change(function () {
             var season = $(this).val();
 
-            location.href = window.location.origin + '/admin/?component=reports&s='+season;
+            location.href = window.location.origin + '/admin/?component=reports&s='+season <?=(isset($_GET['qq']))?"+'&qq=".$_GET['qq']."'":'';?>;
         });
 
 
@@ -45,10 +45,10 @@
 
             var adminId = ','+$(this).val()+',';
             if($(this).val() == 0){
-                location.href = window.location.origin + '/admin/?component=reports&action=<?=$_GET['action']?>'  <?=(isset($_GET['s']))?"+'&s=".$_GET['s']."'":'';?> ;
+                location.href = window.location.origin + '/admin/?component=reports'<?=(isset($_GET['s']))?"+'&s=".$_GET['s']."'":'';?> ;
             }
             else{
-                location.href = window.location.origin + '/admin/?component=reports&action=<?=$_GET['action']?>&q=' + adminId <?=(isset($_GET['s']))?"+'&s=".$_GET['s']."'":'';?> ;
+                location.href = window.location.origin + '/admin/?component=reports&qq=' + adminId <?=(isset($_GET['s']))?"+'&s=".$_GET['s']."'":'';?> ;
             }
         });
     });
@@ -88,10 +88,12 @@
         <? if($admin_info['parent_id'] == 0):?>
             <div class="col-md-2 col-sm-6 col-xs-12" >
                 <label for="result">واحد :</label>
-                <select id="admin"   >
+                <select id="admin"  multiple >
                     <option value="0">انتخاب کنید</option>
                     <? foreach ($list['showAdmin'] as $k => $admins):?>
-                        <option <? if(strpos($_GET['q'], ','.$admins['admin_id'].',') !== false){ echo 'selected';}?> value="<?=$admins['admin_id']?>"><?=$admins['name'].' '.$admins['family']?></option>
+                        <option <? if(strpos($_GET['qq'], ','.$admins['admin_id'].',') !== false){ echo 'selected';}?> value="<?=$admins['admin_id']?>">
+                            <?=$admins['name'].' '.$admins['family']?>
+                        </option>
                     <? endforeach; ?>
                 </select>
             </div>

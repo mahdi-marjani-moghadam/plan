@@ -135,6 +135,9 @@
                         <a href="<?=RELA_DIR?>admin/?component=chart&action=3&s=<?=STEP_FORM1?>">
                             <span class="sidebar-text text-16">میانگین دانشکده ها</span>
                         </a>
+                        <a href="<?=RELA_DIR?>admin/?component=chart&action=4&s=<?=STEP_FORM1?>">
+                            <span class="sidebar-text text-16">میانگین ستاد</span>
+                        </a>
                     </li><!--/child-item-->
 
 

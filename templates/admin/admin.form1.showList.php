@@ -1903,7 +1903,7 @@
                                                                 <td><?if(isset($_GET['dev']))echo "OO1-";?><?=substr($vFGroup['OO1'],0,5)?>
                                                                     <? if($vFGroup['admin_file1']):?>
                                                                         <br>
-                                                                        <a target="_blank" href="<?=RELA_DIR?>statics/files/<?=$FGId?>/season1/<?=$eghdam_id?>/<?=$vFGroup['admin_file1']?>">دانلود فایل</a>                                                                    <? endif;?>
+                                                                        <a target="_blank" href="<?=RELA_DIR?>statics/files/<?=$FGId?>/season<?=STEP_FORM1?>/<?=$eghdam_id?>/<?=$vFGroup['admin_file1']?>">دانلود فایل</a>                                                                    <? endif;?>
                                                                 </td>
                                                                 <td class="word-wrap" >
                                                                     <? if($vFGroup['admin_tozihat1']!=''):?>
@@ -2263,7 +2263,7 @@
                                                                 <td class="word-wrap">
                                                                     <? if($admin_info['parent_id']==0):?>
                                                                         <? if($admin_info['admin_id']==1):?>
-                                                                            <span>ارزیاب</span>: <? if($vFGroup['tahlil4']!=''):?> <br>
+                                                                            <span>ارزیاب</span>: <? if($vFGroup['tahlil4']!=''):?>
                                                                                 <?=readMore($vFGroup['tahlil4'])?>
                                                                             <? endif;?>
                                                                             <span>مدیر</span>:
@@ -2276,12 +2276,12 @@
                                                                         <? else :?>
                                                                             <span>ارزیاب</span>:
                                                                             <?if($vFGroup['group_status'] < 5 && $list['editable']==1):?>
-                                                                                <textarea   name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][tahlil4]" ><?=$vFGroup['tahlil4']?></textarea><br>
+                                                                                <textarea   name="manager_group[<?=$FGId?>][<?=$faaliat_id?>][tahlil4]" ><?=$vFGroup['tahlil4']?></textarea>
                                                                             <?else:?>
                                                                                 <?=readMore($vFGroup['tahlil4'])?>
                                                                             <? endif;?>
 
-                                                                            <span>مدیر</span>: <? if($vFGroup['tahlil_manager4']!=''):?> <br>
+                                                                            <span>مدیر</span>: <? if($vFGroup['tahlil_manager4']!=''):?>
                                                                                 <?=readMore($vFGroup['tahlil_manager4'])?>
                                                                             <? endif;?>
                                                                         <? endif;?>

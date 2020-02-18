@@ -18,8 +18,8 @@
 <?}?>
 
     </div>
-    <?if($admin_info['parent_id'] == 0):?>
-        <div class="col-md-2 " >
+    <?if($admin_info['parent_id'] == 0 ):?>
+        <div class="col-md-2 " style="display: none" >
             <div id="overall-visitor" class="panel panel-animated panel-success bg-cloud">
                 <div class="panel-body">
 
@@ -76,7 +76,7 @@
               <option value="0">عدم ورود اطلاعات</option>
               <option value="1">ثبت موقت اطلاعات</option>
               <option value="2">ارسال به مافوق</option>
-              <option value="3">تایید  توسط مافوق</option>
+              <option value="4">تایید  توسط مافوق</option>
               <option value="0,1,2,3">عدم ثبت نهایی اطلاعات</option>
               <option value="4"> ثبت نهایی اطلاعات توسط واحد</option>
               <?if($admin_info['parent_id'] == 0):?>

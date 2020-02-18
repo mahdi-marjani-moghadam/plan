@@ -186,13 +186,13 @@
                 <form action="" method="post" enctype="multipart/form-data">
                     <? if($admin_info['status'.STEP_FORM1] == 2):?>
                         <div class="alert alert-success">
-                            <strong >شما در حال حاضر«منتظر نظر مافوق»هستید. درصورت (تائید مافوق)، دکمه "ثبت نهایی" فعال خواهد شد و در صورت (نیازمند اصلاح) دکمه های "ویرایش/ذخیره" و "ارسال به مافوق" مجددا فعال می گردند. </strong>
+                            <strong >شما در حال حاضر«منتظر نظر مافوق»هستید. در صورت (نیازمند اصلاح) دکمه های "ویرایش/ذخیره" و "ارسال به مافوق" مجددا فعال می گردند. </strong>
                         </div>
                     <? endif;?>
 
-                    <? if($admin_info['status'.STEP_FORM1] == 3):?>
+                    <? if($admin_info['status'.STEP_FORM1] == 4):?>
                         <div class="alert alert-success">
-                            <strong>اطلاعات مورد تائید است. شما میتوانید نسبت به ثبت نهایی اقدام نمائید. </strong>
+                            <strong>اطلاعات وارد شده ثبت نهایی گردید. </strong>
                         </div>
                     <? endif;?>
 
@@ -268,7 +268,7 @@
                         <input type="submit" class="btn btn-success btn-white btn-large" style="font-size: 20px" name="submit1" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')"  value="ارسال به مافوق" />
                     <? endif;?>
 
-                    <? if( $admin_info['status'.STEP_FORM1] == 3 || ($admin_info['group_admin'] == 1 && $admin_info['status'.STEP_FORM1] == 1) && $admin_info['start_date'] <= date('Y-m-d') and $admin_info['finish_date'] >= date('Y-m-d') ): ?>
+                    <? if( /*$admin_info['status'.STEP_FORM1] == 3 ||*/ ($admin_info['group_admin'] == 1 && $admin_info['status'.STEP_FORM1] == 1) && $admin_info['start_date'] <= date('Y-m-d') and $admin_info['finish_date'] >= date('Y-m-d') ): ?>
                         <input type="submit" class="btn btn-success btn-white btn-large " style="font-size: 25px" name="submit2" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد.آیا مطمئن هستید؟')"  value="ثبت نهایی" />
                     <? endif;?>
 

@@ -1198,7 +1198,7 @@ class chartController
                 }
             }//next amaliati
         }//next kalan
-        $charts[1]['name'] = 'میانگین دانشکده ها به تفکیک هدف کلان';
+        $charts[1]['name'] = 'میانگین دانشکده ها به تفکیک هدف عملیاتی';
         $charts[1]['series'] = json_encode($temp2,JSON_UNESCAPED_UNICODE);
         $charts[1]['categories'] = json_encode($tempCat,JSON_UNESCAPED_UNICODE );
 
@@ -1206,6 +1206,187 @@ class chartController
         $this->template(compact('charts'));
         die();
     }
+
+
+    public function managerChart4()
+    {
+        $season = $this->_season;
+        $result = $this->_result;
+
+        include_once ROOT_DIR.'component/admin/model/admin.model.php';
+        $admins = new admin();
+        $adminList = $admins->getAll()->select('admin_id')->where('flag','=','13')->getList()['export']['list'];
+        $adminList = array_map(function($a) {  return $a['admin_id']; }, $adminList);
+        $setad = $adminList;
+
+        include_once ROOT_DIR.'component/reports/controllers/reports.controller.php';
+        $reportsController = new reportsController();
+        $report = $reportsController->reportsProcess();
+        $charts = array();
+        $tempCat = $temp2 = array();
+        $sumG1 = $sumGG1 = $sumG2 = $sumGG2 = $sumG3 = $sumGG3 = $sumG4 = $sumGG4 = array();
+
+        $avgG1 = $avgGG1 = $avgG2 = $avgGG2 = $avgG3 = $avgGG3 = $avgG4 = $avgGG4 = array();
+        $avgE1 = $avgEE1 = $avgE2 = $avgEE2 = $avgE3 = $avgEE3 = $avgE4 = $avgEE4 = array();
+        $temp2 = $this->categoryName($season,$result);
+        foreach ($report['kalans'] as $kalan_no =>$kalan){
+
+            $tempCat[] =  ($kalan['kalan_name']);
+
+            foreach ($kalan['admins'] as $admin_id =>$admin){
+
+                if(!in_array($admin_id,$setad)){
+                    continue;
+                }
+                $sumG1[$kalan_no] += $admin['G1']*$admin['kalan_vazn_avg'];
+                $sumGG1[$kalan_no] += $admin['GG1'];
+                $sumG2[$kalan_no] += $admin['G2'];
+                $sumGG2[$kalan_no] += $admin['GG2'];
+                $sumG3[$kalan_no] += $admin['G3'];
+                $sumGG3[$kalan_no] += $admin['GG3'];
+                $sumG4[$kalan_no] += $admin['G4'];
+                $sumGG4[$kalan_no] += $admin['GG4'];
+
+
+
+            }//next admin
+
+
+            if($season >= 1){
+                if(in_array($result,[1,3])) {
+                    $i = (in_array($result, [3])) ? 0 : 0;
+                    $temp2[$i]['data'][] = (float)substr($avgGG1[$kalan_no], 0, 5);
+                }
+                if(in_array($result,[1,2] )) {
+                    $i = (in_array($result,[2]))?0:1;
+                    $temp2[$i]['data'][] = (float)substr($avgG1[$kalan_no], 0, 5);
+                }
+            }
+            if($season >= 2){
+                if(in_array($result,[1,3])){
+                    $i = (in_array($result,[3]))?1:2;
+                    $temp2[$i]['data'][] = (float)substr($avgGG2[$kalan_no], 0, 5);
+                }
+                if(in_array($result,[1,2] )) {
+                    $i = (in_array($result, [2])) ? 1 : 3;
+                    $temp2[$i]['data'][] = (float)substr($avgG2[$kalan_no], 0, 5);
+                }
+            }
+
+            if($season >= 3){
+                if(in_array($result,[1,3])){
+                    $i = (in_array($result,[3]))?2:4;
+                    $temp2[$i]['data'][] = (float)substr($avgGG3[$kalan_no], 0, 5);
+                }
+                if(in_array($result,[1,2] )) {
+                    $i = (in_array($result, [2])) ? 2 : 5;
+                    $temp2[$i]['data'][] = (float)substr($avgG3[$kalan_no], 0, 5);
+                }
+            }
+            if($season >= 4) {
+                if(in_array($result,[1,3])){
+                    $i = (in_array($result,[3]))?3:6;
+                    $temp2[$i]['data'][] = (float)substr($avgGG4[$kalan_no], 0, 5);
+                }
+                if(in_array($result,[1,2] )) {
+                    $i = (in_array($result, [2])) ? 3 : 7;
+                    $temp2[$i]['data'][] = (float)substr($avgG4[$kalan_no], 0, 5);
+                }
+            }
+
+        }//next kalan
+
+
+
+
+
+        $charts[0]['name'] = 'میانگین ستاد به تفکیک هدف کلان';
+        $charts[0]['series'] = json_encode($temp2,JSON_UNESCAPED_UNICODE);
+        $charts[0]['categories'] = json_encode($tempCat,JSON_UNESCAPED_UNICODE );
+
+
+
+        $tempCat = $temp2 = array();
+
+        $temp2 = $this->categoryName($season,$result);
+
+        foreach ($report['kalans'] as $kalan_no =>$kalan) {
+
+            foreach ($kalan['amaliatis'] as $amaliati_no => $amaliati) {
+
+                $tempCat[] = ($amaliati['amaliati_name']);
+                $sumE1 = $sumEE1 = $sumE2 = $sumEE2 = $sumE3 = $sumEE3 = $sumE4 = $sumEE4 = array();
+                foreach ($amaliati['admins'] as $admin_id =>$admin){
+                    if(!in_array($admin_id,$setad)){
+                        continue;
+                    }
+                    $sumE1[$kalan_no] += $admin['E1']*$admin['amaliati_vazn_avg'];
+                    $sumEE1[$kalan_no] += $admin['EE1'];
+                    $sumE2[$kalan_no] += $admin['E2'];
+                    $sumEE2[$kalan_no] += $admin['EE2'];
+                    $sumE3[$kalan_no] += $admin['E3'];
+                    $sumEE3[$kalan_no] += $admin['EE3'];
+                    $sumE4[$kalan_no] += $admin['E4'];
+                    $sumEE4[$kalan_no] += $admin['EE4'];
+
+                }//next admin
+
+                if($season >= 1){
+                    if(in_array($result,[1,3])) {
+                        $i = (in_array($result, [3])) ? 0 : 0;
+                        $temp2[$i]['data'][] = (float)substr($avgEE1[$kalan_no], 0, 5);
+                    }
+                    if(in_array($result,[1,2] )) {
+                        $i = (in_array($result,[2]))?0:1;
+                        $temp2[$i]['data'][] = (float)substr($avgE1[$kalan_no], 0, 5);
+                    }
+                }
+                if($season >= 2){
+                    if(in_array($result,[1,3])){
+                        $i = (in_array($result,[3]))?1:2;
+                        $temp2[$i]['data'][] = (float)substr($avgEE2[$kalan_no], 0, 5);
+                    }
+                    if(in_array($result,[1,2] )) {
+                        $i = (in_array($result, [2])) ? 1 : 3;
+                        $temp2[$i]['data'][] = (float)substr($avgE2[$kalan_no], 0, 5);
+                    }
+                }
+
+                if($season >= 3){
+                    if(in_array($result,[1,3])){
+                        $i = (in_array($result,[3]))?2:4;
+                        $temp2[$i]['data'][] = (float)substr($avgEE3[$kalan_no], 0, 5);
+                    }
+                    if(in_array($result,[1,2] )) {
+                        $i = (in_array($result, [2])) ? 2 : 5;
+                        $temp2[$i]['data'][] = (float)substr($avgE3[$kalan_no], 0, 5);
+                    }
+                }
+                if($season >= 4) {
+                    if(in_array($result,[1,3])){
+                        $i = (in_array($result,[3]))?3:6;
+                        $temp2[$i]['data'][] = (float)substr($avgEE4[$kalan_no], 0, 5);
+                    }
+                    if(in_array($result,[1,2] )) {
+                        $i = (in_array($result, [2])) ? 3 : 7;
+                        $temp2[$i]['data'][] = (float)substr($avgE4[$kalan_no], 0, 5);
+                    }
+                }
+            }//next amaliati
+        }//next kalan
+        $charts[1]['name'] = 'میانگین ستاد به تفکیک هدف عملیاتی';
+        $charts[1]['series'] = json_encode($temp2,JSON_UNESCAPED_UNICODE);
+        $charts[1]['categories'] = json_encode($tempCat,JSON_UNESCAPED_UNICODE );
+
+        $this->fileName = 'report.managerChart2.php'; /*؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟*/
+        $this->template(compact('charts'));
+        die();
+    }
+
+
+
+
+
 
 
     public function managerChart1Old()

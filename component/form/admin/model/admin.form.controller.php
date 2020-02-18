@@ -699,9 +699,10 @@ class adminFormController
                         $st .= 'اعلامی: <br>'.$list['admin_percent3'].'<br> نهایی: ' ." <div data-season='3-{$list['fid']}'>".substr($list['O3'],0,4)."</div>";
                     }
                     if ($list['admin_file3']){
-                        $st .="<br>"."<a  class='btn btn-success btn-xs' data-season='3' href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season1/{$list['eghdam_id']}/{$list['admin_file3']}"."'>دانلود فایل</a>";
+                        $st .="<br>"."<a  class='btn btn-success btn-xs' data-season='3' href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season3/{$list['eghdam_id']}/{$list['admin_file3']}"."'>دانلود فایل</a>";
                         if(STEP_FORM1==3 ) {
                             $st .= "<a class='btn btn-danger text-white btn-xs' onclick=\" return confirm('آیا میخواهید فایل را حذف نمایید؟');\"   href='" . RELA_DIR . "admin/?component=form&action=deleteFile&s=3&e={$list['eghdam_id']}&f={$list['faaliat_id']}' style='color: red;'>حذف فایل</a>";
+
                         }
                     }
                 }
@@ -709,7 +710,8 @@ class adminFormController
                 {
                     $st =$list['admin_percent3'];
                     if ($list['admin_file3']){
-                        $st .="<a href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season1/{$list['eghdam_id']}/{$list['admin_file3']}"."'>دانلود فایل</a>";
+                        $st .="<a href='".RELA_DIR."statics/files/{$admin_info['admin_id']}/season3/{$list['eghdam_id']}/{$list['admin_file3']}"."'>دانلود فایل</a>";
+
                     }
                 }
                 return $st;
@@ -776,7 +778,6 @@ class adminFormController
             'formatter' => function ($list) {
                 global $admin_info;
                 $status = $list['status'];
-
                 if($status == 0 || ($status == 1)  )
                 {
                     $plan_id = $list['fid'];
