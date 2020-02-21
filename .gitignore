@@ -9,5 +9,9 @@
 
 .idea/vcs.xml
 
+.idea
+
+server.inc.php
+
 .git
 
