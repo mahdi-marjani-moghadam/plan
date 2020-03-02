@@ -44,11 +44,18 @@ class shakhesController
         include ROOT_DIR . "component/shakhes/model/shakhes.model.php";
 
         $obj = new shakhes();
+        $query = 'select g.ghalam_id , r_k_s.kalan_no , g.ghalam   from sh_ghalam g
+        left join sh_rel_ghalam_shakhes r_g_s on g.ghalam_id = r_g_s.ghalam_id
+        left join sh_rel_kalan_shakhes r_k_s on r_g_s.shakhes_id = r_k_s.shakhes_id';
+        $res = $obj->query($query)->getList();
 
-        print_r_debug($obj);
+        $ghalam = ($res['export']['recordsCount'] > 0)?  $res['export']['list'] : array();
+
+
+        
 
         $this->fileName = 'shakhes.showList.php';
-        $this->template(compact('charts','list'));
+        $this->template(compact('charts','list','ghalam'));
         die();
     }
 }

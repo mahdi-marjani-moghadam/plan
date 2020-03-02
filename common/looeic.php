@@ -35,7 +35,7 @@ class looeic extends DB
     private $selectFields;
     private $select;
     private $finalQuery = '0';
-    private $config ='';
+    private $config = '';
 
 
     public function hasOne($model, $key, $local_key, $component)
@@ -63,7 +63,6 @@ class looeic extends DB
         $this->relation[$model] = $model::$funcName($val);
 
         return $this->relation[$model];
-
     }
 
     public function belongTo($model, $key, $local_key, $component)
@@ -82,7 +81,6 @@ class looeic extends DB
 
 
         return $this->relation[$model];
-
     }
 
     public function hasLeft($model, $key, $component)
@@ -115,17 +113,14 @@ class looeic extends DB
         $this->relation[$model] = $model::$funcName($val);
 
         return $this->relation[$model];
-
     }
 
     public function __construct($fields = '')
     {
 
-        $conf=looeicConfig;
-        if($conf=='api')
-        {
+        $conf = looeicConfig;
+        if ($conf == 'api') {
             $this->config = looeicConfig::getConfig();
-
         }
         $input = func_get_args();
 
@@ -190,11 +185,9 @@ class looeic extends DB
             $result['result'] = '-1';
         } else {
             $result['result'] = '1';
-
         }
 
         return $result;
-
     }
 
     function getErr()
@@ -225,7 +218,6 @@ class looeic extends DB
         $obj->finalQuery = 1;
 
         return $obj;
-
     }
 
     /////////////
@@ -273,7 +265,6 @@ class looeic extends DB
 
         //$temp_object=$this->extendClass::find($conn->lastInsertId());
         return $temp_object;
-
     }
 
 
@@ -285,18 +276,17 @@ class looeic extends DB
         }
 
         return $this;
-
     }
-    public function appendRelation($field,$internal)
+    public function appendRelation($field, $internal)
     {
-        $this->_appendRelation['external']=$field;
-        $this->_appendRelation['internal']=$internal;
+        $this->_appendRelation['external'] = $field;
+        $this->_appendRelation['internal'] = $internal;
         return $this;
     }
-    public function append($field,$internal)
+    public function append($field, $internal)
     {
-        $this->_appendRelationAll['external']=$field;
-        $this->_appendRelationAll['internal']=$internal;
+        $this->_appendRelationAll['external'] = $field;
+        $this->_appendRelationAll['internal'] = $internal;
         return $this;
     }
     private function get_object_or_list_api($object = 1, $key)
@@ -306,16 +296,13 @@ class looeic extends DB
 
         if (strlen($this->sql) < 1) {
             $this->sql = $this->build();
-        }else
-        {
-            if(isset ($this->PageConfig['perPage']))
-            {
+        } else {
+            if (isset($this->PageConfig['perPage'])) {
                 $statement = array();
                 $this->_buildLimit($statement);
-                $limitPage= implode(' ', $statement);
-                $this->sql = $this->sql.$limitPage;
+                $limitPage = implode(' ', $statement);
+                $this->sql = $this->sql . $limitPage;
             }
-
         }
         if (strlen($this->sql) < 1) {
             $result['result'] = -1;
@@ -339,8 +326,7 @@ class looeic extends DB
         }
         $result['result'] = 1;
 
-        if(isset ($this->PageConfig['perPage']))
-        {
+        if (isset($this->PageConfig['perPage'])) {
 
             $sql = " SELECT FOUND_ROWS() as recCount ";
 
@@ -348,17 +334,15 @@ class looeic extends DB
             $stmTp->setFetchMode(PDO::FETCH_ASSOC);
             $stmTp->execute();
             $rowP = $stmTp->fetch();
-            $result['recordsCount'] = (int)$rowP['recCount'];
+            $result['recordsCount'] = (int) $rowP['recCount'];
 
-            $result['meta']['total'] = (int)$rowP['recCount'];
+            $result['meta']['total'] = (int) $rowP['recCount'];
             $result['meta']['current_page'] = $this->PageConfig['currentPage'];
             $result['meta']['per_page'] = $this->PageConfig['perPage'];
-            $result['meta']['from'] = $this->PageConfig['start']+1;
+            $result['meta']['from'] = $this->PageConfig['start'] + 1;
             $result['meta']['to'] = $this->PageConfig['end'];
-            if($result['meta']['to'] > $result['meta']['total'])
-            {
+            if ($result['meta']['to'] > $result['meta']['total']) {
                 $result['meta']['to'] = $result['meta']['total'];
-
             }
             //$result['export']['paginate']['count_buttom']=10;
 
@@ -368,8 +352,7 @@ class looeic extends DB
                  $result['export']['paginate']['per_page']);*/
 
 
-            if($this->PageConfig['link']===1)
-            {
+            if ($this->PageConfig['link'] === 1) {
                 //$temp=$this->links($result['export']['paginate']);
                 //$result['export']['links']=
 
@@ -381,12 +364,8 @@ class looeic extends DB
                 $countButtom = 10,$result['export']['paginate']['per_page']);
 
             $result['export']['link']=$r['export']['list'];*/
-
-
-        }else
-        {
+        } else {
             $result['recordsCount'] = $stmt->rowCount();
-
         }
         $key = '';
         if ($this->keyBy != '') {
@@ -396,7 +375,6 @@ class looeic extends DB
             } else {
                 $key = $this->keyBy;
             }
-
         }
 
         if ($object == 1) {
@@ -418,52 +396,43 @@ class looeic extends DB
                         $result['data'][$temp_object->$key][] = clone ($temp_object);
                     } else {
                         $result['data'][$temp_object->$key] = clone ($temp_object);
-
                     }
                 } else {
                     $result['data'][] = clone ($temp_object);
                 }
             }
-
         } else {
             while ($row = $stmt->fetch()) {
 
-                if($this->_appendRelationAll!='') {
+                if ($this->_appendRelationAll != '') {
 
-                    $row=$this->_appendRelationAll['external']['formatter']($row,$this->_appendRelationAll['internal']);
+                    $row = $this->_appendRelationAll['external']['formatter']($row, $this->_appendRelationAll['internal']);
                 }
 
-                if($this->_appendRelation!='')
-                {
+                if ($this->_appendRelation != '') {
 
-                    foreach ($this->_appendRelation['external'] as $appendKey =>$func)
-                    {
-                        $row[$appendKey]=$this->_appendRelation['external'][$appendKey]['formatter']($row,$this->_appendRelation['internal']);
+                    foreach ($this->_appendRelation['external'] as $appendKey => $func) {
+                        $row[$appendKey] = $this->_appendRelation['external'][$appendKey]['formatter']($row, $this->_appendRelation['internal']);
                     }
-
                 }
 
                 if ($key != '') {
                     if ($this->overWrite == 0) {
                         $result['data'][$row[$key]][] = $row;
-
                     } else {
                         $result['data'][$row[$key]] = $row;
-
                     }
                 } else {
                     $result['data'][] = $row;
                 }
-
             }
         }
 
         // print_r_debug($result);
         return $result;
-
     }
 
-    private function get_object_or_list($object = 1, $key='')
+    private function get_object_or_list($object = 1, $key = '')
     {
 
         if (strlen($this->sql) < 1) {
@@ -478,7 +447,7 @@ class looeic extends DB
         }
         $conn = dbConn::getConnection();
 
-//        print_r($this->sql);
+        //        print_r($this->sql);
 
 
         $stmt = $conn->prepare($this->sql);
@@ -492,8 +461,7 @@ class looeic extends DB
             return $result;
         }
 
-        if(isset ($this->PageConfig['perPage']))
-        {
+        if (isset($this->PageConfig['perPage'])) {
 
             $sql = " SELECT FOUND_ROWS() as recCount ";
 
@@ -504,7 +472,7 @@ class looeic extends DB
             $result['export']['meta']['total'] = $rowP['recCount'];
             $result['export']['meta']['current_page'] = $this->PageConfig['currentPage'];
             $result['export']['meta']['per_page'] = $this->PageConfig['perPage'];
-            $result['export']['meta']['from'] = $this->PageConfig['start']+1;
+            $result['export']['meta']['from'] = $this->PageConfig['start'] + 1;
             $result['export']['meta']['to'] = $this->PageConfig['end'];
             //$result['export']['paginate']['count_buttom']=10;
 
@@ -514,8 +482,7 @@ class looeic extends DB
                  $result['export']['paginate']['per_page']);*/
 
 
-            if($this->PageConfig['link']===1)
-            {
+            if ($this->PageConfig['link'] === 1) {
                 //$temp=$this->links($result['export']['paginate']);
                 //$result['export']['links']=
 
@@ -527,8 +494,6 @@ class looeic extends DB
                 $countButtom = 10,$result['export']['paginate']['per_page']);
 
             $result['export']['link']=$r['export']['list'];*/
-
-
         }
         $result['export']['recordsCount'] = $stmt->rowCount();
         $key = '';
@@ -539,7 +504,6 @@ class looeic extends DB
             } else {
                 $key = $this->keyBy;
             }
-
         }
         if ($object == 1) {
 
@@ -560,28 +524,23 @@ class looeic extends DB
                         $result['export']['list'][$temp_object->$key][] = clone ($temp_object);
                     } else {
                         $result['export']['list'][$temp_object->$key] = clone ($temp_object);
-
                     }
                 } else {
                     $result['export']['list'][] = clone ($temp_object);
                 }
             }
-
         } else {
             while ($row = $stmt->fetch()) {
 
                 if ($key != '') {
                     if ($this->overWrite == 0) {
                         $result['export']['list'][$row[$key]][] = $row;
-
                     } else {
                         $result['export']['list'][$row[$key]] = $row;
-
                     }
                 } else {
                     $result['export']['list'][] = $row;
                 }
-
             }
         }
 
@@ -589,15 +548,14 @@ class looeic extends DB
 
         //print_r_debug($r);
         return $result;
-
     }
     function links($config)
     {
 
 
-        $recordCount=$config['total'];
-        $pageSize=$config['per_page'];
-        $countButtom=$config['count_buttom'];
+        $recordCount = $config['total'];
+        $pageSize = $config['per_page'];
+        $countButtom = $config['count_buttom'];
 
         //$result['export']['paginate']['current_page'] = $this->PageConfig['currentPage'];
 
@@ -694,7 +652,7 @@ class looeic extends DB
     }
 
 
-    public function get($key='')
+    public function get($key = '')
     {
 
         /*if ( strlen($this->sql) < 1 ) {
@@ -720,12 +678,10 @@ class looeic extends DB
         //$this->appendFields();
 
 
-        if($this->config['export_type']=='api')
-        {
+        if ($this->config['export_type'] == 'api') {
             return $this->get_object_or_list_api(0, $key);
         }
         return $this->get_object_or_list(0, $key);
-
     }
 
 
@@ -735,15 +691,12 @@ class looeic extends DB
         if ($this->finalQuery == '0') {
             if ($concat == 1) {
                 $this->sql = " SELECT Group_Concat( " . $this->PRI_KEY . ") AS ALL_IDS " . $this->sql;
-
             } else {
 
                 $this->selectFields = " * ";
                 $this->sql = " SELECT " . $this->selectFields . $this->sql;
             }
         }
-
-
     }
 
     public function getPriKey()
@@ -769,7 +722,6 @@ class looeic extends DB
         //$obj->_useWhere=1;
 
         return $obj;
-
     }
 
     private function getbyModel($name, $arguments)
@@ -807,7 +759,6 @@ class looeic extends DB
 
                 if (strlen($operatorName > 0)) {
                     $funcName = str_replace('_', '', $matches[0][$key]) . 'Where';
-
                 } else {
 
                     $funcName = 'Where';
@@ -833,17 +784,13 @@ class looeic extends DB
                 $operator = trim($operator);
 
                 $this->$funcName($sqlFields, $operator, $arguments[$key]);
-
             }
-
-
         }
         $this->getFieldsName();
         //$sql = " FROM " . $this->TABLE_NAME . " WHERE " . $appendSql . " ";
         //$this->sql = $sql;
 
         return $this;
-
     }
 
     static private function getby($name, $arguments)
@@ -887,8 +834,6 @@ class looeic extends DB
                 }
             }
         }
-
-
     }
 
     private function checkMysqlValue($value)
@@ -902,7 +847,6 @@ class looeic extends DB
         } else {
             return "'" . $value . "'";
         }
-
     }
 
     function __set($name, $value)
@@ -954,7 +898,7 @@ class looeic extends DB
         return $result;
     }
 
-    public function getByFilter($fields = array(), $query='')
+    public function getByFilter($fields = array(), $query = '')
     {
 
         //$obj->TABLE_NAME=get_called_class();
@@ -1007,7 +951,6 @@ class looeic extends DB
         $result['export']['list'] = $list;
 
         return $result;
-
     }
 
 
@@ -1039,7 +982,6 @@ class looeic extends DB
             //$this->_tables[]=$this->TABLE_NAME;
             return $className;
         }
-
     }
 
     public function save()
@@ -1066,7 +1008,6 @@ class looeic extends DB
                 $sql_key .= "`" . $key . "`,";
                 $sql_val .= $this->checkMysqlValue($value) . ',';
             }
-
         }
         $sql_key = substr($sql_key, 0, -1);
         $sql_val = substr($sql_val, 0, -1);
@@ -1132,7 +1073,6 @@ class looeic extends DB
 
                 $sql_key_val .= $sql_key . ' = ' . $sql_val . ',';
             }
-
         }
 
         $sql_key_val = substr($sql_key_val, 0, -1);
@@ -1155,10 +1095,9 @@ class looeic extends DB
         $result['result'] = 1;
 
         return $result;
-
     }
 
-    private function updateModel($fields=array())
+    private function updateModel($fields = array())
     {
         $sql_key = '';
         $sql_val = '';
@@ -1175,8 +1114,6 @@ class looeic extends DB
                 $sql_val = $this->checkMysqlValue($value);
                 $sql_key_val .= $sql_key . ' = ' . $sql_val . ',';
             }
-
-
         }
         //$sql_key_val .= $sql_key.' = '.$sql_val.' ,';
 
@@ -1289,7 +1226,6 @@ class looeic extends DB
         $obj = $obj->findModel($id);
 
         return $obj;
-
     }
 
     static function create($fields)
@@ -1313,11 +1249,9 @@ class modelt
     public function __construct($table, $fields = '', $rules = '')
     {
 
-        $conf=looeicConfig;
-        if($conf=='api')
-        {
+        $conf = looeicConfig;
+        if ($conf == 'api') {
             $this->config = looeicConfig::getConfig();
-
         }
         $this->TABLE_NAME = $table;
         $this->setExtendClass('model');
@@ -1357,8 +1291,5 @@ class modelt
         $obj->getbyModel($name, $arguments);
 
         return $obj;
-
     }
-
-
 }
