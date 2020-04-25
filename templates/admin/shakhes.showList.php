@@ -4,7 +4,7 @@
         $('#filter_columns').change(function() {
             var filter = $(this).val();
             //if ($(this).val() == 0) {
-                location.href = window.location.origin + '/admin/?component=shakhes&filter_columns='+filter;
+            location.href = window.location.origin + '/admin/?component=shakhes&filter_columns=' + filter;
             //}
         });
     });
@@ -40,6 +40,9 @@
 
 
 
+
+
+
                 <table class="table table-striped table-bordered rtl">
                     <tr>
                         <td>کد قلم</td>
@@ -60,6 +63,10 @@
                         </tr>
                     <? endforeach ?>
                 </table>
+
+
+
+
 
 
 

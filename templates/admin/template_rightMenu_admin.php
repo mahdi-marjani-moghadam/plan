@@ -221,17 +221,22 @@
             </a>
             <ul class="sidebar-child animated fadeInRight">
                 <li>
-                    <a href="<?=RELA_DIR?>">
+                    <a href="<?= RELA_DIR ?>">
                         <span class="sidebar-text text-16"> خوداظهاری</span>
                     </a>
                 </li>
-                <!--/child-item-->
+
                 <li>
-                    <a href="<?=RELA_DIR?>admin/?component=shakhes">
-                        <span class="sidebar-text text-16">  گزارش</span>
+                    <a href="<?= RELA_DIR ?>admin/?component=shakhes">
+                        <span class="sidebar-text text-16"> گزارش</span>
                     </a>
                 </li>
-                <!--/child-item-->
+                
+                <li>
+                    <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=setting">
+                        <span class="sidebar-text text-16"> تنظیمات شاخص</span>
+                    </a>
+                </li>
             </ul>
         </li>
 

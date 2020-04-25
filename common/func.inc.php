@@ -1120,6 +1120,13 @@ function get_group_info_date($p_id)
     return $return;
 }
 
+function dd($data)
+{
+    echo '<pre>';
+    print_r($data);
+    die();
+}
+
 function print_r_debug($data)
 {
     echo '<pre>';

@@ -1,9 +1,9 @@
-
 <!DOCTYPE html>
-<html lang="fa-IR"  dir="rtl">
+<html lang="fa-IR" dir="rtl">
+
 <head>
-    <meta charset="utf-8"/>
-    <title> سامانه ارزیابی برنامه عملیاتی  </title>
+    <meta charset="utf-8" />
+    <title> سامانه ارزیابی برنامه عملیاتی </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="m.marjani moghadam">
@@ -13,7 +13,7 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- fav and touch icons -->
     <link rel="shortcut icon" href="<?php echo RELA_DIR; ?>templates/<?php echo CURRENT_SKIN; ?>/images/fav.png">
-    <link rel="shortcut icon" href="<?php echo RELA_DIR; ?>templates/<?php echo CURRENT_SKIN; ?>/images/fav.png">
+    
 
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
@@ -31,7 +31,7 @@
     <link id="style-components" href="<?php echo RELA_DIR; ?>templates/<?php echo CURRENT_SKIN; ?>/assets/css/dependencies.css" rel="stylesheet">
     <link id="style-components" href="<?php echo RELA_DIR; ?>templates/<?php echo CURRENT_SKIN; ?>/assets/css/summernote.css" rel="stylesheet">
     <link id="style-base" href="<?php echo RELA_DIR; ?>templates/<?php echo CURRENT_SKIN; ?>/assets/css/style.css" rel="stylesheet">
-    <!-- <link id="style-responsive" href="<?php /*echo RELA_DIR; */?>templates/<?php /*echo CURRENT_SKIN; */?>/assets/css/stilearn-responsive.css" rel="stylesheet">-->
+    <!-- <link id="style-responsive" href="<?php /*echo RELA_DIR; */ ?>templates/<?php /*echo CURRENT_SKIN; */ ?>/assets/css/stilearn-responsive.css" rel="stylesheet">-->
     <link id="style-base" href="<?php echo RELA_DIR; ?>templates/<?php echo CURRENT_SKIN; ?>/assets/css/responsive.css" rel="stylesheet">
     <link id="style-helper" href="<?php echo RELA_DIR; ?>templates/<?php echo CURRENT_SKIN; ?>/assets/css/helper.css" rel="stylesheet">
     <link id="style-sample" href="<?php echo RELA_DIR; ?>templates/<?php echo CURRENT_SKIN; ?>/assets/css/pages-style.css" rel="stylesheet">
@@ -51,11 +51,15 @@
     <script src="<?php echo RELA_DIR; ?>templates/<?php echo CURRENT_SKIN; ?>/assets/js/jquery.js"></script>
     <script src="<?php echo RELA_DIR; ?>templates/<?php echo CURRENT_SKIN; ?>/assets/js/scripts.js"></script>
 
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css"
-    integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns"
-    crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
 
-<!--    <link href="--><?php //echo RELA_DIR; ?><!--templates/--><?php //echo CURRENT_SKIN; ?><!--/assets/css/all.css" rel="stylesheet">-->
+    <!--    <link href="-->
+    <?php //echo RELA_DIR;   
+    ?>
+    <!--templates/-->
+    <?php //echo CURRENT_SKIN;  
+    ?>
+    <!--/assets/css/all.css" rel="stylesheet">-->
 
 
 
@@ -64,27 +68,26 @@
 </head>
 
 <body class="animated fadeIn">
-<div class="spinnerContainer">
-    <!-- loading -->
-    <div class="spinner">
-        <div class="spinner-container container1">
-            <div class="circle1"></div>
-            <div class="circle2"></div>
-            <div class="circle3"></div>
-            <div class="circle4"></div>
-        </div>
-        <div class="spinner-container container2">
-            <div class="circle1"></div>
-            <div class="circle2"></div>
-            <div class="circle3"></div>
-            <div class="circle4"></div>
-        </div>
-        <div class="spinner-container container3">
-            <div class="circle1"></div>
-            <div class="circle2"></div>
-            <div class="circle3"></div>
-            <div class="circle4"></div>
+    <div class="spinnerContainer">
+        <!-- loading -->
+        <div class="spinner">
+            <div class="spinner-container container1">
+                <div class="circle1"></div>
+                <div class="circle2"></div>
+                <div class="circle3"></div>
+                <div class="circle4"></div>
+            </div>
+            <div class="spinner-container container2">
+                <div class="circle1"></div>
+                <div class="circle2"></div>
+                <div class="circle3"></div>
+                <div class="circle4"></div>
+            </div>
+            <div class="spinner-container container3">
+                <div class="circle1"></div>
+                <div class="circle2"></div>
+                <div class="circle3"></div>
+                <div class="circle4"></div>
+            </div>
         </div>
     </div>
-</div>
-
