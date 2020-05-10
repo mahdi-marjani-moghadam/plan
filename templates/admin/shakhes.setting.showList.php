@@ -206,7 +206,7 @@
         });
 
 
-        $('#add select').keydown
+        
         /** end add form */
 
 
