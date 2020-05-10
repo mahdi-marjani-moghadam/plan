@@ -9,6 +9,10 @@ $controller = new shakhesController();
 
 
 switch($_GET['action']){
+    case 'settingAdd':
+        $result = $controller->settingAdd($_POST);
+        echo json_encode($result);
+    break;
     case 'setting':
         $controller->shakhesSetting();
     break;

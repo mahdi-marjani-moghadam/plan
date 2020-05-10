@@ -623,7 +623,7 @@ div.tagsinput div {
 
 .select2-search-choice-close {
     position: absolute;
-    right: 3px;
+    
     top: 2px;
     width: 12px;
     height: 13px;
@@ -954,7 +954,7 @@ disabled look for disabled choices in the results dropdown
     box-shadow: rgba(0, 0, 0, 0.05) 0 1px 1px;
 }
 .select2-container-multi .select2-choices li {
-    float: left;
+    float: right;
     list-style: none;
 }
 .select2-container-multi .select2-choices .select2-search-field {
@@ -981,7 +981,7 @@ disabled look for disabled choices in the results dropdown
     color: #95a5a6 !important;
 }
 .select2-container-multi .select2-choices .select2-search-choice {
-    padding: 3px 5px 3px 18px;
+    padding: 3px 18px 3px 18px;
     margin: 5px 0 3px 5px;
     position: relative;
 
