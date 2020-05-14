@@ -125,6 +125,7 @@ class shakhesController
         }
 
         
+        
         $this->fileName = 'shakhes.showList.php';
         $this->template(compact('charts', 'list', 'ghalam', 'admins'));
         die();
@@ -154,23 +155,28 @@ class shakhesController
                     case 'equal':
                         $shakhes[$sh['shakhes_id']]['logic']['type'] = 'equal';
                         $shakhes[$sh['shakhes_id']]['logic']['function'] = '$g' . $sh['ghalam_id'];
+                        $shakhes[$sh['shakhes_id']]['logic']['ghalams'][]  = $sh['ghalam_id'];
                         break;
 
                     case 'sum':
                         $shakhes[$sh['shakhes_id']]['logic']['type'] = 'sum';
                         $shakhes[$sh['shakhes_id']]['logic']['function'] = $shakhes[$sh['shakhes_id']]['logic']['function'] . '+$g' . $sh['ghalam_id'];
+                        $shakhes[$sh['shakhes_id']]['logic']['ghalams'][]  = $sh['ghalam_id'];
                         break;
 
                     case 'up':
                         $shakhes[$sh['shakhes_id']]['logic']['type'] = 'divid';
                         $shakhes[$sh['shakhes_id']]['logic']['up'] = $shakhes[$sh['shakhes_id']]['logic']['up'] . '+$g' . $sh['ghalam_id'];
                         $shakhes[$sh['shakhes_id']]['logic']['function'] = $shakhes[$sh['shakhes_id']]['logic']['up'] . '/' . $shakhes[$sh['shakhes_id']]['logic']['down'];
+                        $shakhes[$sh['shakhes_id']]['logic']['ghalams']['up'][] = $sh['ghalam_id'];
+                        
                         break;
 
                     case 'down':
                         $shakhes[$sh['shakhes_id']]['logic']['type'] = 'divid';
                         $shakhes[$sh['shakhes_id']]['logic']['down'] = $shakhes[$sh['shakhes_id']]['logic']['down'] . '+$g' . $sh['ghalam_id'];
                         $shakhes[$sh['shakhes_id']]['logic']['function'] = $shakhes[$sh['shakhes_id']]['logic']['up'] . '/' . $shakhes[$sh['shakhes_id']]['logic']['down'];
+                        $shakhes[$sh['shakhes_id']]['logic']['ghalams']['down'][] = $sh['ghalam_id'];
                         break;
                 }
             }
@@ -184,7 +190,8 @@ class shakhesController
         left join sh_rel_kalan_shakhes r_k_s on r_g_s.shakhes_id = r_k_s.shakhes_id';
         $res2 = $obj2->query($query)->getList();
         $ghalam = ($res2['export']['recordsCount'] > 0) ?  $res2['export']['list'] : array();
-
+        
+        // dd($shakhes);
     
 
         $this->fileName = 'shakhes.setting.showList.php';
@@ -204,8 +211,38 @@ class shakhesController
     }
 
     function settingAdd($post){
+
+        /** اخرین شاخص */
+        include_once ROOT_DIR . "component/shakhes/model/shakhes.model.php";
+        $query = 'select max(shakhes_id) from sh_shakhes';
+        $res = $obj->query($query)->getList();
+        
+        echo json_encode($res);
+        die();
+
+
+        /** shakhes */
+        
+        // $sh = new shakhes();
+        // $sh->shakhes_id = 
+
+        /** rel ghalam shakhes */
+
+        /** nerkh */
+
+        /** kalan shakhes */
+
+
+
         $result['status'] = 1;
         $result['msg'] = 'با موفقیت ساخته شد.';
+        return $result;
+    }
+
+    function settingEdit($post)
+    {
+        $result['status'] = 1;
+        $result['msg'] = 'با موفقیت ویرایش شد.';
         return $result;
     }
 }
