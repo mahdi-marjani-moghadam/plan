@@ -381,7 +381,7 @@ $(document).ready(function(){
         }
     });
 
-    $('select').select2();
+    $('select:not(.default)').select2();
 
      /* ------ Recorder------*/
     // Utility method that will give audio formatted time

@@ -187,11 +187,11 @@ class shakhesController
         $obj2 = new shakhes();
         $query = 'select g.ghalam_id , r_k_s.kalan_no , g.ghalam   from sh_ghalam g
         left join sh_rel_ghalam_shakhes r_g_s on g.ghalam_id = r_g_s.ghalam_id
-        left join sh_rel_kalan_shakhes r_k_s on r_g_s.shakhes_id = r_k_s.shakhes_id';
+        left join sh_rel_kalan_shakhes r_k_s on r_g_s.shakhes_id = r_k_s.shakhes_id ';
         $res2 = $obj2->query($query)->getList();
         $ghalam = ($res2['export']['recordsCount'] > 0) ?  $res2['export']['list'] : array();
         
-        // dd($shakhes);
+        // dd($ghalam);
     
 
         $this->fileName = 'shakhes.setting.showList.php';
