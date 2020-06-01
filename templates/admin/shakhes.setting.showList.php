@@ -155,7 +155,7 @@
                     <label>نام شاخص</label>
 
                 </div>
-                <input id="edit-shakhes" value="" class="form-control ">
+                <input id="copy-shakhes" value="" class="form-control ">
                 <br>
                 <label class="col-md-12 col-xs-12 col-sm-12"> فرمول</label>
                 <select class="type">
@@ -165,9 +165,9 @@
                 </select>
 
 
-                <div class="edit-equal">
-                    <label class="edit-equal col-md-12 col-xs-12 col-sm-12">قلم</label><br>
-                    <select class="edit-equal">
+                <div class="copy-equal">
+                    <label class="copy-equal col-md-12 col-xs-12 col-sm-12">قلم</label><br>
+                    <select class="copy-equal">
                         <? foreach ($ghalam as $k => $gh) : ?>
                         <option value="<?= $gh['ghalam_id'] ?>"><?= $gh['ghalam'] ?></option>
                         <? endforeach ?>
@@ -176,9 +176,9 @@
 
 
 
-                <div class="row edit-sum">
+                <div class="row copy-sum">
                     <label class=" col-md-12 col-xs-12 col-sm-12">اقلام</label><br>
-                    <select class="edit-sum" multiple>
+                    <select class="copy-sum" multiple>
                         <? foreach ($ghalam as $k => $gh) : ?>
                         <option value="<?= $gh['ghalam_id'] ?>"><?= $gh['ghalam'] ?></option>
                         <? endforeach ?>
@@ -186,10 +186,10 @@
                 </div>
 
 
-                <div class="edit-divid">
+                <div class="copy-divid">
 
                     <label class=" col-md-12 col-xs-12 col-sm-12">اقلام (صورت کسر)</label><br>
-                    <select class=" edit-divid-up   " multiple>
+                    <select class=" copy-divid-up   " multiple>
                         <? foreach ($ghalam as $k => $gh) : ?>
                         <option value="<?= $gh['ghalam_id'] ?>"><?= $gh['ghalam'] ?></option>
                         <? endforeach ?>
@@ -198,7 +198,7 @@
 
 
                     <label class=" col-md-12 col-xs-12 col-sm-12">اقلام (مخرج کسر)</label><br>
-                    <select class=" edit-divid-down   " multiple>
+                    <select class=" copy-divid-down   " multiple>
                         <? foreach ($ghalam as $k => $gh) : ?>
                         <option value="<?= $gh['ghalam_id'] ?>"><?= $gh['ghalam'] ?></option>
                         <? endforeach ?>
@@ -214,7 +214,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
 
-                <button type="button" class="btn btn-success edit-submit">ویرایش</button>
+                <button type="button" class="btn btn-success copy-submit">ویرایش</button>
             </div>
         </div>
 
@@ -299,7 +299,7 @@
 <script>
     $(document).ready(function() {
 
-
+        var shakhes = JSON.parse(`<?= json_encode($shakhes) ?>`);
 
 
         /** add form*/
@@ -358,36 +358,46 @@
                 var type = shakhes[shakhes_id].logic.type;
 
                 modal.find('.modal-title').text('ویرایش ' + shakhes[shakhes_id].shakhes);
-                modal.find('#edit-shakhes').val(shakhes[shakhes_id].shakhes);
+                modal.find('#copy-shakhes').val(shakhes[shakhes_id].shakhes);
 
                 modal.find('.type').val(type);
                 modal.find('.type').trigger('change');
 
 
                 if (type === 'equal') {
-                    modal.find('.edit-equal').val(shakhes[shakhes_id].logic.ghalams);
-                    modal.find('.edit-equal').trigger('change');
+                    modal.find('.copy-equal').val(shakhes[shakhes_id].logic.ghalams);
+                    modal.find('.copy-equal').trigger('change');
                 } else if (type === 'sum') {
-                    modal.find('.edit-sum').val(shakhes[shakhes_id].logic.ghalams);
-                    modal.find('.edit-sum').trigger('change');
+                    modal.find('.copy-sum').val(shakhes[shakhes_id].logic.ghalams);
+                    modal.find('.copy-sum').trigger('change');
                 } else if (type === 'divid') {
-                    modal.find('.edit-divid-up').val(shakhes[shakhes_id].logic.ghalams.up);
-                    modal.find('.edit-divid-up').trigger('change');
+                    modal.find('.copy-divid-up').val(shakhes[shakhes_id].logic.ghalams.up);
+                    modal.find('.copy-divid-up').trigger('change');
 
-                    modal.find('.edit-divid-down').val(shakhes[shakhes_id].logic.ghalams.down);
-                    modal.find('.edit-divid-down').trigger('change');
+                    modal.find('.copy-divid-down').val(shakhes[shakhes_id].logic.ghalams.down);
+                    modal.find('.copy-divid-down').trigger('change');
                 }
 
             } else {
-                modal.find('.edit-sum').hide();
-                modal.find('.edit-divid').hide();
+                modal.find('.copy-sum').hide();
+                modal.find('.copy-divid').hide();
             }
 
-
-
-
         });
+        $('#copy .type').change(function() {
 
+            var type = $(this).val();
+            var shakhesId = $(this).parents('.modal').attr('id').replace('copy', '');
+            // console.log(type, shakhesId);
+
+            $(this).parents('.modal').find('.copy-equal ,.copy-sum , .copy-divid ').hide();
+            $(this).parents('.modal').find('.copy-' + type).show();
+
+
+            if (["equal", "sum", "divid"].includes(type)) {
+                //
+            }
+        });
         $('#copy .add-submit').click(function(e) {
 
             var type = $('#copy').find('.type').val();
@@ -418,7 +428,7 @@
         /** end copy */
 
 
-        var shakhes = JSON.parse(`<?= json_encode($shakhes) ?>`);
+
 
         /** edit */
         $('#edit').on('show.bs.modal', function(event) {
@@ -464,7 +474,7 @@
 
         });
 
-        $('.type').change(function() {
+        $('#edit .type').change(function() {
 
             var type = $(this).val();
             var shakhesId = $(this).parents('.modal').attr('id').replace('edit', '');
