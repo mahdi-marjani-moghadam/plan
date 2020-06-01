@@ -78,6 +78,7 @@
                 <br>
                 <label class="col-md-12 col-xs-12 col-sm-12"> فرمول</label>
                 <select class="type">
+                    <option class="" value="null">لطفا یکی را انتخاب نمایید ...</option>
                     <option class="select-equal" value="equal" data-sh="<?= $k ?>">تساوی</option>
                     <option class="select-sum" value="sum" data-sh="<?= $k ?>">مجموع</option>
                     <option class="select-divid" value="divid" data-sh="<?= $k ?>">نسبت</option>
@@ -85,8 +86,9 @@
 
 
                 <div class="edit-equal">
-                    <label class="edit-equal col-md-12 col-xs-12 col-sm-12">قلم</label><br>
+                    <label class=" col-md-12 col-xs-12 col-sm-12">قلم</label><br>
                     <select class="edit-equal">
+                        <option class="" value="null">لطفا یکی را انتخاب نمایید ...</option>
                         <? foreach ($ghalam as $k => $gh) : ?>
                         <option value="<?= $gh['ghalam_id'] ?>"><?= $gh['ghalam'] ?></option>
                         <? endforeach ?>
@@ -344,6 +346,9 @@
 
 
 
+
+
+
         /** copy link  */
         $('#copy').on('show.bs.modal', function(event) {
             var a = $(event.relatedTarget);
@@ -430,6 +435,10 @@
 
 
 
+
+
+
+
         /** edit */
         $('#edit').on('show.bs.modal', function(event) {
             var a = $(event.relatedTarget);
@@ -438,13 +447,16 @@
             var modal = $(this);
             modal.find('#shakhes_id').val(shakhes_id);
 
-            // before has a type 
+            // مقدار دادن به اسم شاخص
+            modal.find('#edit-shakhes').val(shakhes[shakhes_id].shakhes);
+
             if (typeof shakhes[shakhes_id].logic !== 'undefined') {
+                // نوعش قبلا انتخاب شده 
 
                 var type = shakhes[shakhes_id].logic.type;
 
                 modal.find('.modal-title').text('ویرایش ' + shakhes[shakhes_id].shakhes);
-                modal.find('#edit-shakhes').val(shakhes[shakhes_id].shakhes);
+
 
                 modal.find('.type').val(type);
                 modal.find('.type').trigger('change');
@@ -467,6 +479,8 @@
             } else {
                 modal.find('.edit-sum').hide();
                 modal.find('.edit-divid').hide();
+                modal.find('.type').val('null');
+                modal.find('.type').trigger('change');
             }
 
 
@@ -496,25 +510,68 @@
         $('#edit .edit-submit').click(function(e) {
             e.preventDefault();
             $('#edit #edit-select-box-error').hide();
-
-            var type = $('#edit .type').val();
             var modal = $('#edit .modal-body');
             var shakhes_id = modal.find('#shakhes_id').val();
             var shakhes = modal.find('#edit-shakhes').val();
 
+            /** انتخاب فرمول */
+            var type = modal.find('.type').select2('val');
+            if (type === 'null') {
+                alert('لطفا فرمول را انتخاب نمایید');
+                return false;
+            }
+
+
+            /** انتخاب اقلام */
             if (type === 'equal') {
-                var ghalams = modal.find('.edit-equal').val();
+                var ghalams = modal.find('.edit-equal').select2('val');
+                if (ghalams === 'null') {
+                    alert('لطفا قلم را انتخاب نمایید');
+                    return false;
+                }
             } else if (type === 'sum') {
-                var ghalams = modal.find('.edit-sum').val();
+                var ghalams = modal.find('.edit-sum').select2('val').filter(onlyUnique);
+                if (Object.keys(ghalams).length === 0) {
+                    alert('لطفا اقلام را انتخاب نمایید');
+                    return false;
+                }
+
             } else if (type === 'divid') {
+                var up = modal.find('.edit-divid-up').select2('val').filter(onlyUnique),
+                    down = modal.find('.edit-divid-down').select2('val').filter(onlyUnique);
+
+                if (Object.keys(up).length === 0 || Object.keys(down).length === 0) {
+                    alert('لطفا اقلام را انتخاب نمایید');
+                    return false;
+                }
+
                 var ghalams = {
-                    up: modal.find('.edit-divid-up').val().filter(onlyUnique),
-                    down: modal.find('.edit-divid-down').val().filter(onlyUnique)
+                    up: up,
+                    down: down
                 };
 
             }
 
-            console.log(shakhes_id, shakhes, type, ghalams);
+            // console.log(shakhes_id, shakhes, type, ghalams);
+
+            /** ارسال به فایل shakhes.controler  */
+            $.ajax({
+                url: '/admin/?component=shakhes&action=settingEdit',
+                method: 'post',
+                data: {
+                    'type': type,
+                    'shakhes_id': shakhes_id,
+                    'shakhes': shakhes,
+                    'ghalams': ghalams
+                },
+                success: function(data, status, xhr) {
+                    // console.log(data);
+                    window.location = '/admin/?component=shakhes&action=setting'
+                },
+                error: function(data, status, xhr) {
+                    alert('مشکلی در سرور بوجود آمده است.');
+                }
+            });
 
         });
         /** end edit */

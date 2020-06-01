@@ -124,8 +124,8 @@ class shakhesController
 
         }
 
-        
-        
+
+
         $this->fileName = 'shakhes.showList.php';
         $this->template(compact('charts', 'list', 'ghalam', 'admins'));
         die();
@@ -169,7 +169,7 @@ class shakhesController
                         $shakhes[$sh['shakhes_id']]['logic']['up'] = $shakhes[$sh['shakhes_id']]['logic']['up'] . '+$g' . $sh['ghalam_id'];
                         $shakhes[$sh['shakhes_id']]['logic']['function'] = $shakhes[$sh['shakhes_id']]['logic']['up'] . '/' . $shakhes[$sh['shakhes_id']]['logic']['down'];
                         $shakhes[$sh['shakhes_id']]['logic']['ghalams']['up'][] = $sh['ghalam_id'];
-                        
+
                         break;
 
                     case 'down':
@@ -190,39 +190,40 @@ class shakhesController
         left join sh_rel_kalan_shakhes r_k_s on r_g_s.shakhes_id = r_k_s.shakhes_id ';
         $res2 = $obj2->query($query)->getList();
         $ghalam = ($res2['export']['recordsCount'] > 0) ?  $res2['export']['list'] : array();
-        
+
         // dd($ghalam);
-    
+
 
         $this->fileName = 'shakhes.setting.showList.php';
-        $this->template(compact('shakhes','ghalam'));
+        $this->template(compact('shakhes', 'ghalam'));
         die();
     }
 
 
     function shakhesDelete($post)
     {
-        
+
         include ROOT_DIR . "component/shakhes/model/shakhes.model.php";
-        
+
         $shakhes = shakhes::find($post['id']);
 
         dd($shakhes);
     }
 
-    function settingAdd($post){
+    function settingAdd($post)
+    {
 
         /** اخرین شاخص */
         include_once ROOT_DIR . "component/shakhes/model/shakhes.model.php";
         $query = 'select max(shakhes_id) from sh_shakhes';
         $res = $obj->query($query)->getList();
-        
+
         echo json_encode($res);
         die();
 
 
         /** shakhes */
-        
+
         // $sh = new shakhes();
         // $sh->shakhes_id = 
 
@@ -241,6 +242,64 @@ class shakhesController
 
     function settingEdit($post)
     {
+        $result['post'] = $post;
+
+        /** تغییر شاخص */
+        include_once ROOT_DIR . "component/shakhes/model/shakhes.model.php";
+        $shakhes = shakhes::getBy_shakhes_id($post['shakhes_id'])->get();
+        if ($shakhes['export']['recordsCount'] == 0) {
+            $result = array('result' => -1, 'msg' => 'شاخص یافت نشد.');
+            return $result;
+        }
+        $shakhesObj = $shakhes['export']['list'][0];
+        $shakhesObj->shakhes = $post['shakhes'];
+        $shakhesObj->save();
+        //$result['sh_shakhes2'] = $shakhesObj->fields;
+
+        /** پاک کردن کل اقلام اون شاخص */
+        include_once ROOT_DIR . "component/shakhes/model/rel.ghalam.shakhes.model.php";
+        $relGhalamShakhes = relGhalamShakhes::getBy_shakhes_id($post['shakhes_id'])->get();
+        if ($relGhalamShakhes['export']['recordsCount'] != 0) {
+            foreach ($relGhalamShakhes['export']['list'] as $v) {
+                $v->delete();
+            }
+        }
+
+        /** اضافه کردن اقلام جدید */
+        if($post['type'] == 'equal' ){
+            $newRelGhalamShakhes = new relGhalamShakhes();
+            $newRelGhalamShakhes->shakhes_id = $post['shakhes_id'];
+            $newRelGhalamShakhes->ghalam_id = $post['ghalams'];
+            $newRelGhalamShakhes->type =  $post['type'];
+            $newRelGhalamShakhes->save();
+        }else if ( $post['type'] == 'sum') {
+            foreach ($post['ghalams'] as $ghalam_id) {
+                $newRelGhalamShakhes = new relGhalamShakhes();
+                $newRelGhalamShakhes->shakhes_id = $post['shakhes_id'];
+                $newRelGhalamShakhes->ghalam_id = $ghalam_id;
+                $newRelGhalamShakhes->type = $post['type'];
+                $newRelGhalamShakhes->save();
+            }
+        }else if($post['type'] == 'divid'){
+            foreach ($post['ghalams']['up'] as $ghalam_id) {
+                $newRelGhalamShakhes = new relGhalamShakhes();
+                $newRelGhalamShakhes->shakhes_id = $post['shakhes_id'];
+                $newRelGhalamShakhes->ghalam_id = $ghalam_id;
+                $newRelGhalamShakhes->type = 'up';
+                $newRelGhalamShakhes->save();
+            }
+            foreach ($post['ghalams']['down'] as $ghalam_id) {
+                $newRelGhalamShakhes = new relGhalamShakhes();
+                $newRelGhalamShakhes->shakhes_id = $post['shakhes_id'];
+                $newRelGhalamShakhes->ghalam_id = $ghalam_id;
+                $newRelGhalamShakhes->type = 'down';
+                $newRelGhalamShakhes->save();
+            }
+        }
+
+        //$result['sh_rel_ghalam_shakhes1'] = $newRelGhalamShakhes->fields;
+
+
         $result['status'] = 1;
         $result['msg'] = 'با موفقیت ویرایش شد.';
         return $result;

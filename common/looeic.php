@@ -434,10 +434,11 @@ class looeic extends DB
 
     private function get_object_or_list($object = 1, $key = '')
     {
-
+        
         if (strlen($this->sql) < 1) {
             $this->sql = $this->build();
         }
+        
         if (strlen($this->sql) < 1) {
             $result['result'] = -1;
             $result['Number'] = 1;
@@ -448,11 +449,14 @@ class looeic extends DB
         $conn = dbConn::getConnection();
 
         //        print_r($this->sql);
-
+        
 
         $stmt = $conn->prepare($this->sql);
+        
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        
         $stmt->execute();
+        
         if (!$stmt) {
             $result['result'] = -1;
             $result['Number'] = 1;
@@ -513,11 +517,13 @@ class looeic extends DB
                 //$temp_object = $this->findModel($row[ $this->PRI_KEY ]);
 
                 $temp_object = clone ($this);
+                
                 // print_r_debug($row);
                 $temp_object->fields = $row;
+                
                 //print_r_debug($temp_object);
-
                 //$temp_object = $this->findModel($row[$this->PRI_KEY]);
+                
 
                 if ($key != '') {
                     if ($this->overWrite == 0) {
@@ -526,6 +532,7 @@ class looeic extends DB
                         $result['export']['list'][$temp_object->$key] = clone ($temp_object);
                     }
                 } else {
+                    
                     $result['export']['list'][] = clone ($temp_object);
                 }
             }

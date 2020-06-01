@@ -13,7 +13,7 @@ switch($_GET['action']){
         $result = $controller->settingAdd($_POST);
         echo json_encode($result);
     break;
-    case 'settingedit':
+    case 'settingEdit':
         $result = $controller->settingEdit($_POST);
         echo json_encode($result);
         break;
