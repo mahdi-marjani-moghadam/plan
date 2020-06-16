@@ -75,18 +75,35 @@
                 var dataVal = $(this).data('season');
                 var result = dataVal.split('-');
 
-                var aData = parseInt($("div[data-season='"+(result[0]-1)+"-"+result[1]+"']").text());
 
-                if(inputVal < aData ){
-                    this.setCustomValidity('مقدار وارد شده نباید از درصد نهایی دوره قبل کمتر باشد.');
 
-                }
-                else if(inputVal > 100 ){
+                if(inputVal > 100 ){
                     this.setCustomValidity('مقدار وارد شده نباید از 100 بیشتر باشد.');
+                }
+                else if(result[0] == 3){
+                    var aDatanahayi = parseInt($("div.nahayi[data-season='"+(result[0]-1)+"-"+result[1]+"']").text());
+                     if(inputVal < aDatanahayi ){
+                        this.setCustomValidity('مقدار وارد شده نباید از درصد نهایی دوره قبل کمتر باشد.');
+                    }else {
+                        this.setCustomValidity('');
+                    }
+                }
+                else if(result[0] == 2 || result[0] == 4){
+                    var aDataelami = parseInt($("div.elami[data-season='"+(result[0]-1)+"-"+result[1]+"']").text());
+                    if(inputVal < aDataelami ){
+                        this.setCustomValidity('مقدار وارد شده نباید از درصد اعلامی دوره قبل کمتر باشد.');
+                    }else {
+                        this.setCustomValidity('');
+                    }
                 }
                 else {
                     this.setCustomValidity('');
                 }
+
+
+
+
+
 
             });
 
@@ -202,9 +219,9 @@
                             <strong > بارگذاری "مستندات" درخواستی در این دوره از ارزیابی "الزامی" می باشد.  </strong>
                         </div>-->
 
-                        <tr>
+                        <!--<tr>
                             <td style="color: #c7284a"> * درصد اعلامی هر دوره نمی‌تواند از درصد نهایی(تائید شده) دوره قبل «کمتر» باشد. </td>
-                        </tr>
+                        </tr>-->
                         <tr>
                             <td style="color: #c7284a"> * ضروریست قبل از بارگذاری، به مستندات مورد نیاز هر اقدام در قسمت «؟» توجه گردد. </td>
                         </tr>
@@ -212,7 +229,7 @@
                         <td style="color: #c7284a"> * «ثبت نهایی» به منزله تائید نهایی اطلاعات ثبت شده در سامانه تلقی می گردد و پس از آن امکان هیچگونه اصلاح یا تغییر وجود نخواهد داشت.</td>
                         </tr>
                         <tr>
-                            <td style="color: #c7284a"> * درصورت عدم ثبت نهایی قبل از مهلت زمانی تعیین شده مرکز ارزیابی، مستندات فاقد اعتبار لازم جهت بررسی این مرکز خواهد بود.</td>
+                            <td style="color: #c7284a"> * درصورت عدم ثبت نهایی قبل از مهلت زمانی تعیین شده، مستندات فاقد اعتبار لازم جهت بررسی این مرکز خواهد بود.</td>
                         </tr>
 
 

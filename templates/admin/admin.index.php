@@ -41,7 +41,9 @@
             </div><!--/panel overal-visitor-->
         </div><!--/cols-->
     <? endif;?>
+    <span style="font-size: 1.5em; color: #FF7700"  > با توجه به ابلاغ ریاست محترم دانشگاه مبنی بر تمدید برنامه عملیاتی 98-97 تا پایان سال 1398؛ ضرورت دارد درصدهای پیشرفت از مهر تا اسفند 98 را بر مبنای مقیاس 0 تا 100 ثبت نمایید.   </span>
 
+    </span>
         <div class="col-md-12" >
     <div id="overall-visitor" class="panel panel-animated panel-success bg-cloud">
       <div class="panel-body">
