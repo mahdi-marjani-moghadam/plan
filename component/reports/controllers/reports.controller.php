@@ -231,9 +231,8 @@ class reportsController
         //$rowsObj = $rowsObj->orderBy('kalan_no,amaliati_no,eghdam_id,faaliat_id,admin_id,group_id' , 'desc');
         //$rowsObj = $rowsObj->andWhere('kalan_no' ,'=',1);
         //$rowsObj = $rowsObj->limit(0 ,100);
-
+       // print_r_debug($rowsObj);
         $rows = $rowsObj->getList();
-
 
 
 

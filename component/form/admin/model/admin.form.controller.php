@@ -537,15 +537,16 @@ class adminFormController
 
         $list['paging'] = $result['export']['recordsCount'];
 
-        $other['3'] = array(
+        $other['4'] = array(
             'formatter' => function ($list) {
 
                 include_once ROOT_DIR.'component/khoroji_eghdam/model/khoroji_eghdam.model.php';
-                $res = khoroji_eghdam::getBy_eghdam_id_and_admin_id($list['eghdam_id'],$list['admin_id'])
+                $res = khoroji_eghdam::getBy_faaliat_id_and_admin_id($list['faaliat_id'],$list['admin_id'])
                     ->select('khoroji_eghdam,id')
                     ->getList()['export']['list'][0];
 
-                $st = $list['eghdam'].'<a  data-toggle="modal" data-target="#exampleModalCenter'.$res['id'].'" ><i class="far fa fa-question-circle"></i></a>';
+
+                $st = $list['faaliat'].'<a  data-toggle="modal" data-target="#exampleModalCenter'.$res['id'].'" ><i class="far fa fa-question-circle"></i></a>';
                 $st .= '
                     <div class="modal fade" id="exampleModalCenter'.$res['id'].'" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                       <div class="modal-dialog modal-dialog-centered" role="document"><div class="modal-content"><div class="modal-header"><h3 class="modal-title" id="exampleModalCenterTitle">مستندات مورد نیاز</h3></div>
@@ -631,7 +632,14 @@ class adminFormController
                     $st = '';
                     if(STEP_FORM1==2 and $list['start_date'] <= date('Y-m-d') and $list['finish_date'] >= date('Y-m-d')){
                         $st .= "<input data-season='2-{$list['fid']}' class='form-control ltr percent-input' pattern='^([0-9]|[1-9][0-9]|100)$' title='.درصد پیشرفت وارد شده مجاز نمی باشد' autocomplete='off'  name='menu[$plan_id][2]' type='text'  value='{$list['admin_percent2']}' style='width: 150px'>";
-                        $st .= "<input  name='menu[$plan_id][2]' type='file'   >";
+
+                        include_once ROOT_DIR.'component/khoroji_eghdam/model/khoroji_eghdam.model.php';
+                        $res = khoroji_eghdam::getBy_faaliat_id_and_admin_id($list['faaliat_id'],$list['admin_id'])
+                            ->select('import_doc,faaliat_id')
+                            ->getList()['export']['list'][0];
+                        if($res['import_doc']==1) {
+                            $st .= "<input  name='menu[$plan_id][2]' type='file'   >";
+                        }
                     }
                     else{
                         $st .= 'اعلامی: <br>'."<div class='elami' data-season='2-{$list['fid']}'>".$list['admin_percent2'].'</div><br> نهایی: ' ." <div  class='nahayi' data-season='2-{$list['fid']}'>".substr($list['O2'],0,4)."</div>";
@@ -752,8 +760,15 @@ class adminFormController
                     $st='';
                     if(STEP_FORM1==4 and $list['start_date'] <= date('Y-m-d') and $list['finish_date'] >= date('Y-m-d')) {
                         $st .= "<input data-season='4-{$list['fid']}' class='form-control ltr percent-input' pattern='^([0-9]|[1-9][0-9]|100)$' title='.درصد پیشرفت وارد شده مجاز نمی باشد' autocomplete='off'  name='menu[$plan_id][4]' type='text'  value='{$list['admin_percent4']}' style='width: 150px'>";
-                        $st .= "<input  name='menu[$plan_id][4]' type='file'   >";
-                    }
+
+                        include_once ROOT_DIR.'component/khoroji_eghdam/model/khoroji_eghdam.model.php';
+                        $res = khoroji_eghdam::getBy_faaliat_id_and_admin_id($list['faaliat_id'],$list['admin_id'])
+                            ->select('import_doc,faaliat_id')
+                            ->getList()['export']['list'][0];
+
+                            if($res['import_doc']==1) {
+                            $st .= "<input  name='menu[$plan_id][4]' type='file'   >";
+                        }                    }
                     else{
                         $st .= 'اعلامی: <br>'."<div class='elami' data-season='4-{$list['fid']}'>".$list['admin_percent4'].'</div><br> نهایی: ' ." <div class='nahayi' data-season='4-{$list['fid']}'>".substr($list['O4'],0,4)."</div>";
                     }

@@ -156,7 +156,7 @@ class DB {
         return $this->get_object_or_list(1,$key);
     }
 
-    public function getList($key)
+    public function getList($key='')
     {
         /*if ( strlen($this->sql) < 1 ) {
             $result['result'] = - 1;
