@@ -143,7 +143,7 @@ class shakhesController
         /** لیست شاخص */
         include ROOT_DIR . "component/shakhes/model/shakhes.model.php";
         $obj = new shakhes();
-        $query = 'select sh.shakhes_id, shakhes, sh.shakhes_id ,r_g_sh.ghalam_id , type from sh_shakhes sh
+        $query = 'select sh.shakhes_id, shakhes ,r_g_sh.ghalam_id , type from sh_shakhes sh
         left join sh_rel_ghalam_shakhes r_g_sh on sh.shakhes_id = r_g_sh.shakhes_id';
         $res = $obj->query($query)->getList();
         // dd($res);
@@ -303,5 +303,45 @@ class shakhesController
         $result['status'] = 1;
         $result['msg'] = 'با موفقیت ویرایش شد.';
         return $result;
+    }
+
+
+    function khodezhari(){
+        $this->fileName = 'shakhes.khodezhari.php';
+        $this->template(compact('shakhes', 'ghalam'));
+        die();        
+    }
+
+
+    function jalasat(){
+
+        include_once ROOT_DIR.'component/shakhes/jalasat/jalasat.model.php';
+        $jalasatObj = new jalasat;
+        $jalasat = $jalasatObj->getAll()->getList()['export'];
+
+        $this->fileName = 'shakhes.jalasat.php';
+        $this->template(compact('jalasat'));
+        die();        
+    }
+
+
+    function shora(){
+        $this->fileName = 'shakhes.jalasat.php';
+        $this->template(compact('shakhes', 'ghalam'));
+        die();        
+    }
+
+
+    function daneshamokhte(){
+        $this->fileName = 'shakhes.jalasat.php';
+        $this->template(compact('shakhes', 'ghalam'));
+        die();        
+    }
+
+
+    function ruydad(){
+        $this->fileName = 'shakhes.jalasat.php';
+        $this->template(compact('shakhes', 'ghalam'));
+        die();        
     }
 }
