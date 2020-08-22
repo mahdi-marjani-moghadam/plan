@@ -266,13 +266,13 @@ class shakhesController
         }
 
         /** اضافه کردن اقلام جدید */
-        if($post['type'] == 'equal' ){
+        if ($post['type'] == 'equal') {
             $newRelGhalamShakhes = new relGhalamShakhes();
             $newRelGhalamShakhes->shakhes_id = $post['shakhes_id'];
             $newRelGhalamShakhes->ghalam_id = $post['ghalams'];
             $newRelGhalamShakhes->type =  $post['type'];
             $newRelGhalamShakhes->save();
-        }else if ( $post['type'] == 'sum') {
+        } else if ($post['type'] == 'sum') {
             foreach ($post['ghalams'] as $ghalam_id) {
                 $newRelGhalamShakhes = new relGhalamShakhes();
                 $newRelGhalamShakhes->shakhes_id = $post['shakhes_id'];
@@ -280,7 +280,7 @@ class shakhesController
                 $newRelGhalamShakhes->type = $post['type'];
                 $newRelGhalamShakhes->save();
             }
-        }else if($post['type'] == 'divid'){
+        } else if ($post['type'] == 'divid') {
             foreach ($post['ghalams']['up'] as $ghalam_id) {
                 $newRelGhalamShakhes = new relGhalamShakhes();
                 $newRelGhalamShakhes->shakhes_id = $post['shakhes_id'];
@@ -306,42 +306,137 @@ class shakhesController
     }
 
 
-    function khodezhari(){
+    function khodezhari()
+    {
         $this->fileName = 'shakhes.khodezhari.php';
         $this->template(compact('shakhes', 'ghalam'));
-        die();        
+        die();
     }
 
 
-    function jalasat(){
+    function jalasat()
+    {
+        global $messageStack, $dataStack;
+        $msg = $messageStack->output('message');
+        $data = $dataStack->output('data');
 
-        include_once ROOT_DIR.'component/shakhes/jalasat/jalasat.model.php';
+        /* باید اول یک ذخیره موقت داشته باشن بعد ارسال به مافوق */
+        include_once ROOT_DIR . 'component/shakhes/jalasat/jalasat.model.php';
         $jalasatObj = new jalasat;
         $jalasat = $jalasatObj->getAll()->getList()['export'];
 
+        $options = $this->options('sh_jalasat');
+
         $this->fileName = 'shakhes.jalasat.php';
-        $this->template(compact('jalasat'));
-        die();        
+        $this->template(compact('jalasat', 'msg', 'options', 'data'));
+        die();
+    }
+
+    function jalasatOnSubmit()
+    {
+        global $messageStack, $admin_info, $dataStack;
+        $result = array();
+        $post = $_POST;
+
+        include_once ROOT_DIR . 'component/shakhes/jalasat/jalasat.model.php';
+        $jalasatObj = new jalasat;
+
+
+
+
+
+        /* اگه فرم درست پر نشه ارور بده */
+        $filedsCount = 8 - count(array_filter(
+            $post,
+            function ($x) {
+                return $x !== '';
+            }
+        ));
+        if ($filedsCount !== 0 && !isset($post['confirm'])) {
+            $result['msg'] = 'فیلد ها به درستی پر نشده اند. ' . (int) $filedsCount  . ' فیلد خالی می باشد.';
+            $result['type'] = 'error';
+
+            $dataStack->add_session('data', $post);
+            $messageStack->add_session('message', $result['msg'], $result['type']);
+            redirectPage(RELA_DIR . 'admin/?component=shakhes&action=jalasat', $result['msg']);
+        }
+
+        /* ارسال فرم */
+        if (isset($post['temporary'])) {
+            $jalasatObj->setFields($post);
+            $jalasatObj->date = convertJToGDate($jalasatObj->date);
+            $jalasatObj->admin_id = $admin_info['admin_id'];
+            $jalasatObj->status = 0;
+            $jalasatObj->save();
+
+
+
+            $result['msg'] = 'ثبت موقت انجام شد.';
+            $result['type'] = 'warning';
+        } elseif (isset($post['final'])) {
+            $jalasatObj->setFields($post);
+            $jalasatObj->date = convertJToGDate($jalasatObj->date);
+            $jalasatObj->admin_id = $admin_info['admin_id'];
+            $jalasatObj->status = 1;
+
+            $jalasatObj->save();
+
+            // محاسبه جدول import
+
+            $result['msg'] = '.ثبت نهایی انجام شد';
+            $result['type'] = 'success';
+        } elseif (isset($post['confirm'])) {
+            /* فقط برای اونایی که تایید میخوان */
+            $jalasat = $jalasatObj::find((int)$post['confirm']);
+            $jalasat->status = 1;
+            $jalasat->save();
+
+            $result['msg'] = '.ثبت نهایی انجام شد';
+            $result['type'] = 'success';
+        } else {
+        }
+
+
+
+        $messageStack->add_session('message', $result['msg'], $result['type']);
+        redirectPage(RELA_DIR . 'admin/?component=shakhes&action=jalasat', $result['msg']);
     }
 
 
-    function shora(){
+    function shora()
+    {
         $this->fileName = 'shakhes.jalasat.php';
         $this->template(compact('shakhes', 'ghalam'));
-        die();        
+        die();
     }
 
 
-    function daneshamokhte(){
+    function daneshamokhte()
+    {
         $this->fileName = 'shakhes.jalasat.php';
         $this->template(compact('shakhes', 'ghalam'));
-        die();        
+        die();
     }
 
 
-    function ruydad(){
+    function ruydad()
+    {
         $this->fileName = 'shakhes.jalasat.php';
         $this->template(compact('shakhes', 'ghalam'));
-        die();        
+        die();
+    }
+
+
+    function options($table)
+    {
+        include_once ROOT_DIR . 'component/shakhes/options/options.model.php';
+        $optionsObj = new options();
+
+
+        foreach ($optionsObj::getBy_table($table)->getList()['export']['list'] as $kl => $v) {
+            $options[$v['field']][] = $v['option'];
+        }
+
+        return $options;
     }
 }

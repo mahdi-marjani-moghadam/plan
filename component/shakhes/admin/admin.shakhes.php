@@ -33,7 +33,12 @@ switch ($_GET['action']) {
 
         /** زیر قلم */
     case 'jalasat':
-        $controller->jalasat();
+        if ($_POST) {
+            $controller->jalasatOnSubmit();
+        } else {
+            $controller->jalasat();
+        }
+
         break;
 
     case 'shora':

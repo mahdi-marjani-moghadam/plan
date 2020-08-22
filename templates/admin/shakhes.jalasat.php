@@ -5,37 +5,51 @@
             <h3 class="panel-title rtl "> فرم جلسات</h3>
         </div>
         <div class="panel-body">
-            <form>
+
+            <? 
+            if($msg){
+                echo $msg;
+            }
+            ?>
+
+            <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat" method="post">
                 <table class="form">
                     <tr>
                         <td>زمان برگزاری*</td>
-                        <td><input class="form-control date"></td>
+                        <td><input name="date" value="<?= $data['date'] ?>" autocomplete="off" class="form-control date"></td>
 
                         <td>اعضای هیات رئیسه حاضر در جلسه*</td>
-                        <td><input class="form-control"></td>
+                        <td><input name="manager_list" value="<?= $data['manager_list'] ?>" class="form-control"></td>
                     </tr>
                     <tr>
                         <td>تعداد شرکت کنندگان*</td>
-                        <td><input class="form-control"></td>
+                        <td><input name="member_count" value="<?= $data['member_count'] ?>" type="number" min="1" max="99999" class="form-control"></td>
 
                         <td>مقطع*</td>
-                        <td><input class="form-control"></td>
+                        <td>
+
+                            <select name="grade">
+                                <? foreach($options['grade'] as $item):?>
+                                <option <?= ($data['grade'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
+                                <?endforeach;?>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
                         <td>رشته*</td>
-                        <td><input class="form-control"></td>
+                        <td><input name="course" class="form-control"></td>
 
                         <td>تعداد کل دانشجویان مشمول*</td>
-                        <td><input class="form-control"></td>
+                        <td><input name="eligible_students" type="number" min="1" max="99999" class="form-control"></td>
                     </tr>
                     <tr>
                         <td>رئوس موضوعات طرح شده در جلسه*</td>
-                        <td><input class="form-control"></td>
+                        <td><input name="subject" class="form-control"></td>
                     </tr>
 
                 </table>
-                <button class="btn btn-warning btn-large">ثبت موقت</button>
-                <button class="btn btn-success btn-large">تایید نهایی</button>
+                <button name="temporary" value="1" class="btn btn-warning btn-large">ثبت موقت</button>
+                <button name="final" value="2" class="btn btn-success btn-large"> ارسال به مافوق</button>
             </form>
         </div>
         <div class="panel-heading bg-green">
@@ -52,6 +66,7 @@
                     <th>رشته</th>
                     <th>تعداد کل دانشجویان مشمول</th>
                     <th>رئوس موضوعات طرح شده در جلسه*</th>
+                    <th>وضعیت</th>
                 </tr>
                 <?php
                 if ($jalasat['recordsCount'] > 0) :
@@ -59,13 +74,21 @@
                 ?>
                         <tr>
                             <td><?= $v['admin_id'] ?></td>
-                            <td><?= $v['date'] ?></td>
+                            <td><?= convertDate($v['date']) ?></td>
                             <td><?= $v['manager_list'] ?></td>
                             <td><?= $v['member_count'] ?></td>
                             <td><?= $v['grade'] ?></td>
                             <td><?= $v['course'] ?></td>
                             <td><?= $v['eligible_students'] ?></td>
                             <td><?= $v['subject'] ?></td>
+                            <td>
+                                <?= ($v['status'] == 0) ? '' : 'ارسال به مافوق' ?>
+                                <? if($v['status'] == 0):  ?>
+                                <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat" method="post">
+                                    <button name="confirm" value="<?= $v['id'] ?>" onclick="confirm('آیا از ارسال به مافوق مطمئن هستید؟')" class="btn btn-xs btn-success pull-right">ارسال به مافوق</button>
+                                </form>
+                                <? endif;?>
+                            </td>
                         </tr>
                 <?php
                     endforeach;
