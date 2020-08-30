@@ -342,9 +342,6 @@ class shakhesController
         $jalasatObj = new jalasat;
 
 
-
-
-
         /* اگه فرم درست پر نشه ارور بده */
         $filedsCount = 8 - count(array_filter(
             $post,
@@ -361,6 +358,8 @@ class shakhesController
             redirectPage(RELA_DIR . 'admin/?component=shakhes&action=jalasat', $result['msg']);
         }
 
+
+
         /* ارسال فرم */
         if (isset($post['temporary'])) {
             $jalasatObj->setFields($post);
@@ -369,8 +368,6 @@ class shakhesController
             $jalasatObj->status = 0;
             $jalasatObj->save();
 
-
-
             $result['msg'] = 'ثبت موقت انجام شد.';
             $result['type'] = 'warning';
         } elseif (isset($post['final'])) {
@@ -378,10 +375,11 @@ class shakhesController
             $jalasatObj->date = convertJToGDate($jalasatObj->date);
             $jalasatObj->admin_id = $admin_info['admin_id'];
             $jalasatObj->status = 1;
-
             $jalasatObj->save();
 
             // محاسبه جدول import
+            // اگر status 1 بود
+
 
             $result['msg'] = '.ثبت نهایی انجام شد';
             $result['type'] = 'success';
@@ -402,30 +400,278 @@ class shakhesController
         redirectPage(RELA_DIR . 'admin/?component=shakhes&action=jalasat', $result['msg']);
     }
 
-
-    function shora()
+    function daneshamukhte()
     {
-        $this->fileName = 'shakhes.jalasat.php';
-        $this->template(compact('shakhes', 'ghalam'));
+        global $messageStack, $dataStack;
+        $msg = $messageStack->output('message');
+        $data = $dataStack->output('data');
+
+        /* باید اول یک ذخیره موقت داشته باشن بعد ارسال به مافوق */
+        include_once ROOT_DIR . 'component/shakhes/daneshamukhte/daneshamukhte.model.php';
+        $daneshamukhteObj = new daneshamukhte;
+        $daneshamukhte = $daneshamukhteObj->getAll()->getList()['export'];
+
+        $options = $this->options('sh_daneshamukhte');
+
+        $this->fileName = 'shakhes.daneshamukhte.php';
+        $this->template(compact('daneshamukhte', 'msg', 'options', 'data'));
         die();
     }
-
-
-    function daneshamokhte()
+    function daneshamukhteOnSubmit()
     {
-        $this->fileName = 'shakhes.jalasat.php';
-        $this->template(compact('shakhes', 'ghalam'));
-        die();
+        global $messageStack, $admin_info, $dataStack;
+        $result = array();
+        $post = $_POST;
+
+        include_once ROOT_DIR . 'component/shakhes/daneshamukhte/daneshamukhte.model.php';
+        $daneshamukhteObj = new daneshamukhte;
+
+
+        /* اگه فرم درست پر نشه ارور بده */
+        $filedsCount = 13 - count(array_filter(
+            $post,
+            function ($x) {
+                return $x !== '';
+            }
+        ));
+        if ($filedsCount !== 0 && !isset($post['confirm'])) {
+            $result['msg'] = 'فیلد ها به درستی پر نشده اند. ' . (int) $filedsCount  . ' فیلد خالی می باشد.';
+            $result['type'] = 'error';
+
+            $dataStack->add_session('data', $post);
+            $messageStack->add_session('message', $result['msg'], $result['type']);
+            redirectPage(RELA_DIR . 'admin/?component=shakhes&action=daneshamukhte', $result['msg']);
+        }
+
+
+
+        /* ارسال فرم */
+        if (isset($post['temporary'])) {
+            $daneshamukhteObj->setFields($post);
+            $daneshamukhteObj->graduated_date = convertJToGDate($daneshamukhteObj->graduated_date);
+            $daneshamukhteObj->admin_id = $admin_info['admin_id'];
+            $daneshamukhteObj->status = 0;
+            $daneshamukhteObj->save();
+
+            $result['msg'] = 'ثبت موقت انجام شد.';
+            $result['type'] = 'warning';
+        } elseif (isset($post['final'])) {
+            $daneshamukhteObj->setFields($post);
+            $daneshamukhteObj->graduated_date = convertJToGDate($daneshamukhteObj->graduated_date);
+            $daneshamukhteObj->admin_id = $admin_info['admin_id'];
+            $daneshamukhteObj->status = 1;
+            $daneshamukhteObj->save();
+
+            // محاسبه جدول import
+            // اگر status 1 بود
+
+
+            $result['msg'] = '.ثبت نهایی انجام شد';
+            $result['type'] = 'success';
+        } elseif (isset($post['confirm'])) {
+            /* فقط برای اونایی که تایید میخوان */
+            $daneshamukhte = $daneshamukhteObj::find((int)$post['confirm']);
+            $daneshamukhte->status = 1;
+            $daneshamukhte->save();
+
+            $result['msg'] = '.ثبت نهایی انجام شد';
+            $result['type'] = 'success';
+        } else {
+        }
+
+
+
+        $messageStack->add_session('message', $result['msg'], $result['type']);
+        redirectPage(RELA_DIR . 'admin/?component=shakhes&action=daneshamukhte', $result['msg']);
     }
+
+    
 
 
     function ruydad()
     {
-        $this->fileName = 'shakhes.jalasat.php';
-        $this->template(compact('shakhes', 'ghalam'));
+        global $messageStack, $dataStack;
+        $msg = $messageStack->output('message');
+        $data = $dataStack->output('data');
+
+        /* باید اول یک ذخیره موقت داشته باشن بعد ارسال به مافوق */
+        include_once ROOT_DIR . 'component/shakhes/ruydad/ruydad.model.php';
+        $ruydadObj = new ruydad;
+        $ruydad = $ruydadObj->getAll()->getList()['export'];
+
+        /* عملیاتی */
+        include_once ROOT_DIR . 'component/eghdam/model/eghdam.model.php';
+        $eghdamObj = new eghdam;
+        $eghdamTemp = $eghdamObj->getAll()->getList()['export']['list'];
+        foreach ($eghdamTemp as $v) {
+            //$amaliati[$v['amaliati_no']]['amaliati_no'] = $v['amaliati_no'];
+            $amaliati[$v['amaliati_no']] = $v['amaliati'];
+        }
+        
+
+        $options = $this->options('sh_ruydad');
+
+        $this->fileName = 'shakhes.ruydad.php';
+        $this->template(compact('ruydad', 'amaliati', 'msg', 'options', 'data'));
         die();
     }
 
+    function ruydadOnSubmit()
+    {
+        global $messageStack, $admin_info, $dataStack;
+        $result = array();
+        $post = $_POST;
+
+        include_once ROOT_DIR . 'component/shakhes/ruydad/ruydad.model.php';
+        $ruydadObj = new ruydad;
+
+
+        /* اگه فرم درست پر نشه ارور بده */
+        $filedsCount = 20 - count(array_filter(
+            $post,
+            function ($x) {
+                return $x !== '';
+            }
+        ));
+        if ($filedsCount !== 0 && !isset($post['confirm'])) {
+            $result['msg'] = 'فیلد ها به درستی پر نشده اند. ' . (int) $filedsCount  . ' فیلد خالی می باشد.';
+            $result['type'] = 'error';
+
+            $dataStack->add_session('data', $post);
+            $messageStack->add_session('message', $result['msg'], $result['type']);
+            redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $result['msg']);
+        }
+
+
+
+        /* ارسال فرم */
+        if (isset($post['temporary'])) {
+            $ruydadObj->setFields($post);
+            $ruydadObj->startdate = convertJToGDate($ruydadObj->startdate);
+            $ruydadObj->finishdate = convertJToGDate($ruydadObj->finishdate);
+            $ruydadObj->admin_id = $admin_info['admin_id'];
+            $ruydadObj->status = 0;
+            $ruydadObj->save();
+
+            $result['msg'] = 'ثبت موقت انجام شد.';
+            $result['type'] = 'warning';
+        } elseif (isset($post['final'])) {
+            $ruydadObj->setFields($post);
+            $ruydadObj->startdate = convertJToGDate($ruydadObj->startdate);
+            $ruydadObj->finishdate = convertJToGDate($ruydadObj->finishdate);
+            $ruydadObj->admin_id = $admin_info['admin_id'];
+            $ruydadObj->status = 1;
+            $ruydadObj->save();
+
+            // محاسبه جدول import
+            // اگر status 1 بود
+
+            $result['msg'] = '.ثبت نهایی انجام شد';
+            $result['type'] = 'success';
+        } elseif (isset($post['confirm'])) {
+            /* فقط برای اونایی که تایید میخوان */
+            $ruydad = $ruydadObj::find((int)$post['confirm']);
+            $ruydad->status = 1;
+            $ruydad->save();
+
+            $result['msg'] = '.ثبت نهایی انجام شد';
+            $result['type'] = 'success';
+        } else {
+        }
+
+
+
+        $messageStack->add_session('message', $result['msg'], $result['type']);
+        redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $result['msg']);
+    }
+
+    function shora()
+    {
+        global $messageStack, $dataStack;
+        $msg = $messageStack->output('message');
+        $data = $dataStack->output('data');
+
+        /* باید اول یک ذخیره موقت داشته باشن بعد ارسال به مافوق */
+        include_once ROOT_DIR . 'component/shakhes/shora/shora.model.php';
+        $shoraObj = new shora;
+        $shora = $shoraObj->getAll()->getList()['export'];
+
+        $options = $this->options('sh_shora');
+
+        $this->fileName = 'shakhes.shora.php';
+        $this->template(compact('shora', 'msg', 'options', 'data'));
+        die();
+    }
+
+    function shoraOnSubmit()
+    {
+        global $messageStack, $admin_info, $dataStack;
+        $result = array();
+        $post = $_POST;
+
+        include_once ROOT_DIR . 'component/shakhes/shora/shora.model.php';
+        $shoraObj = new shora;
+
+
+        /* اگه فرم درست پر نشه ارور بده */
+        $filedsCount = 8 - count(array_filter(
+            $post,
+            function ($x) {
+                return $x !== '';
+            }
+        ));
+        if ($filedsCount !== 0 && !isset($post['confirm'])) {
+            $result['msg'] = 'فیلد ها به درستی پر نشده اند. ' . (int) $filedsCount  . ' فیلد خالی می باشد.';
+            $result['type'] = 'error';
+
+            $dataStack->add_session('data', $post);
+            $messageStack->add_session('message', $result['msg'], $result['type']);
+            redirectPage(RELA_DIR . 'admin/?component=shakhes&action=jalasat', $result['msg']);
+        }
+
+
+
+        /* ارسال فرم */
+        if (isset($post['temporary'])) {
+            $shoraObj->setFields($post);
+            $shoraObj->start_date = convertJToGDate($shoraObj->start_date);
+            $shoraObj->finish_date = convertJToGDate($shoraObj->finish_date);
+            $shoraObj->admin_id = $admin_info['admin_id'];
+            $shoraObj->status = 0;
+            $shoraObj->save();
+
+            $result['msg'] = 'ثبت موقت انجام شد.';
+            $result['type'] = 'warning';
+        } elseif (isset($post['final'])) {
+            $shoraObj->setFields($post);
+            $shoraObj->start_date = convertJToGDate($shoraObj->start_date);
+            $shoraObj->finish_date = convertJToGDate($shoraObj->finish_date);
+            $shoraObj->admin_id = $admin_info['admin_id'];
+            $shoraObj->status = 1;
+            $shoraObj->save();
+
+            // محاسبه جدول import
+            // اگر status 1 بود
+
+
+            $result['msg'] = '.ثبت نهایی انجام شد';
+            $result['type'] = 'success';
+        } elseif (isset($post['confirm'])) {
+            /* فقط برای اونایی که تایید میخوان */
+            $shora = $shoraObj::find((int)$post['confirm']);
+            $shora->status = 1;
+            $shora->save();
+
+            $result['msg'] = '.ثبت نهایی انجام شد';
+            $result['type'] = 'success';
+        } else {
+        }
+
+
+
+        $messageStack->add_session('message', $result['msg'], $result['type']);
+        redirectPage(RELA_DIR . 'admin/?component=shakhes&action=shora', $result['msg']);
+    }
 
     function options($table)
     {

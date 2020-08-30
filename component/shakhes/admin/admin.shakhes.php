@@ -31,26 +31,40 @@ switch ($_GET['action']) {
         $controller->khodezhari();
         break;
 
-        /** زیر قلم */
+        /** جلسات */
     case 'jalasat':
         if ($_POST) {
             $controller->jalasatOnSubmit();
         } else {
             $controller->jalasat();
         }
-
         break;
 
-    case 'shora':
-        $controller->shora();
+        /* دانش اموخته */
+    case 'daneshamukhte':
+        if ($_POST) {
+            $controller->daneshamukhteOnSubmit();
+        } else {
+            $controller->daneshamukhte();
+        }
         break;
 
-    case 'daneshamokhte':
-        $controller->daneshamokhte();
-        break;
-
+        /* رویداد */
     case 'ruydad':
-        $controller->ruydad();
+        if ($_POST) {
+            $controller->ruydadOnSubmit();
+        } else {
+            $controller->ruydad();
+        }
+        break;
+
+        /* شورا */
+    case 'shora':
+        if ($_POST) {
+            $controller->shoraOnSubmit();
+        } else {
+            $controller->shora();
+        }
         break;
 
     default:
