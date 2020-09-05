@@ -18,11 +18,27 @@
         <div class="panel-body">
             <table class="table table-striped">
                 <tr>
-                    <td>1</td>
-                    <td>adsf</td>
-                    <td><input class="form-control"></td>
+
+                    <div class="panel-body">
+                        <div id="container"  >
+                            <div class='table-cont1'>
+                                <table  id="example" class="companyTable table table-striped table-bordered rtl" cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr style="text-align: center">
+                                        <td colspan="1" >کد قلم</td>
+                                        <td colspan="1" bgcolor= #fff8dc>عنوان قلم</td>
+                                        <td colspan="1" bgcolor= #8DD4FF>شش ماهه</td>
+                                        <td colspan="1" bgcolor= #f2a89e>یکساله</td>
+                                    </tr>
+                                    </thead>
+                                    <td>1</td>
+                                    <td>adsf</td>
+                                    <td><input class="form-control"></td>
+                                    <td><input class="form-control"></td>
                 </tr>
             </table>
-        </div>
+                                <input type="submit" class="btn btn-info btn-white btn-large " style="font-size: 20px" name="submit" value="ذخیره موقت" />
+                                <input type="submit" class="btn btn-success btn-white btn-large" style="font-size: 20px" name="submit1" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')"  value="ارسال به مافوق" />
+                            </div>
     </div>
 </div>
