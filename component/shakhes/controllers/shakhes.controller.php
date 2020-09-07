@@ -307,11 +307,35 @@ class shakhesController
 
 
     function khodezhari()
+
     {
+        global $admin_info;
+
+        include ROOT_DIR . "component/shakhes/model/shakhes.model.php";
+
+
+        // پیدا کردن قلم ها و کلان
+        $obj = new shakhes();
+        $query = 'select g.ghalam_id , r_k_s.kalan_no , g.ghalam   from sh_ghalam g
+        inner join sh_rel_ghalam_shakhes r_g_s on g.ghalam_id = r_g_s.ghalam_id
+        inner join sh_rel_kalan_shakhes r_k_s on r_g_s.shakhes_id = r_k_s.shakhes_id
+        group by ghalam_id';
+        $res = $obj->query($query)->getList();
+        $ghalams = ($res['export']['recordsCount'] > 0) ?  $res['export']['list'] : array();
+
+
+
+        //فیلترینگ
+/*        if (isset($_GET['filter_columns'])) {
+            $this->_selectedAdmins = explode(',', $_GET['filter_columns']);
+        }*/
         $this->fileName = 'shakhes.khodezhari.php';
-        $this->template(compact('shakhes', 'ghalam'));
+        $this->template(compact('shakhes', 'ghalams'));
+
         die();
     }
+    // پیدا کردن قلم ها و کلان
+
 
 
     function jalasat()
@@ -428,16 +452,38 @@ class shakhesController
 
 
         /* اگه فرم درست پر نشه ارور بده */
-        $filedsCount = 13 - count(array_filter(
-            $post,
-            function ($x) {
-                return $x !== '';
-            }
-        ));
-        if ($filedsCount !== 0 && !isset($post['confirm'])) {
-            $result['msg'] = 'فیلد ها به درستی پر نشده اند. ' . (int) $filedsCount  . ' فیلد خالی می باشد.';
-            $result['type'] = 'error';
+        $error = 0;
+        if($post['name_family'] == ''){
+            $result['msg'] = 'فیلد نام و نام خانوادگی تکمیل نشده است.';
+            $error = 1;
+        }
+        else if($post['graduated_date'] == ''){
+            $result['msg'] = 'فیلد تاریخ فارغ التحصیلی تکمیل نشده است.';
+            $error = 1;
+        }
+        else if($post['grade'] == ''){
+            $result['msg'] = 'فیلد مقطع تکمیل نشده است.';
+            $error = 1;
+        }
+        else if($post['course'] == ''){
+            $result['msg'] = 'فیلد رشته تکمیل نشده است.';
+            $error = 1;
+        }
+        else if($post['employed_status'] == ''){
+            $result['msg'] = 'فیلد وضعیت اشتغال تکمیل نشده است.';
+            $error = 1;
+        }
+        else if($post['organ_name'] == ''){
+            $result['msg'] = 'فیلد نام سازمان مشغول به کار تکمیل نشده است.';
+            $error = 1;
+        }
+        else if($post['continue_education'] == ''){
+            $result['msg'] = 'فیلد وضعیت ادامه تحصیل تکمیل نشده است.';
+            $error = 1;
+        }
 
+        if ($error == 1) {
+            $result['type'] = 'error';
             $dataStack->add_session('data', $post);
             $messageStack->add_session('message', $result['msg'], $result['type']);
             redirectPage(RELA_DIR . 'admin/?component=shakhes&action=daneshamukhte', $result['msg']);
@@ -527,7 +573,7 @@ class shakhesController
 
 
         /* اگه فرم درست پر نشه ارور بده */
-        $filedsCount = 20 - count(array_filter(
+        /*$filedsCount = 20 - count(array_filter(
             $post,
             function ($x) {
                 return $x !== '';
@@ -540,8 +586,59 @@ class shakhesController
             $dataStack->add_session('data', $post);
             $messageStack->add_session('message', $result['msg'], $result['type']);
             redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $result['msg']);
+        }*/
+        $error = 0;
+        if($post['type'] == ''){
+            $result['msg'] = 'فیلد قلم تکمیل نشده است.';
+            $error = 1;
+        }
+        else if($post['title'] == ''){
+            $result['msg'] = 'فیلد عنوان رویداد تکمیل نشده است.';
+            $error = 1;
+        }
+        else if($post['startdate'] == ''){
+            $result['msg'] = 'فیلد ابتدای دوره تکمیل نشده است.';
+            $error = 1;
+        }
+        else if($post['finishdate'] == ''){
+            $result['msg'] = 'فیلد انتهای دوره تکمیل نشده است.';
+            $error = 1;
+        }
+        else if($post['time'] == ''){
+            $result['msg'] = 'فیلد مدت زمان برگزاری (ساعت) تکمیل نشده است.';
+            $error = 1;
+        }
+        else if($post['nationality'] == ''){
+            $result['msg'] = 'فیلد وضعیت ملی/بین المللی تکمیل نشده است.';
+            $error = 1;
+        }
+        else if($post['main_executor'] == ''){
+            $result['msg'] = 'فیلد مجری/برگزار کننده اصلی تکمیل نشده است.';
+            $error = 1;
+        }
+        else if($post['execute_type'] == ''){
+            $result['msg'] = 'فیلد نحوه برگزاری تکمیل نشده است.';
+            $error = 1;
+        }
+        else if($post['income'] == ''){
+            $result['msg'] = 'فیلد درآمد کسب شده تکمیل نشده است.';
+            $error = 1;
+        }
+        else if($post['website_link'] == ''){
+            $result['msg'] = 'فیلد لینک رویداد بر روی سایت تکمیل نشده است.';
+            $error = 1;
+        }
+        else if($post['hami_type'] == ''){
+            $result['msg'] = 'فیلد عنوان حامی تکمیل نشده است.';
+            $error = 1;
         }
 
+        if ($error == 1) {
+            $result['type'] = 'error';
+            $dataStack->add_session('data', $post);
+            $messageStack->add_session('message', $result['msg'], $result['type']);
+            redirectPage(RELA_DIR . 'admin/?component=shakhes&action=daneshamukhte', $result['msg']);
+        }
 
 
         /* ارسال فرم */
@@ -612,21 +709,35 @@ class shakhesController
         include_once ROOT_DIR . 'component/shakhes/shora/shora.model.php';
         $shoraObj = new shora;
 
-
         /* اگه فرم درست پر نشه ارور بده */
-        $filedsCount = 8 - count(array_filter(
-            $post,
-            function ($x) {
-                return $x !== '';
-            }
-        ));
-        if ($filedsCount !== 0 && !isset($post['confirm'])) {
-            $result['msg'] = 'فیلد ها به درستی پر نشده اند. ' . (int) $filedsCount  . ' فیلد خالی می باشد.';
-            $result['type'] = 'error';
+        $error = 0;
+        if($post['shora_type'] == ''){
+            $result['msg'] = 'فیلد عنوان شورا/کارگروه/انجمن تکمیل نشده است.';
+            $error = 1;
+        }
+        else if($post['name_family'] == ''){
+            $result['msg'] = 'فیلد نام و نام خانوادگی تکمیل نشده است.';
+            $error = 1;
+        }
+        else if($post['start_date'] == ''){
+            $result['msg'] = 'فیلد شروع عضویت تکمیل نشده است.';
+            $error = 1;
+        }
+        else if($post['nationality'] == ''){
+            $result['msg'] = 'فیلد ملی/بین‌المللی تکمیل نشده است.';
+            $error = 1;
+        }
+        else if($post['position'] == ''){
+            $result['msg'] = 'فیلد درج عضویت در صفحه شخصی عضو هیات علمی تکمیل نشده است.';
+            $error = 1;
+        }
 
+
+        if ($error == 1) {
+            $result['type'] = 'error';
             $dataStack->add_session('data', $post);
             $messageStack->add_session('message', $result['msg'], $result['type']);
-            redirectPage(RELA_DIR . 'admin/?component=shakhes&action=jalasat', $result['msg']);
+            redirectPage(RELA_DIR . 'admin/?component=shakhes&action=daneshamukhte', $result['msg']);
         }
 
 

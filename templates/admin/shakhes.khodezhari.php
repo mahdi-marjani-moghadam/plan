@@ -27,15 +27,27 @@
                                     <tr style="text-align: center">
                                         <td colspan="1" >کد قلم</td>
                                         <td colspan="1" bgcolor= #fff8dc>عنوان قلم</td>
-                                        <td colspan="1" bgcolor= #8DD4FF>شش ماهه</td>
-                                        <td colspan="1" bgcolor= #f2a89e>یکساله</td>
+                                        <td colspan="1" bgcolor= #f2a89e>شش ماهه</td>
+                                        <td colspan="1" bgcolor= #f2a89e>توضیحات</td>
+                                        <td colspan="1" bgcolor= #8DD4FF>یکساله</td>
+                                        <td colspan="1" bgcolor= #8DD4FF>توضیحات</td>
                                     </tr>
                                     </thead>
-                                    <td>1</td>
-                                    <td>adsf</td>
+                                    <?php
+                                    foreach ($ghalams as $ghalam):
+                                    ?>
+                                    <tr>
+                                    <td><?=$ghalam['ghalam_id']?></td>
+                                    <td><?=$ghalam['ghalam']?></td>
                                     <td><input class="form-control"></td>
                                     <td><input class="form-control"></td>
-                </tr>
+                                    <td><input class="form-control"></td>
+                                    <td><input class="form-control"></td>
+
+                    </tr>
+                                    <?php
+                                    endforeach;
+                                    ?>
             </table>
                                 <input type="submit" class="btn btn-info btn-white btn-large " style="font-size: 20px" name="submit" value="ذخیره موقت" />
                                 <input type="submit" class="btn btn-success btn-white btn-large" style="font-size: 20px" name="submit1" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')"  value="ارسال به مافوق" />
