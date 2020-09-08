@@ -32,6 +32,7 @@
                         <td>ملی/بین‌المللی*</td>
                         <td>
                             <select name="nationality">
+                                <option value="">انتخاب کنید</option>
                                 <? foreach($options['nationality'] as $item):?>
                                 <option <?= ($data['nationality'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>
@@ -41,6 +42,7 @@
                         <td>سمت/پست*</td>
                         <td>
                             <select name="position">
+                                <option value="">انتخاب کنید</option>
                                 <? foreach($options['position'] as $item):?>
                                 <option <?= ($data['position'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>
@@ -50,9 +52,10 @@
                     <tr>
                         <td>درج عضویت در صفحه شخصی عضو هیات علمی*</td>
                         <td>
-                            <select name="position">
-                                <? foreach($options['position'] as $item):?>
-                                <option <?= ($data['position'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
+                            <select name="personal_page">
+                                <option value="">انتخاب کنید</option>
+                                <? foreach($options['personal_page'] as $item):?>
+                                <option <?= ($data['personal_page'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>
                             </select>
                         </td>

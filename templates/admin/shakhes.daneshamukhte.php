@@ -24,6 +24,7 @@
                         <td>مقطع*</td>
                         <td>
                             <select name="grade">
+                                <option value="">انتخاب کنید</option>
                                 <? foreach($options['grade'] as $item):?>
                                 <option <?= ($data['grade'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>
@@ -37,6 +38,7 @@
                         <td>نوع ارتباط/همکاری با دانشگاه</td>
                         <td>
                             <select name="relation_type">
+                                <option value="">انتخاب کنید</option>
                                 <? foreach($options['relation_type'] as $item):?>
                                 <option <?= ($data['relation_type'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>
@@ -46,6 +48,7 @@
                         <td>وضعیت اشتغال*</td>
                         <td>
                             <select name="employed_status">
+                                <option value="">انتخاب کنید</option>
                                 <? foreach($options['employed_status'] as $item):?>
                                 <option <?= ($data['employed_status'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>
@@ -63,6 +66,7 @@
                         <td>وضعیت ادامه تحصیل*</td>
                         <td>
                             <select name="continue_education">
+                                <option value="">انتخاب کنید</option>
                                 <? foreach($options['continue_education'] as $item):?>
                                 <option <?= ($data['continue_education'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>

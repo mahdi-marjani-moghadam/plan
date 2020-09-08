@@ -27,8 +27,8 @@
 
                         <td>مقطع*</td>
                         <td>
-
                             <select name="grade">
+                                <option value="">انتخاب کنید</option>
                                 <? foreach($options['grade'] as $item):?>
                                 <option <?= ($data['grade'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>

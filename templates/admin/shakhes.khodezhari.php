@@ -33,6 +33,28 @@
                                         <td colspan="1" bgcolor= #8DD4FF>توضیحات</td>
                                     </tr>
                                     </thead>
+                                    <div class="col-md-10 col-sm-12 col-sx-12">
+                                        <?
+                                        $msg = $messageStack->output('message');
+                                        if($msg != ''):
+                                            echo $msg;
+                                        endif;
+                                        ?>
+                                        <? foreach ($child as $v):?>
+                                            <div class="col-md-2 col-xs-12 col-sm-12 ">
+
+                                                <div class="col-md-12 confirm-vahed ">
+<!--                                                    <div class="col-md-12" style="height: 50px">-->
+<!--                                                        <label for="">--><?//=$v['name'].' '.$v['family']?><!--</label>-->
+<!--                                                    </div>-->
+                                                    <div class="col-md-12">
+                                                        <a href="<?=RELA_DIR?>admin/?component=reports&action=confirm&id=<?=$v['admin_id']?>&s=1" class="btn btn-primary btn-block">تایید</a>
+                                                        <a href="<?=RELA_DIR?>admin/?component=reports&action=confirm&id=<?=$v['admin_id']?>&s=2" class="btn btn-primary btn-block">نیازمند اصلاح</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <? endforeach;?>
+                                    </div>
                                     <?php
                                     foreach ($ghalams as $ghalam):
                                     ?>
@@ -43,7 +65,6 @@
                                     <td><input class="form-control"></td>
                                     <td><input class="form-control"></td>
                                     <td><input class="form-control"></td>
-
                     </tr>
                                     <?php
                                     endforeach;

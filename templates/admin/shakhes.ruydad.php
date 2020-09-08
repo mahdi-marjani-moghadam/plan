@@ -18,15 +18,17 @@
                         <td>قلم*</td>
                         <td>
                             <select name="type">
+                                <option value="">انتخاب کنید</option>
                                 <? foreach($options['type'] as $item):?>
                                 <option <?= ($data['type'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>
                             </select>
                         </td>
 
-                        <td>هدف استراتژیک</td>
+                        <td>هدف استراتژیک*</td>
                         <td>
                             <select name="amaliati_no">
+                                <option value="">انتخاب کنید</option>
                                 <? foreach($amaliati as $amaliati_no => $amaliati):?>
                                 <option <?= ($data['amaliati_no'] === $amaliati_no) ? 'selected' : '' ?> value="<?= $amaliati_no ?>"><?= $amaliati ?></option>
                                 <?endforeach;?>
@@ -50,6 +52,7 @@
                         <td>ملی/بین المللی*</td>
                         <td>
                             <select name="nationality">
+                                <option value="">انتخاب کنید</option>
                                 <? foreach($options['nationality'] as $item):?>
                                 <option <?= ($data['nationality'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>
@@ -59,6 +62,7 @@
                         <td>عنوان مخاطب</td>
                         <td>
                             <select name="member_type">
+                                <option value="">انتخاب کنید</option>
                                 <? foreach($options['member_type'] as $item):?>
                                 <option <?= ($data['member_type'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>
@@ -72,6 +76,7 @@
                         <td>مجری/برگزار کننده اصلی*</td>
                         <td>
                             <select name="main_executor">
+                                <option value="">انتخاب کنید</option>
                                 <? foreach($options['main_executor'] as $item):?>
                                 <option <?= ($data['main_executor'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>
@@ -84,6 +89,7 @@
                         <td>نحوه برگزاری*</td>
                         <td>
                             <select name="execute_type">
+                                <option value="">انتخاب کنید</option>
                                 <? foreach($options['execute_type'] as $item):?>
                                 <option <?= ($data['execute_type'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>
