@@ -21,6 +21,17 @@ switch ($_GET['action']) {
     case 'setting':
         $controller->shakhesSetting();
         break;
+    case 'adminSetting':
+        
+
+
+        if ($_POST) {
+            $controller->adminSettingOnSubmmit();
+        } else {
+            $controller->adminSetting();
+        }
+        break;
+
         /** توابع شاخص ها  */
     case 'delete':
         $controller->shakhesDelete($_GET);
@@ -66,6 +77,8 @@ switch ($_GET['action']) {
             $controller->shora();
         }
         break;
+
+
 
     default:
         $controller->showList();

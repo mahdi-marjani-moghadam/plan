@@ -18,7 +18,7 @@
         <!--/sidebar-item-->
 
 
-        <? if ($admin_info['group_admin'] == '0') : ?>
+        <?php if ($admin_info['group_admin'] == '0') : ?>
         <li>
             <a class="Download">
                 <i class="sidebar-icon fa fa-bar-chart"></i>
@@ -39,8 +39,8 @@
                 <!--/child-item-->
             </ul>
         </li>
-        <? endif; ?>
-        <? if ($admin_info['group_admin'] == '1' && $admin_info['parent_id'] != 0) : ?>
+        <?php endif; ?>
+        <?php if ($admin_info['group_admin'] == '1' && $admin_info['parent_id'] != 0) : ?>
         <li>
             <a class="Download">
                 <i class="sidebar-icon fa fa-bar-chart"></i>
@@ -71,9 +71,9 @@
                 </li>
             </ul>
         </li>
-        <? endif; ?>
+        <?php endif; ?>
 
-        <? if ($admin_info['parent_id'] == '0') : ?>
+        <?php if ($admin_info['parent_id'] == '0') : ?>
         <li>
             <a class="Download">
                 <i class="sidebar-icon fa fa-bar-chart"></i>
@@ -156,7 +156,7 @@
 
             </ul>
         </li>
-        <? endif; ?>
+        <?php endif; ?>
 
 
 
@@ -169,7 +169,7 @@
             </a>
         </li>
         <!--/sidebar-item-->
-        <?
+        <?php
         if ($admin_info['admin1'] != 0 || $admin_info['admin2'] != 0 || $admin_info['admin3'] != 0) :
         ?>
         <!--<li>
@@ -179,7 +179,7 @@
                 </a>
             </li>-->
         <!--/sidebar-item-->
-        <?
+        <?php
         endif;
         if ($admin_info['admin1'] != 0 || $admin_info['admin2'] != 0 || $admin_info['admin3'] != 0) :
         ?>
@@ -190,7 +190,7 @@
             </a>
         </li>
         <!--/sidebar-item-->
-        <?
+        <?php
         endif;
         include_once ROOT_DIR . 'component/admin/admin/model/admin.admin.model.php';
         $oop = new adminadminModel();
@@ -233,9 +233,15 @@
                     </a>
                 </li>
 
+
                 <li>
                     <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=setting">
                         <span class="sidebar-text text-16"> تنظیمات شاخص</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= RELA_DIR ?>admin/page/1/?component=shakhes&action=adminSetting">
+                        <span class="sidebar-text text-16"> تنظیمات ادمین</span>
                     </a>
                 </li>
             </ul>

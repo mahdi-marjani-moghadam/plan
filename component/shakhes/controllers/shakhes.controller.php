@@ -40,9 +40,8 @@ class shakhesController
         }
     }
 
-    function selected($admins)
+    public function selected($admins)
     {
-
         foreach ($admins as &$admin) {
             $admin['selected'] = 'false';
 
@@ -55,7 +54,7 @@ class shakhesController
         return $admins;
     }
 
-    function childs($admins)
+    public function childs($admins)
     {
         $obj = new shakhes();
         //print_r_debug(array_column($admins, 'selected'));
@@ -80,7 +79,7 @@ class shakhesController
         ا ۶ تا جدول به ازا اهداف داشته باشیم
         اونایی که group_admin اونها ۱ باشه میتونن همه رو ببینن
      */
-    function showList()
+    public function showList()
     {
         global $admin_info;
 
@@ -113,15 +112,10 @@ class shakhesController
             $admins = $obj->query($query)->getList()['export']['list'];
             $admins = $this->selected($admins);
 
-            //$child = $this->childs($admins);
+        //$child = $this->childs($admins);
             //print_r_debug($admins);
-
-
-
-        } else if ($admin_info['group_admin'] == 1) { // دانشکده
-
+        } elseif ($admin_info['group_admin'] == 1) { // دانشکده
         } else { // واحد
-
         }
 
 
@@ -131,12 +125,105 @@ class shakhesController
         die();
     }
 
+    public function adminSetting()
+    {
+        global $admin_info,$PARAM;
+        
+        // پیدا کردن قلم ها
+        include ROOT_DIR . "component/shakhes/model/ghalam.model.php";
+        $obj = new ghalam();
 
+        $url_main=substr($_SERVER['REQUEST_URI'], strlen($SUB_FOLDER)+1);
+        $url_main=urldecode($url_main);
+        $PARAM=explode('/', $url_main);
+        $PARAM=array_filter($PARAM, 'strlen');
+        if (array_search('page', $PARAM)) {
+            $index_pageSize=array_search('page', $PARAM);
+            $page = $PARAM[$index_pageSize+1];
+        }
+        
+        $PAGE_SIZE = 10;
+        $filter['limit']['start']=(isset($page))?($page-1)*$PAGE_SIZE:'0';
+        $filter['limit']['length']=$PAGE_SIZE;
+        // $limit['order']['date']='DESC';
+        
+
+        $res = $obj->getByFilter($filter);
+        $pagination = $this->pagination($res, $PAGE_SIZE)['export']['list'];
+        
+        
+        $ghalam = ($res['export']['recordsCount'] > 0) ?  $res['export']['list'] : array();
+        
+
+        include ROOT_DIR . "component/admin/model/admin.model.php";
+        // پیدا کردن ستون های واحد
+        if ($admin_info['parent_id'] == 0 || $admin_info['admin_id'] == 3121 || $admin_info['admin_id'] == 6) { // مدیریت دانشگاه
+
+            $query = 'select admin_id,name,family from admin where  parent_id = 1 order by parent_id';
+            $admins = $obj->query($query)->getList()['export']['list'];
+            $admins = $this->selected($admins);
+            
+        //$child = $this->childs($admins);
+            //print_r_debug($admins);
+        } elseif ($admin_info['group_admin'] == 1) { // دانشکده
+        } else { // واحد
+        }
+
+
+
+        $this->fileName = 'shakhes.adminSetting.php';
+        $this->template(compact('ghalam', 'admins', 'pagination'));
+        die();
+    }
+    public function adminSettingOnSubmmit()
+    {
+        $post = $_POST;
+        dd($post);
+    }
+    private function pagination($res=array(), $PAGE_SIZE = 10)
+    {
+        $pageCount = ceil($res['export']['recordsCount']/$PAGE_SIZE);
+        
+
+        $pagination=array();
+        $temp = 1;
+        $SUB_FOLDER = 'admin';
+        $url_main=substr($_SERVER['REQUEST_URI'], strlen($SUB_FOLDER)+1);
+        $url_main=urldecode($url_main);
+        
+        $PARAM=explode('/', $url_main);
+        
+
+        $PARAM=array_filter($PARAM, 'strlen');
+        
+
+        if (array_search('page', $PARAM)) {
+            $index_pageSize=array_search('page', $PARAM);
+
+            unset($PARAM[$index_pageSize]);
+            unset($PARAM[$index_pageSize+1]);
+
+            $PARAM=implode('/', $PARAM);
+            
+            $PARAM=explode('/', $PARAM);
+            $PARAM=array_filter($PARAM, 'strlen');
+        }
+
+
+        for ($i=1;$i<=$pageCount;$i++) {
+            $pagination[]=RELA_DIR.'admin'.'/page/'.$temp.'/'.$PARAM[0];
+            $temp = $temp + 1;
+        }
+        
+        $result['result'] = 1;
+        $result['export']['list'] = $pagination;
+        return $result;
+    }
     /**
       تنظیمات شاخص
       نمایش لیست شاخص ها
      */
-    function shakhesSetting()
+    public function shakhesSetting()
     {
 
 
@@ -200,9 +287,8 @@ class shakhesController
     }
 
 
-    function shakhesDelete($post)
+    public function shakhesDelete($post)
     {
-
         include ROOT_DIR . "component/shakhes/model/shakhes.model.php";
 
         $shakhes = shakhes::find($post['id']);
@@ -210,7 +296,7 @@ class shakhesController
         dd($shakhes);
     }
 
-    function settingAdd($post)
+    public function settingAdd($post)
     {
 
         /** اخرین شاخص */
@@ -225,7 +311,7 @@ class shakhesController
         /** shakhes */
 
         // $sh = new shakhes();
-        // $sh->shakhes_id = 
+        // $sh->shakhes_id =
 
         /** rel ghalam shakhes */
 
@@ -240,7 +326,7 @@ class shakhesController
         return $result;
     }
 
-    function settingEdit($post)
+    public function settingEdit($post)
     {
         $result['post'] = $post;
 
@@ -272,7 +358,7 @@ class shakhesController
             $newRelGhalamShakhes->ghalam_id = $post['ghalams'];
             $newRelGhalamShakhes->type =  $post['type'];
             $newRelGhalamShakhes->save();
-        } else if ($post['type'] == 'sum') {
+        } elseif ($post['type'] == 'sum') {
             foreach ($post['ghalams'] as $ghalam_id) {
                 $newRelGhalamShakhes = new relGhalamShakhes();
                 $newRelGhalamShakhes->shakhes_id = $post['shakhes_id'];
@@ -280,7 +366,7 @@ class shakhesController
                 $newRelGhalamShakhes->type = $post['type'];
                 $newRelGhalamShakhes->save();
             }
-        } else if ($post['type'] == 'divid') {
+        } elseif ($post['type'] == 'divid') {
             foreach ($post['ghalams']['up'] as $ghalam_id) {
                 $newRelGhalamShakhes = new relGhalamShakhes();
                 $newRelGhalamShakhes->shakhes_id = $post['shakhes_id'];
@@ -306,8 +392,7 @@ class shakhesController
     }
 
 
-    function khodezhari()
-
+    public function khodezhari()
     {
         global $admin_info;
 
@@ -326,9 +411,9 @@ class shakhesController
 
 
         //فیلترینگ
-/*        if (isset($_GET['filter_columns'])) {
-            $this->_selectedAdmins = explode(',', $_GET['filter_columns']);
-        }*/
+        /*        if (isset($_GET['filter_columns'])) {
+                    $this->_selectedAdmins = explode(',', $_GET['filter_columns']);
+                }*/
         $this->fileName = 'shakhes.khodezhari.php';
         $this->template(compact('shakhes', 'ghalams'));
 
@@ -338,7 +423,7 @@ class shakhesController
 
 
 
-    function jalasat()
+    public function jalasat()
     {
         global $messageStack, $dataStack;
         $msg = $messageStack->output('message');
@@ -356,7 +441,7 @@ class shakhesController
         die();
     }
 
-    function jalasatOnSubmit()
+    public function jalasatOnSubmit()
     {
         global $messageStack, $admin_info, $dataStack;
         $result = array();
@@ -424,7 +509,7 @@ class shakhesController
         redirectPage(RELA_DIR . 'admin/?component=shakhes&action=jalasat', $result['msg']);
     }
 
-    function daneshamukhte()
+    public function daneshamukhte()
     {
         global $messageStack, $dataStack;
         $msg = $messageStack->output('message');
@@ -441,7 +526,7 @@ class shakhesController
         $this->template(compact('daneshamukhte', 'msg', 'options', 'data'));
         die();
     }
-    function daneshamukhteOnSubmit()
+    public function daneshamukhteOnSubmit()
     {
         global $messageStack, $admin_info, $dataStack;
         $result = array();
@@ -453,31 +538,25 @@ class shakhesController
 
         /* اگه فرم درست پر نشه ارور بده */
         $error = 0;
-        if($post['name_family'] == ''){
+        if ($post['name_family'] == '') {
             $result['msg'] = 'فیلد نام و نام خانوادگی تکمیل نشده است.';
             $error = 1;
-        }
-        else if($post['graduated_date'] == ''){
+        } elseif ($post['graduated_date'] == '') {
             $result['msg'] = 'فیلد تاریخ فارغ التحصیلی تکمیل نشده است.';
             $error = 1;
-        }
-        else if($post['grade'] == ''){
+        } elseif ($post['grade'] == '') {
             $result['msg'] = 'فیلد مقطع تکمیل نشده است.';
             $error = 1;
-        }
-        else if($post['course'] == ''){
+        } elseif ($post['course'] == '') {
             $result['msg'] = 'فیلد رشته تکمیل نشده است.';
             $error = 1;
-        }
-        else if($post['employed_status'] == ''){
+        } elseif ($post['employed_status'] == '') {
             $result['msg'] = 'فیلد وضعیت اشتغال تکمیل نشده است.';
             $error = 1;
-        }
-        else if($post['organ_name'] == ''){
+        } elseif ($post['organ_name'] == '') {
             $result['msg'] = 'فیلد نام سازمان مشغول به کار تکمیل نشده است.';
             $error = 1;
-        }
-        else if($post['continue_education'] == ''){
+        } elseif ($post['continue_education'] == '') {
             $result['msg'] = 'فیلد وضعیت ادامه تحصیل تکمیل نشده است.';
             $error = 1;
         }
@@ -534,7 +613,7 @@ class shakhesController
     
 
 
-    function ruydad()
+    public function ruydad()
     {
         global $messageStack, $dataStack;
         $msg = $messageStack->output('message');
@@ -562,7 +641,7 @@ class shakhesController
         die();
     }
 
-    function ruydadOnSubmit()
+    public function ruydadOnSubmit()
     {
         global $messageStack, $admin_info, $dataStack;
         $result = array();
@@ -588,47 +667,37 @@ class shakhesController
             redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $result['msg']);
         }*/
         $error = 0;
-        if($post['type'] == ''){
+        if ($post['type'] == '') {
             $result['msg'] = 'فیلد قلم تکمیل نشده است.';
             $error = 1;
-        }
-        else if($post['title'] == ''){
+        } elseif ($post['title'] == '') {
             $result['msg'] = 'فیلد عنوان رویداد تکمیل نشده است.';
             $error = 1;
-        }
-        else if($post['startdate'] == ''){
+        } elseif ($post['startdate'] == '') {
             $result['msg'] = 'فیلد ابتدای دوره تکمیل نشده است.';
             $error = 1;
-        }
-        else if($post['finishdate'] == ''){
+        } elseif ($post['finishdate'] == '') {
             $result['msg'] = 'فیلد انتهای دوره تکمیل نشده است.';
             $error = 1;
-        }
-        else if($post['time'] == ''){
+        } elseif ($post['time'] == '') {
             $result['msg'] = 'فیلد مدت زمان برگزاری (ساعت) تکمیل نشده است.';
             $error = 1;
-        }
-        else if($post['nationality'] == ''){
+        } elseif ($post['nationality'] == '') {
             $result['msg'] = 'فیلد وضعیت ملی/بین المللی تکمیل نشده است.';
             $error = 1;
-        }
-        else if($post['main_executor'] == ''){
+        } elseif ($post['main_executor'] == '') {
             $result['msg'] = 'فیلد مجری/برگزار کننده اصلی تکمیل نشده است.';
             $error = 1;
-        }
-        else if($post['execute_type'] == ''){
+        } elseif ($post['execute_type'] == '') {
             $result['msg'] = 'فیلد نحوه برگزاری تکمیل نشده است.';
             $error = 1;
-        }
-        else if($post['income'] == ''){
+        } elseif ($post['income'] == '') {
             $result['msg'] = 'فیلد درآمد کسب شده تکمیل نشده است.';
             $error = 1;
-        }
-        else if($post['website_link'] == ''){
+        } elseif ($post['website_link'] == '') {
             $result['msg'] = 'فیلد لینک رویداد بر روی سایت تکمیل نشده است.';
             $error = 1;
-        }
-        else if($post['hami_type'] == ''){
+        } elseif ($post['hami_type'] == '') {
             $result['msg'] = 'فیلد عنوان حامی تکمیل نشده است.';
             $error = 1;
         }
@@ -682,7 +751,7 @@ class shakhesController
         redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $result['msg']);
     }
 
-    function shora()
+    public function shora()
     {
         global $messageStack, $dataStack;
         $msg = $messageStack->output('message');
@@ -700,7 +769,7 @@ class shakhesController
         die();
     }
 
-    function shoraOnSubmit()
+    public function shoraOnSubmit()
     {
         global $messageStack, $admin_info, $dataStack;
         $result = array();
@@ -711,23 +780,19 @@ class shakhesController
 
         /* اگه فرم درست پر نشه ارور بده */
         $error = 0;
-        if($post['shora_type'] == ''){
+        if ($post['shora_type'] == '') {
             $result['msg'] = 'فیلد عنوان شورا/کارگروه/انجمن تکمیل نشده است.';
             $error = 1;
-        }
-        else if($post['name_family'] == ''){
+        } elseif ($post['name_family'] == '') {
             $result['msg'] = 'فیلد نام و نام خانوادگی تکمیل نشده است.';
             $error = 1;
-        }
-        else if($post['start_date'] == ''){
+        } elseif ($post['start_date'] == '') {
             $result['msg'] = 'فیلد شروع عضویت تکمیل نشده است.';
             $error = 1;
-        }
-        else if($post['nationality'] == ''){
+        } elseif ($post['nationality'] == '') {
             $result['msg'] = 'فیلد ملی/بین‌المللی تکمیل نشده است.';
             $error = 1;
-        }
-        else if($post['position'] == ''){
+        } elseif ($post['position'] == '') {
             $result['msg'] = 'فیلد درج عضویت در صفحه شخصی عضو هیات علمی تکمیل نشده است.';
             $error = 1;
         }
@@ -784,7 +849,7 @@ class shakhesController
         redirectPage(RELA_DIR . 'admin/?component=shakhes&action=shora', $result['msg']);
     }
 
-    function options($table)
+    public function options($table)
     {
         include_once ROOT_DIR . 'component/shakhes/options/options.model.php';
         $optionsObj = new options();
