@@ -6,10 +6,10 @@
     <div id="panel-1" class="panel panel-default border-green">
 
         <div class="panel-body">
-            <a class="btn btn-info btn-lg" href="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat">جلسات</a>
-            <a class="btn btn-info btn-lg" href="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte">دانش آموختگان</a>
-            <a class="btn btn-info btn-lg" href="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad"> رویداد</a>
-            <a class="btn btn-info btn-lg" href="<?= RELA_DIR ?>admin/?component=shakhes&action=shora">شورا</a>
+            <a class="btn btn-info btn-lg" href="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat">فرم جلسات توجیهی تحصیلات تکمیلی</a>
+            <a class="btn btn-info btn-lg" href="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte">فرم همکاری دانش آموختگان و دانشجویان</a>
+            <a class="btn btn-info btn-lg" href="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad"> فرم رویدادهای برگزار شده</a>
+            <a class="btn btn-info btn-lg" href="<?= RELA_DIR ?>admin/?component=shakhes&action=shora">فرم عضویت در شوراهای برون دانشگاهی</a>
         </div>
 
         <div class="panel-heading bg-green">
@@ -26,7 +26,7 @@
                                     <thead>
                                     <tr style="text-align: center">
                                         <td colspan="1" >کد قلم</td>
-                                        <td colspan="1" bgcolor= #fff8dc>عنوان قلم</td>
+                                        <td colspan="1" bgcolor= #fff8dc>قلم آماری</td>
                                         <td colspan="1" bgcolor= #f2a89e>شش ماهه</td>
                                         <td colspan="1" bgcolor= #f2a89e>توضیحات</td>
                                         <td colspan="1" bgcolor= #8DD4FF>یکساله</td>
@@ -44,9 +44,9 @@
                                             <div class="col-md-2 col-xs-12 col-sm-12 ">
 
                                                 <div class="col-md-12 confirm-vahed ">
-<!--                                                    <div class="col-md-12" style="height: 50px">-->
-<!--                                                        <label for="">--><?//=$v['name'].' '.$v['family']?><!--</label>-->
-<!--                                                    </div>-->
+                                                    <div class="col-md-12" style="height: 50px">
+                                                        <label for=""><?=$v['name'].' '.$v['family']?></label>
+                                                    </div>
                                                     <div class="col-md-12">
                                                         <a href="<?=RELA_DIR?>admin/?component=reports&action=confirm&id=<?=$v['admin_id']?>&s=1" class="btn btn-primary btn-block">تایید</a>
                                                         <a href="<?=RELA_DIR?>admin/?component=reports&action=confirm&id=<?=$v['admin_id']?>&s=2" class="btn btn-primary btn-block">نیازمند اصلاح</a>

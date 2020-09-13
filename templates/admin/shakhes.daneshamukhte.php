@@ -2,7 +2,7 @@
 <div class="content-body">
     <div id="panel-1" class="panel panel-default border-green">
         <div class="panel-heading bg-green">
-            <h3 class="panel-title rtl "> فرم دانش آموختگان</h3>
+            <h3 class="panel-title rtl "> فرم جلب همکاری با دانش آموختگان و دانشجویان</h3>
         </div>
         <div class="panel-body">
 
@@ -15,23 +15,30 @@
             <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte" method="post">
                 <table class="form">
                     <tr>
+                        <td>دانشجو/دانش آموخته*</td>
+                        <td><select name="student_status">
+                                <option value="">انتخاب کنید</option>
+                                <? foreach($options['student_status'] as $item):?>
+                                    <option <?= ($data['student_status'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
+                                <?endforeach;?>
+                            </select></td>
+
                         <td>نام و نام خانوادگی*</td>
                         <td><input name="name_family" value="<?= $data['name_family'] ?>" class="form-control"></td>
 
-                        <td>تاریخ فارغ التحصیلی*</td>
+                        <td>تاریخ فارغ التحصیلی</td>
                         <td><input name="graduated_date" value="<?= $data['graduated_date'] ?>" autocomplete="off" class="form-control date"></td>
-
+                    </tr>
+                    <tr>
                         <td>مقطع*</td>
                         <td>
                             <select name="grade">
                                 <option value="">انتخاب کنید</option>
                                 <? foreach($options['grade'] as $item):?>
-                                <option <?= ($data['grade'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
+                                    <option <?= ($data['grade'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>
                             </select>
                         </td>
-                    </tr>
-                    <tr>
                         <td>رشته*</td>
                         <td><input name="course" class="form-control" value="<?= $data['course'] ?>"></td>
 
@@ -44,36 +51,35 @@
                                 <?endforeach;?>
                             </select>
                         </td>
+                    </tr>
 
+                    <tr>
                         <td>وضعیت اشتغال*</td>
                         <td>
                             <select name="employed_status">
                                 <option value="">انتخاب کنید</option>
                                 <? foreach($options['employed_status'] as $item):?>
-                                <option <?= ($data['employed_status'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
+                                    <option <?= ($data['employed_status'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>
                             </select>
                         </td>
-                    </tr>
-
-                    <tr>
                         <td>نام سازمان مشغول به کار*</td>
                         <td><input name="organ_name" value="<?= $data['organ_name'] ?>" class="form-control"></td>
 
                         <td>پست سازمانی</td>
                         <td><input name="organ_position" value="<?= $data['organ_position'] ?>" class="form-control"></td>
 
+                    </tr>
+                    <tr>
                         <td>وضعیت ادامه تحصیل*</td>
                         <td>
                             <select name="continue_education">
                                 <option value="">انتخاب کنید</option>
                                 <? foreach($options['continue_education'] as $item):?>
-                                <option <?= ($data['continue_education'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
+                                    <option <?= ($data['continue_education'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>
                             </select>
                         </td>
-                    </tr>
-                    <tr>
                         <td>نام دانشگاه مقطع بالاتر</td>
                         <td><input name="continue_university" value="<?= $data['continue_university'] ?>" class="form-control"></td>
 
@@ -127,14 +133,17 @@
                             <td><?= $v['continue_education'] ?></td>
                             <td><?= $v['continue_university'] ?></td>
                             <td><?= $v['successes'] ?></td>
-                            <td><?= $v['tozihat'] ?></td>
+                            <td><?= readMore($v['tozihat'],30) ?></td>
                             <td>
                                 <?= ($v['status'] == 0) ? '' : 'ارسال به مافوق' ?>
                                 <? if($v['status'] == 0):  ?>
                                 <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte" method="post">
                                     <button name="confirm" value="<?= $v['id'] ?>" onclick="confirm('آیا از ارسال به مافوق مطمئن هستید؟')" class="btn btn-xs btn-success pull-right">ارسال به مافوق</button>
+
                                 </form>
+                                    <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte&method=delete&id=<?= $v['id'] ?>" class="btn btn-danger " onclick="return confirm('آیا مطمئن هستید؟')">حذف</a>
                                 <? endif;?>
+
                             </td>
                         </tr>
                 <?php
@@ -160,3 +169,44 @@
         text-align: left;
     }
 </style>
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">تحلیل</h4>
+            </div>
+            <div class="modal-body">
+                <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.readMore').click(function (e) {
+            e.preventDefault();
+            $('myModal').modal('hide');
+
+            var text = $(this).data("text");
+            //alert(text);
+            $('#myModal .modal-body').html("<p>" + nl2br(text) + "</p>");
+            $('#myModal').modal('show');
+        })
+    });
+
+    function nl2br (str, replaceMode, isXhtml) {
+
+        var breakTag = (isXhtml) ? '<br />' : '<br>';
+        var replaceStr = (replaceMode) ? '$1'+ breakTag : '$1'+ breakTag +'$2';
+        return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, replaceStr);
+    }
+</script>

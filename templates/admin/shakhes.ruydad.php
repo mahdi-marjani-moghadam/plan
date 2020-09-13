@@ -2,7 +2,7 @@
 <div class="content-body">
     <div id="panel-1" class="panel panel-default border-green">
         <div class="panel-heading bg-green">
-            <h3 class="panel-title rtl "> فرم رویداد</h3>
+            <h3 class="panel-title rtl "> فرم رویدادهای برگزار شده</h3>
         </div>
         <div class="panel-body">
 
@@ -15,7 +15,7 @@
             <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad" method="post">
                 <table class="form">
                     <tr>
-                        <td>قلم*</td>
+                        <td>رویداد*</td>
                         <td>
                             <select name="type">
                                 <option value="">انتخاب کنید</option>
@@ -29,9 +29,13 @@
                         <td>
                             <select name="amaliati_no">
                                 <option value="">انتخاب کنید</option>
-                                <? foreach($amaliati as $amaliati_no => $amaliati):?>
-                                <option <?= ($data['amaliati_no'] === $amaliati_no) ? 'selected' : '' ?> value="<?= $amaliati_no ?>"><?= $amaliati ?></option>
+                                <?/* foreach($amaliati as $amaliati_no => $amaliati):*/?><!--
+                                <option <?/*= ($data['amaliati_no'] === $amaliati_no) ? 'selected' : '' */?> value="<?/*= $amaliati_no */?>"><?/*= $amaliati */?></option>
+                                --><?/*endforeach;*/?>
+                                <? foreach($options['amaliati_no'] as $item):?>
+                                    <option <?= ($data['amaliati_no'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>
+
                             </select>
                         </td>
 
@@ -133,7 +137,7 @@
             <table class="table table-striped">
                 <tr>
                     <th>واحد</th>
-                    <th>قلم</th>
+                    <th>رویداد</th>
                     <th>هدف استراتژیک</th>
                     <th>عنوان رویداد</th>
                     <th>ابتدای دوره</th>
@@ -176,7 +180,7 @@
                             <td><?= $v['cost'] ?></td>
                             <td><?= $v['income'] ?></td>
                             <td><?= $v['website_link'] ?></td>
-                            <td><?= $v['tozihat'] ?></td>
+                            <td><?= readMore($v['tozihat'],30) ?></td>
                             <td><?= $v['hami-type'] ?></td>
                             <td><?= $v['hami_income'] ?></td>
                             <td>
@@ -185,6 +189,8 @@
                                 <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad" method="post">
                                     <button name="confirm" value="<?= $v['id'] ?>" onclick="confirm('آیا از ارسال به مافوق مطمئن هستید؟')" class="btn btn-xs btn-success pull-right">ارسال به مافوق</button>
                                 </form>
+                                    <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad&method=delete&id=<?= $v['id'] ?>" class="btn btn-danger " onclick="return confirm('آیا مطمئن هستید؟')">حذف</a>
+
                                 <? endif;?>
                             </td>
                         </tr>
@@ -211,3 +217,44 @@
         text-align: left;
     }
 </style>
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">تحلیل</h4>
+            </div>
+            <div class="modal-body">
+                <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.readMore').click(function (e) {
+            e.preventDefault();
+            $('myModal').modal('hide');
+
+            var text = $(this).data("text");
+            //alert(text);
+            $('#myModal .modal-body').html("<p>" + nl2br(text) + "</p>");
+            $('#myModal').modal('show');
+        })
+    });
+
+    function nl2br (str, replaceMode, isXhtml) {
+
+        var breakTag = (isXhtml) ? '<br />' : '<br>';
+        var replaceStr = (replaceMode) ? '$1'+ breakTag : '$1'+ breakTag +'$2';
+        return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, replaceStr);
+    }
+</script>

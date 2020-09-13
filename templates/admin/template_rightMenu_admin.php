@@ -9,13 +9,55 @@
         </li>
         <!--/sidebar-item-->
         <li>
+            <a class="Download">
+                <i class="sidebar-icon fa fa-list-alt"></i>
+                <span class="sidebar-text">پایش</span>
+            </a>
+            <ul class="sidebar-child animated fadeInRight">
+        <li>
             <a href="<?php print RELA_DIR; ?>admin/?component=reports&s=STEP_FORM<?= STEP_FORM1 ?>">
-                <i class="sidebar-icon fa fa-list"></i>
+                <!--<i class="sidebar-icon fa fa-list"></i>-->
                 <span class="sidebar-text">گزارش عملکرد</span>
             </a>
 
         </li>
         <!--/sidebar-item-->
+
+                <li>
+                    <a href="<?php print RELA_DIR; ?>admin/?component=form&q=,null,">
+                        <i class="sidebar-icon fa fa-line-chart"></i>
+                        <span class="sidebar-text"> وضعیت پیشرفت</span>
+                    </a>
+                </li>
+                <!--/sidebar-item-->
+                <?php
+                if ($admin_info['admin1'] != 0 || $admin_info['admin2'] != 0 || $admin_info['admin3'] != 0) :
+                    ?>
+                    <!--<li>
+                <a href="<?/*=RELA_DIR*/ ?>admin/?component=rate&action=showResult&id=<?/*=$admin_info['admin_id']*/ ?>">
+                    <i class="sidebar-icon fa fa-group"></i>
+                    <span class="sidebar-text">ارزیابی گروه ها</span>
+                </a>
+            </li>-->
+                    <!--/sidebar-item-->
+                <?php
+                endif;
+                if ($admin_info['admin1'] != 0 || $admin_info['admin2'] != 0 || $admin_info['admin3'] != 0) :
+                    ?>
+                    <li>
+                        <a href="<?php print RELA_DIR; ?>admin/?component=form&action=myForm">
+                           <!-- <i class="sidebar-icon fa fa-list-alt"></i>-->
+                            <span class="sidebar-text">فرم خود اظهاری</span>
+                        </a>
+                    </li>
+                    <!--/sidebar-item-->
+                <?php
+                endif;
+                include_once ROOT_DIR . 'component/admin/admin/model/admin.admin.model.php';
+                $oop = new adminadminModel();
+                $fields['where'] = " admin1={$admin_info['admin_id']} or admin2={$admin_info['admin_id']} or admin3={$admin_info['admin_id']}";
+                $res1 = $oop->getByFilter($fields);
+                ?>
 
 
         <?php if ($admin_info['group_admin'] == '0') : ?>
@@ -161,44 +203,6 @@
 
 
 
-
-        <li>
-            <a href="<?php print RELA_DIR; ?>admin/?component=form&q=,null,">
-                <i class="sidebar-icon fa fa-line-chart"></i>
-                <span class="sidebar-text"> وضعیت پیشرفت</span>
-            </a>
-        </li>
-        <!--/sidebar-item-->
-        <?php
-        if ($admin_info['admin1'] != 0 || $admin_info['admin2'] != 0 || $admin_info['admin3'] != 0) :
-        ?>
-        <!--<li>
-                <a href="<?/*=RELA_DIR*/ ?>admin/?component=rate&action=showResult&id=<?/*=$admin_info['admin_id']*/ ?>">
-                    <i class="sidebar-icon fa fa-group"></i>
-                    <span class="sidebar-text">ارزیابی گروه ها</span>
-                </a>
-            </li>-->
-        <!--/sidebar-item-->
-        <?php
-        endif;
-        if ($admin_info['admin1'] != 0 || $admin_info['admin2'] != 0 || $admin_info['admin3'] != 0) :
-        ?>
-        <li>
-            <a href="<?php print RELA_DIR; ?>admin/?component=form&action=myForm">
-                <i class="sidebar-icon fa fa-list-alt"></i>
-                <span class="sidebar-text">فرم خود اظهاری</span>
-            </a>
-        </li>
-        <!--/sidebar-item-->
-        <?php
-        endif;
-        include_once ROOT_DIR . 'component/admin/admin/model/admin.admin.model.php';
-        $oop = new adminadminModel();
-        $fields['where'] = " admin1={$admin_info['admin_id']} or admin2={$admin_info['admin_id']} or admin3={$admin_info['admin_id']}";
-        $res1 = $oop->getByFilter($fields);
-
-        ?>
-
         <?/* if(($res1['export']['recordsCount']>0)):*/ ?>
         <!--
             <?/* if($admin_info['group_admin']==1):*/ ?>
@@ -213,20 +217,41 @@
         <!--
         -->
         <?/* endif;*/ ?>
+            </ul>
+        </li>
 
 
         <li>
             <a class="Download">
                 <i class="sidebar-icon fa fa-chart-pie"></i>
-                <span class="sidebar-text">شاخص</span>
+                <span class="sidebar-text">ارزیابی</span>
             </a>
             <ul class="sidebar-child animated fadeInRight">
                 <li>
                     <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=khodezhari">
-                        <span class="sidebar-text text-16"> خوداظهاری</span>
-                    </a>
-                </li>
-
+                        <span class="sidebar-text text-16"> خوداظهاری</span></a>
+                        <!--<ul class="sidebar-child animated fadeInRight">
+                            <li>
+                                <a href="<?/*= RELA_DIR */?>admin/?component=shakhes&action=shora">
+                                    <span class="sidebar-text text-16">فرم عضویت در شوراهای برون دانشگاهی</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?/*= RELA_DIR */?>admin/?component=shakhes&action=jalasat">
+                                    <span class="sidebar-text text-16">فرم جلسات توجیهی تحصیلات تکمیلی</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?/*= RELA_DIR */?>admin/?component=shakhes&action=daneshamukhte">
+                                    <span class="sidebar-text text-16">فرم همکاری دانش آموختگان و دانشجویان </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?/*= RELA_DIR */?>admin/?component=shakhes&action=ruydad">
+                                    <span class="sidebar-text text-16">فرم رویدادهای برگزار شده</span>
+                                </a>
+                            </li>
+                        </ul>-->
                 <li>
                     <a href="<?= RELA_DIR ?>admin/?component=shakhes">
                         <span class="sidebar-text text-16"> گزارش</span>

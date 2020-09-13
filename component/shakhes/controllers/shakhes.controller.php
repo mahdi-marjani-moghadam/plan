@@ -628,6 +628,8 @@ class shakhesController
 
 
 
+
+
         $messageStack->add_session('message', $result['msg'], $result['type']);
         redirectPage(RELA_DIR . 'admin/?component=shakhes&action=jalasat', $result['msg']);
     }
@@ -661,7 +663,10 @@ class shakhesController
 
         /* اگه فرم درست پر نشه ارور بده */
         $error = 0;
-        if ($post['name_family'] == '') {
+        if ($post['student_status'] == '') {
+            $result['msg'] = 'فیلد دانشجو/دانش آموخته تکمیل نشده است.';
+            $error = 1;
+        } elseif ($post['name_family'] == '') {
             $result['msg'] = 'فیلد نام و نام خانوادگی تکمیل نشده است.';
             $error = 1;
         } elseif ($post['graduated_date'] == '') {
@@ -733,7 +738,7 @@ class shakhesController
         redirectPage(RELA_DIR . 'admin/?component=shakhes&action=daneshamukhte', $result['msg']);
     }
 
-    
+
 
 
     public function ruydad()
@@ -874,6 +879,7 @@ class shakhesController
         redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $result['msg']);
     }
 
+
     public function shora()
     {
         global $messageStack, $dataStack;
@@ -930,6 +936,8 @@ class shakhesController
 
 
 
+
+
         /* ارسال فرم */
         if (isset($post['temporary'])) {
             $shoraObj->setFields($post);
@@ -971,6 +979,19 @@ class shakhesController
         $messageStack->add_session('message', $result['msg'], $result['type']);
         redirectPage(RELA_DIR . 'admin/?component=shakhes&action=shora', $result['msg']);
     }
+    public function onDelete($className)
+    {
+        global  $messageStack;
+        $id = $_GET['id'];
+        include_once ROOT_DIR . 'component/shakhes/'.$className.'/'.$className.'.model.php';
+        $Obj = $className::find($id);
+        $Obj->delete();
+
+        $result['msg'] = 'با موفقیت انجام شد.';
+        $messageStack->add_session('message', $result['msg'], $result['type']);
+        redirectPage(RELA_DIR . 'admin/?component=shakhes&action='.$className, $result['msg']);
+
+    }
 
     public function options($table)
     {
@@ -984,4 +1005,6 @@ class shakhesController
 
         return $options;
     }
+
+
 }

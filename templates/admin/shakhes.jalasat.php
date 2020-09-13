@@ -2,7 +2,7 @@
 <div class="content-body">
     <div id="panel-1" class="panel panel-default border-green">
         <div class="panel-heading bg-green">
-            <h3 class="panel-title rtl "> فرم جلسات</h3>
+            <h3 class="panel-title rtl ">  فرم برگزاری جلسات توجیهی تحصیلات تکمیلی</h3>
         </div>
         <div class="panel-body">
 
@@ -87,6 +87,8 @@
                                 <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat" method="post">
                                     <button name="confirm" value="<?= $v['id'] ?>" onclick="confirm('آیا از ارسال به مافوق مطمئن هستید؟')" class="btn btn-xs btn-success pull-right">ارسال به مافوق</button>
                                 </form>
+                                    <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat&method=delete&id=<?= $v['id'] ?>" class="btn btn-danger " onclick="return confirm('آیا مطمئن هستید؟')">حذف</a>
+
                                 <? endif;?>
                             </td>
                         </tr>
@@ -113,3 +115,44 @@
         text-align: left;
     }
 </style>
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">تحلیل</h4>
+            </div>
+            <div class="modal-body">
+                <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.readMore').click(function (e) {
+            e.preventDefault();
+            $('myModal').modal('hide');
+
+            var text = $(this).data("text");
+            //alert(text);
+            $('#myModal .modal-body').html("<p>" + nl2br(text) + "</p>");
+            $('#myModal').modal('show');
+        })
+    });
+
+    function nl2br (str, replaceMode, isXhtml) {
+
+        var breakTag = (isXhtml) ? '<br />' : '<br>';
+        var replaceStr = (replaceMode) ? '$1'+ breakTag : '$1'+ breakTag +'$2';
+        return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, replaceStr);
+    }
+</script>

@@ -44,6 +44,9 @@ switch ($_GET['action']) {
 
         /** جلسات */
     case 'jalasat':
+        if($_GET['method'] =='delete'){
+            $controller->onDelete('jalasat');
+        }
         if ($_POST) {
             $controller->jalasatOnSubmit();
         } else {
@@ -53,6 +56,9 @@ switch ($_GET['action']) {
 
         /* دانش اموخته */
     case 'daneshamukhte':
+        if($_GET['method'] =='delete'){
+            $controller->onDelete('daneshamukhte');
+        }
         if ($_POST) {
             $controller->daneshamukhteOnSubmit();
         } else {
@@ -62,6 +68,9 @@ switch ($_GET['action']) {
 
         /* رویداد */
     case 'ruydad':
+        if($_GET['method'] =='delete'){
+            $controller->onDelete('ruydad');
+        }
         if ($_POST) {
             $controller->ruydadOnSubmit();
         } else {
@@ -71,6 +80,9 @@ switch ($_GET['action']) {
 
         /* شورا */
     case 'shora':
+        if($_GET['method'] =='delete'){
+            $controller->onDelete('shora');
+        }
         if ($_POST) {
             $controller->shoraOnSubmit();
         } else {
