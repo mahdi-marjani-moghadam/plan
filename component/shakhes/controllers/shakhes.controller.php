@@ -139,7 +139,9 @@ class shakhesController
         if (array_search('page', $PARAM)) {
             $index_pageSize=array_search('page', $PARAM);
             $page = $PARAM[$index_pageSize+1];
-        }else{$page= 1;}
+        } else {
+            $page= 1;
+        }
 
 
         // پیدا کردن قلم ها
@@ -176,7 +178,7 @@ class shakhesController
 
 
         $this->fileName = 'shakhes.adminSetting.php';
-        $this->template(compact('ghalam', 'admins', 'pagination', 'msg','page'));
+        $this->template(compact('ghalam', 'admins', 'pagination', 'msg', 'page'));
         die();
     }
     public function adminSettingOnSubmmit()
@@ -187,26 +189,23 @@ class shakhesController
         include_once ROOT_DIR.'component/shakhes/model/import.model.php';
         include_once ROOT_DIR.'component/shakhes/model/import_confirm.model.php';
         foreach ($post['import'] as $ghalam_id => $import) {
-            $importObj = import::getBy_motevali_admin_id_and_ghalam_id($import['motevali_admin_id'], $ghalam_id);
-            
-            if ($importObj->get()['export']['recordsCount'] == 0) {
-                /* insert import */
+            /* ghalam */
+            $importObj = import::getBy_ghalam_id($ghalam_id);
+            // dd($importObj->get());
+
+            if ($importObj->get()['export']['recordsCount'] > 0) {
+                foreach ($importObj->get()['export']['list'] as $importObj) {
+                    $importObj->delete();
+                }
+            }
+            foreach ($import['motevali_admin_id'] as $motevali) {
                 $importObj = new import;
                 $importObj->ghalam_id = $ghalam_id;
-                $importObj->motevali_admin_id = $import['motevali_admin_id'];
+                $importObj->motevali_admin_id = $motevali;
                 $importObj->year = explode('/', convertDate(date('Y')))[0];
                 $importObj->save();
-            } else {
-                /* update import */
-                $importObj = $importObj->get()['export']['list'][0];
-                $importObj->ghalam_id = $ghalam_id;
-                $importObj->motevali_admin_id = $import['motevali_admin_id'];
-                $importObj->year = explode('/', convertDate(date('Y')))[0];
-                $importObj->save();
-            }
-            
 
-            $importConfirmObj = importConfirm::getBy_sh_import_id_and_admin($importObj->id, $import['import_admin']);
+                 $importConfirmObj = importConfirm::getBy_sh_import_id_and_admin($importObj->id, $import['import_admin']);
 
             if ($import['import_admin']!='' && $importConfirmObj->get()['export']['recordsCount'] == 0) {
                 /* insert import admin */
@@ -297,6 +296,12 @@ class shakhesController
                 $importConfirmObj->admin_type = 'confirm4';
                 $importConfirmObj->save();
             }
+
+            }
+
+           
+
+           
         }
 
         $result['msg'] = 'با موفقیت انجام شد.';

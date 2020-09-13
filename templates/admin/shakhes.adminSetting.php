@@ -63,7 +63,7 @@
                                 <td><?= $item['kalan_no'] ?></td>
                                 <td style="white-space:nowrap"><?= $item['ghalam'] ?></td>
                                 <td>
-                                    <select  name="import[<?=$item['ghalam_id']?>][motevali_admin_id]">
+                                    <select  name="import[<?=$item['ghalam_id']?>][motevali_admin_id][]" multiple>
                                         <?php foreach ($admins as $admin) : ?>
                                             <option value="<?=$admin['admin_id']?>" 
                                             <?php echo ($admin['selected'] == 'true')?'selected' :''; ?>
