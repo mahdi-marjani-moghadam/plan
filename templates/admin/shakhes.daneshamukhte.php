@@ -102,11 +102,12 @@
             <table class="table table-striped">
                 <tr>
                     <th>واحد</th>
+                    <th>دانشجو/دانش آموخته</th>
                     <th>نام و نام خانوادگی</th>
                     <th>تاریخ فارغ التحصیلی</th>
                     <th>مقطع</th>
                     <th>رشته</th>
-                    <th>نوع ارتباط/همکاری با دانشگا</th>
+                    <th>نوع ارتباط/همکاری با دانشگاه</th>
                     <th>وضعیت اشتغال</th>
                     <th>نام سازمان مشغول به کار</th>
                     <th>پست سازمانی</th>
@@ -122,6 +123,7 @@
                 ?>
                         <tr>
                             <td><?= $v['admin_id'] ?></td>
+                            <td><?= $v['student_status'] ?></td>
                             <td><?= $v['name_family'] ?></td>
                             <td><?= convertDate($v['graduated_date']) ?></td>
                             <td><?= $v['grade'] ?></td>
@@ -133,7 +135,7 @@
                             <td><?= $v['continue_education'] ?></td>
                             <td><?= $v['continue_university'] ?></td>
                             <td><?= $v['successes'] ?></td>
-                            <td><?= readMore($v['tozihat'],30) ?></td>
+                            <td><?= readMore($v['tozihat'],10) ?></td>
                             <td>
                                 <?= ($v['status'] == 0) ? '' : 'ارسال به مافوق' ?>
                                 <? if($v['status'] == 0):  ?>

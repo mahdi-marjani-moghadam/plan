@@ -801,7 +801,10 @@ class shakhesController
         }*/
         $error = 0;
         if ($post['type'] == '') {
-            $result['msg'] = 'فیلد قلم تکمیل نشده است.';
+            $result['msg'] = 'فیلد نوع رویداد تکمیل نشده است.';
+            $error = 1;
+        } elseif ($post['amaliati_no'] == '') {
+            $result['msg'] = 'فیلد هدف استراتژیک تکمیل نشده است.';
             $error = 1;
         } elseif ($post['title'] == '') {
             $result['msg'] = 'فیلد عنوان رویداد تکمیل نشده است.';
@@ -839,7 +842,7 @@ class shakhesController
             $result['type'] = 'error';
             $dataStack->add_session('data', $post);
             $messageStack->add_session('message', $result['msg'], $result['type']);
-            redirectPage(RELA_DIR . 'admin/?component=shakhes&action=daneshamukhte', $result['msg']);
+            redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $result['msg']);
         }
 
 
@@ -936,7 +939,7 @@ class shakhesController
             $result['type'] = 'error';
             $dataStack->add_session('data', $post);
             $messageStack->add_session('message', $result['msg'], $result['type']);
-            redirectPage(RELA_DIR . 'admin/?component=shakhes&action=daneshamukhte', $result['msg']);
+            redirectPage(RELA_DIR . 'admin/?component=shakhes&action=shora', $result['msg']);
         }
 
 

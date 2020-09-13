@@ -15,7 +15,7 @@
             <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad" method="post">
                 <table class="form">
                     <tr>
-                        <td>رویداد*</td>
+                        <td>نوع رویداد*</td>
                         <td>
                             <select name="type">
                                 <option value="">انتخاب کنید</option>
@@ -137,11 +137,11 @@
             <table class="table table-striped">
                 <tr>
                     <th>واحد</th>
-                    <th>رویداد</th>
+                    <th>نوع رویداد</th>
                     <th>هدف استراتژیک</th>
                     <th>عنوان رویداد</th>
                     <th>ابتدای دوره</th>
-                    <th>انتهای دوره*</th>
+                    <th>انتهای دوره</th>
                     <th>مدت زمان برگزاری (ساعت)</th>
                     <th>ملی/بین المللی</th>
                     <th>عنوان مخاطب</th>
@@ -180,9 +180,10 @@
                             <td><?= $v['cost'] ?></td>
                             <td><?= $v['income'] ?></td>
                             <td><?= $v['website_link'] ?></td>
-                            <td><?= readMore($v['tozihat'],30) ?></td>
                             <td><?= $v['hami-type'] ?></td>
                             <td><?= $v['hami_income'] ?></td>
+                            <td><?= readMore($v['tozihat'],10) ?></td>
+
                             <td>
                                 <?= ($v['status'] == 0) ? '' : 'ارسال به مافوق' ?>
                                 <? if($v['status'] == 0):  ?>
@@ -225,7 +226,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">تحلیل</h4>
+                <h4 class="modal-title">توضیحات</h4>
             </div>
             <div class="modal-body">
                 <p>Some text in the modal.</p>
