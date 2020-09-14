@@ -14,18 +14,17 @@
                 <span class="sidebar-text">پایش</span>
             </a>
             <ul class="sidebar-child animated fadeInRight">
-        <li>
-            <a href="<?php print RELA_DIR; ?>admin/?component=reports&s=STEP_FORM<?= STEP_FORM1 ?>">
-                <!--<i class="sidebar-icon fa fa-list"></i>-->
-                <span class="sidebar-text">گزارش عملکرد</span>
-            </a>
+                <li>
+                    <a href="<?php print RELA_DIR; ?>admin/?component=reports&s=STEP_FORM<?= STEP_FORM1 ?>">
+                        <!--<i class="sidebar-icon fa fa-list"></i>-->
+                        <span class="sidebar-text">گزارش عملکرد</span>
+                    </a>
 
-        </li>
-        <!--/sidebar-item-->
+                </li>
+                <!--/sidebar-item-->
 
                 <li>
                     <a href="<?php print RELA_DIR; ?>admin/?component=form&q=,null,">
-                        <i class="sidebar-icon fa fa-line-chart"></i>
                         <span class="sidebar-text"> وضعیت پیشرفت</span>
                     </a>
                 </li>
@@ -33,20 +32,8 @@
                 <?php
                 if ($admin_info['admin1'] != 0 || $admin_info['admin2'] != 0 || $admin_info['admin3'] != 0) :
                     ?>
-                    <!--<li>
-                <a href="<?/*=RELA_DIR*/ ?>admin/?component=rate&action=showResult&id=<?/*=$admin_info['admin_id']*/ ?>">
-                    <i class="sidebar-icon fa fa-group"></i>
-                    <span class="sidebar-text">ارزیابی گروه ها</span>
-                </a>
-            </li>-->
-                    <!--/sidebar-item-->
-                <?php
-                endif;
-                if ($admin_info['admin1'] != 0 || $admin_info['admin2'] != 0 || $admin_info['admin3'] != 0) :
-                    ?>
                     <li>
                         <a href="<?php print RELA_DIR; ?>admin/?component=form&action=myForm">
-                           <!-- <i class="sidebar-icon fa fa-list-alt"></i>-->
                             <span class="sidebar-text">فرم خود اظهاری</span>
                         </a>
                     </li>
@@ -85,7 +72,7 @@
         <?php if ($admin_info['group_admin'] == '1' && $admin_info['parent_id'] != 0) : ?>
         <li>
             <a class="Download">
-                <i class="sidebar-icon fa fa-bar-chart"></i>
+                
                 <span class="sidebar-text">نمودار</span>
             </a>
             <ul class="sidebar-child animated fadeInRight">

@@ -714,8 +714,8 @@ a,label {
 .sidebar-child{
     padding: 5px 0;
 }
-.sidebar > li:hover .sidebar-child,
-.sidebar > li:hover .sidebar-child-inline{
+li:hover > ul.sidebar-child,
+li:hover > ul.sidebar-child-inline{
     display: block;
 }
 .sidebar-child li{
