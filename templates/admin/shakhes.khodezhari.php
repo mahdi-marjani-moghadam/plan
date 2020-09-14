@@ -61,17 +61,22 @@
                                     <tr>
                                     <td><?=$ghalam['ghalam_id']?></td>
                                     <td><?=$ghalam['ghalam']?></td>
+                                    <!--<td><input class="form-control"></td>
                                     <td><input class="form-control"></td>
                                     <td><input class="form-control"></td>
-                                    <td><input class="form-control"></td>
-                                    <td><input class="form-control"></td>
-                    </tr>
+                                    <td><input class="form-control"></td>-->
+                                    <td><input name="value6" value="<?= $data['value6'] ?>" autocomplete="off" class="form-control"></td>
+                                    <td><input name="value12" value="<?= $data['value12'] ?>" autocomplete="off" class="form-control"></td>
+                                    <td><input name="admin_tozihat6" value="<?= $data['admin_tozihat6'] ?>" autocomplete="off" class="form-control"></td>
+                                    <td><input name="admin_tozihat12" value="<?= $data['admin_tozihat12'] ?>" autocomplete="off" class="form-control"></td>
+                                    </tr>
                                     <?php
                                     endforeach;
                                     ?>
+
             </table>
-                                <input type="submit" class="btn btn-info btn-white btn-large " style="font-size: 20px" name="submit" value="ذخیره موقت" />
-                                <input type="submit" class="btn btn-success btn-white btn-large" style="font-size: 20px" name="submit1" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')"  value="ارسال به مافوق" />
+                                <input type="submit" class="btn btn-info btn-white btn-large " style="font-size: 20px" name="temporary" value="ذخیره موقت" />
+                                <input type="submit" class="btn btn-success btn-white btn-large" style="font-size: 20px" name="final" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')"  value="ارسال به مافوق" />
                             </div>
     </div>
 </div>

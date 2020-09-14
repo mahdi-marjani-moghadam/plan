@@ -522,20 +522,25 @@ class shakhesController
 
     public function khodezhari()
     {
-        global $admin_info;
+        /*جدید*/
+        global $messageStack, $dataStack, $admin_info;
+        $msg = $messageStack->output('message');
+        $data = $dataStack->output('data');
 
         include ROOT_DIR . "component/shakhes/model/shakhes.model.php";
 
 
         // پیدا کردن قلم ها و کلان
         $obj = new shakhes();
+        /*جدید*/
+        $shakhes = $obj->getAll()->getList()['export'];
+
         $query = 'select g.ghalam_id , r_k_s.kalan_no , g.ghalam   from sh_ghalam g
         inner join sh_rel_ghalam_shakhes r_g_s on g.ghalam_id = r_g_s.ghalam_id
         inner join sh_rel_kalan_shakhes r_k_s on r_g_s.shakhes_id = r_k_s.shakhes_id
         group by ghalam_id';
         $res = $obj->query($query)->getList();
         $ghalams = ($res['export']['recordsCount'] > 0) ?  $res['export']['list'] : array();
-
 
 
         //فیلترینگ
@@ -547,7 +552,78 @@ class shakhesController
 
         die();
     }
-    // پیدا کردن قلم ها و کلان
+
+
+    public function khodezhariOnSubmit()
+    {
+        global $messageStack, $admin_info, $dataStack;
+        $result = array();
+        $post = $_POST;
+
+        include_once ROOT_DIR . 'component/shakhes/jalasat/khodezhari.model.php';
+        $obj = new shakhes;
+
+
+        /* اگه فرم درست پر نشه ارور بده */
+        $filedsCount = 8 - count(array_filter(
+                $post,
+                function ($x) {
+                    return $x !== '';
+                }
+            ));
+        if ($filedsCount !== 0 && !isset($post['confirm'])) {
+            $result['msg'] = 'فیلد ها به درستی پر نشده اند. ' . (int) $filedsCount  . ' فیلد خالی می باشد.';
+            $result['type'] = 'error';
+
+            $dataStack->add_session('data', $post);
+            $messageStack->add_session('message', $result['msg'], $result['type']);
+            redirectPage(RELA_DIR . 'admin/?component=shakhes&action=khodezhari', $result['msg']);
+        }
+
+
+
+        /* ارسال فرم */
+        if (isset($post['temporary'])) {
+            $obj->setFields($post);
+            $obj->date = convertJToGDate($obj->date);
+            $obj->admin_id = $admin_info['admin_id'];
+            $obj->status = 0;
+            $obj->save();
+
+            $result['msg'] = 'ثبت موقت انجام شد.';
+            $result['type'] = 'warning';
+        } elseif (isset($post['final'])) {
+            $obj->setFields($post);
+            $obj->date = convertJToGDate($obj->date);
+            $obj->admin_id = $admin_info['admin_id'];
+            $obj->status = 1;
+            $obj->save();
+
+            // محاسبه جدول import
+            // اگر status 1 بود
+
+
+            $result['msg'] = '.ثبت نهایی انجام شد';
+            $result['type'] = 'success';
+        } elseif (isset($post['confirm'])) {
+            /* فقط برای اونایی که تایید میخوان */
+            $shakhes = $obj::find((int)$post['confirm']);
+            $shakhes->status = 1;
+            $shakhes->save();
+
+            $result['msg'] = '.ثبت نهایی انجام شد';
+            $result['type'] = 'success';
+        } else {
+        }
+
+
+
+
+
+        $messageStack->add_session('message', $result['msg'], $result['type']);
+        redirectPage(RELA_DIR . 'admin/?component=shakhes&action=khodezhari', $result['msg']);
+    }
+
 
 
 
@@ -568,6 +644,9 @@ class shakhesController
         $this->template(compact('jalasat', 'msg', 'options', 'data'));
         die();
     }
+
+
+
 
     public function jalasatOnSubmit()
     {

@@ -50,7 +50,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>درج عضویت در صفحه شخصی عضو هیات علمی*</td>
+                        <td>درج عضویت در صفحه شخصی سایت*</td>
                         <td>
                             <select name="personal_page">
                                 <option value="">انتخاب کنید</option>
@@ -82,7 +82,7 @@
                     <th>خاتمه عضویت</th>
                     <th>ملی/بین‌المللی</th>
                     <th>سمت/پست</th>
-                    <th>درج عضویت در صفحه شخصی عضو هیات علمی</th>
+                    <th>درج عضویت در صفحه شخصی سایت</th>
                     <th>توضیحات</th>
                     <th>وضعیت</th>
                 </tr>
@@ -99,7 +99,7 @@
                             <td><?= $v['nationality'] ?></td>
                             <td><?= $v['position'] ?></td>
                             <td><?= $v['personal_page'] ?></td>
-                            <td><?= readMore($v['tozihat'],30) ?></td>
+                            <td><?= readMore($v['tozihat'],10) ?></td>
                             <td>
                                 <?= ($v['status'] == 0) ? '' : 'ارسال به مافوق' ?>
                                 <? if($v['status'] == 0):  ?>

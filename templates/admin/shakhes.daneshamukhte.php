@@ -85,9 +85,10 @@
 
                         <td>افتخارات و موفقیت‌ها</td>
                         <td><input name="successes" value="<?= $data['successes'] ?>" class="form-control"></td>
-
+                    </tr>
+                    <tr>
                         <td>توضیحات</td>
-                        <td><input name="tozihat" value="<?= $data['tozihat'] ?>" class="form-control"></td>
+                        <td colspan="5"><input name="tozihat" value="<?= $data['tozihat'] ?>" class="form-control"></td>
                     </tr>
 
                 </table>

@@ -39,7 +39,14 @@ switch ($_GET['action']) {
 
         /** خوداظهاری شاخص */
     case 'khodezhari':
-        $controller->khodezhari();
+        if($_GET['method'] =='delete'){
+            $controller->onDelete('khodezhari');
+        }
+        if ($_POST) {
+            $controller->khodezhariOnSubmit();
+        } else {
+            $controller->khodezhari();
+        }
         break;
 
         /** جلسات */

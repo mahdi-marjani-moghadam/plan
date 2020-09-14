@@ -180,7 +180,7 @@
                             <td><?= $v['cost'] ?></td>
                             <td><?= $v['income'] ?></td>
                             <td><?= $v['website_link'] ?></td>
-                            <td><?= $v['hami-type'] ?></td>
+                            <td><?= $v['hami_type'] ?></td>
                             <td><?= $v['hami_income'] ?></td>
                             <td><?= readMore($v['tozihat'],10) ?></td>
 
