@@ -15,6 +15,18 @@
             <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat" method="post">
                 <table class="form">
                     <tr>
+
+                        <td>واحد*</td>
+                        <td colspan="3">
+                            <select style="display: block" name="admin_id">
+                                <option value="<?=$admin_info['admin_id']?>"> خودم</option>
+                                <? foreach($admins as $admin):?>
+                                    <option <?= ($data['admin_id'] === $admin['admin_id']) ? 'selected' : '' ?> value="<?= $admin['admin_id'] ?>"><?= $admin['name'].' ',$admin['family'] ?></option>
+                                <?endforeach;?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>زمان برگزاری*</td>
                         <td><input name="date" value="<?= $data['date'] ?>" autocomplete="off" class="form-control date"></td>
 
@@ -37,19 +49,18 @@
                     </tr>
                     <tr>
                         <td>رشته*</td>
-                        <td><input name="course" class="form-control"></td>
+                        <td><input name="course"  class="form-control" value="<?= $data['course'] ?>"></td>
 
                         <td>تعداد کل دانشجویان مشمول*</td>
-                        <td><input name="eligible_students" type="number" min="1" max="99999" class="form-control"></td>
+                        <td><input name="eligible_students" type="number" min="1" max="99999" class="form-control" value="<?= $data['eligible_students'] ?>"></td>
                     </tr>
                     <tr>
                         <td>رئوس موضوعات طرح شده در جلسه*</td>
-                        <td><input name="subject" class="form-control"></td>
+                        <td><input name="subject" class="form-control" value="<?= $data['subject'] ?>"></td>
                     </tr>
 
                 </table>
                 <button name="temporary" value="1" class="btn btn-warning btn-large">ثبت موقت</button>
-                <button name="final" value="2" class="btn btn-success btn-large"> ارسال به مافوق</button>
             </form>
         </div>
         <div class="panel-heading bg-green">
@@ -73,7 +84,7 @@
                     foreach ($jalasat['list'] as $v) :
                 ?>
                         <tr>
-                            <td><?= $v['admin_id'] ?></td>
+                            <td><?= $v['name'].' '.$v['family'] ?></td>
                             <td><?= convertDate($v['date']) ?></td>
                             <td><?= $v['manager_list'] ?></td>
                             <td><?= $v['member_count'] ?></td>
@@ -82,12 +93,25 @@
                             <td><?= $v['eligible_students'] ?></td>
                             <td><?= $v['subject'] ?></td>
                             <td>
-                                <?= ($v['status'] == 0) ? '' : 'ارسال به مافوق' ?>
-                                <? if($v['status'] == 0):  ?>
+                                <?= ($v['status'] == 2 && $admin_info['admin_id'] == $v['import_admin']) ? 'ارسال به مافوق' : '' ?>
+                                <?= ($v['status'] == 3  && $admin_info['admin_id'] == $v['import_admin'] ) ? 'تایید توسط مافوق' : '' ?>
+                                <?= ($v['status'] == 4  && $admin_info['admin_id'] == $v['import_admin'] ) ? 'تایید نهای ' : '' ?>
+                                <? if(($v['status'] == 0|| $v['status'] == 1) && $admin_info['admin_id'] == $v['import_admin']):  ?>
                                 <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat" method="post">
-                                    <button name="confirm" value="<?= $v['id'] ?>" onclick="confirm('آیا از ارسال به مافوق مطمئن هستید؟')" class="btn btn-xs btn-success pull-right">ارسال به مافوق</button>
+                                    <button name="sendToParent" value="<?= $v['id'] ?>" onclick="confirm('آیا از ارسال به مافوق مطمئن هستید؟')" class="btn btn-xs btn-block btn-success pull-right">ارسال به مافوق</button>
                                 </form>
-                                    <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat&method=delete&id=<?= $v['id'] ?>" class="btn btn-danger " onclick="return confirm('آیا مطمئن هستید؟')">حذف</a>
+                                <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat&method=delete&id=<?= $v['id'] ?>" class="btn btn-xs btn-block btn-danger pull-right" onclick="return confirm('آیا برای حذف مطمئن هستید؟')">حذف</a>
+                                <? elseif($v['status'] == 2 && $admin_info['admin_id'] == $v['confirm1']):?>
+                                <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat&edit" method="post">
+                                    <button name="edit" value="<?= $v['id'] ?>" onclick="confirm('مطمئن هستید که نیازمند اصلاح می باشد؟')" class="btn btn-block btn-xs btn-warning pull-right">نیازمند اصلاح</button>
+                                </form>
+                                <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat&confirm" method="post">
+                                    <button name="confirm"  value="<?= $v['id'] ?>" onclick="confirm('آیا از تائید مطمئن هستید؟')" class="btn btn-xs btn-block btn-success pull-right">تائید</button>
+                                </form>
+                                <? elseif($v['status'] == 3 &&  $admin_info['admin_id'] == $v['confirm2']):?>
+                                <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat&confirmFinal" method="post">
+                                    <button name="confirmFinal"  value="<?= $v['id'] ?>" onclick="confirm('آیا از تائید مطمئن هستید؟')" class="btn btn-xs btn-success pull-right">تائید نهایی</button>
+                                </form>
 
                                 <? endif;?>
                             </td>

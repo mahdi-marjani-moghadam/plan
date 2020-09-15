@@ -629,19 +629,43 @@ class shakhesController
 
     public function jalasat()
     {
-        global $messageStack, $dataStack;
+        global $messageStack, $dataStack,$admin_info;
         $msg = $messageStack->output('message');
         $data = $dataStack->output('data');
 
         /* باید اول یک ذخیره موقت داشته باشن بعد ارسال به مافوق */
         include_once ROOT_DIR . 'component/shakhes/jalasat/jalasat.model.php';
         $jalasatObj = new jalasat;
-        $jalasat = $jalasatObj->getAll()->getList()['export'];
 
+        $query = "	select j.* , a.name , a.family from sh_jalasat j 
+                    inner join admin a 
+                    on a.admin_id = j.admin_id";
+        $jalasat = $jalasatObj->query($query)->getList()['export'];
+
+        $query = "select * from sh_forms_permission p
+                    where p.table = 'jalasat'
+                        and (	p.admin_id = {$admin_info['admin_id']}
+                        or   p.import_admin = {$admin_info['admin_id']}
+                        or  p.confirm1 = {$admin_info['admin_id']}
+                        or p.confirm2 = {$admin_info['admin_id']})";
+        $permissionTemp = $jalasatObj->query($query)->getList()['export']['list'];
+        foreach ($permissionTemp as $item){
+            dd($item);
+            $permission[$item['admin_id']][$item['import_id']]['confirm1'] = $item['confirm1'];
+            $permission[$item['admin_id']][$item['import_id']]['confirm2'] = $item['confirm2'];
+        }
+            dd($permission);
+        /**/
         $options = $this->options('sh_jalasat');
 
+        /* admins */
+        include_once ROOT_DIR . 'component/admin/model/admin.model.php';
+        $adminObj = new admin();
+        $query = "select name,family,admin_id from admin where parent_id not in (0,1)";
+        $admins = $adminObj->query($query)->getList()['export']['list'];
+
         $this->fileName = 'shakhes.jalasat.php';
-        $this->template(compact('jalasat', 'msg', 'options', 'data'));
+        $this->template(compact('jalasat', 'msg', 'options', 'data','admins',''));
         die();
     }
 
@@ -659,7 +683,7 @@ class shakhesController
 
 
         /* اگه فرم درست پر نشه ارور بده */
-        $filedsCount = 8 - count(array_filter(
+        $filedsCount = 9 - count(array_filter(
             $post,
             function ($x) {
                 return $x !== '';
@@ -680,34 +704,60 @@ class shakhesController
         if (isset($post['temporary'])) {
             $jalasatObj->setFields($post);
             $jalasatObj->date = convertJToGDate($jalasatObj->date);
-            $jalasatObj->admin_id = $admin_info['admin_id'];
-            $jalasatObj->status = 0;
+            $jalasatObj->status = 1;
+            $jalasatObj->import_admin = $admin_info['admin_id'];
             $jalasatObj->save();
 
             $result['msg'] = 'ثبت موقت انجام شد.';
             $result['type'] = 'warning';
-        } elseif (isset($post['final'])) {
-            $jalasatObj->setFields($post);
-            $jalasatObj->date = convertJToGDate($jalasatObj->date);
-            $jalasatObj->admin_id = $admin_info['admin_id'];
-            $jalasatObj->status = 1;
-            $jalasatObj->save();
-
-            // محاسبه جدول import
-            // اگر status 1 بود
-
-
-            $result['msg'] = '.ثبت نهایی انجام شد';
-            $result['type'] = 'success';
-        } elseif (isset($post['confirm'])) {
+        }
+// elseif (isset($post['final'])) {
+//            $jalasatObj->setFields($post);
+//            $jalasatObj->date = convertJToGDate($jalasatObj->date);
+//            //$jalasatObj->admin_id = $admin_info['admin_id'];
+//            $jalasatObj->status = 1;
+//            $jalasatObj->save();
+//
+//            // محاسبه جدول import
+//            // اگر status 1 بود
+//
+//
+//            $result['msg'] = '.ثبت نهایی انجام شد';
+//            $result['type'] = 'success';
+//        }
+        elseif (isset($post['sendToParent'])) {
             /* فقط برای اونایی که تایید میخوان */
+            $jalasat = $jalasatObj::find((int)$post['confirm']);
+            $jalasat->status = 2;
+            $jalasat->save();
+
+            $result['msg'] = '. ارسال به مافوق انجام شد';
+            $result['type'] = 'success';
+        }
+        else if(isset($post['edit'])){
             $jalasat = $jalasatObj::find((int)$post['confirm']);
             $jalasat->status = 1;
             $jalasat->save();
 
-            $result['msg'] = '.ثبت نهایی انجام شد';
+            $result['msg'] = '.   نیاز به اصلاح';
             $result['type'] = 'success';
-        } else {
+        }else if(isset($post['confirm'])){
+            $jalasat = $jalasatObj::find((int)$post['confirm']);
+            $jalasat->status = 3;
+            $jalasat->save();
+
+            $result['msg'] = '.   تایید مافوق';
+            $result['type'] = 'success';
+        }else if(isset($post['confirmFinal'])){
+            $jalasat = $jalasatObj::find((int)$post['confirm']);
+            $jalasat->status = 4;
+            $jalasat->save();
+
+            $result['msg'] = '.   تائئد نهایی ';
+            $result['type'] = 'success';
+        }
+
+        else {
         }
 
 
@@ -1080,6 +1130,20 @@ class shakhesController
 
     }
 
+    public function edit($className){
+        global $messageStack;
+        $id = $_POST['edit'];
+        include_once ROOT_DIR . 'component/shakhes/'.$className.'/'.$className.'.model.php';
+        $Obj = $className::find($id);
+        $Obj->status = 1;
+
+        $Obj->save();
+
+        $result['msg'] = 'با موفقیت انجام شد.';
+        $messageStack->add_session('message', $result['msg'], $result['type']);
+        redirectPage(RELA_DIR . 'admin/?component=shakhes&action='.$className, $result['msg']);
+
+    }
     public function options($table)
     {
         include_once ROOT_DIR . 'component/shakhes/options/options.model.php';

@@ -54,6 +54,7 @@ switch ($_GET['action']) {
         if($_GET['method'] =='delete'){
             $controller->onDelete('jalasat');
         }
+
         if ($_POST) {
             $controller->jalasatOnSubmit();
         } else {
