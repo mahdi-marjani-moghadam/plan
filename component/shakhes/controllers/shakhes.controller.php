@@ -695,7 +695,7 @@ class shakhesController
                         or  p.confirm1 = {$admin_info['admin_id']}
                         or p.confirm2 = {$admin_info['admin_id']})";
         $importAdmins = array_column($jalasatObj->query($query)->getList()['export']['list'],'admin_id');
-        $jalasat = $jalasatObj->where('import_admin','in',$importAdmins)->getList()['export'];
+        $jalasat = $jalasatObj->where('import_admin','in',$importAdmins)->orderBy('admin_id')->getList()['export'];
                 
 
         $this->fileName = 'shakhes.jalasat.php';
@@ -776,8 +776,15 @@ class shakhesController
 
 
             /* اینجا باید فرم خوداظهاری اپدیت بشه */
+           $this->updateImport($jalasat,208,'member_count');
+           $this->updateImport($jalasat,209,'eligible_students');
 
-            $result['msg'] = '.   تائئد نهایی ';
+
+
+
+
+
+            $result['msg'] = '.   تایید نهایی ';
             $result['type'] = 'success';
         }
 
@@ -791,6 +798,7 @@ class shakhesController
         $messageStack->add_session('message', $result['msg'], $result['type']);
         redirectPage(RELA_DIR . 'admin/?component=shakhes&action=jalasat', $result['msg']);
     }
+
 
     public function daneshamukhte()
     {
@@ -1018,8 +1026,6 @@ class shakhesController
             $ruydadObj->status = 1;
             $ruydadObj->save();
 
-            // محاسبه جدول import
-            // اگر status 1 بود
 
             $result['msg'] = '.ثبت نهایی انجام شد';
             $result['type'] = 'success';
@@ -1028,6 +1034,7 @@ class shakhesController
             $ruydad = $ruydadObj::find((int)$post['confirm']);
             $ruydad->status = 1;
             $ruydad->save();
+
 
             $result['msg'] = '.ثبت نهایی انجام شد';
             $result['type'] = 'success';
@@ -1179,6 +1186,43 @@ class shakhesController
         }
 
         return $options;
+    }
+
+    function updateImport($zirGhalam,$ghalam_id,$field){
+        $value = (STEP_FORM1 < 3)?'value6':'value12';
+        include_once ROOT_DIR.'component/shakhes/model/import.model.php';
+        $importObj = new import;
+        $import = $importObj::getBy_motevali_admin_id_and_ghalam_id($zirGhalam->admin_id,$ghalam_id)->get()['export'];
+        if($import['recordsCount'] == 0){
+            $importObj->motevali_admin_id = $zirGhalam->admin_id;
+            $importObj->ghalam_id = 208;
+            $importObj->$value = $zirGhalam->$field;
+            $importObj->save();
+
+        }else{
+
+            $import['list'][0]->$value = $import['list'][0]->value6 + $zirGhalam->$field;
+            $import['list'][0]->save();
+            $importObj = $import['list'][0];
+        }
+
+        include_once ROOT_DIR.'component/shakhes/model/import_confirm.model.php';
+        $impConfObj = new importConfirm;
+        $impConf = $impConfObj::getBy_sh_import_id($importObj->id)->get()['export'];
+        if($impConf['recordsCount'] == 0){
+            $impConfObj->sh_import_id = $importObj->id;
+            $impConfObj->admin = $importObj->motevali_admin_id;
+            $impConfObj->admin_type = 'external';
+            $impConfObj->$value = $importObj->value6;
+            $impConfObj->save();
+
+        }else{
+
+            $impConf['list'][0]->$value = $importObj->$value;
+            $impConf['list'][0]->save();
+            $impConfObj = $impConf['list'][0];
+        }
+        return compact('importObj','impConfObj');
     }
 
 
