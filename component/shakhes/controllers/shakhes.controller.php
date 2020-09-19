@@ -10,6 +10,7 @@ class shakhesController
     private $optionsRuydad = array();
     private $optionsShora = array();
     private $selectBoxAdmins = array();
+    private $permissions = array();
 
     public function __construct()
     {
@@ -31,7 +32,17 @@ class shakhesController
         $query = "select name,family,admin_id from admin where parent_id not in (0,1)";
         $this->selectBoxAdmins = $adminObj->query($query)->getList()['export']['list'];
 
-
+        /* permissions */
+        include_once ROOT_DIR.'component/shakhes/model/forms_permission.model.php';
+        $formsPermission = new formsPermission;
+        $permissions = $formsPermission->getAll()->getList()['export']['list'];
+        foreach ($permissions as  $item)
+        {
+            $this->permissions[$item['admin_id']][$item['import_admin']]['admin_id'] = $item['admin_id'];
+            $this->permissions[$item['admin_id']][$item['import_admin']]['import_admin'] = $item['import_admin'];
+            $this->permissions[$item['admin_id']][$item['import_admin']]['confirm1'] = $item['confirm1'];
+            $this->permissions[$item['admin_id']][$item['import_admin']]['confirm2'] = $item['confirm2'];
+        }
     }
     public function template($list = array(), $msg = '')
     {
@@ -669,7 +680,8 @@ class shakhesController
         $options = $this->optionsJalasat;
         /* ادمین هایی که توی لیست میشه انتخاب کرد */
         $selectBoxAdmins = $this->selectBoxAdmins;
-
+        /* permission */
+        $permission = $this->permissions;
 
         /* اول باید ببینیم کسی که لاگین کرده چه 
         import_admin 
@@ -687,7 +699,7 @@ class shakhesController
                 
 
         $this->fileName = 'shakhes.jalasat.php';
-        $this->template(compact('jalasat', 'msg', 'options', 'data','admins','selectBoxAdmins'));
+        $this->template(compact('jalasat', 'msg', 'options', 'data','admins','selectBoxAdmins','permission'));
         die();
     }
 
