@@ -15,6 +15,17 @@
             <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=shora" method="post">
                 <table class="form">
                     <tr>
+                        <td>واحد*</td>
+                        <td colspan="1">
+                            <select style="display: block" name="admin_id">
+                                <option value="<?=$admin_info['admin_id']?>"> خودم</option>
+                                <? foreach($this->selectBoxAdmins as $admin):?>
+                                    <option <?= ($data['admin_id'] === $admin['admin_id']) ? 'selected' : '' ?> value="<?= $admin['admin_id'] ?>"><?= $admin['name'].' ',$admin['family'] ?></option>
+                                <?endforeach;?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>عنوان شورا/کارگروه/انجمن*</td>
                         <td><input name="shora_type" value="<?= $data['shora_type'] ?>" class="form-control"></td>
 
@@ -33,7 +44,7 @@
                         <td>
                             <select name="nationality">
                                 <option value="">انتخاب کنید</option>
-                                <? foreach($options['nationality'] as $item):?>
+                                <? foreach($this->options['shora']['nationality'] as $item):?>
                                 <option <?= ($data['nationality'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>
                             </select>
@@ -43,7 +54,7 @@
                         <td>
                             <select name="position">
                                 <option value="">انتخاب کنید</option>
-                                <? foreach($options['position'] as $item):?>
+                                <? foreach($this->options['shora']['position'] as $item):?>
                                 <option <?= ($data['position'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>
                             </select>
@@ -54,7 +65,7 @@
                         <td>
                             <select name="personal_page">
                                 <option value="">انتخاب کنید</option>
-                                <? foreach($options['personal_page'] as $item):?>
+                                <? foreach($this->options['shora']['personal_page'] as $item):?>
                                 <option <?= ($data['personal_page'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>
                             </select>
@@ -66,7 +77,7 @@
 
                 </table>
                 <button name="temporary" value="1" class="btn btn-warning btn-large">ثبت موقت</button>
-                <button name="final" value="2" class="btn btn-success btn-large"> ارسال به مافوق</button>
+                
             </form>
         </div>
         <div class="panel-heading bg-green">
@@ -89,9 +100,14 @@
                 <?php
                 if ($shora['recordsCount'] > 0) :
                     foreach ($shora['list'] as $v) :
+                        $v['confirm1'] = $this->permission[$v['admin_id']][$v['import_admin']]['confirm1'];
+                        $v['confirm2'] = $this->permission[$v['admin_id']][$v['import_admin']]['confirm2'];
+                        $v['name'] = $this->admins[$v['admin_id']]['name'];
+                        $v['family'] = $this->admins[$v['admin_id']]['family'];
+
                 ?>
                         <tr>
-                            <td><?= $v['admin_id'] ?></td>
+                            <td><?= $v['name'].' '.$v['family'] ?></td>
                             <td><?= $v['shora_type'] ?></td>
                             <td><?= $v['name_family'] ?></td>
                             <td><?= convertDate($v['start_date']) ?></td>
@@ -101,14 +117,50 @@
                             <td><?= $v['personal_page'] ?></td>
                             <td><?= readMore($v['tozihat'],10) ?></td>
                             <td>
-                                <?= ($v['status'] == 0) ? '' : 'ارسال به مافوق' ?>
-                                <? if($v['status'] == 0):  ?>
-                                <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=shora" method="post">
-                                    <button name="confirm" value="<?= $v['id'] ?>" onclick="confirm('آیا از ارسال به مافوق مطمئن هستید؟')" class="btn btn-xs btn-success pull-right">ارسال به مافوق</button>
+                                <? if( $admin_info['admin_id'] == $v['import_admin']):?>
+                                    <? if(($v['status'] == 0 || $v['status'] == 1) ):  ?>
+                                    <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=shora" method="post">
+                                        <button name="sendToParent" value="<?= $v['id'] ?>" onclick="confirm('آیا از ارسال به مافوق مطمئن هستید؟')"
+                                                class="btn btn-xs btn-block btn-success pull-right">ارسال به مافوق</button>
+                                    </form>
+                                    <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=shora&method=delete&id=<?= $v['id'] ?>"
+                                       class="btn btn-xs btn-block btn-danger pull-right" onclick="return confirm('آیا برای حذف مطمئن هستید؟')">حذف</a>
+                                    <? else:?>
+                                        <?= ($v['status'] == 2) ? 'ارسال به مافوق' : '' ?>
+                                        <?= ($v['status'] == 3) ? 'تایید توسط مافوق' : '' ?>
+                                        <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>
+                                    <? endif;?>
+                                <? endif;?>
 
-                                </form>
-                                    <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=shora&method=delete&id=<?= $v['id'] ?>" class="btn btn-danger " onclick="return confirm('آیا مطمئن هستید؟')">حذف</a>
+                                <? if($admin_info['admin_id'] == $v['confirm1']):?>
+                                    <? if($v['status'] == 2 ):?>
+                                    <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=shora&edit" method="post">
+                                        <button name="edit" value="<?= $v['id'] ?>" onclick="confirm('مطمئن هستید که نیازمند اصلاح می باشد؟')"
+                                                class="btn btn-block btn-xs btn-warning pull-right">نیازمند اصلاح</button>
+                                    </form>
+                                    <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=shora&confirm" method="post">
+                                        <button name="confirm"  value="<?= $v['id'] ?>" onclick="confirm('آیا از تائید مطمئن هستید؟')"
+                                                class="btn btn-xs btn-block btn-success pull-right">تائید</button>
+                                    </form>
+                                    <? else:?>
+                                        <?= ($v['status'] == 3) ? 'تایید توسط مافوق' : '' ?>
+                                        <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>
+                                    <? endif;?>
+                                <? endif;?>
 
+
+                                <? if($admin_info['admin_id'] == $v['confirm2']):?>
+                                    <? if($v['status'] == 3):?>
+                                    <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=shora&confirmFinal" method="post">
+                                        <button name="confirmFinal"  value="<?= $v['id'] ?>" onclick="confirm('آیا از تائید مطمئن هستید؟')"
+                                                class="btn btn-xs btn-success pull-right">تائید نهایی</button>
+                                    </form>
+
+                                    <? else:?>
+                                        <?= ($v['status'] == 1) ? 'هنوز اطلاعاتی وارد نشده' : '' ?>
+                                        <?= ($v['status'] == 2) ? 'ارسال به مافوق' : '' ?>
+                                        <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>
+                                    <? endif;?>
                                 <? endif;?>
                             </td>
                         </tr>

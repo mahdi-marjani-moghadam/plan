@@ -16,10 +16,10 @@
                 <table class="form">
                     <tr>
                         <td>واحد*</td>
-                        <td colspan="3">
+                        <td >
                             <select style="display: block" name="admin_id">
                                 <option value="<?=$admin_info['admin_id']?>"> خودم</option>
-                                <? foreach($admins as $admin):?>
+                                <? foreach($this->selectBoxAdmins as $admin):?>
                                     <option <?= ($data['admin_id'] === $admin['admin_id']) ? 'selected' : '' ?> value="<?= $admin['admin_id'] ?>"><?= $admin['name'].' ',$admin['family'] ?></option>
                                 <?endforeach;?>
                             </select>
@@ -29,7 +29,7 @@
                         <td>دانشجو/دانش آموخته*</td>
                         <td><select name="student_status">
                                 <option value="">انتخاب کنید</option>
-                                <? foreach($options['student_status'] as $item):?>
+                                <? foreach($this->options['daneshamukhte']['student_status'] as $item):?>
                                     <option <?= ($data['student_status'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>
                             </select></td>
@@ -45,7 +45,7 @@
                         <td>
                             <select name="grade">
                                 <option value="">انتخاب کنید</option>
-                                <? foreach($options['grade'] as $item):?>
+                                <? foreach($this->options['daneshamukhte']['grade'] as $item):?>
                                     <option <?= ($data['grade'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>
                             </select>
@@ -57,7 +57,7 @@
                         <td>
                             <select name="relation_type">
                                 <option value="">انتخاب کنید</option>
-                                <? foreach($options['relation_type'] as $item):?>
+                                <? foreach($this->options['daneshamukhte']['relation_type'] as $item):?>
                                 <option <?= ($data['relation_type'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>
                             </select>
@@ -69,7 +69,7 @@
                         <td>
                             <select name="employed_status">
                                 <option value="">انتخاب کنید</option>
-                                <? foreach($options['employed_status'] as $item):?>
+                                <? foreach($this->options['daneshamukhte']['employed_status'] as $item):?>
                                     <option <?= ($data['employed_status'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>
                             </select>
@@ -86,7 +86,7 @@
                         <td>
                             <select name="continue_education">
                                 <option value="">انتخاب کنید</option>
-                                <? foreach($options['continue_education'] as $item):?>
+                                <? foreach($this->options['daneshamukhte']['continue_education'] as $item):?>
                                     <option <?= ($data['continue_education'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>
                             </select>
@@ -104,7 +104,7 @@
 
                 </table>
                 <button name="temporary" value="1" class="btn btn-warning btn-large">ثبت موقت</button>
-                <button name="final" value="2" class="btn btn-success btn-large"> ارسال به مافوق</button>
+                
             </form>
         </div>
         <div class="panel-heading bg-green">
@@ -132,9 +132,14 @@
                 <?php
                 if ($daneshamukhte['recordsCount'] > 0) :
                     foreach ($daneshamukhte['list'] as $v) :
+                        $v['confirm1'] = $this->permission[$v['admin_id']][$v['import_admin']]['confirm1'];
+                        $v['confirm2'] = $this->permission[$v['admin_id']][$v['import_admin']]['confirm2'];
+                        $v['name'] = $this->admins[$v['admin_id']]['name'];
+                        $v['family'] = $this->admins[$v['admin_id']]['family'];
+
                 ?>
                         <tr>
-                            <td><?= $v['admin_id'] ?></td>
+                            <td><?= $v['name'].' '.$v['family'] ?></td>
                             <td><?= $v['student_status'] ?></td>
                             <td><?= $v['name_family'] ?></td>
                             <td><?= convertDate($v['graduated_date']) ?></td>
@@ -149,12 +154,51 @@
                             <td><?= $v['successes'] ?></td>
                             <td><?= readMore($v['tozihat'],10) ?></td>
                             <td>
-                                <?= ($v['status'] == 0) ? '' : 'ارسال به مافوق' ?>
-                                <? if($v['status'] == 0):  ?>
-                                <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte" method="post">
-                                    <button name="confirm" value="<?= $v['id'] ?>" onclick="confirm('آیا از ارسال به مافوق مطمئن هستید؟')" class="btn btn-xs btn-success pull-right">ارسال به مافوق</button>
-                                </form>
-                                    <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte&method=delete&id=<?= $v['id'] ?>" class="btn btn-xs btn-danger " onclick="return confirm('آیا مطمئن هستید؟')">حذف</a>
+                               
+                                <? if( $admin_info['admin_id'] == $v['import_admin']):?>
+                                    <? if(($v['status'] == 0 || $v['status'] == 1) ):  ?>
+                                    <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte" method="post">
+                                        <button name="sendToParent" value="<?= $v['id'] ?>" onclick="confirm('آیا از ارسال به مافوق مطمئن هستید؟')"
+                                                class="btn btn-xs btn-block btn-success pull-right">ارسال به مافوق</button>
+                                    </form>
+                                    <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte&method=delete&id=<?= $v['id'] ?>"
+                                       class="btn btn-xs btn-block btn-danger pull-right" onclick="return confirm('آیا برای حذف مطمئن هستید؟')">حذف</a>
+                                    <? else:?>
+                                        <?= ($v['status'] == 2) ? 'ارسال به مافوق' : '' ?>
+                                        <?= ($v['status'] == 3) ? 'تایید توسط مافوق' : '' ?>
+                                        <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>
+                                    <? endif;?>
+                                <? endif;?>
+
+                                <? if($admin_info['admin_id'] == $v['confirm1']):?>
+                                    <? if($v['status'] == 2 ):?>
+                                    <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte&edit" method="post">
+                                        <button name="edit" value="<?= $v['id'] ?>" onclick="confirm('مطمئن هستید که نیازمند اصلاح می باشد؟')"
+                                                class="btn btn-block btn-xs btn-warning pull-right">نیازمند اصلاح</button>
+                                    </form>
+                                    <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte&confirm" method="post">
+                                        <button name="confirm"  value="<?= $v['id'] ?>" onclick="confirm('آیا از تائید مطمئن هستید؟')"
+                                                class="btn btn-xs btn-block btn-success pull-right">تائید</button>
+                                    </form>
+                                    <? else:?>
+                                        <?= ($v['status'] == 3) ? 'تایید توسط مافوق' : '' ?>
+                                        <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>
+                                    <? endif;?>
+                                <? endif;?>
+
+
+                                <? if($admin_info['admin_id'] == $v['confirm2']):?>
+                                    <? if($v['status'] == 3):?>
+                                    <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte&confirmFinal" method="post">
+                                        <button name="confirmFinal"  value="<?= $v['id'] ?>" onclick="confirm('آیا از تائید مطمئن هستید؟')"
+                                                class="btn btn-xs btn-success pull-right">تائید نهایی</button>
+                                    </form>
+
+                                    <? else:?>
+                                        <?= ($v['status'] == 1) ? 'هنوز اطلاعاتی وارد نشده' : '' ?>
+                                        <?= ($v['status'] == 2) ? 'ارسال به مافوق' : '' ?>
+                                        <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>
+                                    <? endif;?>
                                 <? endif;?>
 
                             </td>

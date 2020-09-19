@@ -19,7 +19,7 @@
                         <td colspan="3">
                             <select style="display: block" name="admin_id">
                                 <option value="<?=$admin_info['admin_id']?>"> خودم</option>
-                                <? foreach($selectBoxAdmins as $admin):?>
+                                <? foreach($this->selectBoxAdmins as $admin):?>
                                     <option <?= ($data['admin_id'] === $admin['admin_id']) ? 'selected' : '' ?> value="<?= $admin['admin_id'] ?>"><?= $admin['name'].' ',$admin['family'] ?></option>
                                 <?endforeach;?>
                             </select>
@@ -40,7 +40,7 @@
                         <td>
                             <select name="grade">
                                 <option value="">انتخاب کنید</option>
-                                <? foreach($options['grade'] as $item):?>
+                                <? foreach($this->options['jalasat']['grade'] as $item):?>
                                 <option <?= ($data['grade'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>
                             </select>
@@ -81,9 +81,13 @@
                 <?php
                 if ($jalasat['recordsCount'] > 0) :
                     foreach ($jalasat['list'] as $v) :
+                        $v['confirm1'] = $this->permission[$v['admin_id']][$v['import_admin']]['confirm1'];
+                        $v['confirm2'] = $this->permission[$v['admin_id']][$v['import_admin']]['confirm2'];
+                        $v['name'] = $this->admins[$v['admin_id']]['name'];
+                        $v['family'] = $this->admins[$v['admin_id']]['family'];
                 ?>
                         <tr>
-                            <td><?= $admins[$v['import_admin']]['name'].' '.$admins[$v['admin_id']]['family'] ?></td>
+                            <td><?= $v['name'].' '.$v['family'] ?></td>
                             <td><?= convertDate($v['date']) ?></td>
                             <td><?= $v['manager_list'] ?></td>
                             <td><?= $v['member_count'] ?></td>
@@ -92,8 +96,6 @@
                             <td><?= $v['eligible_students'] ?></td>
                             <td><?= $v['subject'] ?></td>
                             <td>
-
-
 
 
 
@@ -112,7 +114,7 @@
                                     <? endif;?>
                                 <? endif;?>
 
-                                <? if($admin_info['admin_id'] == $permission[$v['admin_id']][$v['import_admin']]['confirm1']):?>
+                                <? if($admin_info['admin_id'] == $v['confirm1']):?>
                                     <? if($v['status'] == 2 ):?>
                                     <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat&edit" method="post">
                                         <button name="edit" value="<?= $v['id'] ?>" onclick="confirm('مطمئن هستید که نیازمند اصلاح می باشد؟')"
@@ -123,14 +125,13 @@
                                                 class="btn btn-xs btn-block btn-success pull-right">تائید</button>
                                     </form>
                                     <? else:?>
-                                        <?= ($v['status'] == 1) ? 'هنوز اطلاعاتی وارد نشده' : '' ?>
                                         <?= ($v['status'] == 3) ? 'تایید توسط مافوق' : '' ?>
                                         <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>
                                     <? endif;?>
                                 <? endif;?>
 
 
-                                <? if($admin_info['admin_id'] == $permission[$v['admin_id']][$v['import_admin']]['confirm2']):?>
+                                <? if($admin_info['admin_id'] == $v['confirm2']):?>
                                     <? if($v['status'] == 3):?>
                                     <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat&confirmFinal" method="post">
                                         <button name="confirmFinal"  value="<?= $v['id'] ?>" onclick="confirm('آیا از تائید مطمئن هستید؟')"
