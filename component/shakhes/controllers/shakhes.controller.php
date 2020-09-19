@@ -4,9 +4,34 @@
 class shakhesController
 {
     private $_selectedAdmins = array();
+    private $admins = array();
+    private $optionsJalasat = array();
+    private $optionsDaneshamukhte = array();
+    private $optionsRuydad = array();
+    private $optionsShora = array();
+    private $selectBoxAdmins = array();
+
     public function __construct()
     {
         $this->exportType = 'html';
+         /* همه ادمین ها */
+        include_once ROOT_DIR . 'component/admin/model/admin.model.php';
+        $adminObj = new admin;
+        $this->admins = $adminObj->getAll()->keyBy('admin_id')->getList()['export']['list'];
+
+        /* options */
+        $optionsJalasat = $this->options('sh_jalasat');
+        $optionsDaneshamukhte = $this->options('sh_daneshamukhte');
+        $optionsRuydad = $this->options('sh_ruydad');
+        $optionsShora = $this->options('sh_shora');
+        
+        /* ادمین هایی که توی لیست میشه انتخاب کرد */
+        include_once ROOT_DIR . 'component/admin/model/admin.model.php';
+        $adminObj = new admin();
+        $query = "select name,family,admin_id from admin where parent_id not in (0,1)";
+        $this->selectBoxAdmins = $adminObj->query($query)->getList()['export']['list'];
+
+
     }
     public function template($list = array(), $msg = '')
     {
@@ -633,12 +658,13 @@ class shakhesController
         $msg = $messageStack->output('message');
         $data = $dataStack->output('data');
 
-
         /* همه ادمین ها */
-        include_once ROOT_DIR . 'component/admin/model/admin.model.php';
-        $adminObj = new admin;
-        $admins = $adminObj->getAll()->keyBy('admin_id')->getList()['export']['list'];
-        
+        $admins = $this->admins;
+        /* options */
+        $options = $this->optionsJalasat;
+        /* ادمین هایی که توی لیست میشه انتخاب کرد */
+        $selectBoxAdmins = $this->selectBoxAdmins;
+
 
         /* اول باید ببینیم کسی که لاگین کرده چه 
         import_admin 
@@ -647,24 +673,13 @@ class shakhesController
         $jalasatObj = new jalasat;
         $query = "select distinct(admin_id) from sh_forms_permission p
                     where p.table = 'jalasat'
-                        and (	p.admin_id = {$admin_info['admin_id']}
+                        and (p.admin_id = {$admin_info['admin_id']}
                         or   p.import_admin = {$admin_info['admin_id']}
                         or  p.confirm1 = {$admin_info['admin_id']}
                         or p.confirm2 = {$admin_info['admin_id']})";
         $importAdmins = array_column($jalasatObj->query($query)->getList()['export']['list'],'admin_id');
-        
-        include_once ROOT_DIR . 'component/shakhes/jalasat/jalasat.model.php';
-        $jalasatObj = new jalasat;
         $jalasat = $jalasatObj->where('import_admin','in',$importAdmins)->getList()['export'];
-        
-        /* options */
-        $options = $this->options('sh_jalasat');
-
-        /* ادمین هایی که توی لیست میشه انتخاب کرد */
-        include_once ROOT_DIR . 'component/admin/model/admin.model.php';
-        $adminObj = new admin();
-        $query = "select name,family,admin_id from admin where parent_id not in (0,1)";
-        $selectBoxAdmins = $adminObj->query($query)->getList()['export']['list'];
+                
 
         $this->fileName = 'shakhes.jalasat.php';
         $this->template(compact('jalasat', 'msg', 'options', 'data','admins','selectBoxAdmins'));
