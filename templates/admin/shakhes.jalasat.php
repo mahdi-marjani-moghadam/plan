@@ -20,7 +20,7 @@
                         <td colspan="3">
                             <select style="display: block" name="admin_id">
                                 <option value="<?=$admin_info['admin_id']?>"> خودم</option>
-                                <? foreach($admins as $admin):?>
+                                <? foreach($selectBoxAdmins as $admin):?>
                                     <option <?= ($data['admin_id'] === $admin['admin_id']) ? 'selected' : '' ?> value="<?= $admin['admin_id'] ?>"><?= $admin['name'].' ',$admin['family'] ?></option>
                                 <?endforeach;?>
                             </select>
@@ -84,7 +84,7 @@
                     foreach ($jalasat['list'] as $v) :
                 ?>
                         <tr>
-                            <td><?= $v['name'].' '.$v['family'] ?></td>
+                            <td><?= $admins[$v['import_admin']]['name'].' '.$admins[$v['admin_id']]['family'] ?></td>
                             <td><?= convertDate($v['date']) ?></td>
                             <td><?= $v['manager_list'] ?></td>
                             <td><?= $v['member_count'] ?></td>

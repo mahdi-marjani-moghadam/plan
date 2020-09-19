@@ -188,7 +188,7 @@ class shakhesController
         
         include_once ROOT_DIR.'component/shakhes/model/import.model.php';
         include_once ROOT_DIR.'component/shakhes/model/import_confirm.model.php';
-        foreach ($post['import'] as $ghalam_id => $import) {
+        foreach ($post['import'] as $ghalam_id => $import) { 
             /* ghalam */
             $importObj = import::getBy_ghalam_id($ghalam_id);
             // dd($importObj->get());
@@ -633,39 +633,41 @@ class shakhesController
         $msg = $messageStack->output('message');
         $data = $dataStack->output('data');
 
-        /* باید اول یک ذخیره موقت داشته باشن بعد ارسال به مافوق */
+
+        /* همه ادمین ها */
+        include_once ROOT_DIR . 'component/admin/model/admin.model.php';
+        $adminObj = new admin;
+        $admins = $adminObj->getAll()->keyBy('admin_id')->getList()['export']['list'];
+        
+
+        /* اول باید ببینیم کسی که لاگین کرده چه 
+        import_admin 
+        رو میبینه */
         include_once ROOT_DIR . 'component/shakhes/jalasat/jalasat.model.php';
         $jalasatObj = new jalasat;
-
-        $query = "	select j.* , a.name , a.family from sh_jalasat j 
-                    inner join admin a 
-                    on a.admin_id = j.admin_id";
-        $jalasat = $jalasatObj->query($query)->getList()['export'];
-
-        $query = "select * from sh_forms_permission p
+        $query = "select distinct(admin_id) from sh_forms_permission p
                     where p.table = 'jalasat'
                         and (	p.admin_id = {$admin_info['admin_id']}
                         or   p.import_admin = {$admin_info['admin_id']}
                         or  p.confirm1 = {$admin_info['admin_id']}
                         or p.confirm2 = {$admin_info['admin_id']})";
-        $permissionTemp = $jalasatObj->query($query)->getList()['export']['list'];
-        foreach ($permissionTemp as $item){
-            dd($item);
-            $permission[$item['admin_id']][$item['import_id']]['confirm1'] = $item['confirm1'];
-            $permission[$item['admin_id']][$item['import_id']]['confirm2'] = $item['confirm2'];
-        }
-            dd($permission);
-        /**/
+        $importAdmins = array_column($jalasatObj->query($query)->getList()['export']['list'],'admin_id');
+        
+        include_once ROOT_DIR . 'component/shakhes/jalasat/jalasat.model.php';
+        $jalasatObj = new jalasat;
+        $jalasat = $jalasatObj->where('import_admin','in',$importAdmins)->getList()['export'];
+        
+        /* options */
         $options = $this->options('sh_jalasat');
 
-        /* admins */
+        /* ادمین هایی که توی لیست میشه انتخاب کرد */
         include_once ROOT_DIR . 'component/admin/model/admin.model.php';
         $adminObj = new admin();
         $query = "select name,family,admin_id from admin where parent_id not in (0,1)";
-        $admins = $adminObj->query($query)->getList()['export']['list'];
+        $selectBoxAdmins = $adminObj->query($query)->getList()['export']['list'];
 
         $this->fileName = 'shakhes.jalasat.php';
-        $this->template(compact('jalasat', 'msg', 'options', 'data','admins',''));
+        $this->template(compact('jalasat', 'msg', 'options', 'data','admins','selectBoxAdmins'));
         die();
     }
 
