@@ -683,14 +683,15 @@ class shakhesController
         include_once ROOT_DIR . 'component/shakhes/jalasat/jalasat.model.php';
         $jalasatObj = new jalasat;
 
-
+        
         /* اگه فرم درست پر نشه ارور بده */
-        $filedsCount = 9 - count(array_filter(
+        $filedsCount = 8 - count(array_filter(
             $post,
             function ($x) {
                 return $x !== '';
             }
         ));
+
         if ($filedsCount !== 0 && !isset($post['confirm'])) {
             $result['msg'] = 'فیلد ها به درستی پر نشده اند. ' . (int) $filedsCount  . ' فیلد خالی می باشد.';
             $result['type'] = 'error';
