@@ -15,7 +15,6 @@
             <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat" method="post">
                 <table class="form">
                     <tr>
-
                         <td>واحد*</td>
                         <td colspan="3">
                             <select style="display: block" name="admin_id">
@@ -95,7 +94,7 @@
                             <td>
                                 <?= ($v['status'] == 2 && $admin_info['admin_id'] == $v['import_admin']) ? 'ارسال به مافوق' : '' ?>
                                 <?= ($v['status'] == 3  && $admin_info['admin_id'] == $v['import_admin'] ) ? 'تایید توسط مافوق' : '' ?>
-                                <?= ($v['status'] == 4  && $admin_info['admin_id'] == $v['import_admin'] ) ? 'تایید نهای ' : '' ?>
+                                <?= ($v['status'] == 4  && $admin_info['admin_id'] == $v['import_admin'] ) ? 'تایید نهایی ' : '' ?>
                                 <? if(($v['status'] == 0|| $v['status'] == 1) && $admin_info['admin_id'] == $v['import_admin']):  ?>
                                 <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat" method="post">
                                     <button name="sendToParent" value="<?= $v['id'] ?>" onclick="confirm('آیا از ارسال به مافوق مطمئن هستید؟')" class="btn btn-xs btn-block btn-success pull-right">ارسال به مافوق</button>

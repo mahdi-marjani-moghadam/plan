@@ -703,26 +703,28 @@ class shakhesController
         include_once ROOT_DIR . 'component/shakhes/model/jalasat.model.php';
         $jalasatObj = new jalasat;
         
-        /* اگه فرم درست پر نشه ارور بده */
-        $filedsCount = 8 - count(array_filter(
-            $post,
-            function ($x) {
-                return $x !== '';
-            }
-        ));
-        if ($filedsCount !== 0 && !isset($post['confirm'])) {
-            $result['msg'] = 'فیلد ها به درستی پر نشده اند. ' . (int) $filedsCount  . ' فیلد خالی می باشد.';
-            $result['type'] = 'error';
 
-            $dataStack->add_session('data', $post);
-            $messageStack->add_session('message', $result['msg'], $result['type']);
-            redirectPage(RELA_DIR . 'admin/?component=shakhes&action=jalasat', $result['msg']);
-        }
 
 
 
         /* ارسال فرم */
         if (isset($post['temporary'])) {
+            /* اگه فرم درست پر نشه ارور بده */
+            $filedsCount = 8 - count(array_filter(
+                    $post,
+                    function ($x) {
+                        return $x !== '';
+                    }
+                ));
+            if ($filedsCount !== 0 && !isset($post['confirm'])) {
+                $result['msg'] = 'فیلد ها به درستی پر نشده اند. ' . (int) $filedsCount  . ' فیلد خالی می باشد.';
+                $result['type'] = 'error';
+
+                $dataStack->add_session('data', $post);
+                $messageStack->add_session('message', $result['msg'], $result['type']);
+                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=jalasat', $result['msg']);
+            }
+
             $jalasatObj->setFields($post);
             $jalasatObj->date = convertJToGDate($jalasatObj->date);
             $jalasatObj->status = 1;
@@ -734,7 +736,7 @@ class shakhesController
         }
         elseif (isset($post['sendToParent'])) {
             /* فقط برای اونایی که تایید میخوان */
-            $jalasat = $jalasatObj::find((int)$post['confirm']);
+            $jalasat = $jalasatObj::find((int)$post['sendToParent']);
             $jalasat->status = 2;
             $jalasat->save();
 
@@ -742,7 +744,7 @@ class shakhesController
             $result['type'] = 'success';
         }
         else if(isset($post['edit'])){
-            $jalasat = $jalasatObj::find((int)$post['confirm']);
+            $jalasat = $jalasatObj::find((int)$post['edit']);
             $jalasat->status = 1;
             $jalasat->save();
 
@@ -756,7 +758,7 @@ class shakhesController
             $result['msg'] = '.   تایید مافوق';
             $result['type'] = 'success';
         }else if(isset($post['confirmFinal'])){
-            $jalasat = $jalasatObj::find((int)$post['confirm']);
+            $jalasat = $jalasatObj::find((int)$post['confirmFinal']);
             $jalasat->status = 4;
             $jalasat->save();
 

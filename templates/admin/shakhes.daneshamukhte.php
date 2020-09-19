@@ -15,6 +15,17 @@
             <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte" method="post">
                 <table class="form">
                     <tr>
+                        <td>واحد*</td>
+                        <td colspan="3">
+                            <select style="display: block" name="admin_id">
+                                <option value="<?=$admin_info['admin_id']?>"> خودم</option>
+                                <? foreach($admins as $admin):?>
+                                    <option <?= ($data['admin_id'] === $admin['admin_id']) ? 'selected' : '' ?> value="<?= $admin['admin_id'] ?>"><?= $admin['name'].' ',$admin['family'] ?></option>
+                                <?endforeach;?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>دانشجو/دانش آموخته*</td>
                         <td><select name="student_status">
                                 <option value="">انتخاب کنید</option>
@@ -142,9 +153,8 @@
                                 <? if($v['status'] == 0):  ?>
                                 <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte" method="post">
                                     <button name="confirm" value="<?= $v['id'] ?>" onclick="confirm('آیا از ارسال به مافوق مطمئن هستید؟')" class="btn btn-xs btn-success pull-right">ارسال به مافوق</button>
-
                                 </form>
-                                    <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte&method=delete&id=<?= $v['id'] ?>" class="btn btn-danger " onclick="return confirm('آیا مطمئن هستید؟')">حذف</a>
+                                    <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte&method=delete&id=<?= $v['id'] ?>" class="btn btn-xs btn-danger " onclick="return confirm('آیا مطمئن هستید؟')">حذف</a>
                                 <? endif;?>
 
                             </td>
