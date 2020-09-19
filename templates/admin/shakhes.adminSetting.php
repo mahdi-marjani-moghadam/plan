@@ -1,13 +1,13 @@
 <div class="row smallSpace"></div>
 <script>
-    $(document).ready(function() {
-        $('#filter_columns').change(function() {
-            var filter = $(this).val();
-            //if ($(this).val() == 0) {
-            location.href = window.location.origin + '/admin/?component=shakhes&filter_columns=' + filter;
-            //}
-        });
-    });
+    // $(document).ready(function() {
+    //     $('#filter_columns').change(function() {
+    //         var filter = $(this).val();
+    //         //if ($(this).val() == 0) {
+    //         location.href = window.location.origin + '/admin/?component=shakhes&filter_columns=' + filter;
+    //         //}
+    //     });
+    // });
 </script>
 <style>
     .select2-search-choice-close {
@@ -16,24 +16,11 @@
     }
 </style>
 <div class="content-body">
-    <div class="row" style="margin-bottom: 1em;">
-        <div class="col-md-12">
-            <select multiple name="filter_columns" id="filter_columns">
-                <option value="1">واحد های زیر مجموعه</option>
-                <?php foreach ($admins as $admin) : ?>
-
-                    <option value='<?= $admin['admin_id'] ?>' <?= ($admin['selected'] == 'true') ? 'selected' : ''; ?>><?= $admin['name'] . ' ' . $admin['family'] ?></option>
-
-                <?php endforeach; ?>
-                <option value="2">کل واحد</option>
-                <option value="3">دانشگاه</option>
-            </select>
-        </div>
-    </div>
+    
     
     <div id="panel-1" class="panel panel-default border-green">
         <div class="panel-heading bg-green">
-            <h3 class="panel-title rtl">گزارش شاخص</h3>
+            <h3 class="panel-title rtl">تنظیمات ادمین </h3>
         </div>
         <div class="panel-body">
             <div id="container" style="overflow: auto;">
@@ -66,7 +53,7 @@
                                     <select  name="import[<?=$item['ghalam_id']?>][motevali_admin_id][]" multiple>
                                         <?php foreach ($admins as $admin) : ?>
                                             <option value="<?=$admin['admin_id']?>" 
-                                            <?php echo ($admin['selected'] == 'true')?'selected' :''; ?>
+                                            <?php echo ($admin['admin_id'] == $item['motevali_admin_id'])?'selected' :''; ?>
                                             >
                                             <?= $admin['name'] . ' ' . $admin['family'] ?>
                                             </option>    

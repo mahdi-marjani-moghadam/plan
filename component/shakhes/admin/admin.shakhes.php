@@ -22,9 +22,6 @@ switch ($_GET['action']) {
         $controller->shakhesSetting();
         break;
     case 'adminSetting':
-        
-
-
         if ($_POST) {
             $controller->adminSettingOnSubmmit();
         } else {

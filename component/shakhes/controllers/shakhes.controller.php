@@ -155,6 +155,7 @@ class shakhesController
         global $admin_info,$PARAM,$messageStack;
         $msg = $messageStack->output('message');
 
+        
         //پیدا کردن شماره صفحه
         $SUB_FOLDER ='admin';
         $url_main=substr($_SERVER['REQUEST_URI'], strlen($SUB_FOLDER)+1);
@@ -170,7 +171,7 @@ class shakhesController
 
 
         // پیدا کردن قلم ها
-        include ROOT_DIR . "component/shakhes/model/ghalam.model.php";
+        include_once ROOT_DIR . "component/shakhes/model/ghalam.model.php";
         $obj = new ghalam();
         
         $PAGE_SIZE = 10;
@@ -185,8 +186,12 @@ class shakhesController
         
         $ghalam = ($res['export']['recordsCount'] > 0) ?  $res['export']['list'] : array();
         
+        include_once ROOT_DIR . "component/shakhes/";
 
-        include ROOT_DIR . "component/admin/model/admin.model.php";
+
+
+        
+        include_once ROOT_DIR . "component/admin/model/admin.model.php";
         // پیدا کردن ستون های واحد
         if ($admin_info['parent_id'] == 0 || $admin_info['admin_id'] == 3121 || $admin_info['admin_id'] == 6) { // مدیریت دانشگاه
 
@@ -585,7 +590,7 @@ class shakhesController
         $result = array();
         $post = $_POST;
 
-        include_once ROOT_DIR . 'component/shakhes/jalasat/khodezhari.model.php';
+        include_once ROOT_DIR . 'component/shakhes/model/khodezhari.model.php';
         $obj = new shakhes;
 
 
@@ -669,7 +674,7 @@ class shakhesController
         /* اول باید ببینیم کسی که لاگین کرده چه 
         import_admin 
         رو میبینه */
-        include_once ROOT_DIR . 'component/shakhes/jalasat/jalasat.model.php';
+        include_once ROOT_DIR . 'component/shakhes/model/jalasat.model.php';
         $jalasatObj = new jalasat;
         $query = "select distinct(admin_id) from sh_forms_permission p
                     where p.table = 'jalasat'
@@ -695,9 +700,8 @@ class shakhesController
         $result = array();
         $post = $_POST;
 
-        include_once ROOT_DIR . 'component/shakhes/jalasat/jalasat.model.php';
+        include_once ROOT_DIR . 'component/shakhes/model/jalasat.model.php';
         $jalasatObj = new jalasat;
-
         
         /* اگه فرم درست پر نشه ارور بده */
         $filedsCount = 8 - count(array_filter(
@@ -706,7 +710,6 @@ class shakhesController
                 return $x !== '';
             }
         ));
-
         if ($filedsCount !== 0 && !isset($post['confirm'])) {
             $result['msg'] = 'فیلد ها به درستی پر نشده اند. ' . (int) $filedsCount  . ' فیلد خالی می باشد.';
             $result['type'] = 'error';
@@ -729,20 +732,6 @@ class shakhesController
             $result['msg'] = 'ثبت موقت انجام شد.';
             $result['type'] = 'warning';
         }
-// elseif (isset($post['final'])) {
-//            $jalasatObj->setFields($post);
-//            $jalasatObj->date = convertJToGDate($jalasatObj->date);
-//            //$jalasatObj->admin_id = $admin_info['admin_id'];
-//            $jalasatObj->status = 1;
-//            $jalasatObj->save();
-//
-//            // محاسبه جدول import
-//            // اگر status 1 بود
-//
-//
-//            $result['msg'] = '.ثبت نهایی انجام شد';
-//            $result['type'] = 'success';
-//        }
         elseif (isset($post['sendToParent'])) {
             /* فقط برای اونایی که تایید میخوان */
             $jalasat = $jalasatObj::find((int)$post['confirm']);
@@ -771,6 +760,9 @@ class shakhesController
             $jalasat->status = 4;
             $jalasat->save();
 
+
+            /* اینجا باید فرم خوداظهاری اپدیت بشه */
+
             $result['msg'] = '.   تائئد نهایی ';
             $result['type'] = 'success';
         }
@@ -793,7 +785,7 @@ class shakhesController
         $data = $dataStack->output('data');
 
         /* باید اول یک ذخیره موقت داشته باشن بعد ارسال به مافوق */
-        include_once ROOT_DIR . 'component/shakhes/daneshamukhte/daneshamukhte.model.php';
+        include_once ROOT_DIR . 'component/shakhes/model/daneshamukhte.model.php';
         $daneshamukhteObj = new daneshamukhte;
         $daneshamukhte = $daneshamukhteObj->getAll()->getList()['export'];
 
@@ -809,7 +801,7 @@ class shakhesController
         $result = array();
         $post = $_POST;
 
-        include_once ROOT_DIR . 'component/shakhes/daneshamukhte/daneshamukhte.model.php';
+        include_once ROOT_DIR . 'component/shakhes/model/daneshamukhte.model.php';
         $daneshamukhteObj = new daneshamukhte;
 
 
@@ -900,7 +892,7 @@ class shakhesController
         $data = $dataStack->output('data');
 
         /* باید اول یک ذخیره موقت داشته باشن بعد ارسال به مافوق */
-        include_once ROOT_DIR . 'component/shakhes/ruydad/ruydad.model.php';
+        include_once ROOT_DIR . 'component/shakhes/model/ruydad.model.php';
         $ruydadObj = new ruydad;
         $ruydad = $ruydadObj->getAll()->getList()['export'];
 
@@ -927,7 +919,7 @@ class shakhesController
         $result = array();
         $post = $_POST;
 
-        include_once ROOT_DIR . 'component/shakhes/ruydad/ruydad.model.php';
+        include_once ROOT_DIR . 'component/shakhes/model/ruydad.model.php';
         $ruydadObj = new ruydad;
 
 
@@ -1042,7 +1034,7 @@ class shakhesController
         $data = $dataStack->output('data');
 
         /* باید اول یک ذخیره موقت داشته باشن بعد ارسال به مافوق */
-        include_once ROOT_DIR . 'component/shakhes/shora/shora.model.php';
+        include_once ROOT_DIR . 'component/shakhes/model/shora.model.php';
         $shoraObj = new shora;
         $shora = $shoraObj->getAll()->getList()['export'];
 
@@ -1059,7 +1051,7 @@ class shakhesController
         $result = array();
         $post = $_POST;
 
-        include_once ROOT_DIR . 'component/shakhes/shora/shora.model.php';
+        include_once ROOT_DIR . 'component/shakhes/model/shora.model.php';
         $shoraObj = new shora;
 
         /* اگه فرم درست پر نشه ارور بده */
@@ -1138,7 +1130,7 @@ class shakhesController
     {
         global  $messageStack;
         $id = $_GET['id'];
-        include_once ROOT_DIR . 'component/shakhes/'.$className.'/'.$className.'.model.php';
+        include_once ROOT_DIR . 'component/shakhes/model/'.$className.'.model.php';
         $Obj = $className::find($id);
         $Obj->delete();
 
@@ -1151,7 +1143,7 @@ class shakhesController
     public function edit($className){
         global $messageStack;
         $id = $_POST['edit'];
-        include_once ROOT_DIR . 'component/shakhes/'.$className.'/'.$className.'.model.php';
+        include_once ROOT_DIR . 'component/shakhes/model/'.$className.'.model.php';
         $Obj = $className::find($id);
         $Obj->status = 1;
 
@@ -1164,7 +1156,7 @@ class shakhesController
     }
     public function options($table)
     {
-        include_once ROOT_DIR . 'component/shakhes/options/options.model.php';
+        include_once ROOT_DIR . 'component/shakhes/model/options.model.php';
         $optionsObj = new options();
 
 
