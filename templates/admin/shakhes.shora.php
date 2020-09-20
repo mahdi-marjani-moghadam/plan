@@ -11,7 +11,7 @@
                 echo $msg;
             }
             ?>
-            <?php if ($this->time['import_time'] == 1): ?>
+            
             <div class="alert alert-warning">زمان اتمام: <?=convertDate($this->time['finish_date'])?></div>
             <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=shora" method="post">
                 <table class="form">
@@ -80,9 +80,7 @@
                 <button name="temporary" value="1" class="btn btn-warning btn-large">ثبت موقت</button>
                 
             </form>
-            <? else:?>
-                                <div class="alert alert-warning">زمان ارسال اطلاعات به پایان رسیده است</div>
-            <?php endif;?>
+            
         </div>
         <div class="panel-heading bg-green">
             <h3 class="panel-title rtl "> لیست شورا</h3>
@@ -124,18 +122,20 @@
                             <td><?= $v['personal_page'] ?></td>
                             <td><?= readMore($v['tozihat'], 10) ?></td>
                             <td>
-                                <?php if (in_array($admin_info['admin_id'], [$v['import_admin'],$v['admin_id']])):?>
-                                    <?php if (($v['status'] == 0 || $v['status'] == 1)):  ?>
-                                    <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=shora" method="post">
-                                        <button name="sendToParent" value="<?= $v['id'] ?>" onclick="confirm('آیا از ارسال به مافوق مطمئن هستید؟')"
-                                                class="btn btn-xs btn-block btn-success pull-right">ارسال به مافوق</button>
-                                    </form>
-                                    <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=shora&method=delete&id=<?= $v['id'] ?>"
-                                       class="btn btn-xs btn-block btn-danger pull-right" onclick="return confirm('آیا برای حذف مطمئن هستید؟')">حذف</a>
-                                    <?php else:?>
-                                        <?= ($v['status'] == 2) ? 'ارسال به مافوق' : '' ?>
-                                        <?= ($v['status'] == 3) ? 'تایید توسط مافوق' : '' ?>
-                                        <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>
+                                <?php if ($this->time['import_time'] == 1): ?>
+                                    <?php if (in_array($admin_info['admin_id'], [$v['import_admin'],$v['admin_id']])):?>
+                                        <?php if (($v['status'] == 0 || $v['status'] == 1)):  ?>
+                                        <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=shora" method="post">
+                                            <button name="sendToParent" value="<?= $v['id'] ?>" onclick="confirm('آیا از ارسال به مافوق مطمئن هستید؟')"
+                                                    class="btn btn-xs btn-block btn-success pull-right">ارسال به مافوق</button>
+                                        </form>
+                                        <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=shora&method=delete&id=<?= $v['id'] ?>"
+                                        class="btn btn-xs btn-block btn-danger pull-right" onclick="return confirm('آیا برای حذف مطمئن هستید؟')">حذف</a>
+                                        <?php else:?>
+                                            <?= ($v['status'] == 2) ? 'ارسال به مافوق' : '' ?>
+                                            <?= ($v['status'] == 3) ? 'تایید توسط مافوق' : '' ?>
+                                            <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>
+                                        <?php endif;?>
                                     <?php endif;?>
                                 <?php endif;?>
 
