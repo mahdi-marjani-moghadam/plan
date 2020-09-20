@@ -116,35 +116,36 @@
                                     <? endif;?>
                                 <? endif;?>
 
-
-                                <? if($admin_info['admin_id'] == $v['confirm1']):?>
-                                    <? if($v['status'] == 2 ):?>
-                                    <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat&edit" method="post">
-                                        <button name="edit" value="<?= $v['id'] ?>" onclick="confirm('مطمئن هستید که نیازمند اصلاح می باشد؟')"
-                                                class="btn btn-block btn-xs btn-warning pull-right">نیازمند اصلاح</button>
-                                    </form>
-                                    <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat&confirm" method="post">
-                                        <button name="confirm"  value="<?= $v['id'] ?>" onclick="confirm('آیا از تایید مطمئن هستید؟')"
-                                                class="btn btn-xs btn-block btn-success pull-right">تایید</button>
-                                    </form>
-                                    <? else:?>
-                                        <?= ($v['status'] == 3) ? 'تایید توسط مافوق' : '' ?>
-                                        <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>
+                                <?php if ($this->time['confirm_time'] == 1): ?>
+                                    <? if($admin_info['admin_id'] == $v['confirm1']):?>
+                                        <? if($v['status'] == 2 ):?>
+                                        <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat&edit" method="post">
+                                            <button name="edit" value="<?= $v['id'] ?>" onclick="confirm('مطمئن هستید که نیازمند اصلاح می باشد؟')"
+                                                    class="btn btn-block btn-xs btn-warning pull-right">نیازمند اصلاح</button>
+                                        </form>
+                                        <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat&confirm" method="post">
+                                            <button name="confirm"  value="<?= $v['id'] ?>" onclick="confirm('آیا از تایید مطمئن هستید؟')"
+                                                    class="btn btn-xs btn-block btn-success pull-right">تایید</button>
+                                        </form>
+                                        <? else:?>
+                                            <?= ($v['status'] == 3) ? 'تایید توسط مافوق' : '' ?>
+                                            <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>
+                                        <? endif;?>
                                     <? endif;?>
-                                <? endif;?>
 
 
-                                <? if($admin_info['admin_id'] == $v['confirm2']):?>
-                                    <? if($v['status'] == 3):?>
-                                    <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat&confirmFinal" method="post">
-                                        <button name="confirmFinal"  value="<?= $v['id'] ?>" onclick="confirm('آیا از تایید مطمئن هستید؟')"
-                                                class="btn btn-xs btn-success pull-right">تایید نهایی</button>
-                                    </form>
+                                    <? if($admin_info['admin_id'] == $v['confirm2']):?>
+                                        <? if($v['status'] == 3):?>
+                                        <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat&confirmFinal" method="post">
+                                            <button name="confirmFinal"  value="<?= $v['id'] ?>" onclick="confirm('آیا از تایید مطمئن هستید؟')"
+                                                    class="btn btn-xs btn-success pull-right">تایید نهایی</button>
+                                        </form>
 
-                                    <? else:?>
-                                        <?= ($v['status'] == 1) ? 'تاکنون اطلاعاتی وارد نشده' : '' ?>
-                                        <?= ($v['status'] == 2) ? 'ارسال به مافوق' : '' ?>
-                                        <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>
+                                        <? else:?>
+                                            <?= ($v['status'] == 1) ? 'تاکنون اطلاعاتی وارد نشده' : '' ?>
+                                            <?= ($v['status'] == 2) ? 'ارسال به مافوق' : '' ?>
+                                            <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>
+                                        <? endif;?>
                                     <? endif;?>
                                 <? endif;?>
                             </td>
