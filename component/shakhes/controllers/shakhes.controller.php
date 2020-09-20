@@ -12,6 +12,8 @@ class shakhesController
 
     public function __construct()
     {
+        global $admin_info;
+
         $this->exportType = 'html';
         /* همه ادمین ها */
         include_once ROOT_DIR . 'component/admin/model/admin.model.php';
@@ -43,7 +45,7 @@ class shakhesController
 
         /* زمان */
         $this->time = $this->checkAdminStatus($admin_info['admin_id']);
-
+        // dd($this->time);
     }
     public function template($list = array(), $msg = '')
     {
@@ -1218,31 +1220,37 @@ class shakhesController
             return array('result'=>1);
         }
 
-        
 
         include_once ROOT_DIR.'component/shakhes/model/admin_status.model.php';
         $obj = new adminStatus;
         $adminStatusObj = $obj::getBy_admin_id($adminId)->get()['export'];
+        
         if ($adminStatusObj['recordsCount'] == 0) {
+            $result['import_time'] = -1;
+            $result['confirm_time'] = -1;
             $result['status'] = -1;
-            
             $result['msg'] = 'زمانی برای این ادمین پیدا نشد';
         }
+           $adminStatusObj = $adminStatusObj['list'][0];     
         
-        if (date('Y-m-d') >= $adminStatusObj->start_date || date('Y-m-d') <= $adminStatusObj->finish_date) {
+
+        $result['start_date'] = $adminStatusObj->start_date;
+        $result['finish_date'] = $adminStatusObj->finish_date;
+        $result['start_date_confirm'] = $adminStatusObj->start_date_confirm;
+        $result['finish_date_confirm'] = $adminStatusObj->finish_date_confirm;
+
+
+        if (date('Y-m-d') >= $adminStatusObj->start_date && date('Y-m-d') <= $adminStatusObj->finish_date) {
             $result['import_time'] = 1;
         } else {
             $result['import_time'] = -1;
         }
-        if (date('Y-m-d') >= $adminStatusObj->start_date_confirm || date('Y-m-d') <= $adminStatusObj->finish_date_confirm) {
+        if (date('Y-m-d') >= $adminStatusObj->start_date_confirm && date('Y-m-d') <= $adminStatusObj->finish_date_confirm) {
             $result['confirm_time'] = 1;
         } else {
             $result['confirm_time'] = -1;
         }
 
-
-
-        
         
         return $result;
     }

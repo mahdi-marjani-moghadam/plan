@@ -11,7 +11,8 @@
                 echo $msg;
             }
             ?>
-<?php if ($this->time['import_time'] == 1): ?>
+            <?php if ($this->time['import_time'] == 1): ?>
+            <div class="alert alert-warning">زمان اتمام: <?=convertDate($this->time['finish_date'])?></div>
             <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat" method="post">
                 <table class="form">
                     <tr>
@@ -61,6 +62,8 @@
                 </table>
                 <button name="temporary" value="1" class="btn btn-warning btn-large">ثبت موقت</button>
             </form>
+                                <? else:?>
+                                <div class="alert alert-warning">زمان ارسال اطلاعات به پایان رسیده است</div>
                                 <? endif;?>
         </div>
         <div class="panel-heading bg-green">
