@@ -681,8 +681,8 @@ class shakhesController
         رو میبینه */
         include_once ROOT_DIR . 'component/shakhes/model/jalasat.model.php';
         $jalasatObj = new jalasat;
-        $jalasat = $jalasatObj->where('admin_id', 'in', $importAdmins)->orderBy('admin_id')->getList()['export'];
-                
+        $jalasat = $jalasatObj->where('admin_id', 'in', $importAdmins)->orWhere('import_admin','in',$importAdmins)
+            ->orderBy('admin_id')->getList()['export'];
 
         $this->fileName = 'shakhes.jalasat.php';
         $this->template(compact('jalasat', 'msg', 'data'));
@@ -777,8 +777,8 @@ class shakhesController
 
         include_once ROOT_DIR . 'component/shakhes/model/daneshamukhte.model.php';
         $daneshamukhteObj = new daneshamukhte;
-        $daneshamukhte = $daneshamukhteObj->where('admin_id', 'in', $importAdmins)->orderBy('admin_id')->getList()['export'];
-        
+        $daneshamukhte = $daneshamukhteObj->where('admin_id', 'in', $importAdmins)->orWhere('import_admin','in',$importAdmins)
+            ->orderBy('admin_id')->getList()['export'];
 
         
 
@@ -786,6 +786,8 @@ class shakhesController
         $this->template(compact('daneshamukhte', 'msg', 'data'));
         die();
     }
+
+
     public function daneshamukhteOnSubmit()
     {
         global $messageStack, $admin_info, $dataStack;
@@ -879,8 +881,8 @@ class shakhesController
 
         include_once ROOT_DIR . 'component/shakhes/model/ruydad.model.php';
         $ruydadObj = new ruydad;
-        $ruydad = $ruydadObj->where('admin_id', 'in', $importAdmins)->orderBy('admin_id')->getList()['export'];
-
+        $ruydad = $ruydadObj->where('admin_id', 'in', $importAdmins)->orWhere('import_admin','in',$importAdmins)
+            ->orderBy('admin_id')->getList()['export'];
 
        
         
@@ -992,9 +994,10 @@ class shakhesController
 
         include_once ROOT_DIR . 'component/shakhes/model/shora.model.php';
         $shoraObj = new shora;
-        $shora = $shoraObj->where('admin_id', 'in', $importAdmins)->orderBy('admin_id')->getList()['export'];
+        $shora = $shoraObj->where('admin_id', 'in', $importAdmins)->orWhere('import_admin','in',$importAdmins)
+            ->orderBy('admin_id')->getList()['export'];
         
-        
+
 
         $this->fileName = 'shakhes.shora.php';
         $this->template(compact('shora', 'msg', 'data'));
