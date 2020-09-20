@@ -34,10 +34,10 @@ class shakhesController
         $formsPermission = new formsPermission;
         $permissions = $formsPermission->getAll()->getList()['export']['list'];
         foreach ($permissions as  $item) {
-            $this->permissions[$item['admin_id']][$item['import_admin']]['admin_id'] = $item['admin_id'];
-            $this->permissions[$item['admin_id']][$item['import_admin']]['import_admin'] = $item['import_admin'];
-            $this->permissions[$item['admin_id']][$item['import_admin']]['confirm1'] = $item['confirm1'];
-            $this->permissions[$item['admin_id']][$item['import_admin']]['confirm2'] = $item['confirm2'];
+            $this->permissions[$item['admin_id']]['admin_id'] = $item['admin_id'];
+            $this->permissions[$item['admin_id']]['import_admin'] = $item['import_admin'];
+            $this->permissions[$item['admin_id']]['confirm1'] = $item['confirm1'];
+            $this->permissions[$item['admin_id']]['confirm2'] = $item['confirm2'];
         }
     }
     public function template($list = array(), $msg = '')
@@ -669,13 +669,13 @@ class shakhesController
 
         $importAdmins = $this->importAdmins('jalasat');
         
-
+        // dd($importAdmins);
         /* اول باید ببینیم کسی که لاگین کرده چه
         import_admin
         رو میبینه */
         include_once ROOT_DIR . 'component/shakhes/model/jalasat.model.php';
         $jalasatObj = new jalasat;
-        $jalasat = $jalasatObj->where('import_admin', 'in', $importAdmins)->orderBy('admin_id')->getList()['export'];
+        $jalasat = $jalasatObj->where('admin_id', 'in', $importAdmins)->orderBy('admin_id')->getList()['export'];
                 
 
         $this->fileName = 'shakhes.jalasat.php';
@@ -722,44 +722,16 @@ class shakhesController
 
             $result['msg'] = 'ثبت موقت انجام شد.';
             $result['type'] = 'warning';
-        } elseif (isset($post['sendToParent'])) {
-            /* فقط برای اونایی که تایید میخوان */
-            $jalasat = $jalasatObj::find((int)$post['sendToParent']);
-            $jalasat->status = 2;
-            $jalasat->save();
-
-            $result['msg'] = '. ارسال به مافوق انجام شد';
-            $result['type'] = 'success';
-        } elseif (isset($post['edit'])) {
-            $jalasat = $jalasatObj::find((int)$post['edit']);
-            $jalasat->status = 1;
-            $jalasat->save();
-
-            $result['msg'] = '.   نیاز به اصلاح';
-            $result['type'] = 'success';
-        } elseif (isset($post['confirm'])) {
-            $jalasat = $jalasatObj::find((int)$post['confirm']);
-            $jalasat->status = 3;
-            $jalasat->save();
-
-            $result['msg'] = '.   تایید مافوق';
-            $result['type'] = 'success';
-        } elseif (isset($post['confirmFinal'])) {
-            $jalasat = $jalasatObj::find((int)$post['confirmFinal']);
-            $jalasat->status = 4;
-            $jalasat->save();
-
-
-            /* اینجا باید فرم خوداظهاری اپدیت بشه */
-            $this->updateImport($jalasat, 208, 'member_count');
-            $this->updateImport($jalasat, 209, 'eligible_students');
-
-
-            $result['msg'] = '.   تایید نهایی ';
-            $result['type'] = 'success';
+        }else{
+            $result = $this->onSubmitZirGhalam($jalasatObj,$post);
         }
-
-
+        
+        if(isset($post['confirmFinal']))
+        {
+            /* اینجا باید فرم خوداظهاری اپدیت بشه */
+            $this->updateImport($obj, 208, 'member_count');
+            $this->updateImport($obj, 209, 'eligible_students');
+        }
 
 
 
@@ -771,7 +743,7 @@ class shakhesController
 
     public function daneshamukhte()
     {
-        global $messageStack, $dataStack;
+        global $messageStack, $dataStack,$admin_info;
         $msg = $messageStack->output('message');
         $data = $dataStack->output('data');
         
@@ -782,7 +754,7 @@ class shakhesController
 
         include_once ROOT_DIR . 'component/shakhes/model/daneshamukhte.model.php';
         $daneshamukhteObj = new daneshamukhte;
-        $daneshamukhte = $daneshamukhteObj->where('import_admin', 'in', $importAdmins)->orderBy('admin_id')->getList()['export'];
+        $daneshamukhte = $daneshamukhteObj->where('admin_id', 'in', $importAdmins)->orderBy('admin_id')->getList()['export'];
         
 
         
@@ -851,41 +823,15 @@ class shakhesController
 
             $result['msg'] = 'ثبت موقت انجام شد.';
             $result['type'] = 'warning';
-        } elseif (isset($post['sendToParent'])) {
-            /* فقط برای اونایی که تایید میخوان */
-            $daneshamukhte = $daneshamukhteObj::find((int)$post['sendToParent']);
-            $daneshamukhte->status = 2;
-            $daneshamukhte->save();
-
-            $result['msg'] = '. ارسال به مافوق انجام شد';
-            $result['type'] = 'success';
-        } elseif (isset($post['edit'])) {
-            $daneshamukhte = $daneshamukhteObj::find((int)$post['edit']);
-            $daneshamukhte->status = 1;
-            $daneshamukhte->save();
-
-            $result['msg'] = '.   نیاز به اصلاح';
-            $result['type'] = 'success';
-        } elseif (isset($post['confirm'])) {
-            $daneshamukhte = $daneshamukhteObj::find((int)$post['confirm']);
-            $daneshamukhte->status = 3;
-            $daneshamukhte->save();
-
-            $result['msg'] = '.   تایید مافوق';
-            $result['type'] = 'success';
-        } elseif (isset($post['confirmFinal'])) {
-            $daneshamukhte = $daneshamukhteObj::find((int)$post['confirmFinal']);
-            $daneshamukhte->status = 4;
-            $daneshamukhte->save();
-
-
+        }else{
+            $result = $this->onSubmitZirGhalam($daneshamukhteObj,$post);
+        }
+        
+        if (isset($post['confirmFinal'])) {
+            
             /* اینجا باید فرم خوداظهاری اپدیت بشه */
             $this->updateImport($daneshamukhte, 210, 'continue_education');
             //$this->updateImport($daneshamukhte, 209, 'eligible_students');
-
-
-            $result['msg'] = '.   تایید نهایی ';
-            $result['type'] = 'success';
         }
 
 
@@ -899,7 +845,7 @@ class shakhesController
 
     public function ruydad()
     {
-        global $messageStack, $dataStack;
+        global $messageStack, $dataStack,$admin_info;
         $msg = $messageStack->output('message');
         $data = $dataStack->output('data');
 
@@ -910,17 +856,10 @@ class shakhesController
 
         include_once ROOT_DIR . 'component/shakhes/model/ruydad.model.php';
         $ruydadObj = new ruydad;
-        $ruydad = $ruydadObj->where('import_admin', 'in', $importAdmins)->orderBy('admin_id')->getList()['export'];
+        $ruydad = $ruydadObj->where('admin_id', 'in', $importAdmins)->orderBy('admin_id')->getList()['export'];
 
 
-        /* عملیاتی */
-        // include_once ROOT_DIR . 'component/eghdam/model/eghdam.model.php';
-        // $eghdamObj = new eghdam;
-        // $eghdamTemp = $eghdamObj->getAll()->getList()['export']['list'];
-        // foreach ($eghdamTemp as $v) {
-        //     //$amaliati[$v['amaliati_no']]['amaliati_no'] = $v['amaliati_no'];
-        //     $amaliati[$v['amaliati_no']] = $v['amaliati'];
-        // }
+       
         
 
 
@@ -1000,41 +939,14 @@ class shakhesController
 
             $result['msg'] = 'ثبت موقت انجام شد.';
             $result['type'] = 'warning';
-        } elseif (isset($post['sendToParent'])) {
-            /* فقط برای اونایی که تایید میخوان */
-            $ruydad = $ruydadObj::find((int)$post['sendToParent']);
-            $ruydad->status = 2;
-            $ruydad->save();
-
-            $result['msg'] = '. ارسال به مافوق انجام شد';
-            $result['type'] = 'success';
-        } elseif (isset($post['edit'])) {
-            $ruydad = $ruydadObj::find((int)$post['edit']);
-            $ruydad->status = 1;
-            $ruydad->save();
-
-            $result['msg'] = '.   نیاز به اصلاح';
-            $result['type'] = 'success';
-        } elseif (isset($post['confirm'])) {
-            $ruydad = $ruydadObj::find((int)$post['confirm']);
-            $ruydad->status = 3;
-            $ruydad->save();
-
-            $result['msg'] = '.   تایید مافوق';
-            $result['type'] = 'success';
-        } elseif (isset($post['confirmFinal'])) {
-            $ruydad = $ruydadObj::find((int)$post['confirmFinal']);
-            $ruydad->status = 4;
-            $ruydad->save();
-
-
+        } else{
+            $result = $this->onSubmitZirGhalam($ruydadObj,$post);
+        }
+        if (isset($post['confirmFinal'])) {
+    
             /* اینجا باید فرم خوداظهاری اپدیت بشه */
             //$this->updateImport($ruydad, 208, 'member_count');
             //$this->updateImport($ruydad, 209, 'eligible_students');
-
-
-            $result['msg'] = '.   تایید نهایی ';
-            $result['type'] = 'success';
         }
 
 
@@ -1048,18 +960,17 @@ class shakhesController
 
     public function shora()
     {
-        global $messageStack, $dataStack;
+        global $messageStack, $dataStack,$admin_info;
         $msg = $messageStack->output('message');
         $data = $dataStack->output('data');
 
         $importAdmins = $this->importAdmins('shora');
 
-        
 
         include_once ROOT_DIR . 'component/shakhes/model/shora.model.php';
         $shoraObj = new shora;
-        $shora = $shoraObj->where('import_admin', 'in', $importAdmins)->orderBy('admin_id')->getList()['export'];
-
+        $shora = $shoraObj->where('admin_id', 'in', $importAdmins)->orderBy('admin_id')->getList()['export'];
+        
         
 
         $this->fileName = 'shakhes.shora.php';
@@ -1120,41 +1031,13 @@ class shakhesController
 
             $result['msg'] = 'ثبت موقت انجام شد.';
             $result['type'] = 'warning';
-        } elseif (isset($post['sendToParent'])) {
-            /* فقط برای اونایی که تایید میخوان */
-            $shora = $shoraObj::find((int)$post['sendToParent']);
-            $shora->status = 2;
-            $shora->save();
-
-            $result['msg'] = '. ارسال به مافوق انجام شد';
-            $result['type'] = 'success';
-        } elseif (isset($post['edit'])) {
-            $shora = $shoraObj::find((int)$post['edit']);
-            $shora->status = 1;
-            $shora->save();
-
-            $result['msg'] = '.   نیاز به اصلاح';
-            $result['type'] = 'success';
-        } elseif (isset($post['confirm'])) {
-            $shora = $shoraObj::find((int)$post['confirm']);
-            $shora->status = 3;
-            $shora->save();
-
-            $result['msg'] = '.   تایید مافوق';
-            $result['type'] = 'success';
-        } elseif (isset($post['confirmFinal'])) {
-            $shora = $shoraObj::find((int)$post['confirmFinal']);
-            $shora->status = 4;
-            $shora->save();
-
-
+        } else{
+            $result = $this->onSubmitZirGhalam($shoraObj,$post);
+        }
+        if (isset($post['confirmFinal'])) {
             /* اینجا باید فرم خوداظهاری اپدیت بشه */
             //$this->updateImport($ruydad, 208, 'member_count');
             //$this->updateImport($ruydad, 209, 'eligible_students');
-
-
-            $result['msg'] = '.   تایید نهایی ';
-            $result['type'] = 'success';
         }
 
 
@@ -1165,6 +1048,43 @@ class shakhesController
 
 
 
+
+    private function onSubmitZirGhalam($class,$post)
+    {
+        
+        if (isset($post['sendToParent'])) {
+            /* فقط برای اونایی که تایید میخوان */
+            $obj = $class::find((int)$post['sendToParent']);
+            $obj->status = 2;
+            $obj->save();
+
+            $result['msg'] = '. ارسال به مافوق انجام شد';
+            $result['type'] = 'success';
+        } elseif (isset($post['edit'])) {
+            $obj = $class::find((int)$post['edit']);
+            $obj->status = 1;
+            $obj->save();
+
+            $result['msg'] = '.   نیاز به اصلاح';
+            $result['type'] = 'success';
+        } elseif (isset($post['confirm'])) {
+            $obj = $class::find((int)$post['confirm']);
+            $obj->status = 3;
+            $obj->save();
+
+            $result['msg'] = '.   تایید مافوق';
+            $result['type'] = 'success';
+        } elseif (isset($post['confirmFinal'])) {
+            $obj = $class::find((int)$post['confirmFinal']);
+            $obj->status = 4;
+            $obj->save();
+
+
+            $result['msg'] = '.   تایید نهایی ';
+            $result['type'] = 'success';
+        }
+        return $result;
+    }
 
     public function onDelete($className)
     {
@@ -1223,10 +1143,9 @@ class shakhesController
         } else {
             $importObj = $import['list'][0];
         }
-        if(in_array($ghalam_id,[208,209])) {
+        if (in_array($ghalam_id, [208,209])) {
             $importObj->$value = $importObj->$value + $zirGhalam->$field;
-        }
-        else if($ghalam_id == 210 ){
+        } elseif ($ghalam_id == 210) {
             $importObj->$value = $importObj->$value + $zirGhalam->$field;
         }
         $importObj->save();
@@ -1243,9 +1162,9 @@ class shakhesController
         } else {
             $impConfObj = $impConf['list'][0];
         }
-        if(in_array($ghalam_id,[208,209])){
+        if (in_array($ghalam_id, [208,209])) {
             $impConfObj->$value = $importObj->$value;
-        }elseif (in_array($ghalam_id,[210])){
+        } elseif (in_array($ghalam_id, [210])) {
             $impConfObj->$value = 1;
         }
         $impConfObj->save();

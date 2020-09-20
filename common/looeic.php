@@ -1132,7 +1132,8 @@ class looeic extends DB
          WHERE " . $this->PRI_KEY . " = '" . $this->fields[$this->PRI_KEY] . "' ";
 
 
-        $stmt = $conn->prepare($sql);
+        // dd($sql);
+         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
 

@@ -132,8 +132,9 @@
                 <?php
                 if ($daneshamukhte['recordsCount'] > 0) :
                     foreach ($daneshamukhte['list'] as $v) :
-                        $v['confirm1'] = $this->permission[$v['admin_id']][$v['import_admin']]['confirm1'];
-                        $v['confirm2'] = $this->permission[$v['admin_id']][$v['import_admin']]['confirm2'];
+                        $v['confirm1'] = $this->permissions[$v['admin_id']]['confirm1'];
+                        $v['confirm2'] = $this->permissions[$v['admin_id']]['confirm2'];
+
                         $v['name'] = $this->admins[$v['admin_id']]['name'];
                         $v['family'] = $this->admins[$v['admin_id']]['family'];
 
@@ -186,8 +187,9 @@
                                     <? endif;?>
                                 <? endif;?>
 
-
+                                        
                                 <? if($admin_info['admin_id'] == $v['confirm2']):?>
+                                
                                     <? if($v['status'] == 3):?>
                                     <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte&confirmFinal" method="post">
                                         <button name="confirmFinal"  value="<?= $v['id'] ?>" onclick="confirm('آیا از تائید مطمئن هستید؟')"
