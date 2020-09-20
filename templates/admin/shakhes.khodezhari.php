@@ -6,12 +6,15 @@
     <div id="panel-1" class="panel panel-default border-green">
 
         <div class="panel-body">
+            <div class="alert alert-warning">زمان اتمام: <?=convertDate($this->time['finish_date'])?></div>
+            <div class="alert alert-warning">زمان اتمام: <?=convertDate($this->time['confirm_finish_date'])?></div>
             <a class="btn btn-info btn-lg" href="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat">فرم جلسات توجیهی تحصیلات تکمیلی</a>
             <a class="btn btn-info btn-lg" href="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte">فرم همکاری دانش آموختگان و دانشجویان</a>
             <a class="btn btn-info btn-lg" href="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad"> فرم رویدادهای برگزار شده</a>
             <a class="btn btn-info btn-lg" href="<?= RELA_DIR ?>admin/?component=shakhes&action=shora">فرم عضویت در شوراهای برون دانشگاهی</a>
         </div>
         <tr>
+
         <input type="submit" class="btn btn-success btn-white btn-large" style="font-size: 20px" name="final" onclick="return confirm(' ثبت نهایی به منزله ورود کلیه اطلاعات فرم ها می باشد. آیا مطمئن هستید؟')"  value="ثبت نهایی" />
         </tr>
 

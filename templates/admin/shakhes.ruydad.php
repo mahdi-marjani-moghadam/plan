@@ -205,14 +205,25 @@
 
                             <td>
                                 <?php if ($this->time['import_time'] == 1): ?>
-                                    <? if( in_array($admin_info['admin_id'], [$v['import_admin'],$v['admin_id']]) ):?>
+
+                                    <? if( in_array($admin_info['admin_id'], [$v['import_admin']]) ):?>
+
                                         <? if(($v['status'] == 0 || $v['status'] == 1) ):  ?>
-                                        <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad" method="post">
-                                            <button name="sendToParent" value="<?= $v['id'] ?>" onclick="confirm('آیا از ارسال به مافوق مطمئن هستید؟')"
-                                                    class="btn btn-xs btn-block btn-success pull-right">ارسال به مافوق</button>
-                                        </form>
-                                        <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad&method=delete&id=<?= $v['id'] ?>"
-                                        class="btn btn-xs btn-block btn-danger pull-right" onclick="return confirm('آیا برای حذف مطمئن هستید؟')">حذف</a>
+                                            <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad" method="post">
+                                                <button name="sendToParent" value="<?= $v['id'] ?>" onclick="confirm('آیا از ارسال به مافوق مطمئن هستید؟')"
+                                                        class="btn btn-xs btn-block btn-success pull-right">ارسال به مافوق</button>
+                                            </form>
+                                            <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad&method=delete&id=<?= $v['id'] ?>"
+                                               class="btn btn-xs btn-block btn-danger pull-right" onclick="return confirm('آیا برای حذف مطمئن هستید؟')">حذف</a>
+                                        <? else:?>
+                                            <?= ($v['status'] == 2) ? 'ارسال به مافوق' : '' ?>
+                                            <?= ($v['status'] == 3) ? 'تایید توسط مافوق' : '' ?>
+                                            <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>
+
+                                        <? endif;?>
+                                    <? else:
+                                        if(($v['status'] == 0 || $v['status'] == 1)):?>
+                                            در حال ورود اطلاعات
                                         <? else:?>
                                             <?= ($v['status'] == 2) ? 'ارسال به مافوق' : '' ?>
                                             <?= ($v['status'] == 3) ? 'تایید توسط مافوق' : '' ?>

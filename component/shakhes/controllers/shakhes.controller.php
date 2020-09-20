@@ -747,6 +747,7 @@ class shakhesController
             $result['type'] = 'warning';
         } else {
             $result = $this->onSubmitZirGhalam($jalasatObj, $post);
+            $daneshamukhteObj = $result['obj'];
         }
         
         if (isset($post['confirmFinal'])) {
@@ -850,13 +851,16 @@ class shakhesController
             $result['type'] = 'warning';
         } else {
             $result = $this->onSubmitZirGhalam($daneshamukhteObj, $post);
+            $daneshamukhteObj = $result['obj'];
         }
         
         if (isset($post['confirmFinal'])) {
             
             /* اینجا باید فرم خوداظهاری اپدیت بشه */
-            $this->updateImport($daneshamukhte, 210, 'continue_education');
-            //$this->updateImport($daneshamukhte, 209, 'eligible_students');
+            $this->updateImport($daneshamukhteObj, 210, 'continue_education');
+            $this->updateImport($daneshamukhteObj, 211, 'employed_status');
+            $this->updateImport($daneshamukhteObj, 212, '');
+
         }
 
 
@@ -966,6 +970,7 @@ class shakhesController
             $result['type'] = 'warning';
         } else {
             $result = $this->onSubmitZirGhalam($ruydadObj, $post);
+            $daneshamukhteObj = $result['obj'];
         }
         if (isset($post['confirmFinal'])) {
     
@@ -1059,6 +1064,7 @@ class shakhesController
             $result['type'] = 'warning';
         } else {
             $result = $this->onSubmitZirGhalam($shoraObj, $post);
+            $daneshamukhteObj = $result['obj'];
         }
         if (isset($post['confirmFinal'])) {
             /* اینجا باید فرم خوداظهاری اپدیت بشه */
@@ -1083,6 +1089,7 @@ class shakhesController
             $obj->status = 2;
             $obj->save();
 
+            $result['obj'] = $obj;
             $result['msg'] = '. ارسال به مافوق انجام شد';
             $result['type'] = 'success';
         } elseif (isset($post['edit'])) {
@@ -1090,6 +1097,7 @@ class shakhesController
             $obj->status = 1;
             $obj->save();
 
+            $result['obj'] = $obj;
             $result['msg'] = '.   نیاز به اصلاح';
             $result['type'] = 'success';
         } elseif (isset($post['confirm'])) {
@@ -1097,6 +1105,7 @@ class shakhesController
             $obj->status = 3;
             $obj->save();
 
+            $result['obj'] = $obj;
             $result['msg'] = '.   تایید مافوق';
             $result['type'] = 'success';
         } elseif (isset($post['confirmFinal'])) {
@@ -1104,7 +1113,7 @@ class shakhesController
             $obj->status = 4;
             $obj->save();
 
-
+            $result['obj'] = $obj;
             $result['msg'] = '.   تایید نهایی ';
             $result['type'] = 'success';
         }
@@ -1164,16 +1173,23 @@ class shakhesController
             $importObj->motevali_admin_id = $zirGhalam->admin_id;
             $importObj->ghalam_id = $ghalam_id;
             $importObj->$value = 0;
-            $importObj->save();
+
         } else {
             $importObj = $import['list'][0];
         }
-        if (in_array($ghalam_id, [208,209])) {
+
+        if (in_array($ghalam_id, [208,209])) {// jalasat
             $importObj->$value = $importObj->$value + $zirGhalam->$field;
-        } elseif ($ghalam_id == 210) {
-            $importObj->$value = $importObj->$value + $zirGhalam->$field;
+            $importObj->save();
+        } elseif (in_array($ghalam_id, [210]) && $zirGhalam->$field == 'شاغل به تحصیل در مقطع بالاتر'
+            || in_array($ghalam_id, [211]) && $zirGhalam->$field == 'شاغل'
+        ){//daneshamukhte
+            $importObj->$value = $importObj->$value + 1;
+            $importObj->save();
+        }elseif(in_array($ghalam_id, [212])){
+            $importObj->$value = $importObj->$value + 1;
+            $importObj->save();
         }
-        $importObj->save();
 
         include_once ROOT_DIR.'component/shakhes/model/import_confirm.model.php';
         $impConfObj = new importConfirm;
@@ -1183,16 +1199,21 @@ class shakhesController
             $impConfObj->admin = $importObj->motevali_admin_id;
             $impConfObj->admin_type = 'external';
             $impConfObj->$value = 0;
-            $impConfObj->save();
+
         } else {
             $impConfObj = $impConf['list'][0];
         }
         if (in_array($ghalam_id, [208,209])) {
             $impConfObj->$value = $importObj->$value;
-        } elseif (in_array($ghalam_id, [210])) {
-            $impConfObj->$value = 1;
+            $impConfObj->save();
+        } elseif (in_array($ghalam_id, [210]) && $zirGhalam->$field == 'شاغل به تحصیل در مقطع بالاتر'
+            || in_array($ghalam_id, [211]) && $zirGhalam->$field == 'شاغل'
+            || in_array($ghalam_id,[212])
+        ) {
+            $impConfObj->$value = $importObj->$value;
+            $impConfObj->save();
         }
-        $impConfObj->save();
+
 
         return compact('importObj', 'impConfObj');
     }
@@ -1220,7 +1241,11 @@ class shakhesController
     {
         /* manager */
         if ($adminId == 1) {
-            return array('result'=>1);
+            return array(
+                'result'=>1,
+                'import_time'=>1,
+                'confirm_time'=>1
+                );
         }
 
 
