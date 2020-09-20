@@ -8,6 +8,7 @@ class shakhesController
     private $options = array();
     private $selectBoxAdmins = array();
     private $permissions = array();
+    private $time = array();
 
     public function __construct()
     {
@@ -39,6 +40,10 @@ class shakhesController
             $this->permissions[$item['admin_id']]['confirm1'] = $item['confirm1'];
             $this->permissions[$item['admin_id']]['confirm2'] = $item['confirm2'];
         }
+
+        /* زمان */
+        $this->time = $this->checkAdminStatus($admin_info['admin_id']);
+
     }
     public function template($list = array(), $msg = '')
     {
@@ -553,17 +558,16 @@ class shakhesController
 
     public function khodezhari()
     {
-        /*جدید*/
         global $messageStack, $dataStack, $admin_info;
         $msg = $messageStack->output('message');
         $data = $dataStack->output('data');
 
-        include ROOT_DIR . "component/shakhes/model/shakhes.model.php";
-
+        
+        
 
         // پیدا کردن قلم ها و کلان
+        include ROOT_DIR . "component/shakhes/model/shakhes.model.php";
         $obj = new shakhes();
-        /*جدید*/
         $shakhes = $obj->getAll()->getList()['export'];
 
         $query = 'select g.ghalam_id , r_k_s.kalan_no , g.ghalam   from sh_ghalam g
@@ -739,12 +743,11 @@ class shakhesController
 
             $result['msg'] = 'ثبت موقت انجام شد.';
             $result['type'] = 'warning';
-        }else{
-            $result = $this->onSubmitZirGhalam($jalasatObj,$post);
+        } else {
+            $result = $this->onSubmitZirGhalam($jalasatObj, $post);
         }
         
-        if(isset($post['confirmFinal']))
-        {
+        if (isset($post['confirmFinal'])) {
             /* اینجا باید فرم خوداظهاری اپدیت بشه */
             $this->updateImport($jalasatObj, 208, 'member_count');
             $this->updateImport($jalasatObj, 209, 'eligible_students');
@@ -841,8 +844,8 @@ class shakhesController
 
             $result['msg'] = 'ثبت موقت انجام شد.';
             $result['type'] = 'warning';
-        }else{
-            $result = $this->onSubmitZirGhalam($daneshamukhteObj,$post);
+        } else {
+            $result = $this->onSubmitZirGhalam($daneshamukhteObj, $post);
         }
         
         if (isset($post['confirmFinal'])) {
@@ -957,8 +960,8 @@ class shakhesController
 
             $result['msg'] = 'ثبت موقت انجام شد.';
             $result['type'] = 'warning';
-        } else{
-            $result = $this->onSubmitZirGhalam($ruydadObj,$post);
+        } else {
+            $result = $this->onSubmitZirGhalam($ruydadObj, $post);
         }
         if (isset($post['confirmFinal'])) {
     
@@ -1049,8 +1052,8 @@ class shakhesController
 
             $result['msg'] = 'ثبت موقت انجام شد.';
             $result['type'] = 'warning';
-        } else{
-            $result = $this->onSubmitZirGhalam($shoraObj,$post);
+        } else {
+            $result = $this->onSubmitZirGhalam($shoraObj, $post);
         }
         if (isset($post['confirmFinal'])) {
             /* اینجا باید فرم خوداظهاری اپدیت بشه */
@@ -1067,9 +1070,8 @@ class shakhesController
 
 
 
-    private function onSubmitZirGhalam($class,$post)
+    private function onSubmitZirGhalam($class, $post)
     {
-        
         if (isset($post['sendToParent'])) {
             /* فقط برای اونایی که تایید میخوان */
             $obj = $class::find((int)$post['sendToParent']);
@@ -1207,5 +1209,41 @@ class shakhesController
         array_push($ids, $admin_info['admin_id']);
         $ids = array_unique($ids);
         return $ids;
+    }
+
+    private function checkAdminStatus($adminId)
+    {
+        /* manager */
+        if ($adminId == 1) {
+            return array('result'=>1);
+        }
+
+        
+
+        include_once ROOT_DIR.'component/shakhes/model/admin_status.model.php';
+        $obj = new adminStatus;
+        $adminStatusObj = $obj::getBy_admin_id($adminId)->get()['export'];
+        if ($adminStatusObj['recordsCount'] == 0) {
+            $result['status'] = -1;
+            
+            $result['msg'] = 'زمانی برای این ادمین پیدا نشد';
+        }
+        
+        if (date('Y-m-d') >= $adminStatusObj->start_date || date('Y-m-d') <= $adminStatusObj->finish_date) {
+            $result['import_time'] = 1;
+        } else {
+            $result['import_time'] = -1;
+        }
+        if (date('Y-m-d') >= $adminStatusObj->start_date_confirm || date('Y-m-d') <= $adminStatusObj->finish_date_confirm) {
+            $result['confirm_time'] = 1;
+        } else {
+            $result['confirm_time'] = -1;
+        }
+
+
+
+        
+        
+        return $result;
     }
 }

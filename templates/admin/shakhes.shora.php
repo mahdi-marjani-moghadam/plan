@@ -6,12 +6,12 @@
         </div>
         <div class="panel-body">
 
-            <? 
-            if($msg){
+            <?php
+            if ($msg) {
                 echo $msg;
             }
             ?>
-
+            <?php if ($this->time['import_time'] == 1): ?>
             <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=shora" method="post">
                 <table class="form">
                     <tr>
@@ -19,7 +19,7 @@
                         <td colspan="1">
                             <select style="display: block" name="admin_id">
                                 <option value="<?=$admin_info['admin_id']?>"> خودم</option>
-                                <? foreach($this->selectBoxAdmins as $admin):?>
+                                <?php foreach ($this->selectBoxAdmins as $admin):?>
                                     <option <?= ($data['admin_id'] === $admin['admin_id']) ? 'selected' : '' ?> value="<?= $admin['admin_id'] ?>"><?= $admin['name'].' ',$admin['family'] ?></option>
                                 <?endforeach;?>
                             </select>
@@ -44,7 +44,7 @@
                         <td>
                             <select name="nationality">
                                 <option value="">انتخاب کنید</option>
-                                <? foreach($this->options['shora']['nationality'] as $item):?>
+                                <?php foreach ($this->options['shora']['nationality'] as $item):?>
                                 <option <?= ($data['nationality'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>
                             </select>
@@ -54,7 +54,7 @@
                         <td>
                             <select name="position">
                                 <option value="">انتخاب کنید</option>
-                                <? foreach($this->options['shora']['position'] as $item):?>
+                                <?php foreach ($this->options['shora']['position'] as $item):?>
                                 <option <?= ($data['position'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>
                             </select>
@@ -65,7 +65,7 @@
                         <td>
                             <select name="personal_page">
                                 <option value="">انتخاب کنید</option>
-                                <? foreach($this->options['shora']['personal_page'] as $item):?>
+                                <?php foreach ($this->options['shora']['personal_page'] as $item):?>
                                 <option <?= ($data['personal_page'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?endforeach;?>
                             </select>
@@ -79,6 +79,7 @@
                 <button name="temporary" value="1" class="btn btn-warning btn-large">ثبت موقت</button>
                 
             </form>
+            <?php endif;?>
         </div>
         <div class="panel-heading bg-green">
             <h3 class="panel-title rtl "> لیست شورا</h3>
@@ -118,25 +119,25 @@
                             <td><?= $v['nationality'] ?></td>
                             <td><?= $v['position'] ?></td>
                             <td><?= $v['personal_page'] ?></td>
-                            <td><?= readMore($v['tozihat'],10) ?></td>
+                            <td><?= readMore($v['tozihat'], 10) ?></td>
                             <td>
-                                <? if( in_array($admin_info['admin_id'], [$v['import_admin'],$v['admin_id']]) ):?>
-                                    <? if(($v['status'] == 0 || $v['status'] == 1) ):  ?>
+                                <?php if (in_array($admin_info['admin_id'], [$v['import_admin'],$v['admin_id']])):?>
+                                    <?php if (($v['status'] == 0 || $v['status'] == 1)):  ?>
                                     <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=shora" method="post">
                                         <button name="sendToParent" value="<?= $v['id'] ?>" onclick="confirm('آیا از ارسال به مافوق مطمئن هستید؟')"
                                                 class="btn btn-xs btn-block btn-success pull-right">ارسال به مافوق</button>
                                     </form>
                                     <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=shora&method=delete&id=<?= $v['id'] ?>"
                                        class="btn btn-xs btn-block btn-danger pull-right" onclick="return confirm('آیا برای حذف مطمئن هستید؟')">حذف</a>
-                                    <? else:?>
+                                    <?php else:?>
                                         <?= ($v['status'] == 2) ? 'ارسال به مافوق' : '' ?>
                                         <?= ($v['status'] == 3) ? 'تایید توسط مافوق' : '' ?>
                                         <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>
-                                    <? endif;?>
-                                <? endif;?>
+                                    <?php endif;?>
+                                <?php endif;?>
 
-                                <? if($admin_info['admin_id'] == $v['confirm1']):?>
-                                    <? if($v['status'] == 2 ):?>
+                                <?php if ($admin_info['admin_id'] == $v['confirm1']):?>
+                                    <?php if ($v['status'] == 2):?>
                                     <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=shora&edit" method="post">
                                         <button name="edit" value="<?= $v['id'] ?>" onclick="confirm('مطمئن هستید که نیازمند اصلاح می باشد؟')"
                                                 class="btn btn-block btn-xs btn-warning pull-right">نیازمند اصلاح</button>
@@ -145,26 +146,26 @@
                                         <button name="confirm"  value="<?= $v['id'] ?>" onclick="confirm('آیا از تائید مطمئن هستید؟')"
                                                 class="btn btn-xs btn-block btn-success pull-right">تائید</button>
                                     </form>
-                                    <? else:?>
+                                    <?php else:?>
                                         <?= ($v['status'] == 3) ? 'تایید توسط مافوق' : '' ?>
                                         <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>
-                                    <? endif;?>
-                                <? endif;?>
+                                    <?php endif;?>
+                                <?php endif;?>
 
 
-                                <? if($admin_info['admin_id'] == $v['confirm2']):?>
-                                    <? if($v['status'] == 3):?>
+                                <?php if ($admin_info['admin_id'] == $v['confirm2']):?>
+                                    <?php if ($v['status'] == 3):?>
                                     <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=shora&confirmFinal" method="post">
                                         <button name="confirmFinal"  value="<?= $v['id'] ?>" onclick="confirm('آیا از تائید مطمئن هستید؟')"
                                                 class="btn btn-xs btn-success pull-right">تائید نهایی</button>
                                     </form>
 
-                                    <? else:?>
+                                    <?php else:?>
                                         <?= ($v['status'] == 1) ? 'هنوز اطلاعاتی وارد نشده' : '' ?>
                                         <?= ($v['status'] == 2) ? 'ارسال به مافوق' : '' ?>
                                         <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>
-                                    <? endif;?>
-                                <? endif;?>
+                                    <?php endif;?>
+                                <?php endif;?>
                             </td>
                         </tr>
                 <?php

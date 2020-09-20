@@ -11,7 +11,7 @@
                 echo $msg;
             }
             ?>
-
+<?php if ($this->time['import_time'] == 1): ?>
             <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad" method="post">
                 <table class="form">
                     <tr>
@@ -140,6 +140,7 @@
                 <button name="temporary" value="1" class="btn btn-warning btn-large">ثبت موقت</button>
             
             </form>
+                                <? endif;?>
         </div>
         <div class="panel-heading bg-green">
             <h3 class="panel-title rtl "> لیست رویداد</h3>
