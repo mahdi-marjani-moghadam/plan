@@ -105,7 +105,7 @@
         <?php if ($admin_info['parent_id'] == '0') : ?>
         <li>
             <a class="Download">
-                <i class="sidebar-icon fa fa-bar-chart"></i>
+
                 <span class="sidebar-text">نمودار گروه‌ها</span>
             </a>
             <ul class="sidebar-child animated fadeInRight">
@@ -125,7 +125,7 @@
         </li>
         <li>
             <a class="Download">
-                <i class="sidebar-icon fa fa-bar-chart"></i>
+
                 <span class="sidebar-text">نمودار دانشکده و ستاد</span>
             </a>
             <ul class="sidebar-child animated fadeInRight">
@@ -157,7 +157,7 @@
 
         <li>
             <a class="Download">
-                <i class="sidebar-icon fa fa-bar-chart"></i>
+
                 <span class="sidebar-text">نمودار دانشگاه</span>
             </a>
             <ul class="sidebar-child animated fadeInRight">

@@ -880,7 +880,7 @@ class shakhesController
 
 
             /* اینجا باید فرم خوداظهاری اپدیت بشه */
-            //$this->updateImport($daneshamukhte, 208, 'member_count');
+            $this->updateImport($daneshamukhte, 210, 'continue_education');
             //$this->updateImport($daneshamukhte, 209, 'eligible_students');
 
 
@@ -1217,14 +1217,19 @@ class shakhesController
         $import = $importObj::getBy_motevali_admin_id_and_ghalam_id($zirGhalam->admin_id, $ghalam_id)->get()['export'];
         if ($import['recordsCount'] == 0) {
             $importObj->motevali_admin_id = $zirGhalam->admin_id;
-            $importObj->ghalam_id = 208;
-            $importObj->$value = $zirGhalam->$field;
+            $importObj->ghalam_id = $ghalam_id;
+            $importObj->$value = 0;
             $importObj->save();
         } else {
-            $import['list'][0]->$value = $import['list'][0]->value6 + $zirGhalam->$field;
-            $import['list'][0]->save();
             $importObj = $import['list'][0];
         }
+        if(in_array($ghalam_id,[208,209])) {
+            $importObj->$value = $importObj->$value + $zirGhalam->$field;
+        }
+        else if($ghalam_id == 210 ){
+            $importObj->$value = $importObj->$value + $zirGhalam->$field;
+        }
+        $importObj->save();
 
         include_once ROOT_DIR.'component/shakhes/model/import_confirm.model.php';
         $impConfObj = new importConfirm;
@@ -1233,13 +1238,18 @@ class shakhesController
             $impConfObj->sh_import_id = $importObj->id;
             $impConfObj->admin = $importObj->motevali_admin_id;
             $impConfObj->admin_type = 'external';
-            $impConfObj->$value = $importObj->value6;
+            $impConfObj->$value = 0;
             $impConfObj->save();
         } else {
-            $impConf['list'][0]->$value = $importObj->$value;
-            $impConf['list'][0]->save();
             $impConfObj = $impConf['list'][0];
         }
+        if(in_array($ghalam_id,[208,209])){
+            $impConfObj->$value = $importObj->$value;
+        }elseif (in_array($ghalam_id,[210])){
+            $impConfObj->$value = 1;
+        }
+        $impConfObj->save();
+
         return compact('importObj', 'impConfObj');
     }
 

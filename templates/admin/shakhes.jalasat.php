@@ -81,8 +81,8 @@
                 <?php
                 if ($jalasat['recordsCount'] > 0) :
                     foreach ($jalasat['list'] as $v) :
-                        $v['confirm1'] = $this->permission[$v['admin_id']][$v['import_admin']]['confirm1'];
-                        $v['confirm2'] = $this->permission[$v['admin_id']][$v['import_admin']]['confirm2'];
+                        $v['confirm1'] = $this->permissions[$v['admin_id']][$v['import_admin']]['confirm1'];
+                        $v['confirm2'] = $this->permissions[$v['admin_id']][$v['import_admin']]['confirm2'];
                         $v['name'] = $this->admins[$v['admin_id']]['name'];
                         $v['family'] = $this->admins[$v['admin_id']]['family'];
                 ?>
