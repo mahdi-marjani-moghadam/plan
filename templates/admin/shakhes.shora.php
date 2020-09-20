@@ -108,6 +108,7 @@
                         $v['family'] = $this->admins[$v['admin_id']]['family'];
 
                 ?>
+
                         <tr>
                             <td><?= $v['name'].' '.$v['family'] ?></td>
                             <td><?= $v['shora_type'] ?></td>
