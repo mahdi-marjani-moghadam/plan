@@ -202,7 +202,7 @@
                             <td><?= readMore($v['tozihat'],10) ?></td>
 
                             <td>
-                                <? if( $admin_info['admin_id'] == $v['import_admin']):?>
+                                <? if( in_array($admin_info['admin_id'], [$v['import_admin'],$v['admin_id']]) ):?>
                                     <? if(($v['status'] == 0 || $v['status'] == 1) ):  ?>
                                     <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad" method="post">
                                         <button name="sendToParent" value="<?= $v['id'] ?>" onclick="confirm('آیا از ارسال به مافوق مطمئن هستید؟')"

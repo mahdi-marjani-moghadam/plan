@@ -699,16 +699,33 @@ class shakhesController
         /* ارسال فرم */
         if (isset($post['temporary'])) {
             /* اگه فرم درست پر نشه ارور بده */
-            $filedsCount = 8 - count(array_filter(
-                $post,
-                function ($x) {
-                    return $x !== '';
-                }
-            ));
-            if ($filedsCount !== 0 && !isset($post['confirm'])) {
-                $result['msg'] = 'فیلد ها به درستی پر نشده اند. ' . (int) $filedsCount  . ' فیلد خالی می باشد.';
-                $result['type'] = 'error';
+            /* اگه فرم درست پر نشه ارور بده */
+            $error = 0;
+            if ($post['date'] == '') {
+                $result['msg'] = 'فیلد زمان برگزاری تکمیل نشده است.';
+                $error = 1;
+            } elseif ($post['manager_list'] == '') {
+                $result['msg'] = 'فیلد اعضای هیات رئیسه حاضر در جلسه تکمیل نشده است.';
+                $error = 1;
+            } elseif ($post['member_count'] == '') {
+                $result['msg'] = 'فیلد تعداد شرکت کنندگان تکمیل نشده است.';
+                $error = 1;
+            } elseif ($post['grade'] == '') {
+                $result['msg'] = 'فیلد مقطع تکمیل نشده است.';
+                $error = 1;
+            } elseif ($post['course'] == '') {
+                $result['msg'] = 'فیلد رشته تکمیل نشده است.';
+                $error = 1;
+            } elseif ($post['eligible_students'] == '') {
+                $result['msg'] = 'فیلد تعداد کل دانشجویان مشمول تکمیل نشده است.';
+                $error = 1;
+            } elseif ($post['subject'] == '') {
+                $result['msg'] = 'فیلد رئوس موضوعات طرح شده در جلسه تکمیل نشده است.';
+                $error = 1;
+            }
 
+            if ($error == 1) {
+                $result['type'] = 'error';
                 $dataStack->add_session('data', $post);
                 $messageStack->add_session('message', $result['msg'], $result['type']);
                 redirectPage(RELA_DIR . 'admin/?component=shakhes&action=jalasat', $result['msg']);
@@ -729,8 +746,8 @@ class shakhesController
         if(isset($post['confirmFinal']))
         {
             /* اینجا باید فرم خوداظهاری اپدیت بشه */
-            $this->updateImport($obj, 208, 'member_count');
-            $this->updateImport($obj, 209, 'eligible_students');
+            $this->updateImport($jalasatObj, 208, 'member_count');
+            $this->updateImport($jalasatObj, 209, 'eligible_students');
         }
 
 
@@ -749,6 +766,7 @@ class shakhesController
         
 
         $importAdmins = $this->importAdmins('daneshamukhte');
+
 
         
 
@@ -1187,7 +1205,7 @@ class shakhesController
         $ids = array_column($jalasatObj->query($query)->getList()['export']['list'], 'admin_id');
         
         array_push($ids, $admin_info['admin_id']);
-        
+        $ids = array_unique($ids);
         return $ids;
     }
 }

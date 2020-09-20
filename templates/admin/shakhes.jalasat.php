@@ -97,10 +97,7 @@
                             <td><?= $v['eligible_students'] ?></td>
                             <td><?= $v['subject'] ?></td>
                             <td>
-
-
-
-                                <? if( $admin_info['admin_id'] == $v['import_admin']):?>
+                                <? if( in_array($admin_info['admin_id'], [$v['import_admin'],$v['admin_id']]) ):?>
                                     <? if(($v['status'] == 0 || $v['status'] == 1) ):  ?>
                                     <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat" method="post">
                                         <button name="sendToParent" value="<?= $v['id'] ?>" onclick="confirm('آیا از ارسال به مافوق مطمئن هستید؟')"
@@ -122,8 +119,8 @@
                                                 class="btn btn-block btn-xs btn-warning pull-right">نیازمند اصلاح</button>
                                     </form>
                                     <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat&confirm" method="post">
-                                        <button name="confirm"  value="<?= $v['id'] ?>" onclick="confirm('آیا از تائید مطمئن هستید؟')"
-                                                class="btn btn-xs btn-block btn-success pull-right">تائید</button>
+                                        <button name="confirm"  value="<?= $v['id'] ?>" onclick="confirm('آیا از تایید مطمئن هستید؟')"
+                                                class="btn btn-xs btn-block btn-success pull-right">تایید</button>
                                     </form>
                                     <? else:?>
                                         <?= ($v['status'] == 3) ? 'تایید توسط مافوق' : '' ?>
@@ -135,12 +132,12 @@
                                 <? if($admin_info['admin_id'] == $v['confirm2']):?>
                                     <? if($v['status'] == 3):?>
                                     <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat&confirmFinal" method="post">
-                                        <button name="confirmFinal"  value="<?= $v['id'] ?>" onclick="confirm('آیا از تائید مطمئن هستید؟')"
-                                                class="btn btn-xs btn-success pull-right">تائید نهایی</button>
+                                        <button name="confirmFinal"  value="<?= $v['id'] ?>" onclick="confirm('آیا از تایید مطمئن هستید؟')"
+                                                class="btn btn-xs btn-success pull-right">تایید نهایی</button>
                                     </form>
 
                                     <? else:?>
-                                        <?= ($v['status'] == 1) ? 'هنوز اطلاعاتی وارد نشده' : '' ?>
+                                        <?= ($v['status'] == 1) ? 'تاکنون اطلاعاتی وارد نشده' : '' ?>
                                         <?= ($v['status'] == 2) ? 'ارسال به مافوق' : '' ?>
                                         <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>
                                     <? endif;?>
