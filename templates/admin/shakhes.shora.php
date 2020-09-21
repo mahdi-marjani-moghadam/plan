@@ -5,7 +5,7 @@
             <h3 class="panel-title rtl "> فرم عضویت در شوراها و کمیته های برون دانشگاهی</h3>
         </div>
         <div class="panel-body">
-
+            <div class="alert alert-danger">منظور از شوراهای برون دانشگاهی، عضویت در شوراها، انجمن ها، کارگروه هایی است که عضو هیات علمی  دانشگاه براساس حکمی رسمی، برای مدتی معین با آنها در حوزه های مختلف علمی و فرهنگی همکاری می نماید.(صرفاً عضویت های برون دانشگاهی مدنظر می باشد).</div>
             <?php
             if ($msg) {
                 echo $msg;
@@ -16,10 +16,12 @@
             <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=shora" method="post">
                 <table class="form">
                     <tr>
-                        <td>واحد*</td>
+                        <td>واحد</td>
                         <td colspan="1">
                             <select style="display: block" name="admin_id">
-                                <option value="<?=$admin_info['admin_id']?>"> خودم</option>
+                                <? if(count(array_keys(array_column($this->selectBoxAdmins, 'admin_id'), $admin_info['admin_id'])) == 1):?>
+                                    <option value="<?=$admin_info['admin_id']?>"> خودم</option>
+                                <? endif;?>
                                 <?php foreach ($this->selectBoxAdmins as $admin):?>
                                     <option <?= ($data['admin_id'] === $admin['admin_id']) ? 'selected' : '' ?> value="<?= $admin['admin_id'] ?>"><?= $admin['name'].' ',$admin['family'] ?></option>
                                 <?endforeach;?>
@@ -113,14 +115,14 @@
 
                         <tr>
                             <td><?= $v['name'].' '.$v['family'] ?></td>
-                            <td><?= $v['shora_type'] ?></td>
-                            <td><?= $v['name_family'] ?></td>
+                            <td><?= ReadMore($v['shora_type'], 20) ?></td>
+                            <td><?= ReadMore( $v['name_family'], 20) ?></td>
                             <td><?= convertDate($v['start_date']) ?></td>
                             <td><?= convertDate($v['finish_date']) ?></td>
                             <td><?= $v['nationality'] ?></td>
                             <td><?= $v['position'] ?></td>
                             <td><?= $v['personal_page'] ?></td>
-                            <td><?= readMore($v['tozihat'], 10) ?></td>
+                            <td><?= ReadMore($v['tozihat'], 10) ?></td>
                             <td>
                                 <?php if ($this->time['import_time'] == 1): ?>
 
@@ -156,10 +158,10 @@
                                                 <button name="edit" value="<?= $v['id'] ?>" onclick="return confirm('مطمئن هستید که نیازمند اصلاح می باشد؟')"
                                                     class="btn btn-block btn-xs btn-warning pull-right">نیازمند اصلاح</button>
                                         </form>
-                                        <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=shora&confirm" method="post">
-                                            <button name="confirm"  value="<?= $v['id'] ?>" onclick="return confirm('آیا از تائید مطمئن هستید؟')"
+                                        <!--<form action="<?/*= RELA_DIR */?>admin/?component=shakhes&action=shora&confirm" method="post">
+                                            <button name="confirm"  value="<?/*= $v['id'] */?>" onclick="return confirm('آیا از تائید مطمئن هستید؟')"
                                                     class="btn btn-xs btn-block btn-success pull-right">تایید</button>
-                                        </form>
+                                        </form>-->
                                         <?php else:?>
                                             <?= ($v['status'] == 3) ? 'تایید توسط مافوق' : '' ?>
                                             <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>

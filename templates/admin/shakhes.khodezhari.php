@@ -6,9 +6,9 @@
     <div id="panel-1" class="panel panel-default border-green">
 
         <div class="panel-body">
-            <div class="alert alert-danger">توجه: ورود اطلاعات فرم ها و تکمیل فرایند آنها در طی تاریخ تعیین شده ضرورت دارد. در صورت عدم تکمیل هریک از فرم ها ............</div>
+            <div class="alert alert-danger">توجه: کاربر گرامی با توجه به تغییر رویکرد مرکز از دریافت مستندات در برخی از فعالیت های برنامه عملیاتی و جایگزین نمودن فرم های جامع به جای دریافت مستند و همچنین به منظور ارتقاء کیفیت و کمیت داده های آماری و اطلاعات، لازم است تا در تکمیل فرم ها دقت کافی بعمل آید.(ارزیابی فعالیت هایی که نیازمند تکمیل فرم هستند صرفاً با محتوای اطلاعات  فرم ها ارزیابی خواهند شد)</div>
             <div class="alert alert-warning"> بازه تکمیل فرم ها از تاریخ <?=convertDate($this->time['start_date'])?> تا تاریخ <?=convertDate($this->time['finish_date'])?>می باشد </div>
-            <div class="alert alert-warning"> بازه تایید فرم ها توسط واحد مافوق از تاریخ <?=convertDate($this->time['confirm_finish_date'])?> تا تاریخ  <?=convertDate($this->time['confirm_start_date'])?> می باشد </div>
+            <!--<div class="alert alert-warning"> بازه تایید فرم ها توسط واحد مافوق از تاریخ <?/*=convertDate($this->time['finish_date_confirm'])*/?> تا تاریخ  <?/*=convertDate($this->time['start_date_confirm'])*/?> می باشد </div>-->
             <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat">فرم جلسات توجیهی تحصیلات تکمیلی</a>
             <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte">فرم همکاری دانش آموختگان و دانشجویان</a>
             <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad"> فرم رویدادهای برگزار شده</a>

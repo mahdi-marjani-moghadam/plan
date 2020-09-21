@@ -5,21 +5,25 @@
             <h3 class="panel-title rtl "> فرم رویدادهای برگزار شده</h3>
         </div>
         <div class="panel-body">
+            <div class="alert alert-danger">رویدادها فعالیت هایی هستند که در فیلد نوع رویداد انتخاب  و سپس نسبت به تکمیل سایر اطلاعات آن اقدام میگردد.</div>
 
             <? 
             if($msg){
                 echo $msg;
             }
             ?>
-            
+
             <div class="alert alert-warning">تاریخ اتمام بازه تکمیل فرم: <?=convertDate($this->time['finish_date'])?></div>
             <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad" method="post">
                 <table class="form">
                     <tr>
-                        <td>واحد*</td>
+                        <td>واحد</td>
                         <td colspan="1">
+
                             <select style="display: block" name="admin_id">
-                                <option value="<?=$admin_info['admin_id']?>"> خودم</option>
+                                <? if(count(array_keys(array_column($this->selectBoxAdmins, 'admin_id'), $admin_info['admin_id'])) == 1):?>
+                                    <option value="<?=$admin_info['admin_id']?>"> خودم</option>
+                                <? endif;?>
                                 <? foreach($this->selectBoxAdmins as $admin):?>
                                     <option <?= ($data['admin_id'] === $admin['admin_id']) ? 'selected' : '' ?> value="<?= $admin['admin_id'] ?>"><?= $admin['name'].' ',$admin['family'] ?></option>
                                 <?endforeach;?>
@@ -116,10 +120,10 @@
                         <td>محل برگزاری</td>
                         <td><input name="salon" value="<?= $data['salon'] ?>" class="form-control"></td>
 
-                        <td>مبلغ هزینه شده*</td>
+                        <td>مبلغ هزینه شده(ریال)*</td>
                         <td><input name="cost" type="number" min="0" value="<?= $data['cost'] ?>" class="form-control"></td>
 
-                        <td>درآمد کسب شده*</td>
+                        <td>درآمد کسب شده(ریال)*</td>
                         <td><input name="income" type="number" min="0" value="<?= $data['income'] ?>" class="form-control"></td>
                     </tr>
                     <tr>
@@ -185,7 +189,7 @@
                             <td><?= $v['name'].' '.$v['family'] ?></td>
                             <td><?= $v['type'] ?></td>
                             <td><?= $v['amaliati_no'] ?></td>
-                            <td><?= $v['title'] ?></td>
+                            <td><?= readMore( $v['title'], 15) ?></td>
                             <td><?= convertDate($v['startdate']) ?></td>
                             <td><?= convertDate($v['finishdate']) ?></td>
                             <td><?= $v['time'] ?></td>
@@ -193,15 +197,15 @@
                             <td><?= $v['member_type'] ?></td>
                             <td><?= $v['member_no'] ?></td>
                             <td><?= $v['main_executor'] ?></td>
-                            <td><?= $v['sub_executor'] ?></td>
+                            <td><?= readMore( $v['sub_executor'], 20) ?></td>
                             <td><?= $v['execute_type'] ?></td>
-                            <td><?= $v['salon'] ?></td>
+                            <td><?= readMore( $v['salon'], 20) ?></td>
                             <td><?= $v['cost'] ?></td>
                             <td><?= $v['income'] ?></td>
-                            <td><?= $v['website_link'] ?></td>
-                            <td><?= $v['hami_type'] ?></td>
+                            <td><?= readMore( $v['website_link'], 5) ?></td>
+                            <td><?= readMore( $v['hami_type'], 20) ?></td>
                             <td><?= $v['hami_income'] ?></td>
-                            <td><?= readMore($v['tozihat'],10) ?></td>
+                            <td><?= readMore($v['tozihat'],20) ?></td>
 
                             <td>
                                 <?php if ($this->time['import_time'] == 1): ?>
@@ -238,10 +242,10 @@
                                             <button name="edit" value="<?= $v['id'] ?>" onclick="return confirm('مطمئن هستید که نیازمند اصلاح می باشد؟')"
                                                     class="btn btn-block btn-xs btn-warning pull-right">نیازمند اصلاح</button>
                                         </form>
-                                        <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad&confirm" method="post">
-                                            <button name="confirm"  value="<?= $v['id'] ?>" onclick="return confirm('آیا از تائید مطمئن هستید؟')"
+                                        <!--<form action="<?/*= RELA_DIR */?>admin/?component=shakhes&action=ruydad&confirm" method="post">
+                                            <button name="confirm"  value="<?/*= $v['id'] */?>" onclick="return confirm('آیا از تائید مطمئن هستید؟')"
                                                     class="btn btn-xs btn-block btn-success pull-right">تائید</button>
-                                        </form>
+                                        </form>-->
                                         <? else:?>
                                             <?= ($v['status'] == 3) ? 'تایید توسط مافوق' : '' ?>
                                             <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>
@@ -252,7 +256,7 @@
                                     <? if($admin_info['admin_id'] == $v['confirm2']):?>
                                         <? if($v['status'] == 3):?>
                                         <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad&confirmFinal" method="post">
-                                            <button name="confirmFinal"  value="<?= $v['id'] ?>" onclick="return confirm('آیا از تائید مطمئن هستید؟')"
+                                            <button name="confirmFinal"  value="<?= $v['id'] ?>" onclick="confirm('آیا از تائید مطمئن هستید؟')"
                                                     class="btn btn-xs btn-success pull-right">تائید نهایی</button>
                                         </form>
 

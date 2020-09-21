@@ -5,6 +5,7 @@
             <h3 class="panel-title rtl "> فرم جلب همکاری با دانش آموختگان و دانشجویان</h3>
         </div>
         <div class="panel-body">
+            <div class="alert alert-danger"> منظور ارتباط و همکاری هایی است که دانشکده/گروه با دانشجویان شاغل به تحصیل دانشگاه و یا دانش آموختگان  در حوزه های آموزشی، پژوهش، برگزاری کارگاه و سایر موارد برقرار می نماید. </div>
 
             <? 
             if($msg){
@@ -16,10 +17,12 @@
             <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte" method="post">
                 <table class="form">
                     <tr>
-                        <td>واحد*</td>
+                        <td>واحد</td>
                         <td >
                             <select style="display: block" name="admin_id">
-                                <option value="<?=$admin_info['admin_id']?>"> خودم</option>
+                                <? if(count(array_keys(array_column($this->selectBoxAdmins, 'admin_id'), $admin_info['admin_id'])) == 1):?>
+                                    <option value="<?=$admin_info['admin_id']?>"> خودم</option>
+                                <? endif;?>
                                 <? foreach($this->selectBoxAdmins as $admin):?>
                                     <option <?= ($data['admin_id'] === $admin['admin_id']) ? 'selected' : '' ?> value="<?= $admin['admin_id'] ?>"><?= $admin['name'].' ',$admin['family'] ?></option>
                                 <?endforeach;?>
@@ -38,7 +41,7 @@
                         <td>نام و نام خانوادگی*</td>
                         <td><input name="name_family" value="<?= $data['name_family'] ?>" class="form-control"></td>
 
-                        <td>تاریخ فارغ التحصیلی</td>
+                        <td>تاریخ فارغ التحصیلی*</td>
                         <td><input name="graduated_date" value="<?= $data['graduated_date'] ?>" autocomplete="off" class="form-control date"></td>
                     </tr>
                     <tr>
@@ -144,18 +147,18 @@
                         <tr>
                             <td><?= $v['name'].' '.$v['family'] ?></td>
                             <td><?= $v['student_status'] ?></td>
-                            <td><?= $v['name_family'] ?></td>
+                            <td><?= readMore( $v['name_family'], 20) ?></td>
                             <td><?= convertDate($v['graduated_date']) ?></td>
                             <td><?= $v['grade'] ?></td>
-                            <td><?= $v['course'] ?></td>
+                            <td><?= readMore( $v['course'], 20) ?></td>
                             <td><?= $v['relation_type'] ?></td>
                             <td><?= $v['employed_status'] ?></td>
-                            <td><?= $v['organ_name'] ?></td>
-                            <td><?= $v['organ_position'] ?></td>
+                            <td><?= readMore ($v['organ_name'], 20) ?></td>
+                            <td><?= readMore ($v['organ_position'], 20) ?></td>
                             <td><?= $v['continue_education'] ?></td>
-                            <td><?= $v['continue_university'] ?></td>
-                            <td><?= $v['successes'] ?></td>
-                            <td><?= readMore($v['tozihat'],10) ?></td>
+                            <td><?= readMore ($v['continue_university'],20) ?></td>
+                            <td><?= readMore ($v['successes'],20) ?></td>
+                            <td><?= readMore($v['tozihat'],20) ?></td>
                             <td>
 
                                 <?php if ($this->time['import_time'] == 1): ?>
@@ -164,7 +167,7 @@
 
                                         <? if(($v['status'] == 0 || $v['status'] == 1) ):  ?>
                                         <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte" method="post">
-                                            <button name="sendToParent" value="<?= $v['id'] ?>" onclick="confirm('آیا از ارسال به مافوق مطمئن هستید؟')"
+                                            <button name="sendToParent" value="<?= $v['id'] ?>" onclick="return confirm('آیا از ارسال به مافوق مطمئن هستید؟')"
                                                     class="btn btn-xs btn-block btn-success pull-right">ارسال به مافوق</button>
                                         </form>
                                         <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte&method=delete&id=<?= $v['id'] ?>"
@@ -190,13 +193,13 @@
                                 <? if($admin_info['admin_id'] == $v['confirm1']):?>
                                     <? if($v['status'] == 2 ):?>
                                     <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte&edit" method="post">
-                                        <button name="edit" value="<?= $v['id'] ?>" onclick="confirm('مطمئن هستید که نیازمند اصلاح می باشد؟')"
+                                        <button name="edit" value="<?= $v['id'] ?>" onclick="return confirm('مطمئن هستید که نیازمند اصلاح می باشد؟')"
                                                 class="btn btn-block btn-xs btn-warning pull-right">نیازمند اصلاح</button>
                                     </form>
-                                    <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte&confirm" method="post">
-                                        <button name="confirm"  value="<?= $v['id'] ?>" onclick="confirm('آیا از تائید مطمئن هستید؟')"
+                                    <!--<form action="<?/*= RELA_DIR */?>admin/?component=shakhes&action=daneshamukhte&confirm" method="post">
+                                        <button name="confirm"  value="<?/*= $v['id'] */?>" onclick="confirm('آیا از تائید مطمئن هستید؟')"
                                                 class="btn btn-xs btn-block btn-success pull-right">تائید</button>
-                                    </form>
+                                    </form>-->
                                     <? else:?>
                                         <?= ($v['status'] == 3) ? 'تایید توسط مافوق' : '' ?>
                                         <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>

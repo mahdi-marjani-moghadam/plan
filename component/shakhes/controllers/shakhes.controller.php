@@ -26,11 +26,7 @@ class shakhesController
         $this->options['ruydad'] = $this->options('sh_ruydad');
         $this->options['shora'] = $this->options('sh_shora');
         
-        /* ادمین هایی که توی لیست میشه انتخاب کرد */
-        include_once ROOT_DIR . 'component/admin/model/admin.model.php';
-        $adminObj = new admin();
-        $query = "select name,family,admin_id from admin where parent_id not in (0,1)";
-        $this->selectBoxAdmins = $adminObj->query($query)->getList()['export']['list'];
+
 
         /* permissions */
         include_once ROOT_DIR.'component/shakhes/model/forms_permission.model.php';
@@ -670,9 +666,9 @@ class shakhesController
         global $messageStack, $dataStack,$admin_info;
         $msg = $messageStack->output('message');
         $data = $dataStack->output('data');
-        
-        
 
+
+        $this->selectBoxAdmins('jalasat');
         $importAdmins = $this->importAdmins('jalasat');
         
         // dd($importAdmins);
@@ -707,7 +703,12 @@ class shakhesController
             /* اگه فرم درست پر نشه ارور بده */
             /* اگه فرم درست پر نشه ارور بده */
             $error = 0;
-            if ($post['date'] == '') {
+            $this->selectBoxAdmins('jalasat');
+            if(count($this->selectBoxAdmins) == 0){
+                $result['msg'] = 'نیاز به تکمیل این فرم برای شما نمی باشد';
+                $error = 1;
+            }
+            elseif ($post['date'] == '') {
                 $result['msg'] = 'فیلد زمان برگزاری تکمیل نشده است.';
                 $error = 1;
             } elseif ($post['manager_list'] == '') {
@@ -769,8 +770,8 @@ class shakhesController
         global $messageStack, $dataStack,$admin_info;
         $msg = $messageStack->output('message');
         $data = $dataStack->output('data');
-        
 
+        $this->selectBoxAdmins('daneshamukhte');
         $importAdmins = $this->importAdmins('daneshamukhte');
 
 
@@ -807,7 +808,12 @@ class shakhesController
         if (isset($post['temporary'])) {
             /* اگه فرم درست پر نشه ارور بده */
             $error = 0;
-            if ($post['student_status'] == '') {
+            $this->selectBoxAdmins('daneshamukhte');
+            if(count($this->selectBoxAdmins) == 0){
+                $result['msg'] = 'نیاز به تکمیل این فرم برای شما نیاز به تکمیل این فرم برای شما نمی باشد';
+                $error = 1;
+            }
+            elseif ($post['student_status'] == '') {
                 $result['msg'] = 'فیلد دانشجو/دانش آموخته تکمیل نشده است.';
                 $error = 1;
             } elseif ($post['name_family'] == '') {
@@ -878,7 +884,7 @@ class shakhesController
         $msg = $messageStack->output('message');
         $data = $dataStack->output('data');
 
-        
+        $this->selectBoxAdmins('ruydad');
         $importAdmins = $this->importAdmins('daneshamukhte');
 
         
@@ -914,7 +920,12 @@ class shakhesController
         if (isset($post['temporary'])) {
             /* اگه فرم درست پر نشه ارور بده */
             $error = 0;
-            if ($post['type'] == '') {
+            $this->selectBoxAdmins('ruydad');
+            if(count($this->selectBoxAdmins) == 0){
+                $result['msg'] = 'نیاز به تکمیل این فرم برای شما نیاز به تکمیل این فرم برای شما نمی باشد';
+                $error = 1;
+            }
+            elseif ($post['type'] == '') {
                 $result['msg'] = 'فیلد نوع رویداد تکمیل نشده است.';
                 $error = 1;
             } elseif ($post['amaliati_no'] == '') {
@@ -944,6 +955,9 @@ class shakhesController
             } elseif ($post['income'] == '') {
                 $result['msg'] = 'فیلد درآمد کسب شده تکمیل نشده است.';
                 $error = 1;
+            } elseif ($post['cost'] == '') {
+                $result['msg'] = 'فیلد مبلغ هزینه شده تکمیل نشده است.';
+                $error = 1;
             } elseif ($post['website_link'] == '') {
                 $result['msg'] = 'فیلد لینک رویداد بر روی سایت تکمیل نشده است.';
                 $error = 1;
@@ -970,12 +984,15 @@ class shakhesController
             $result['type'] = 'warning';
         } else {
             $result = $this->onSubmitZirGhalam($ruydadObj, $post);
-            $daneshamukhteObj = $result['obj'];
+            $ruydadObj = $result['obj'];
         }
         if (isset($post['confirmFinal'])) {
     
             /* اینجا باید فرم خوداظهاری اپدیت بشه */
-            //$this->updateImport($ruydad, 208, 'member_count');
+            $this->updateImport($ruydadObj, 213, 'income');
+            $this->updateImport($ruydadObj, 214, 'cost');
+            $this->updateImport($ruydadObj, 215, '');
+
             //$this->updateImport($ruydad, 209, 'eligible_students');
         }
 
@@ -994,6 +1011,7 @@ class shakhesController
         $msg = $messageStack->output('message');
         $data = $dataStack->output('data');
 
+        $this->selectBoxAdmins('shora');
         $importAdmins = $this->importAdmins('shora');
 
 
@@ -1023,11 +1041,17 @@ class shakhesController
 
 
 
+
         /* ارسال فرم */
         if (isset($post['temporary'])) {
             /* اگه فرم درست پر نشه ارور بده */
             $error = 0;
-            if ($post['shora_type'] == '') {
+            $this->selectBoxAdmins('shora');
+            if(count($this->selectBoxAdmins) == 0){
+                $result['msg'] = 'نیاز به تکمیل این فرم برای شما نمی باشد';
+                $error = 1;
+            }
+            elseif ($post['shora_type'] == '') {
                 $result['msg'] = 'فیلد عنوان شورا/کارگروه/انجمن تکمیل نشده است.';
                 $error = 1;
             } elseif ($post['name_family'] == '') {
@@ -1178,15 +1202,15 @@ class shakhesController
             $importObj = $import['list'][0];
         }
 
-        if (in_array($ghalam_id, [208,209])) {// jalasat
+        if (in_array($ghalam_id, [208,209,213,214])) {// jalasat
             $importObj->$value = $importObj->$value + $zirGhalam->$field;
             $importObj->save();
         } elseif (in_array($ghalam_id, [210]) && $zirGhalam->$field == 'شاغل به تحصیل در مقطع بالاتر'
             || in_array($ghalam_id, [211]) && $zirGhalam->$field == 'شاغل'
-        ){//daneshamukhte
+        ){
             $importObj->$value = $importObj->$value + 1;
             $importObj->save();
-        }elseif(in_array($ghalam_id, [212])){
+        }elseif(in_array($ghalam_id, [212,215])){
             $importObj->$value = $importObj->$value + 1;
             $importObj->save();
         }
@@ -1203,12 +1227,11 @@ class shakhesController
         } else {
             $impConfObj = $impConf['list'][0];
         }
-        if (in_array($ghalam_id, [208,209])) {
+        if (in_array($ghalam_id, [208,209,212,213,214,215])) {
             $impConfObj->$value = $importObj->$value;
             $impConfObj->save();
         } elseif (in_array($ghalam_id, [210]) && $zirGhalam->$field == 'شاغل به تحصیل در مقطع بالاتر'
             || in_array($ghalam_id, [211]) && $zirGhalam->$field == 'شاغل'
-            || in_array($ghalam_id,[212])
         ) {
             $impConfObj->$value = $importObj->$value;
             $impConfObj->save();
@@ -1281,5 +1304,19 @@ class shakhesController
 
         
         return $result;
+    }
+
+    private  function selectBoxAdmins($table){
+        global $admin_info;
+        /* ادمین هایی که توی لیست میشه انتخاب کرد */
+        include_once ROOT_DIR . 'component/admin/model/admin.model.php';
+        $adminObj = new admin();
+        $query = "select a.name,a.family,a.admin_id from admin a
+                    inner join sh_forms_permission s
+                    on a.admin_id = s.admin_id
+                    
+                    where a.parent_id not in (0,1) and s.table='$table' and s.import_admin = '{$admin_info['admin_id']}'";
+        $this->selectBoxAdmins = $adminObj->query($query)->getList()['export']['list'];
+        return true;
     }
 }

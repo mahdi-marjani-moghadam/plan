@@ -5,8 +5,8 @@
             <h3 class="panel-title rtl ">  فرم برگزاری جلسات توجیهی تحصیلات تکمیلی</h3>
         </div>
         <div class="panel-body">
-
-            <? 
+            <div class="alert alert-danger"> منظور جلساتی است که صرفاً جهت اطلاع رسانی، شفاف سازی و رفع ابهامات  دانشجویان مقاطع تحصیلات تکمیلی در خصوص آئین نامه ها، دستورالعمل ها، قوانین آموزشی، دانشجویی و انتظامی،  مراحل انتخاب موضوع پایان نامه، تصویب پروپوزال و فرآیند دفاع از پایان نامه برگزار می شود.</div>
+            <?
             if($msg){
                 echo $msg;
             }
@@ -16,10 +16,12 @@
             <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat" method="post">
                 <table class="form">
                     <tr>
-                        <td>واحد*</td>
-                        <td colspan="3">
+                        <td>واحد</td>
+                        <td>
                             <select style="display: block" name="admin_id">
-                                <option value="<?=$admin_info['admin_id']?>"> خودم</option>
+                                <? if(count(array_keys(array_column($this->selectBoxAdmins, 'admin_id'), $admin_info['admin_id'])) == 1):?>
+                                    <option value="<?=$admin_info['admin_id']?>"> خودم</option>
+                                <? endif;?>
                                 <? foreach($this->selectBoxAdmins as $admin):?>
                                     <option <?= ($data['admin_id'] === $admin['admin_id']) ? 'selected' : '' ?> value="<?= $admin['admin_id'] ?>"><?= $admin['name'].' ',$admin['family'] ?></option>
                                 <?endforeach;?>
@@ -92,12 +94,12 @@
                         <tr>
                             <td><?= $v['name'].' '.$v['family'] ?></td>
                             <td><?= convertDate($v['date']) ?></td>
-                            <td><?= $v['manager_list'] ?></td>
+                            <td><?= ReadMore ($v['manager_list'],20) ?></td>
                             <td><?= $v['member_count'] ?></td>
                             <td><?= $v['grade'] ?></td>
-                            <td><?= $v['course'] ?></td>
+                            <td><?= ReadMore($v['course'],20) ?></td>
                             <td><?= $v['eligible_students'] ?></td>
-                            <td><?= $v['subject'] ?></td>
+                            <td><?= ReadMore($v['subject'], 20) ?></td>
                             <td>
                                 <?php if ($this->time['import_time'] == 1): ?>
 
@@ -134,10 +136,10 @@
                                             <button name="edit" value="<?= $v['id'] ?>" onclick="return confirm('مطمئن هستید که نیازمند اصلاح می باشد؟')"
                                                     class="btn btn-block btn-xs btn-warning pull-right">نیازمند اصلاح</button>
                                         </form>
-                                        <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat&confirm" method="post">
-                                            <button name="confirm"  value="<?= $v['id'] ?>" onclick="return confirm('آیا از تایید مطمئن هستید؟')"
+                                        <!--<form action="<?/*= RELA_DIR */?>admin/?component=shakhes&action=jalasat&confirm" method="post">
+                                            <button name="confirm"  value="<?/*= $v['id'] */?>" onclick="return confirm('آیا از تایید مطمئن هستید؟')"
                                                     class="btn btn-xs btn-block btn-success pull-right">تایید</button>
-                                        </form>
+                                        </form>-->
                                         <? else:?>
                                             <?= ($v['status'] == 3) ? 'تایید توسط مافوق' : '' ?>
                                             <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>
