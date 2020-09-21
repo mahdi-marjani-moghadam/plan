@@ -50,7 +50,7 @@
         <?php if ($admin_info['group_admin'] == '0') : ?>
         <li>
             <a class="Download">
-                <i class="sidebar-icon fa fa-bar-chart"></i>
+                <!--<i class="sidebar-icon fa fa-bar-chart"></i>-->
                 <span class="sidebar-text">نمودار</span>
             </a>
             <ul class="sidebar-child animated fadeInRight">
@@ -239,23 +239,23 @@
                                 </a>
                             </li>
                         </ul>-->
-                <li>
-                    <a href="<?= RELA_DIR ?>admin/?component=shakhes">
+                <!--<li>
+                    <a href="<?/*= RELA_DIR */?>admin/?component=shakhes">
                         <span class="sidebar-text text-16"> گزارش</span>
                     </a>
                 </li>
 
 
                 <li>
-                    <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=setting">
+                    <a href="<?/*= RELA_DIR */?>admin/?component=shakhes&action=setting">
                         <span class="sidebar-text text-16"> تنظیمات شاخص</span>
                     </a>
                 </li>
                 <li>
-                    <a href="<?= RELA_DIR ?>admin/page/1/?component=shakhes&action=adminSetting">
+                    <a href="<?/*= RELA_DIR */?>admin/page/1/?component=shakhes&action=adminSetting">
                         <span class="sidebar-text text-16"> تنظیمات ادمین</span>
                     </a>
-                </li>
+                </li>-->
             </ul>
         </li>
 

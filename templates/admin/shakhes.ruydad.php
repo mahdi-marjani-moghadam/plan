@@ -41,7 +41,7 @@
                             </select>
                         </td>
 
-                        <td>هدف استراتژیک*</td>
+                        <td>هدف اصلی*</td>
                         <td>
                             <select name="amaliati_no">
                                 <option value="">انتخاب کنید</option>
@@ -79,7 +79,7 @@
                             </select>
                         </td>
 
-                        <td>عنوان مخاطب</td>
+                        <td> مخاطب</td>
                         <td>
                             <select name="member_type">
                                 <option value="">انتخاب کنید</option>
@@ -120,10 +120,10 @@
                         <td>محل برگزاری</td>
                         <td><input name="salon" value="<?= $data['salon'] ?>" class="form-control"></td>
 
-                        <td>مبلغ هزینه شده(ریال)*</td>
+                        <td>مبلغ هزینه شده(میلیون ریال)*</td>
                         <td><input name="cost" type="number" min="0" value="<?= $data['cost'] ?>" class="form-control"></td>
 
-                        <td>درآمد کسب شده(ریال)*</td>
+                        <td>درآمد کسب شده(میلیون ریال)*</td>
                         <td><input name="income" type="number" min="0" value="<?= $data['income'] ?>" class="form-control"></td>
                     </tr>
                     <tr>
@@ -133,7 +133,7 @@
                         <td> عنوان حامی* </td>
                         <td><input name="hami_type" value="<?= $data['hami_type'] ?>" class="form-control"></td>
 
-                        <td> مبلغ حمایت جذب شده (ریال)</td>
+                        <td> مبلغ حمایت جذب شده (میلیون ریال)</td>
                         <td><input name="hami_income" type="number" min="0" value="<?= $data['hami_income'] ?>" class="form-control"></td>
                     </tr>
                     <tr>
@@ -171,7 +171,7 @@
                     <th>درآمد کسب شده</th>
                     <th>لینک رویداد بر روی سایت</th>
                     <th> عنوان حامی </th>
-                    <th> مبلغ حمایت جذب شده (ریال)</th>
+                    <th> مبلغ حمایت جذب شده (میلیون ریال)</th>
                     <th>توضیحات</th>
                     <th>وضعیت</th>
                 </tr>

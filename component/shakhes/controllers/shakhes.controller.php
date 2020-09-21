@@ -1064,6 +1064,9 @@ class shakhesController
                 $result['msg'] = 'فیلد ملی/بین‌المللی تکمیل نشده است.';
                 $error = 1;
             } elseif ($post['position'] == '') {
+                $result['msg'] = 'فیلد سمت/پست تکمیل نشده است.';
+                $error = 1;
+            } elseif ($post['personal_page'] == '') {
                 $result['msg'] = 'فیلد درج عضویت در صفحه شخصی عضو هیات علمی تکمیل نشده است.';
                 $error = 1;
             }
