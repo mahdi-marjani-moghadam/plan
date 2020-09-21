@@ -12,7 +12,7 @@
             }
             ?>
             
-            <div class="alert alert-warning">زمان اتمام: <?=convertDate($this->time['finish_date'])?></div>
+            <div class="alert alert-warning">تاریخ اتمام بازه تکمیل فرم: <?=convertDate($this->time['finish_date'])?></div>
             <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte" method="post">
                 <table class="form">
                     <tr>
@@ -178,10 +178,10 @@
                                     <? else:
                                         if(($v['status'] == 0 || $v['status'] == 1)):?>
                                         در حال ورود اطلاعات
-                                        <? else:?>
-                                        <?= ($v['status'] == 2) ? 'ارسال به مافوق' : '' ?>
-                                        <?= ($v['status'] == 3) ? 'تایید توسط مافوق' : '' ?>
-                                        <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>
+                                        <?/* else:*/?><!--
+                                        <?/*= ($v['status'] == 2) ? 'ارسال به مافوق' : '' */?>
+                                        <?/*= ($v['status'] == 3) ? 'تایید توسط مافوق' : '' */?>
+                                        --><?/*= ($v['status'] == 4) ? 'تایید نهایی ' : '' */?>
                                         <? endif;?>
                                     <? endif;?>
                                 <? endif;?>
@@ -213,7 +213,7 @@
                                     </form>
 
                                     <? else:?>
-                                        <?= ($v['status'] == 1) ? 'هنوز اطلاعاتی وارد نشده' : '' ?>
+                                        <?= ($v['status'] == 1) ? '' : '' ?>
                                         <?= ($v['status'] == 2) ? 'ارسال به مافوق' : '' ?>
                                         <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>
                                     <? endif;?>

@@ -12,7 +12,7 @@
             }
             ?>
             
-            <div class="alert alert-warning">زمان اتمام: <?=convertDate($this->time['finish_date'])?></div>
+            <div class="alert alert-warning">تاریخ اتمام بازه تکمیل فرم: <?=convertDate($this->time['finish_date'])?></div>
             <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad" method="post">
                 <table class="form">
                     <tr>
@@ -210,7 +210,7 @@
 
                                         <? if(($v['status'] == 0 || $v['status'] == 1) ):  ?>
                                             <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad" method="post">
-                                                <button name="sendToParent" value="<?= $v['id'] ?>" onclick="confirm('آیا از ارسال به مافوق مطمئن هستید؟')"
+                                                <button name="sendToParent" value="<?= $v['id'] ?>" onclick="return confirm('آیا از ارسال به مافوق مطمئن هستید؟')"
                                                         class="btn btn-xs btn-block btn-success pull-right">ارسال به مافوق</button>
                                             </form>
                                             <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad&method=delete&id=<?= $v['id'] ?>"
@@ -224,10 +224,10 @@
                                     <? else:
                                         if(($v['status'] == 0 || $v['status'] == 1)):?>
                                             در حال ورود اطلاعات
-                                        <? else:?>
-                                            <?= ($v['status'] == 2) ? 'ارسال به مافوق' : '' ?>
-                                            <?= ($v['status'] == 3) ? 'تایید توسط مافوق' : '' ?>
-                                            <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>
+                                        <?/* else:*/?><!--
+                                            <?/*= ($v['status'] == 2) ? 'ارسال به مافوق' : '' */?>
+                                            <?/*= ($v['status'] == 3) ? 'تایید توسط مافوق' : '' */?>
+                                            --><?/*= ($v['status'] == 4) ? 'تایید نهایی ' : '' */?>
                                         <? endif;?>
                                     <? endif;?>
                                 <? endif;?>
@@ -235,11 +235,11 @@
                                     <? if($admin_info['admin_id'] == $v['confirm1']):?>
                                         <? if($v['status'] == 2 ):?>
                                         <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad&edit" method="post">
-                                            <button name="edit" value="<?= $v['id'] ?>" onclick="confirm('مطمئن هستید که نیازمند اصلاح می باشد؟')"
+                                            <button name="edit" value="<?= $v['id'] ?>" onclick="return confirm('مطمئن هستید که نیازمند اصلاح می باشد؟')"
                                                     class="btn btn-block btn-xs btn-warning pull-right">نیازمند اصلاح</button>
                                         </form>
                                         <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad&confirm" method="post">
-                                            <button name="confirm"  value="<?= $v['id'] ?>" onclick="confirm('آیا از تائید مطمئن هستید؟')"
+                                            <button name="confirm"  value="<?= $v['id'] ?>" onclick="return confirm('آیا از تائید مطمئن هستید؟')"
                                                     class="btn btn-xs btn-block btn-success pull-right">تائید</button>
                                         </form>
                                         <? else:?>
@@ -252,12 +252,12 @@
                                     <? if($admin_info['admin_id'] == $v['confirm2']):?>
                                         <? if($v['status'] == 3):?>
                                         <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad&confirmFinal" method="post">
-                                            <button name="confirmFinal"  value="<?= $v['id'] ?>" onclick="confirm('آیا از تائید مطمئن هستید؟')"
+                                            <button name="confirmFinal"  value="<?= $v['id'] ?>" onclick="return confirm('آیا از تائید مطمئن هستید؟')"
                                                     class="btn btn-xs btn-success pull-right">تائید نهایی</button>
                                         </form>
 
                                         <? else:?>
-                                            <?= ($v['status'] == 1) ? 'هنوز اطلاعاتی وارد نشده' : '' ?>
+                                            <?= ($v['status'] == 1) ? '' : '' ?>
                                             <?= ($v['status'] == 2) ? 'ارسال به مافوق' : '' ?>
                                             <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>
                                         <? endif;?>

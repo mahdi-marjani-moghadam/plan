@@ -6,17 +6,15 @@
     <div id="panel-1" class="panel panel-default border-green">
 
         <div class="panel-body">
-            <div class="alert alert-warning">زمان اتمام: <?=convertDate($this->time['finish_date'])?></div>
-            <div class="alert alert-warning">زمان اتمام: <?=convertDate($this->time['confirm_finish_date'])?></div>
-            <a class="btn btn-info btn-lg" href="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat">فرم جلسات توجیهی تحصیلات تکمیلی</a>
-            <a class="btn btn-info btn-lg" href="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte">فرم همکاری دانش آموختگان و دانشجویان</a>
-            <a class="btn btn-info btn-lg" href="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad"> فرم رویدادهای برگزار شده</a>
-            <a class="btn btn-info btn-lg" href="<?= RELA_DIR ?>admin/?component=shakhes&action=shora">فرم عضویت در شوراهای برون دانشگاهی</a>
+            <div class="alert alert-danger">توجه: ورود اطلاعات فرم ها و تکمیل فرایند آنها در طی تاریخ تعیین شده ضرورت دارد. در صورت عدم تکمیل هریک از فرم ها ............</div>
+            <div class="alert alert-warning"> بازه تکمیل فرم ها از تاریخ <?=convertDate($this->time['start_date'])?> تا تاریخ <?=convertDate($this->time['finish_date'])?>می باشد </div>
+            <div class="alert alert-warning"> بازه تایید فرم ها توسط واحد مافوق از تاریخ <?=convertDate($this->time['confirm_finish_date'])?> تا تاریخ  <?=convertDate($this->time['confirm_start_date'])?> می باشد </div>
+            <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat">فرم جلسات توجیهی تحصیلات تکمیلی</a>
+            <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte">فرم همکاری دانش آموختگان و دانشجویان</a>
+            <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad"> فرم رویدادهای برگزار شده</a>
+            <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=shora">فرم عضویت در شوراهای برون دانشگاهی</a>
         </div>
-        <tr>
 
-        <input type="submit" class="btn btn-success btn-white btn-large" style="font-size: 20px" name="final" onclick="return confirm(' ثبت نهایی به منزله ورود کلیه اطلاعات فرم ها می باشد. آیا مطمئن هستید؟')"  value="ثبت نهایی" />
-        </tr>
 
 <!--        <div class="panel-heading bg-green">
             <h3 class="panel-title rtl "> فرم خود اظهاری</h3>
