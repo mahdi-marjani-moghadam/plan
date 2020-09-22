@@ -929,7 +929,7 @@ class shakhesController
                 $result['msg'] = 'فیلد نوع رویداد تکمیل نشده است.';
                 $error = 1;
             } elseif ($post['amaliati_no'] == '') {
-                $result['msg'] = 'فیلد هدف استراتژیک تکمیل نشده است.';
+                $result['msg'] = 'فیلد هدف اصلی تکمیل نشده است.';
                 $error = 1;
             } elseif ($post['title'] == '') {
                 $result['msg'] = 'فیلد عنوان رویداد تکمیل نشده است.';
@@ -960,9 +960,6 @@ class shakhesController
                 $error = 1;
             } elseif ($post['website_link'] == '') {
                 $result['msg'] = 'فیلد لینک رویداد بر روی سایت تکمیل نشده است.';
-                $error = 1;
-            } elseif ($post['hami_type'] == '') {
-                $result['msg'] = 'فیلد عنوان حامی تکمیل نشده است.';
                 $error = 1;
             }
 
@@ -1091,11 +1088,13 @@ class shakhesController
             $result['type'] = 'warning';
         } else {
             $result = $this->onSubmitZirGhalam($shoraObj, $post);
-            $daneshamukhteObj = $result['obj'];
+            $shoraObj = $result['obj'];
         }
         if (isset($post['confirmFinal'])) {
             /* اینجا باید فرم خوداظهاری اپدیت بشه */
-            //$this->updateImport($ruydad, 208, 'member_count');
+            $this->updateImport($shoraObj, 216, '');
+
+
             //$this->updateImport($ruydad, 209, 'eligible_students');
         }
 
@@ -1200,6 +1199,7 @@ class shakhesController
             $importObj->motevali_admin_id = $zirGhalam->admin_id;
             $importObj->ghalam_id = $ghalam_id;
             $importObj->$value = 0;
+            $importObj->year = explode('/', convertDate(date('Y')))[0];
 
         } else {
             $importObj = $import['list'][0];
@@ -1213,7 +1213,7 @@ class shakhesController
         ){
             $importObj->$value = $importObj->$value + 1;
             $importObj->save();
-        }elseif(in_array($ghalam_id, [212,215])){
+        }elseif(in_array($ghalam_id, [212,215,216])){
             $importObj->$value = $importObj->$value + 1;
             $importObj->save();
         }
@@ -1230,7 +1230,7 @@ class shakhesController
         } else {
             $impConfObj = $impConf['list'][0];
         }
-        if (in_array($ghalam_id, [208,209,212,213,214,215])) {
+        if (in_array($ghalam_id, [208,209,212,213,214,215,216])) {
             $impConfObj->$value = $importObj->$value;
             $impConfObj->save();
         } elseif (in_array($ghalam_id, [210]) && $zirGhalam->$field == 'شاغل به تحصیل در مقطع بالاتر'

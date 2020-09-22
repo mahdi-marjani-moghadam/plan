@@ -130,7 +130,7 @@
                         <td>لینک رویداد بر روی سایت*</td>
                         <td><input name="website_link" value="<?= $data['website_link'] ?>" class="form-control"></td>
 
-                        <td> عنوان حامی* </td>
+                        <td> عنوان حامی </td>
                         <td><input name="hami_type" value="<?= $data['hami_type'] ?>" class="form-control"></td>
 
                         <td> مبلغ حمایت جذب شده (میلیون ریال)</td>

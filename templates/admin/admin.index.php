@@ -15,8 +15,8 @@
 
         ?>  <img width="100" src="<?php echo RELA_DIR;?>templates/<?php echo CURRENT_SKIN; ?>/images/logo@2x.png" >
             <span style="font-size: 2em"  > کاربر گرامی؛  <?=$admin_info['name']?> <?=$admin_info['family']?> خوش آمدید</span>
+            <div class="alert alert-danger"> توجه: کاربر گرامی با توجه به تغییر رویکرد مرکز ارزیابی از دریافت مستندات در برخی از فعالیت های برنامه عملیاتی و جایگزین نمودن فرم‌های جامع به جای دریافت مستند، ضروریست علاوه بر ارائه درصد پیشرفت فعالیت‌ها در منوی پایش، نسبت به تکمیل فرم خوداظهاری در منوی ارزیابی اقدام نمایید.</div>
 <?}?>
-
     </div>
     <?if($admin_info['parent_id'] == 0 ):?>
         <div class="col-md-2 " style="display: none" >
