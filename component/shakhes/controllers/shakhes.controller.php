@@ -708,7 +708,10 @@ class shakhesController
                 $result['msg'] = 'نیاز به تکمیل این فرم برای شما نمی باشد';
                 $error = 1;
             }
-            elseif ($post['date'] == '') {
+            elseif ($post['session'] == '') {
+                $result['msg'] = 'فیلد جلسه تکمیل نشده است.';
+                $error = 1;
+            }elseif ($post['date'] == '') {
                 $result['msg'] = 'فیلد زمان برگزاری تکمیل نشده است.';
                 $error = 1;
             } elseif ($post['manager_list'] == '') {

@@ -2,7 +2,7 @@
 <div class="content-body">
     <div id="panel-1" class="panel panel-default border-green">
         <div class="panel-heading bg-green">
-            <h3 class="panel-title rtl ">  فرم برگزاری جلسات توجیهی تحصیلات تکمیلی</h3>
+            <h3 class="panel-title rtl ">  فرم برگزاری جلسات و نشست ها</h3>
         </div>
         <div class="panel-body">
             <div class="alert alert-danger"> منظور جلساتی است که صرفاً جهت اطلاع رسانی، شفاف سازی و رفع ابهامات  دانشجویان مقاطع تحصیلات تکمیلی در خصوص آئین نامه ها، دستورالعمل ها، قوانین آموزشی، دانشجویی و انتظامی،  مراحل انتخاب موضوع پایان نامه، تصویب پروپوزال و فرآیند دفاع از پایان نامه برگزار می شود.</div>
@@ -27,12 +27,21 @@
                                 <?endforeach;?>
                             </select>
                         </td>
+                        <td>جلسه*</td>
+                        <td>
+                        <select name="session">
+                            <option value="">انتخاب کنید</option>
+                            <? foreach($this->options['jalasat']['session'] as $item):?>
+                                <option <?= ($data['session'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
+                            <?endforeach;?>
+                        </select>
+                        </td>
                     </tr>
                     <tr>
                         <td>زمان برگزاری*</td>
                         <td><input name="date" value="<?= $data['date'] ?>" autocomplete="off" class="form-control date"></td>
 
-                        <td>اعضای هیات رئیسه حاضر در جلسه*</td>
+                        <td>سمت اعضای هیات رئیسه حاضر در جلسه*</td>
                         <td><input name="manager_list" value="<?= $data['manager_list'] ?>" class="form-control"></td>
                     </tr>
                     <tr>
@@ -73,13 +82,14 @@
             <table class="table table-striped">
                 <tr>
                     <th>واحد</th>
+                    <th>جلسه</th>
                     <th>زمان برگزاری</th>
                     <th>اعضای هیات رئیسه حاضر در جلسه</th>
-                    <th>تعداد شرکت کنندگان*</th>
+                    <th>تعداد شرکت کنندگان</th>
                     <th>مقطع</th>
                     <th>رشته</th>
                     <th>تعداد کل دانشجویان مشمول</th>
-                    <th>رئوس موضوعات طرح شده در جلسه*</th>
+                    <th>رئوس موضوعات طرح شده در جلسه</th>
                     <th>وضعیت</th>
                 </tr>
                 <?php
@@ -93,6 +103,7 @@
                 ?>
                         <tr>
                             <td><?= $v['name'].' '.$v['family'] ?></td>
+                            <td><?= $v['session'] ?></td>
                             <td><?= convertDate($v['date']) ?></td>
                             <td><?= ReadMore ($v['manager_list'],20) ?></td>
                             <td><?= $v['member_count'] ?></td>

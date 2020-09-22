@@ -2,7 +2,7 @@
 <div class="content-body">
     <div id="panel-1" class="panel panel-default border-green">
         <div class="panel-heading bg-green">
-            <h3 class="panel-title rtl "> فرم جلب همکاری با دانش آموختگان و دانشجویان</h3>
+            <h3 class="panel-title rtl "> فرم جلب مشارکت دانش آموختگان و دانشجویان</h3>
         </div>
         <div class="panel-body">
             <div class="alert alert-danger"> منظور ارتباط و همکاری هایی است که دانشکده/گروه با دانشجویان شاغل به تحصیل دانشگاه و یا دانش آموختگان  در حوزه های آموزشی، پژوهش، برگزاری کارگاه و سایر موارد برقرار می نماید. </div>
