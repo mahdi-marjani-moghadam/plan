@@ -6,13 +6,18 @@
     <div id="panel-1" class="panel panel-default border-green">
 
         <div class="panel-body">
-            <div class="alert alert-danger">توجه: کاربر گرامی با توجه به تغییر رویکرد مرکز از دریافت مستندات در برخی از فعالیت های برنامه عملیاتی و جایگزین نمودن فرم های جامع به جای دریافت مستند و همچنین به منظور ارتقاء کیفیت و کمیت داده های آماری و اطلاعات، لازم است تا در تکمیل فرم ها دقت کافی بعمل آید.(ارزیابی فعالیت هایی که نیازمند تکمیل فرم هستند صرفاً با محتوای اطلاعات  فرم ها ارزیابی خواهند شد)</div>
+            <div class="alert alert-danger">توجه: در خصوص تکمیل فرم‌های ارزیابی ضروری است واحدها نسبت به تکمیل فرمهای مربوطه طبق تفکیک ذکر شده در زیر دکمه هر فرم اقدام نمایند. لازم به ذکر است در صورت عدم تکمیل فرم‌ها، امتیاز مربوط به فعالیتهای مربوطه کسر خواهد شد. از آنجا که اطلاعات مستخرج از فرمها در شاخصهای عملکرد واحدها نیز لحاظ می‌شود در صورت عدم تکمیل آنها، امتیازی به شاخص‌های مربوطه تعلق نمی‌گیرد.</div>
             <div class="alert alert-warning"> بازه تکمیل فرم ها از تاریخ <?=convertDate($this->time['start_date'])?> تا تاریخ <?=convertDate($this->time['finish_date'])?>می باشد </div>
             <!--<div class="alert alert-warning"> بازه تایید فرم ها توسط واحد مافوق از تاریخ <?/*=convertDate($this->time['finish_date_confirm'])*/?> تا تاریخ  <?/*=convertDate($this->time['start_date_confirm'])*/?> می باشد </div>-->
-            <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat">فرم جلسات توجیهی تحصیلات تکمیلی</a>
-            <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte">فرم همکاری دانش آموختگان و دانشجویان</a>
+            <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat">فرم برگزاری جلسات و نشست ها</a>
+            <div class="alert alert-danger">فرم برگزاری جلسات و نشستها: گروه‌های آموزشی؛ دانشکده‌ها؛ شعبه ارومیه؛ مرکز نوآوری</div>
+            <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte">فرم جلب مشارکت دانش آموختگان و دانشجویان</a>
+            <div class="alert alert-danger">فرم جلب مشارکت دانش آموختگان و دانشجویان: گروه‌های آموزشی؛ دانشکده‌ها؛ شعبه ارومیه؛ مرکز نوآوری </div>
             <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad"> فرم رویدادهای برگزار شده</a>
+            <div class="alert alert-danger">فرم رویدادهای برگزار شده: دانشکده‌ها؛ گروه‌ها؛ مدیریت برنامه، بودجه و تحول سازمانی؛ مدیریت روابط عمومی؛ مرکز رشد واحدهای فناور؛ معاونت فرهنگی و اجتماعی؛ معاونت اداری مالی؛ شعبه ارومیه؛ پژوهشکده زنان؛ معاونت آموزشی و تحصیلات تکمیلی و مدیریت‌های زیرمجموعه شامل(مدیریت تحصیلات تکمیلی - مدیریت خدمات آموزشی - مرکز آموزش های آزاد و مجازی- مدیریت برنامه ریزی و توسعه آموزشی)؛ معاونت پژوهشی و فناوری و مدیریت‌های زیرمجموعه شامل( کتابخانه مرکزی- مدیریت امور پژوهشی-مرکز نوآوری و شکوفایی)؛ معاونت دانشجویی و مدیریت‌های زیرمجموعه شامل(مدیریت تربیت بدنی -مدیریت مرکز مشاوره، بهداشت و سلامت) </div>
             <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=shora">فرم عضویت در شوراهای برون دانشگاهی</a>
+            <div class="alert alert-danger">فرم عضویت در شوراها و کمیته های برون دانشگاهی: گروه‌های آموزشی؛ دانشکده‌ها؛ شعبه ارومیه؛ معاونت فرهنگی؛ پژوهشکده زنان</div>
+
         </div>
 
 
