@@ -243,19 +243,19 @@
                     <a href="<?/*= RELA_DIR */?>admin/?component=shakhes">
                         <span class="sidebar-text text-16"> گزارش</span>
                     </a>
-                </li>
+                </li>-->
 
 
                 <li>
-                    <a href="<?/*= RELA_DIR */?>admin/?component=shakhes&action=setting">
+                    <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=setting">
                         <span class="sidebar-text text-16"> تنظیمات شاخص</span>
                     </a>
                 </li>
                 <li>
-                    <a href="<?/*= RELA_DIR */?>admin/page/1/?component=shakhes&action=adminSetting">
+                    <a href="<?= RELA_DIR ?>admin/page/1/?component=shakhes&action=adminSetting">
                         <span class="sidebar-text text-16"> تنظیمات ادمین</span>
                     </a>
-                </li>-->
+                </li>
             </ul>
         </li>
 
