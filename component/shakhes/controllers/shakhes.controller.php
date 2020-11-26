@@ -888,7 +888,7 @@ class shakhesController
         $data = $dataStack->output('data');
 
         $this->selectBoxAdmins('ruydad');
-        $importAdmins = $this->importAdmins('daneshamukhte');
+        $importAdmins = $this->importAdmins('ruydad');
 
         
 

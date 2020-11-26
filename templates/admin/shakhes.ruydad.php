@@ -184,7 +184,7 @@
                         $v['name'] = $this->admins[$v['admin_id']]['name'];
                         $v['family'] = $this->admins[$v['admin_id']]['family'];
 
-                ?>
+                        ?>
                         <tr>
                             <td><?= $v['name'].' '.$v['family'] ?></td>
                             <td><?= $v['type'] ?></td>
@@ -269,7 +269,7 @@
                                 <? endif;?>
                             </td>
                         </tr>
-                <?php
+                        <?php
                     endforeach;
                 endif;
                 ?>

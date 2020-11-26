@@ -374,6 +374,8 @@ function sendmails($email, $bcc, $subject, $body, $orderID, $header = '')
 
 function convertDate($date)
 {
+    if ($date == '' || $date == '0000-00-00') return '-';
+
     include_once 'jdf.php';
     list($date, $time) = explode(' ', $date);
     list($g_y, $g_m, $g_d) = explode('-', $date);
@@ -386,7 +388,7 @@ function convertDate($date)
 
 function convertJToGDate($date)
 {
-    if ($date == '') return $date;
+    if ($date == '' || $date == '0000-00-00') return $date;
 
     include_once 'jdf.php';
     $dateTime = explode('/', $date);
