@@ -390,6 +390,7 @@ function convertJToGDate($date)
 
     include_once 'jdf.php';
     $dateTime = explode('/', $date);
+    if($dateTime[0] < 1990) return $date;
     $g_y = $dateTime[0];
     $g_m = $dateTime[1];
     $g_d = $dateTime[2];
