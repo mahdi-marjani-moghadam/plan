@@ -323,14 +323,21 @@ $(document).ready(function(){
         $datePicker      = $('.date'),
         $sideBar         = $('.side-left');
 
+    
+
     /* ------ Responsive Menu ------*/
     $toggleSideBar.bind('click',function(){
             $sideBar.toggleClass('active');
     });
-
+    
     // change input date to persian date picker
     if($datePicker.length)
     {
+        
+        $datePicker.keyup(function(){
+            $(this).val('');
+        });    
+
         $datePicker.persianDatepicker({
             calendarPosition: {
                 x: -25,

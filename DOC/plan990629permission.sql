@@ -7,6 +7,7 @@
 # Structure for table "aboutus"
 #
 
+
 DROP TABLE IF EXISTS `aboutus`;
 CREATE TABLE `aboutus` (
   `Aboutus_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -46,8 +47,8 @@ CREATE TABLE `admin` (
   `vahed_vazn` float(10,2) DEFAULT NULL,
   `permission` text,
   `admin1` varchar(255) DEFAULT NULL,
-  `start_date` date DEFAULT '0000-00-00',
-  `finish_date` date DEFAULT '0000-00-00',
+  `start_date` date DEFAULT '2020-01-01',
+  `finish_date` date DEFAULT '2020-01-01',
   `cdate1` date DEFAULT NULL,
   `cdate2` date DEFAULT NULL,
   `cdate3` date DEFAULT NULL,
@@ -217,7 +218,7 @@ CREATE TABLE `eghdam_vazn` (
   `tarzyab4` text,
   `tmanager4` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=490 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=490 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 #
 # Data for table "eghdam_vazn"
@@ -473,7 +474,7 @@ CREATE TABLE `sessions` (
   `login_type` int(11) NOT NULL DEFAULT '0',
   `member_id` int(11) NOT NULL DEFAULT '0',
   `remote_addr` char(20) NOT NULL DEFAULT '',
-  `last_access_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `last_access_time` datetime NOT NULL DEFAULT '2020-01-01 00:00:00',
   `remember_me` int(11) DEFAULT NULL,
   PRIMARY KEY (`session_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
@@ -491,7 +492,7 @@ DROP TABLE IF EXISTS `sessions_admin`;
 CREATE TABLE `sessions_admin` (
   `Sessions_admin_id` int(11) NOT NULL AUTO_INCREMENT,
   `remote_addr` char(20) NOT NULL DEFAULT '',
-  `last_access_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `last_access_time` datetime NOT NULL DEFAULT '2020-01-01 00:00:00',
   `admin_id` int(11) DEFAULT NULL,
   `remember_me` int(11) DEFAULT NULL,
   PRIMARY KEY (`Sessions_admin_id`)
