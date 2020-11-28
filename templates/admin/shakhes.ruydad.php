@@ -142,8 +142,13 @@
                     </tr>
 
                 </table>
-                <button name="temporary" value="1" class="btn btn-warning btn-large">ثبت موقت</button>
-            
+                <?php if(isset($_GET['id'])): ?>
+                    <button name="edit" value="1" class="btn btn-warning btn-large"> ویرایش</button>
+                <?php else: ?>
+                    <button name="temporary" value="1" class="btn btn-warning btn-large">ثبت موقت</button>
+                <?php endif; ?>
+
+                    
             </form>
             
         </div>
@@ -219,6 +224,8 @@
                                             </form>
                                             <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad&method=delete&id=<?= $v['id'] ?>"
                                                class="btn btn-xs btn-block btn-danger pull-right" onclick="return confirm('آیا برای حذف مطمئن هستید؟')">حذف</a>
+                                            <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad&id=<?= $v['id'] ?>"
+                                               class="btn btn-xs btn-block btn-info pull-right" onclick="return confirm('آیا برای ویرایش مطمئن هستید؟')">ویرایش</a>
                                         <? else:?>
                                             <?= ($v['status'] == 2) ? 'ارسال به مافوق' : '' ?>
                                             <?= ($v['status'] == 3) ? 'تایید توسط مافوق' : '' ?>

@@ -25,11 +25,11 @@ class shakhesController
         $this->options['daneshamukhte'] = $this->options('sh_daneshamukhte');
         $this->options['ruydad'] = $this->options('sh_ruydad');
         $this->options['shora'] = $this->options('sh_shora');
-        
+
 
 
         /* permissions */
-        include_once ROOT_DIR.'component/shakhes/model/forms_permission.model.php';
+        include_once ROOT_DIR . 'component/shakhes/model/forms_permission.model.php';
         $formsPermission = new formsPermission;
         $permissions = $formsPermission->getAll()->getList()['export']['list'];
         foreach ($permissions as  $item) {
@@ -146,7 +146,7 @@ class shakhesController
             $admins = $obj->query($query)->getList()['export']['list'];
             $admins = $this->selected($admins);
 
-        //$child = $this->childs($admins);
+            //$child = $this->childs($admins);
             //print_r_debug($admins);
         } elseif ($admin_info['group_admin'] == 1) { // دانشکده
         } else { // واحد
@@ -161,45 +161,45 @@ class shakhesController
 
     public function adminSetting()
     {
-        global $admin_info,$PARAM,$messageStack;
+        global $admin_info, $PARAM, $messageStack;
         $msg = $messageStack->output('message');
 
-        
+
         //پیدا کردن شماره صفحه
-        $SUB_FOLDER ='admin';
-        $url_main=substr($_SERVER['REQUEST_URI'], strlen($SUB_FOLDER)+1);
-        $url_main=urldecode($url_main);
-        $PARAM=explode('/', $url_main);
-        $PARAM=array_filter($PARAM, 'strlen');
+        $SUB_FOLDER = 'admin';
+        $url_main = substr($_SERVER['REQUEST_URI'], strlen($SUB_FOLDER) + 1);
+        $url_main = urldecode($url_main);
+        $PARAM = explode('/', $url_main);
+        $PARAM = array_filter($PARAM, 'strlen');
         if (array_search('page', $PARAM)) {
-            $index_pageSize=array_search('page', $PARAM);
-            $page = $PARAM[$index_pageSize+1];
+            $index_pageSize = array_search('page', $PARAM);
+            $page = $PARAM[$index_pageSize + 1];
         } else {
-            $page= 1;
+            $page = 1;
         }
 
 
         // پیدا کردن قلم ها
         include_once ROOT_DIR . "component/shakhes/model/ghalam.model.php";
         $obj = new ghalam();
-        
+
         $PAGE_SIZE = 10;
-        $filter['limit']['start']=(isset($page))?($page-1)*$PAGE_SIZE:'0';
-        $filter['limit']['length']=$PAGE_SIZE;
+        $filter['limit']['start'] = (isset($page)) ? ($page - 1) * $PAGE_SIZE : '0';
+        $filter['limit']['length'] = $PAGE_SIZE;
         // $limit['order']['date']='DESC';
-        
+
 
         $res = $obj->getByFilter($filter);
         $pagination = $this->pagination($res, $PAGE_SIZE)['export']['list'];
-        
-        
+
+
         $ghalam = ($res['export']['recordsCount'] > 0) ?  $res['export']['list'] : array();
-        
+
         include_once ROOT_DIR . "component/shakhes/";
 
 
 
-        
+
         include_once ROOT_DIR . "component/admin/model/admin.model.php";
         // پیدا کردن ستون های واحد
         if ($admin_info['parent_id'] == 0 || $admin_info['admin_id'] == 3121 || $admin_info['admin_id'] == 6) { // مدیریت دانشگاه
@@ -207,8 +207,8 @@ class shakhesController
             $query = 'select admin_id,name,family from admin where  parent_id <> 1 or parent_id <> 0 order by parent_id';
             $admins = $obj->query($query)->getList()['export']['list'];
             $admins = $this->selected($admins);
-            
-        //$child = $this->childs($admins);
+
+            //$child = $this->childs($admins);
             //print_r_debug($admins);
         } elseif ($admin_info['group_admin'] == 1) { // دانشکده
         } else { // واحد
@@ -224,9 +224,9 @@ class shakhesController
     {
         global $messageStack;
         $post = $_POST;
-        
-        include_once ROOT_DIR.'component/shakhes/model/import.model.php';
-        include_once ROOT_DIR.'component/shakhes/model/import_confirm.model.php';
+
+        include_once ROOT_DIR . 'component/shakhes/model/import.model.php';
+        include_once ROOT_DIR . 'component/shakhes/model/import_confirm.model.php';
         foreach ($post['import'] as $ghalam_id => $import) {
             /* ghalam */
             $importObj = import::getBy_ghalam_id($ghalam_id);
@@ -246,7 +246,7 @@ class shakhesController
 
                 $importConfirmObj = importConfirm::getBy_sh_import_id_and_admin($importObj->id, $import['import_admin']);
 
-                if ($import['import_admin']!='' && $importConfirmObj->get()['export']['recordsCount'] == 0) {
+                if ($import['import_admin'] != '' && $importConfirmObj->get()['export']['recordsCount'] == 0) {
                     /* insert import admin */
                     $importConfirmObj = new importConfirm;
                     $importConfirmObj->sh_import_id = $importObj->id;
@@ -261,11 +261,11 @@ class shakhesController
                     $importConfirmObj->admin_type = 'import';
                     $importConfirmObj->save();
                 }
-            
-    
+
+
                 $importConfirmObj = importConfirm::getBy_sh_import_id_and_admin($importObj->id, $import['confirm_admin_1']);
 
-                if ($import['import_admin']!='' && $importConfirmObj->get()['export']['recordsCount'] == 0) {
+                if ($import['import_admin'] != '' && $importConfirmObj->get()['export']['recordsCount'] == 0) {
                     /* insert confirm1 */
                     $importConfirmObj = new importConfirm;
                     $importConfirmObj->sh_import_id = $importObj->id;
@@ -283,7 +283,7 @@ class shakhesController
 
                 $importConfirmObj = importConfirm::getBy_sh_import_id_and_admin($importObj->id, $import['confirm_admin_2']);
 
-                if ($import['import_admin']!='' && $importConfirmObj->get()['export']['recordsCount'] == 0) {
+                if ($import['import_admin'] != '' && $importConfirmObj->get()['export']['recordsCount'] == 0) {
                     /* insert confirm2 */
                     $importConfirmObj = new importConfirm;
                     $importConfirmObj->sh_import_id = $importObj->id;
@@ -342,41 +342,41 @@ class shakhesController
         $messageStack->add_session('message', $result['msg'], 'success');
         redirectPage(RELA_DIR . 'admin/page/1/?component=shakhes&action=adminSetting', $result['msg']);
     }
-    private function pagination($res=array(), $PAGE_SIZE = 10)
+    private function pagination($res = array(), $PAGE_SIZE = 10)
     {
-        $pageCount = ceil($res['export']['recordsCount']/$PAGE_SIZE);
-        
+        $pageCount = ceil($res['export']['recordsCount'] / $PAGE_SIZE);
 
-        $pagination=array();
+
+        $pagination = array();
         $temp = 1;
         $SUB_FOLDER = 'admin';
-        $url_main=substr($_SERVER['REQUEST_URI'], strlen($SUB_FOLDER)+1);
-        $url_main=urldecode($url_main);
-        
-        $PARAM=explode('/', $url_main);
-        
+        $url_main = substr($_SERVER['REQUEST_URI'], strlen($SUB_FOLDER) + 1);
+        $url_main = urldecode($url_main);
 
-        $PARAM=array_filter($PARAM, 'strlen');
-        
+        $PARAM = explode('/', $url_main);
+
+
+        $PARAM = array_filter($PARAM, 'strlen');
+
 
         if (array_search('page', $PARAM)) {
-            $index_pageSize=array_search('page', $PARAM);
+            $index_pageSize = array_search('page', $PARAM);
 
             unset($PARAM[$index_pageSize]);
-            unset($PARAM[$index_pageSize+1]);
+            unset($PARAM[$index_pageSize + 1]);
 
-            $PARAM=implode('/', $PARAM);
-            
-            $PARAM=explode('/', $PARAM);
-            $PARAM=array_filter($PARAM, 'strlen');
+            $PARAM = implode('/', $PARAM);
+
+            $PARAM = explode('/', $PARAM);
+            $PARAM = array_filter($PARAM, 'strlen');
         }
 
 
-        for ($i=1;$i<=$pageCount;$i++) {
-            $pagination[]=RELA_DIR.'admin'.'/page/'.$temp.'/'.$PARAM[0];
+        for ($i = 1; $i <= $pageCount; $i++) {
+            $pagination[] = RELA_DIR . 'admin' . '/page/' . $temp . '/' . $PARAM[0];
             $temp = $temp + 1;
         }
-        
+
         $result['result'] = 1;
         $result['export']['list'] = $pagination;
         return $result;
@@ -560,8 +560,8 @@ class shakhesController
         $msg = $messageStack->output('message');
         $data = $dataStack->output('data');
 
-        
-        
+
+
 
         // پیدا کردن قلم ها و کلان
         include ROOT_DIR . "component/shakhes/model/shakhes.model.php";
@@ -663,21 +663,21 @@ class shakhesController
 
     public function jalasat()
     {
-        global $messageStack, $dataStack,$admin_info;
+        global $messageStack, $dataStack, $admin_info;
         $msg = $messageStack->output('message');
         $data = $dataStack->output('data');
 
 
         $this->selectBoxAdmins('jalasat');
         $importAdmins = $this->importAdmins('jalasat');
-        
+
         // dd($importAdmins);
         /* اول باید ببینیم کسی که لاگین کرده چه
         import_admin
         رو میبینه */
         include_once ROOT_DIR . 'component/shakhes/model/jalasat.model.php';
         $jalasatObj = new jalasat;
-        $jalasat = $jalasatObj->where('admin_id', 'in', $importAdmins)->orWhere('import_admin','in',$importAdmins)
+        $jalasat = $jalasatObj->where('admin_id', 'in', $importAdmins)->orWhere('import_admin', 'in', $importAdmins)
             ->orderBy('admin_id')->getList()['export'];
 
         $this->fileName = 'shakhes.jalasat.php';
@@ -693,7 +693,7 @@ class shakhesController
 
         include_once ROOT_DIR . 'component/shakhes/model/jalasat.model.php';
         $jalasatObj = new jalasat;
-        
+
 
 
 
@@ -704,14 +704,13 @@ class shakhesController
             /* اگه فرم درست پر نشه ارور بده */
             $error = 0;
             $this->selectBoxAdmins('jalasat');
-            if(count($this->selectBoxAdmins) == 0){
+            if (count($this->selectBoxAdmins) == 0) {
                 $result['msg'] = 'نیاز به تکمیل این فرم برای شما نمی باشد';
                 $error = 1;
-            }
-            elseif ($post['session'] == '') {
+            } elseif ($post['session'] == '') {
                 $result['msg'] = 'فیلد جلسه تکمیل نشده است.';
                 $error = 1;
-            }elseif ($post['date'] == '') {
+            } elseif ($post['date'] == '') {
                 $result['msg'] = 'فیلد زمان برگزاری تکمیل نشده است.';
                 $error = 1;
             } elseif ($post['manager_list'] == '') {
@@ -753,7 +752,7 @@ class shakhesController
             $result = $this->onSubmitZirGhalam($jalasatObj, $post);
             $daneshamukhteObj = $result['obj'];
         }
-        
+
         if (isset($post['confirmFinal'])) {
             /* اینجا باید فرم خوداظهاری اپدیت بشه */
             $this->updateImport($jalasatObj, 208, 'member_count');
@@ -770,7 +769,7 @@ class shakhesController
 
     public function daneshamukhte()
     {
-        global $messageStack, $dataStack,$admin_info;
+        global $messageStack, $dataStack, $admin_info;
         $msg = $messageStack->output('message');
         $data = $dataStack->output('data');
 
@@ -778,14 +777,14 @@ class shakhesController
         $importAdmins = $this->importAdmins('daneshamukhte');
 
 
-        
+
 
         include_once ROOT_DIR . 'component/shakhes/model/daneshamukhte.model.php';
         $daneshamukhteObj = new daneshamukhte;
-        $daneshamukhte = $daneshamukhteObj->where('admin_id', 'in', $importAdmins)->orWhere('import_admin','in',$importAdmins)
+        $daneshamukhte = $daneshamukhteObj->where('admin_id', 'in', $importAdmins)->orWhere('import_admin', 'in', $importAdmins)
             ->orderBy('admin_id')->getList()['export'];
 
-        
+
 
         $this->fileName = 'shakhes.daneshamukhte.php';
         $this->template(compact('daneshamukhte', 'msg', 'data'));
@@ -803,7 +802,7 @@ class shakhesController
         $daneshamukhteObj = new daneshamukhte;
 
 
-        
+
 
 
 
@@ -812,11 +811,10 @@ class shakhesController
             /* اگه فرم درست پر نشه ارور بده */
             $error = 0;
             $this->selectBoxAdmins('daneshamukhte');
-            if(count($this->selectBoxAdmins) == 0){
+            if (count($this->selectBoxAdmins) == 0) {
                 $result['msg'] = 'نیاز به تکمیل این فرم برای شما نیاز به تکمیل این فرم برای شما نمی باشد';
                 $error = 1;
-            }
-            elseif ($post['student_status'] == '') {
+            } elseif ($post['student_status'] == '') {
                 $result['msg'] = 'فیلد دانشجو/دانش آموخته تکمیل نشده است.';
                 $error = 1;
             } elseif ($post['name_family'] == '') {
@@ -862,14 +860,13 @@ class shakhesController
             $result = $this->onSubmitZirGhalam($daneshamukhteObj, $post);
             $daneshamukhteObj = $result['obj'];
         }
-        
+
         if (isset($post['confirmFinal'])) {
-            
+
             /* اینجا باید فرم خوداظهاری اپدیت بشه */
             $this->updateImport($daneshamukhteObj, 210, 'continue_education');
             $this->updateImport($daneshamukhteObj, 211, 'employed_status');
             $this->updateImport($daneshamukhteObj, 212, '');
-
         }
 
 
@@ -883,22 +880,42 @@ class shakhesController
 
     public function ruydad()
     {
-        global $messageStack, $dataStack,$admin_info;
+        global $messageStack, $dataStack, $admin_info;
+
+        include_once ROOT_DIR . 'component/shakhes/model/ruydad.model.php';
+        $ruydadObj = new ruydad;
+
         $msg = $messageStack->output('message');
         $data = $dataStack->output('data');
+
+        if (count($data) == 0 && isset($_GET['id'])) {
+            $editObj = $ruydadObj::find($_GET['id']);
+
+            if (!is_object($editObj) && $editObj['result'] == -1) 
+            {
+                $messageStack->add_session('message', $editObj['msg'], 'error');
+                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $editObj['msg']);
+            }
+            if($editObj->status != 0) {
+                $result['msg'] = 'شما نمی توانید این رویداد را ویرایش کنید.';
+                $messageStack->add_session('message', $result['msg'], 'error');
+                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $result['msg']);
+            }
+            $data = $editObj->fields;
+        }
+
 
         $this->selectBoxAdmins('ruydad');
         $importAdmins = $this->importAdmins('ruydad');
 
-        
 
-        include_once ROOT_DIR . 'component/shakhes/model/ruydad.model.php';
-        $ruydadObj = new ruydad;
-        $ruydad = $ruydadObj->where('admin_id', 'in', $importAdmins)->orWhere('import_admin','in',$importAdmins)
+
+
+        $ruydad = $ruydadObj->where('admin_id', 'in', $importAdmins)->orWhere('import_admin', 'in', $importAdmins)
             ->orderBy('admin_id')->getList()['export'];
 
-       
-        
+
+
 
 
         $this->fileName = 'shakhes.ruydad.php';
@@ -916,7 +933,7 @@ class shakhesController
         $ruydadObj = new ruydad;
 
 
-        
+
 
 
         /* ارسال فرم */
@@ -924,11 +941,10 @@ class shakhesController
             /* اگه فرم درست پر نشه ارور بده */
             $error = 0;
             $this->selectBoxAdmins('ruydad');
-            if(count($this->selectBoxAdmins) == 0){
+            if (count($this->selectBoxAdmins) == 0) {
                 $result['msg'] = 'نیاز به تکمیل این فرم برای شما نیاز به تکمیل این فرم برای شما نمی باشد';
                 $error = 1;
-            }
-            elseif ($post['type'] == '') {
+            } elseif ($post['type'] == '') {
                 $result['msg'] = 'فیلد نوع رویداد تکمیل نشده است.';
                 $error = 1;
             } elseif ($post['amaliati_no'] == '') {
@@ -973,6 +989,24 @@ class shakhesController
                 redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $result['msg']);
             }
 
+            if(isset($_GET['edit']) && isset($_GET['id'])){
+                
+                $editObj = $ruydadObj::find((int) $_GET['id']);
+    
+                if (!is_object($editObj) && $editObj['result'] == -1) 
+                {
+                    $messageStack->add_session('message', $editObj['msg'], 'error');
+                    redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $editObj['msg']);
+                }
+                // if($editObj->status != 0) {
+                //     $result['msg'] = 'شما نمی توانید این رویداد را ویرایش کنید.';
+                //     $messageStack->add_session('message', $result['msg'], 'error');
+                //     redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $result['msg']);
+                // }
+                $ruydadObj = $editObj->fields;
+                
+            }
+
             $ruydadObj->setFields($post);
             $ruydadObj->startdate = convertJToGDate($ruydadObj->startdate);
             $ruydadObj->finishdate = convertJToGDate($ruydadObj->finishdate);
@@ -987,7 +1021,7 @@ class shakhesController
             $ruydadObj = $result['obj'];
         }
         if (isset($post['confirmFinal'])) {
-    
+
             /* اینجا باید فرم خوداظهاری اپدیت بشه */
             $this->updateImport($ruydadObj, 213, 'income');
             $this->updateImport($ruydadObj, 214, 'cost');
@@ -1007,7 +1041,7 @@ class shakhesController
 
     public function shora()
     {
-        global $messageStack, $dataStack,$admin_info;
+        global $messageStack, $dataStack, $admin_info;
         $msg = $messageStack->output('message');
         $data = $dataStack->output('data');
 
@@ -1017,9 +1051,9 @@ class shakhesController
 
         include_once ROOT_DIR . 'component/shakhes/model/shora.model.php';
         $shoraObj = new shora;
-        $shora = $shoraObj->where('admin_id', 'in', $importAdmins)->orWhere('import_admin','in',$importAdmins)
+        $shora = $shoraObj->where('admin_id', 'in', $importAdmins)->orWhere('import_admin', 'in', $importAdmins)
             ->orderBy('admin_id')->getList()['export'];
-        
+
 
 
         $this->fileName = 'shakhes.shora.php';
@@ -1036,7 +1070,7 @@ class shakhesController
         include_once ROOT_DIR . 'component/shakhes/model/shora.model.php';
         $shoraObj = new shora;
 
-        
+
 
 
 
@@ -1047,11 +1081,10 @@ class shakhesController
             /* اگه فرم درست پر نشه ارور بده */
             $error = 0;
             $this->selectBoxAdmins('shora');
-            if(count($this->selectBoxAdmins) == 0){
+            if (count($this->selectBoxAdmins) == 0) {
                 $result['msg'] = 'نیاز به تکمیل این فرم برای شما نمی باشد';
                 $error = 1;
-            }
-            elseif ($post['shora_type'] == '') {
+            } elseif ($post['shora_type'] == '') {
                 $result['msg'] = 'فیلد عنوان شورا/کارگروه/انجمن تکمیل نشده است.';
                 $error = 1;
             } elseif ($post['name_family'] == '') {
@@ -1079,7 +1112,7 @@ class shakhesController
                 redirectPage(RELA_DIR . 'admin/?component=shakhes&action=shora', $result['msg']);
             }
 
-        
+
             $shoraObj->setFields($post);
             $shoraObj->start_date = convertJToGDate($shoraObj->start_date);
             $shoraObj->finish_date = convertJToGDate($shoraObj->finish_date);
@@ -1153,21 +1186,22 @@ class shakhesController
     {
         global  $messageStack;
         $id = $_GET['id'];
-        include_once ROOT_DIR . 'component/shakhes/model/'.$className.'.model.php';
+        include_once ROOT_DIR . 'component/shakhes/model/' . $className . '.model.php';
         $Obj = $className::find($id);
         $Obj->delete();
 
         $result['msg'] = 'با موفقیت انجام شد.';
         $messageStack->add_session('message', $result['msg'], $result['type']);
-        redirectPage(RELA_DIR . 'admin/?component=shakhes&action='.$className, $result['msg']);
+        redirectPage(RELA_DIR . 'admin/?component=shakhes&action=' . $className, $result['msg']);
     }
 
 
     public function edit($className)
     {
+        dd('edit()');
         global $messageStack;
         $id = $_POST['edit'];
-        include_once ROOT_DIR . 'component/shakhes/model/'.$className.'.model.php';
+        include_once ROOT_DIR . 'component/shakhes/model/' . $className . '.model.php';
         $Obj = $className::find($id);
         $Obj->status = 1;
 
@@ -1175,7 +1209,7 @@ class shakhesController
 
         $result['msg'] = 'با موفقیت انجام شد.';
         $messageStack->add_session('message', $result['msg'], $result['type']);
-        redirectPage(RELA_DIR . 'admin/?component=shakhes&action='.$className, $result['msg']);
+        redirectPage(RELA_DIR . 'admin/?component=shakhes&action=' . $className, $result['msg']);
     }
 
 
@@ -1194,8 +1228,8 @@ class shakhesController
 
     public function updateImport($zirGhalam, $ghalam_id, $field)
     {
-        $value = (STEP_FORM1 < 3)?'value6':'value12';
-        include_once ROOT_DIR.'component/shakhes/model/import.model.php';
+        $value = (STEP_FORM1 < 3) ? 'value6' : 'value12';
+        include_once ROOT_DIR . 'component/shakhes/model/import.model.php';
         $importObj = new import;
         $import = $importObj::getBy_motevali_admin_id_and_ghalam_id($zirGhalam->admin_id, $ghalam_id)->get()['export'];
         if ($import['recordsCount'] == 0) {
@@ -1203,25 +1237,25 @@ class shakhesController
             $importObj->ghalam_id = $ghalam_id;
             $importObj->$value = 0;
             $importObj->year = explode('/', convertDate(date('Y')))[0];
-
         } else {
             $importObj = $import['list'][0];
         }
 
-        if (in_array($ghalam_id, [208,209,213,214])) {// jalasat
+        if (in_array($ghalam_id, [208, 209, 213, 214])) { // jalasat
             $importObj->$value = $importObj->$value + $zirGhalam->$field;
             $importObj->save();
-        } elseif (in_array($ghalam_id, [210]) && $zirGhalam->$field == 'شاغل به تحصیل در مقطع بالاتر'
+        } elseif (
+            in_array($ghalam_id, [210]) && $zirGhalam->$field == 'شاغل به تحصیل در مقطع بالاتر'
             || in_array($ghalam_id, [211]) && $zirGhalam->$field == 'شاغل'
-        ){
+        ) {
             $importObj->$value = $importObj->$value + 1;
             $importObj->save();
-        }elseif(in_array($ghalam_id, [212,215,216])){
+        } elseif (in_array($ghalam_id, [212, 215, 216])) {
             $importObj->$value = $importObj->$value + 1;
             $importObj->save();
         }
 
-        include_once ROOT_DIR.'component/shakhes/model/import_confirm.model.php';
+        include_once ROOT_DIR . 'component/shakhes/model/import_confirm.model.php';
         $impConfObj = new importConfirm;
         $impConf = $impConfObj::getBy_sh_import_id($importObj->id)->get()['export'];
         if ($impConf['recordsCount'] == 0) {
@@ -1229,14 +1263,14 @@ class shakhesController
             $impConfObj->admin = $importObj->motevali_admin_id;
             $impConfObj->admin_type = 'external';
             $impConfObj->$value = 0;
-
         } else {
             $impConfObj = $impConf['list'][0];
         }
-        if (in_array($ghalam_id, [208,209,212,213,214,215,216])) {
+        if (in_array($ghalam_id, [208, 209, 212, 213, 214, 215, 216])) {
             $impConfObj->$value = $importObj->$value;
             $impConfObj->save();
-        } elseif (in_array($ghalam_id, [210]) && $zirGhalam->$field == 'شاغل به تحصیل در مقطع بالاتر'
+        } elseif (
+            in_array($ghalam_id, [210]) && $zirGhalam->$field == 'شاغل به تحصیل در مقطع بالاتر'
             || in_array($ghalam_id, [211]) && $zirGhalam->$field == 'شاغل'
         ) {
             $impConfObj->$value = $importObj->$value;
@@ -1253,14 +1287,14 @@ class shakhesController
         include_once ROOT_DIR . 'component/shakhes/model/jalasat.model.php';
         $jalasatObj = new jalasat;
         $query = "select distinct(admin_id) from sh_forms_permission p
-                    where p.table = '".$table."'
+                    where p.table = '" . $table . "'
                         and (p.admin_id = {$admin_info['admin_id']}
                         or   p.import_admin = {$admin_info['admin_id']}
                         or  p.confirm1 = {$admin_info['admin_id']}
                         or p.confirm2 = {$admin_info['admin_id']})";
-                        
+
         $ids = array_column($jalasatObj->query($query)->getList()['export']['list'], 'admin_id');
-        
+
         array_push($ids, $admin_info['admin_id']);
         $ids = array_unique($ids);
         return $ids;
@@ -1271,25 +1305,25 @@ class shakhesController
         /* manager */
         if ($adminId == 1) {
             return array(
-                'result'=>1,
-                'import_time'=>1,
-                'confirm_time'=>1
-                );
+                'result' => 1,
+                'import_time' => 1,
+                'confirm_time' => 1
+            );
         }
 
 
-        include_once ROOT_DIR.'component/shakhes/model/admin_status.model.php';
+        include_once ROOT_DIR . 'component/shakhes/model/admin_status.model.php';
         $obj = new adminStatus;
         $adminStatusObj = $obj::getBy_admin_id($adminId)->get()['export'];
-        
+
         if ($adminStatusObj['recordsCount'] == 0) {
             $result['import_time'] = -1;
             $result['confirm_time'] = -1;
             $result['status'] = -1;
             $result['msg'] = 'زمانی برای این ادمین پیدا نشد';
         }
-           $adminStatusObj = $adminStatusObj['list'][0];     
-        
+        $adminStatusObj = $adminStatusObj['list'][0];
+
 
         $result['start_date'] = $adminStatusObj->start_date;
         $result['finish_date'] = $adminStatusObj->finish_date;
@@ -1308,11 +1342,12 @@ class shakhesController
             $result['confirm_time'] = -1;
         }
 
-        
+
         return $result;
     }
 
-    private  function selectBoxAdmins($table){
+    private  function selectBoxAdmins($table)
+    {
         global $admin_info;
         /* ادمین هایی که توی لیست میشه انتخاب کرد */
         include_once ROOT_DIR . 'component/admin/model/admin.model.php';
