@@ -888,34 +888,33 @@ class shakhesController
         $msg = $messageStack->output('message');
         $data = $dataStack->output('data');
 
-        if (count($data) == 0 && isset($_GET['id'])) {
-            $editObj = $ruydadObj::find($_GET['id']);
-
-            if (!is_object($editObj) && $editObj['result'] == -1) 
-            {
-                $messageStack->add_session('message', $editObj['msg'], 'error');
-                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $editObj['msg']);
-            }
-            if($editObj->status != 0) {
-                $result['msg'] = 'شما نمی توانید این رویداد را ویرایش کنید.';
-                $messageStack->add_session('message', $result['msg'], 'error');
-                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $result['msg']);
-            }
-            $data = $editObj->fields;
-        }
-
-
         $this->selectBoxAdmins('ruydad');
         $importAdmins = $this->importAdmins('ruydad');
-
-
 
 
         $ruydad = $ruydadObj->where('admin_id', 'in', $importAdmins)->orWhere('import_admin', 'in', $importAdmins)
             ->orderBy('admin_id')->getList()['export'];
 
 
+        if (isset($_GET['id'])) {
+            $data['id'] = $_GET['id'];
+        }
+        
+        if (count($data) <= 1 && isset($_GET['id']) && is_numeric($_GET['id'])) {
 
+            $editObj = $ruydadObj::find($_GET['id']);
+
+            if (!is_object($editObj) && $editObj['result'] == -1) {
+                $messageStack->add_session('message', $editObj['msg'], 'error');
+                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $editObj['msg']);
+            }
+            if ($editObj->status != 0 && $editObj->status != 1) {
+                $result['msg'] = 'شما نمی توانید این رویداد را ویرایش کنید.';
+                $messageStack->add_session('message', $result['msg'], 'error');
+                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $result['msg']);
+            }
+            $data = $editObj->fields;
+        }
 
 
         $this->fileName = 'shakhes.ruydad.php';
@@ -934,10 +933,8 @@ class shakhesController
 
 
 
-
-
         /* ارسال فرم */
-        if (isset($post['temporary'])) {
+        if (isset($post['temporary']) || isset($post['edit'])) {
             /* اگه فرم درست پر نشه ارور بده */
             $error = 0;
             $this->selectBoxAdmins('ruydad');
@@ -980,30 +977,32 @@ class shakhesController
             } elseif ($post['website_link'] == '') {
                 $result['msg'] = 'فیلد لینک رویداد بر روی سایت تکمیل نشده است.';
                 $error = 1;
+            } elseif (!isset($post['edit']) || !is_numeric($post['edit'])) {
+                $result['msg'] = 'Error id!';
+                $error = 1;
             }
-
             if ($error == 1) {
                 $result['type'] = 'error';
                 $dataStack->add_session('data', $post);
                 $messageStack->add_session('message', $result['msg'], $result['type']);
-                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $result['msg']);
+                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad' . ((isset($post['edit'])) ? '&id=' . $post['edit'] : ''), $result['msg']);
+                // redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad' . ((isset($post['edit'])) ? '&id=' . $post['edit'] : ''), $result['msg']);
             }
 
-            if(isset($_GET['edit']) && isset($_GET['id'])){
-                
-                $editObj = $ruydadObj::find((int) $_GET['id']);
-    
-                if (!is_object($editObj) && $editObj['result'] == -1) 
-                {
+            if (isset($post['edit']) && isset($post['edit'])) {
+
+                $editObj = $ruydadObj::find((int) $post['edit']);
+
+                if (!is_object($editObj) && $editObj['result'] == -1) {
                     $messageStack->add_session('message', $editObj['msg'], 'error');
                     redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $editObj['msg']);
                 }
-                // if($editObj->status != 0) {
-                //     $result['msg'] = 'شما نمی توانید این رویداد را ویرایش کنید.';
-                //     $messageStack->add_session('message', $result['msg'], 'error');
-                //     redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $result['msg']);
-                // }
-                $ruydadObj = $editObj->fields;
+                if ($editObj->status != 0  && $editObj->status != 1) {
+                    $result['msg'] = 'شما نمی توانید این رویداد را ویرایش کنید.';
+                    $messageStack->add_session('message', $result['msg'], 'error');
+                    redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $result['msg']);
+                }
+                $ruydadObj = $editObj;
                 
             }
 
@@ -1014,8 +1013,8 @@ class shakhesController
             $ruydadObj->status = 0;
             $ruydadObj->save();
 
-            $result['msg'] = 'ثبت موقت انجام شد.';
-            $result['type'] = 'warning';
+            $result['msg'] = (isset($post['edit']))?'ویرایش انجام شد':'ثبت موقت انجام شد.';
+            $result['type'] = (isset($post['edit']))?'success':'warning';
         } else {
             $result = $this->onSubmitZirGhalam($ruydadObj, $post);
             $ruydadObj = $result['obj'];

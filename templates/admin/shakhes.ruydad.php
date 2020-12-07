@@ -142,8 +142,12 @@
                     </tr>
 
                 </table>
-                <?php if(isset($_GET['id'])): ?>
-                    <button name="edit" value="1" class="btn btn-warning btn-large"> ویرایش</button>
+                <?php if(isset($_GET['id']) && is_numeric($_GET['id'])): ?>
+                    <div style="display: flex; justify-content: center; ">
+                        <div class="col-md-3">
+                            <button name="edit" style="font-size:1.3em" value="<?php echo $_GET['id'] ?>" class="btn btn-info btn-large btn-block"> ویرایش</button>
+                        </div>
+                    </div>
                 <?php else: ?>
                     <button name="temporary" value="1" class="btn btn-warning btn-large">ثبت موقت</button>
                 <?php endif; ?>
