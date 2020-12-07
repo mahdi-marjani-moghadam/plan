@@ -37,10 +37,10 @@
                     </tr>
                     <tr>
                         <td>شروع عضویت*</td>
-                        <td><input name="start_date" value="<?= $data['start_date'] ?>" autocomplete="off" class="form-control date"></td>
+                        <td><input name="start_date" value="<?= convertDate($data['start_date']) ?>" autocomplete="off" class="form-control date"></td>
 
                         <td>خاتمه عضویت</td>
-                        <td><input name="finish_date" value="<?= $data['finish_date'] ?>" autocomplete="off" class="form-control date"></td>
+                        <td><input name="finish_date" value="<?= convertDate($data['finish_date']) ?>" autocomplete="off" class="form-control date"></td>
                     </tr>
                     <tr>
                         <td>ملی/بین‌المللی*</td>
@@ -79,8 +79,16 @@
                     </tr>
 
                 </table>
-                <button name="temporary" value="1" class="btn btn-warning btn-large">ثبت موقت</button>
-                
+                <?php if(isset($_GET['id']) && is_numeric($_GET['id'])): ?>
+                    <div style="display: flex; justify-content: center; ">
+                        <div class="col-md-3">
+                            <button name="edit" style="font-size:1.3em" value="<?php echo $_GET['id'] ?>" class="btn btn-info btn-large btn-block"> ویرایش</button>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <button name="temporary" value="1" class="btn btn-warning btn-large">ثبت موقت</button>
+                <?php endif; ?>
+
             </form>
             
         </div>
@@ -135,6 +143,8 @@
                                             </form>
                                             <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=shora&method=delete&id=<?= $v['id'] ?>"
                                                class="btn btn-xs btn-block btn-danger pull-right" onclick="return confirm('آیا برای حذف مطمئن هستید؟')">حذف</a>
+                                               <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=shora&id=<?= $v['id'] ?>"
+                                               class="btn btn-xs btn-block btn-info pull-right" onclick="return confirm('آیا برای ویرایش مطمئن هستید؟')">ویرایش</a>
                                         <? else:?>
                                             <?= ($v['status'] == 2) ? 'ارسال به مافوق' : '' ?>
                                             <?= ($v['status'] == 3) ? 'تایید توسط مافوق' : '' ?>

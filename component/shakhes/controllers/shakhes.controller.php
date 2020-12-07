@@ -899,7 +899,7 @@ class shakhesController
         if (isset($_GET['id'])) {
             $data['id'] = $_GET['id'];
         }
-        
+
         if (count($data) <= 1 && isset($_GET['id']) && is_numeric($_GET['id'])) {
 
             $editObj = $ruydadObj::find($_GET['id']);
@@ -977,7 +977,7 @@ class shakhesController
             } elseif ($post['website_link'] == '') {
                 $result['msg'] = 'فیلد لینک رویداد بر روی سایت تکمیل نشده است.';
                 $error = 1;
-            } elseif (!isset($post['edit']) || !is_numeric($post['edit'])) {
+            } elseif (isset($post['edit']) && !is_numeric($post['edit'])) {
                 $result['msg'] = 'Error id!';
                 $error = 1;
             }
@@ -986,7 +986,7 @@ class shakhesController
                 $dataStack->add_session('data', $post);
                 $messageStack->add_session('message', $result['msg'], $result['type']);
                 redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad' . ((isset($post['edit'])) ? '&id=' . $post['edit'] : ''), $result['msg']);
-                // redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad' . ((isset($post['edit'])) ? '&id=' . $post['edit'] : ''), $result['msg']);
+                
             }
 
             if (isset($post['edit']) && isset($post['edit'])) {
@@ -1003,7 +1003,6 @@ class shakhesController
                     redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $result['msg']);
                 }
                 $ruydadObj = $editObj;
-                
             }
 
             $ruydadObj->setFields($post);
@@ -1013,8 +1012,8 @@ class shakhesController
             $ruydadObj->status = 0;
             $ruydadObj->save();
 
-            $result['msg'] = (isset($post['edit']))?'ویرایش انجام شد':'ثبت موقت انجام شد.';
-            $result['type'] = (isset($post['edit']))?'success':'warning';
+            $result['msg'] = (isset($post['edit'])) ? 'ویرایش انجام شد' : 'ثبت موقت انجام شد.';
+            $result['type'] = (isset($post['edit'])) ? 'success' : 'warning';
         } else {
             $result = $this->onSubmitZirGhalam($ruydadObj, $post);
             $ruydadObj = $result['obj'];
@@ -1053,6 +1052,25 @@ class shakhesController
         $shora = $shoraObj->where('admin_id', 'in', $importAdmins)->orWhere('import_admin', 'in', $importAdmins)
             ->orderBy('admin_id')->getList()['export'];
 
+        if (isset($_GET['id'])) {
+            $data['id'] = $_GET['id'];
+        }
+
+        if (count($data) <= 1 && isset($_GET['id']) && is_numeric($_GET['id'])) {
+
+            $editObj = $shoraObj::find($_GET['id']);
+
+            if (!is_object($editObj) && $editObj['result'] == -1) {
+                $messageStack->add_session('message', $editObj['msg'], 'error');
+                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=shora', $editObj['msg']);
+            }
+            if ($editObj->status != 0 && $editObj->status != 1) {
+                $result['msg'] = 'شما نمی توانید این شورا را ویرایش کنید.';
+                $messageStack->add_session('message', $result['msg'], 'error');
+                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=shora', $result['msg']);
+            }
+            $data = $editObj->fields;
+        }
 
 
         $this->fileName = 'shakhes.shora.php';
@@ -1076,7 +1094,7 @@ class shakhesController
 
 
         /* ارسال فرم */
-        if (isset($post['temporary'])) {
+        if (isset($post['temporary']) || isset($post['edit'])) {
             /* اگه فرم درست پر نشه ارور بده */
             $error = 0;
             $this->selectBoxAdmins('shora');
@@ -1101,6 +1119,9 @@ class shakhesController
             } elseif ($post['personal_page'] == '') {
                 $result['msg'] = 'فیلد درج عضویت در صفحه شخصی عضو هیات علمی تکمیل نشده است.';
                 $error = 1;
+            } elseif (isset($post['edit']) && !is_numeric($post['edit'])) {
+                $result['msg'] = 'Error id!';
+                $error = 1;
             }
 
 
@@ -1108,9 +1129,24 @@ class shakhesController
                 $result['type'] = 'error';
                 $dataStack->add_session('data', $post);
                 $messageStack->add_session('message', $result['msg'], $result['type']);
-                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=shora', $result['msg']);
+                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=shora'. ((isset($post['edit'])) ? '&id=' . $post['edit'] : ''), $result['msg']);
             }
 
+            if (isset($post['edit']) && isset($post['edit'])) {
+
+                $editObj = $shoraObj::find((int) $post['edit']);
+
+                if (!is_object($editObj) && $editObj['result'] == -1) {
+                    $messageStack->add_session('message', $editObj['msg'], 'error');
+                    redirectPage(RELA_DIR . 'admin/?component=shakhes&action=shora', $editObj['msg']);
+                }
+                if ($editObj->status != 0  && $editObj->status != 1) {
+                    $result['msg'] = 'شما نمی توانید این شورا را ویرایش کنید.';
+                    $messageStack->add_session('message', $result['msg'], 'error');
+                    redirectPage(RELA_DIR . 'admin/?component=shakhes&action=shora', $result['msg']);
+                }
+                $shoraObj = $editObj;
+            }
 
             $shoraObj->setFields($post);
             $shoraObj->start_date = convertJToGDate($shoraObj->start_date);
@@ -1119,8 +1155,8 @@ class shakhesController
             $shoraObj->status = 0;
             $shoraObj->save();
 
-            $result['msg'] = 'ثبت موقت انجام شد.';
-            $result['type'] = 'warning';
+            $result['msg'] = (isset($post['edit'])) ? 'ویرایش انجام شد' : 'ثبت موقت انجام شد.';
+            $result['type'] = (isset($post['edit'])) ? 'success' : 'warning';
         } else {
             $result = $this->onSubmitZirGhalam($shoraObj, $post);
             $shoraObj = $result['obj'];
