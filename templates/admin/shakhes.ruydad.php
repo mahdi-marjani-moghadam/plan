@@ -60,7 +60,9 @@
                     </tr>
                     <tr>
                         <td>ابتدای دوره*</td>
-                        <td><input name="startdate" value="<?= convertDate($data['startdate']) ?>" autocomplete="off" class="form-control date"></td>
+                        <td>
+                        
+                        <input name="startdate" value="<?= convertDate($data['startdate']) ?>" autocomplete="off" class="form-control date"></td>
 
                         <td>انتهای دوره*</td>
                         <td><input name="finishdate" value="<?= convertDate($data['finishdate']) ?>" autocomplete="off" class="form-control date"></td>

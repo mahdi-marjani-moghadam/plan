@@ -914,6 +914,10 @@ class shakhesController
                 redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $result['msg']);
             }
             $data = $editObj->fields;
+            
+        }else{
+            $data['startdate'] = convertJToGDate($data['startdate']); 
+            $data['finishdate'] = convertJToGDate($data['finishdate']); 
         }
 
 
@@ -1070,6 +1074,10 @@ class shakhesController
                 redirectPage(RELA_DIR . 'admin/?component=shakhes&action=shora', $result['msg']);
             }
             $data = $editObj->fields;
+        }
+        else{
+            $data['startdate'] = convertJToGDate($data['startdate']); 
+            $data['finishdate'] = convertJToGDate($data['finishdate']); 
         }
 
 

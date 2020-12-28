@@ -120,7 +120,7 @@
                         <span class="sidebar-text text-16">مقایسه اقدامات در سطح هدف</span>
                     </a>
                 </li>
-                <!--/child-item-->
+                
             </ul>
         </li>
         <li>
@@ -192,7 +192,7 @@
 
         <?/* if(($res1['export']['recordsCount']>0)):*/ ?>
         <!--
-            <?/* if($admin_info['group_admin']==1):*/ ?>
+            <?/* if($admin_info['group_admin']==1): */ ?>
             <li>
                 <a href="<?php /*print RELA_DIR; */ ?>admin/?component=admin&action=child">
                     <i class="sidebar-icon fa fa-users"></i>
