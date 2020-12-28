@@ -168,7 +168,7 @@
     .table-cont1,.table-cont2,.table-cont3{
         max-height: 600px;
         overflow: auto;
-
+    }
 </style>
 
 

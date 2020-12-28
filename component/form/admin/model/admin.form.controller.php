@@ -834,26 +834,58 @@ class adminFormController
         include_once ROOT_DIR . 'component/admin/model/admin.model.php';
         include_once ROOT_DIR . 'component/faaliat/model/faaliat.model.php';
 
+        
         foreach ($fields['menu'] as $fid => $columns)
         {
             $obj =  group_list::find($fid);
+            
+            if(isset($fields['submit2']) ){
+                
+            }
             if(STEP_FORM1 == 1){
                 $obj->admin_percent1 = $columns[1];
                 //$obj->cdate1 = date('Y-m-d');
             }elseif (STEP_FORM1 == 2){
+                if(isset($fields['submit2']) ){
+                    if($columns[2] < $obj->admin_percent1)
+                    {
+                        $ms = 'نبایداز دوره قبلی کمتر باشد.';
+                        $messageStack->add_session('message', $ms, 'danger');
+                        redirectPage(RELA_DIR . 'admin/?component=form&action=myForm', $ms);
+
+                    }
+                }
                 $obj->admin_percent2 = $columns[2];
 
                 //$obj->cdate2 = date('Y-m-d');
             }elseif (STEP_FORM1 == 3){
-                $obj->admin_percent3 = $columns[3];
+                if(isset($fields['submit2']) ){
+                    if($columns[3] < $obj->max_manager2)
+                    {
+                        $ms = 'نبایداز دوره قبلی کمتر باشد.';
+                        $messageStack->add_session('message', $ms, 'danger');
+                        redirectPage(RELA_DIR . 'admin/?component=form&action=myForm', $ms);
 
+                    }
+                }
+                $obj->admin_percent3 = $columns[3];
+                
                 //$obj->cdate3 = date('Y-m-d');
             }elseif (STEP_FORM1 == 4) {
+                if(isset($fields['submit2']) ){
+                    if($columns[4] < $obj->admin_percent3)
+                    {
+                        $ms = 'نبایداز دوره قبلی کمتر باشد.';
+                        $messageStack->add_session('message', $ms, 'danger');
+                        redirectPage(RELA_DIR . 'admin/?component=form&action=myForm', $ms);
+
+                    }
+                }
                 $obj->admin_percent4 = $columns[4];
             }
 
             $obj->save();
-
+            
 
 
             /** LOG  */
