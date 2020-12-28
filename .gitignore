@@ -1,15 +1,12 @@
 
 .idea/workspace.xml
-
 .idea/copyright/profiles_settings.xml
-
 .idea/modules.xml
-
 .idea/va.iml
-
 .idea/vcs.xml
-
 .idea
+.vscode
 
 .git
+server.inc.php
 server.inc.php
