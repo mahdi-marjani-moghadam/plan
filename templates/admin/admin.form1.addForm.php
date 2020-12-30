@@ -53,14 +53,13 @@
 
 
             $(".percent-input").each(function(e) {
-
                 var inputVal = parseInt($(this).val());
                 var dataVal = $(this).data('season');
                 var result = dataVal.split('-');
 
                 var aData = parseInt($("div[data-season='" + (result[0] - 1) + "-" + result[1] + "']").text());
 
-
+                
                 if (inputVal < aData) {
                     /*this.setCustomValidity('مقدار وارد شده نباید از درصد نهایی دوره قبل کمتر باشد.');*/
                 } else if (inputVal > 100) {
@@ -71,15 +70,18 @@
                 }
 
             });
-
-            $(".percent-input").on('keyup, submit', function(e) {
-
+            
+            $("body").on('keyup','.percent-input',function(e) {
+                // console.log(2222);
+            // });
+            // $(".percent-input").on('keyup', function(e) {
+                console.log($(this));
                 var inputVal = parseInt($(this).val());
                 var dataVal = $(this).data('season');
                 var result = dataVal.split('-');
 
-
-
+                console.log('11111');
+                
                 if (inputVal > 100) {
                     this.setCustomValidity('مقدار وارد شده نباید از 100 بیشتر باشد.');
                 } else if (result[0] == 3) {
