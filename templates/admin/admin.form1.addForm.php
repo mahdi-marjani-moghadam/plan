@@ -28,7 +28,7 @@
             "paging": false,
             "processing": true,
             "serverSide": true,
-            "ajax": "<?= RELA_DIR ?>admin/?component=form&action=search&id=<?=$_GET['id']?>&status=<?= $list['status' . STEP_FORM1] ?>",
+            "ajax": "<?= RELA_DIR ?>admin/?component=form&action=search&id=<?= $_GET['id'] ?>&status=<?= $list['status' . STEP_FORM1] ?>",
             "ordering": false,
         });
 
@@ -45,10 +45,11 @@
 
         /** value more than prev input */
         $(document).ajaxStop(function() {
-            
-            $('html, body .table-cont1').animate({
-                scrollTop: $(".wrong").offset().top - 500
-            }, 2000);
+            if ($(".wrong").length) {
+                $('html, body .table-cont1').animate({
+                    scrollTop: $(".wrong").offset().top - 500
+                }, 2000);
+            }
 
 
             $(".percent-input").each(function(e) {
