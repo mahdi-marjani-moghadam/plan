@@ -814,7 +814,7 @@ class adminFormController
                 //$obj->cdate2 = date('Y-m-d');
             } elseif (STEP_FORM1 == 3) {
                 if (isset($fields['submit2'])) {
-                    if ($columns[3] < $obj->max_manager2) {
+                    if ($columns[3] < ($obj->admin_percent2 * $obj->max_manager2 / 100)) {
                         $ms =$obj->faaliat_id .  ' نبایداز دوره قبلی کمتر باشد.';
                         $messageStack->add_session('message', $ms, 'danger');
                         redirectPage(RELA_DIR . 'admin/?component=form&action=myForm&id=' . $obj->faaliat_id, $ms);
