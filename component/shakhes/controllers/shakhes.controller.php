@@ -19,7 +19,7 @@ class shakhesController
         include_once ROOT_DIR . 'component/admin/model/admin.model.php';
         $adminObj = new admin;
         $this->admins = $adminObj->getAll()->keyBy('admin_id')->getList()['export']['list'];
-
+        
         /* options */
         $this->options['jalasat'] = $this->options('sh_jalasat');
         $this->options['daneshamukhte'] = $this->options('sh_daneshamukhte');
@@ -1049,7 +1049,7 @@ class shakhesController
 
         $this->selectBoxAdmins('shora');
         $importAdmins = $this->importAdmins('shora');
-
+        
 
         include_once ROOT_DIR . 'component/shakhes/model/shora.model.php';
         $shoraObj = new shora;
@@ -1400,6 +1400,7 @@ class shakhesController
                     on a.admin_id = s.admin_id
                     
                     where a.parent_id not in (0,1) and s.table='$table' and s.import_admin = '{$admin_info['admin_id']}'";
+                    
         $this->selectBoxAdmins = $adminObj->query($query)->getList()['export']['list'];
         return true;
     }

@@ -374,7 +374,7 @@ function sendmails($email, $bcc, $subject, $body, $orderID, $header = '')
 
 function convertDate($date)
 {
-    if ($date == '' || $date == '0000-00-00') return '-';
+    if ($date == '' || $date == '0000-00-00') return '';
 
     include_once 'jdf.php';
     list($date, $time) = explode(' ', $date);
