@@ -1075,9 +1075,10 @@ class shakhesController
             }
             $data = $editObj->fields;
         }
-        else{
-            $data['startdate'] = convertJToGDate($data['startdate']); 
-            $data['finishdate'] = convertJToGDate($data['finishdate']); 
+        else if(count($data)>0){
+            
+            $data['start_date'] = convertJToGDate($data['start_date']); 
+            $data['finish_date'] = convertJToGDate($data['finish_date']); 
         }
 
 

@@ -375,10 +375,11 @@ function sendmails($email, $bcc, $subject, $body, $orderID, $header = '')
 function convertDate($date)
 {
     if ($date == '' || $date == '0000-00-00') return '';
-
+    $dateOrginal = $date;
     include_once 'jdf.php';
     list($date, $time) = explode(' ', $date);
     list($g_y, $g_m, $g_d) = explode('-', $date);
+    // if($g_y > '1405') return $dateOrginal;
     list($j_y, $j_m, $j_d) = gregorian_to_jalali($g_y, $g_m, $g_d);
     list($h, $m, $s) = explode(':', $time);
     $date = "$j_y/$j_m/$j_d";
@@ -388,11 +389,12 @@ function convertDate($date)
 
 function convertJToGDate($date)
 {
+    // dd($date);
     if ($date == '' || $date == '0000-00-00') return $date;
 
     include_once 'jdf.php';
     $dateTime = explode('/', $date);
-    if($dateTime[0] < 1290) return $date;
+    if($dateTime[0] > 1405) return $date;
     $g_y = $dateTime[0];
     $g_m = $dateTime[1];
     $g_d = $dateTime[2];
