@@ -695,7 +695,13 @@ class shakhesController
         $jalasatObj = new jalasat;
 
 
-
+        if($this->time['import_time'] == -1){
+            $result['type'] = 'error';
+                $dataStack->add_session('data', $post);
+                $msg = 'تاریخ اتمام '. convertDate($this->time['finish_date']) . ' می باشد.';
+                $messageStack->add_session('message', $msg, $result['type']);
+                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=jalasat', $msg);
+        }
 
 
         /* ارسال فرم */
@@ -801,7 +807,13 @@ class shakhesController
         include_once ROOT_DIR . 'component/shakhes/model/daneshamukhte.model.php';
         $daneshamukhteObj = new daneshamukhte;
 
-
+        if($this->time['import_time'] == -1){
+            $result['type'] = 'error';
+                $dataStack->add_session('data', $post);
+                $msg = 'تاریخ اتمام '. convertDate($this->time['finish_date']) . ' می باشد.';
+                $messageStack->add_session('message', $msg, $result['type']);
+                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=daneshamukhte', $msg);
+        }
 
 
 
@@ -935,7 +947,13 @@ class shakhesController
         include_once ROOT_DIR . 'component/shakhes/model/ruydad.model.php';
         $ruydadObj = new ruydad;
 
-
+        if($this->time['import_time'] == -1){
+            $result['type'] = 'error';
+                $dataStack->add_session('data', $post);
+                $msg = 'تاریخ اتمام '. convertDate($this->time['finish_date']) . ' می باشد.';
+                $messageStack->add_session('message', $msg, $result['type']);
+                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $msg);
+        }
 
         /* ارسال فرم */
         if (isset($post['temporary']) || isset($post['edit'])) {
@@ -1096,7 +1114,13 @@ class shakhesController
         include_once ROOT_DIR . 'component/shakhes/model/shora.model.php';
         $shoraObj = new shora;
 
-
+        if($this->time['import_time'] == -1){
+            $result['type'] = 'error';
+                $dataStack->add_session('data', $post);
+                $msg = 'تاریخ اتمام '. convertDate($this->time['finish_date']) . ' می باشد.';
+                $messageStack->add_session('message', $msg, $result['type']);
+                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=shora', $msg);
+        }
 
 
 
