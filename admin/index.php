@@ -8,7 +8,6 @@ include_once(ROOT_DIR."/common/validators.php");
 include_once ROOT_DIR.'common/looeic.php';
 
 
-
 //include_once(ROOT_DIR . "model/admin.index.php");
 
 if($admin_info['result'] ==-1)

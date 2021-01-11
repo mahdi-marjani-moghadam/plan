@@ -5,7 +5,7 @@
             <h3 class="panel-title rtl "> فرم جلب مشارکت دانش آموختگان و دانشجویان</h3>
         </div>
         <div class="panel-body">
-            <div class="alert alert-danger"> منظور از این فرم ارتباط و همکاری‌هایی است که دانشکده/گروه با دانشجویان یا دانش‌آموختگان در حوزه‌های آموزشی، پژوهشی، برگزاری کارگاه و سایر موارد برقرار می نماید. </div>
+            <div class="alert alert-danger"> منظور از این فرم ارتباط و همکاری‌هایی است که گروه با دانشجویان یا دانش‌آموختگان در حوزه‌های آموزشی، پژوهشی، برگزاری کارگاه و سایر موارد برقرار می نماید. </div>
 
             <? 
             if($msg){
@@ -107,8 +107,16 @@
                     </tr>
 
                 </table>
-                <button name="temporary" value="1" class="btn btn-warning btn-large">ثبت موقت</button>
-                
+                <?php if(isset($_GET['id']) && is_numeric($_GET['id'])): ?>
+                    <div style="display: flex; justify-content: center; ">
+                        <div class="col-md-3">
+                            <button name="edit" style="font-size:1.3em" value="<?php echo $_GET['id'] ?>" class="btn btn-info btn-large btn-block"> ویرایش</button>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <button name="temporary" value="1" class="btn btn-warning btn-large">ثبت موقت</button>
+                <?php endif; ?>
+
             </form>
             
         </div>
@@ -171,7 +179,9 @@
                                                     class="btn btn-xs btn-block btn-success pull-right">ارسال به مافوق</button>
                                         </form>
                                         <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte&method=delete&id=<?= $v['id'] ?>"
-                                        class="btn btn-xs btn-block btn-danger pull-right" onclick="return confirm('آیا برای حذف مطمئن هستید؟')">حذف</a>
+                                            class="btn btn-xs btn-block btn-danger pull-right" onclick="return confirm('آیا برای حذف مطمئن هستید؟')">حذف</a>
+                                        <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte&id=<?= $v['id'] ?>"
+                                            class="btn btn-xs btn-block btn-info pull-right" onclick="return confirm('آیا برای ویرایش مطمئن هستید؟')">ویرایش</a>
                                         <? else:?>
                                             <?= ($v['status'] == 2) ? 'ارسال به مافوق' : '' ?>
                                             <?= ($v['status'] == 3) ? 'تایید توسط مافوق' : '' ?>

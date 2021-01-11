@@ -796,7 +796,7 @@ class adminFormController
         foreach ($fields['menu'] as $fid => $columns) {
             $obj =  group_list::find($fid);
 
-            if (isset($fields['submit2'])) {
+            if (isset($fields['submit2']) || ($fields['submit1'])) {
             }
             if (STEP_FORM1 == 1) {
                 $obj->admin_percent1 = $columns[1];
@@ -804,7 +804,7 @@ class adminFormController
             } elseif (STEP_FORM1 == 2) {
                 if (isset($fields['submit2'])) {
                     if ($columns[2] < $obj->admin_percent1) {
-                        $ms =$obj->faaliat_id . ' نبایداز دوره قبلی کمتر باشد.';
+                        $ms =$obj->faaliat_id . ' درصد وارد شده نبایداز دوره قبلی کمتر باشد.';
                         $messageStack->add_session('message', $ms, 'danger');
                         redirectPage(RELA_DIR . 'admin/?component=form&action=myForm&id=' . $obj->faaliat_id, $ms);
                     }
@@ -813,9 +813,9 @@ class adminFormController
 
                 //$obj->cdate2 = date('Y-m-d');
             } elseif (STEP_FORM1 == 3) {
-                if (isset($fields['submit2'])) {
+                if (isset($fields['submit2']) || ($fields['submit1'])) {
                     if ($columns[3] < ($obj->admin_percent2 * $obj->max_manager2 / 100)) {
-                        $ms =$obj->faaliat_id .  ' نبایداز دوره قبلی کمتر باشد.';
+                        $ms =$obj->faaliat_id .  ' درصد وارد شده نبایداز دوره قبلی کمتر باشد.';
                         $messageStack->add_session('message', $ms, 'danger');
                         redirectPage(RELA_DIR . 'admin/?component=form&action=myForm&id=' . $obj->faaliat_id, $ms);
                     }
@@ -824,9 +824,9 @@ class adminFormController
 
                 //$obj->cdate3 = date('Y-m-d');
             } elseif (STEP_FORM1 == 4) {
-                if (isset($fields['submit2'])) {
+                if (isset($fields['submit2']) || ($fields['submit1'])) {
                     if ($columns[4] < $obj->admin_percent3) {
-                        $ms = $obj->faaliat_id . ' نبایداز دوره قبلی کمتر باشد.';
+                        $ms = $obj->faaliat_id . ' درصد وارد شده نبایداز دوره قبلی کمتر باشد.';
                         $messageStack->add_session('message', $ms, 'danger');
                         redirectPage(RELA_DIR . 'admin/?component=form&action=myForm&id=' . $obj->faaliat_id, $ms);
                     }

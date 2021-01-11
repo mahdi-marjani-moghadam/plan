@@ -239,8 +239,8 @@
                                 </a>
                             </li>
                         </ul>-->
-                <!--<li>
-                    <a href="<?/*= RELA_DIR */?>admin/?component=shakhes">
+                <li>
+                    <a href="<?= RELA_DIR ?>admin/?component=shakhes">
                         <span class="sidebar-text text-16"> گزارش</span>
                     </a>
                 </li>-->
@@ -265,16 +265,21 @@
                 <i class="sidebar-icon fa fa-download"></i>
                 <span class="sidebar-text">راهنمای سامانه</span>
             </a>
-            <ul class="sidebar-child animated fadeInRight">
+            <ul class="sidebar-child animated fadeInRight">r
                 <li>
                     <a href="<?= RELA_DIR ?>statics/sample/Portal GuideLine.pdf">
-                        <span class="sidebar-text text-16">فایل متنی</span>
+                        <span class="sidebar-text text-16"> راهنمای منوی پایش</span>
                     </a>
                 </li>
                 <!--/child-item-->
                 <li>
                     <a href="<?= RELA_DIR ?>statics/sample/movie.rar">
-                        <span class="sidebar-text text-16"> فایل ویدیویی</span>
+                        <span class="sidebar-text text-16"> راهنمای ویدیویی منوی پایش</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= RELA_DIR ?>statics/sample/formsguide.pdf">
+                        <span class="sidebar-text text-16"> راهنمای منوی ارزیابی</span>
                     </a>
                 </li>
                 <!--/child-item-->

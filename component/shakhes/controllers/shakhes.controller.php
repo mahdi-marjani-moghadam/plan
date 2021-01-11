@@ -685,6 +685,8 @@ class shakhesController
         die();
     }
 
+
+
     public function jalasatOnSubmit()
     {
         global $messageStack, $admin_info, $dataStack;
