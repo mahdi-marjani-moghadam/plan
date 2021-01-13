@@ -680,6 +680,31 @@ class shakhesController
         $jalasat = $jalasatObj->where('admin_id', 'in', $importAdmins)->orWhere('import_admin', 'in', $importAdmins)
             ->orderBy('admin_id')->getList()['export'];
 
+        if (isset($_GET['id'])) {
+            $data['id'] = $_GET['id'];
+        }
+
+        if (count($data) <= 1 && isset($_GET['id']) && is_numeric($_GET['id'])) {
+
+            $editObj = $jalasatObj::find($_GET['id']);
+
+            if (!is_object($editObj) && $editObj['result'] == -1) {
+                $messageStack->add_session('message', $editObj['msg'], 'error');
+                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=jalasat', $editObj['msg']);
+            }
+            if ($editObj->status != 0 && $editObj->status != 1) {
+                $result['msg'] = 'شما نمی توانید این فرم را ویرایش کنید.';
+                $messageStack->add_session('message', $result['msg'], 'error');
+                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=jalasat', $result['msg']);
+            }
+            $data = $editObj->fields;
+
+        }else{
+            $data['startdate'] = convertJToGDate($data['startdate']);
+            $data['finishdate'] = convertJToGDate($data['finishdate']);
+        }
+
+
         $this->fileName = 'shakhes.jalasat.php';
         $this->template(compact('jalasat', 'msg', 'data'));
         die();
@@ -707,7 +732,7 @@ class shakhesController
 
 
         /* ارسال فرم */
-        if (isset($post['temporary'])) {
+        if (isset($post['temporary'])|| isset($post['edit'])) {
             /* اگه فرم درست پر نشه ارور بده */
             /* اگه فرم درست پر نشه ارور بده */
             $error = 0;
@@ -739,13 +764,32 @@ class shakhesController
             } elseif ($post['subject'] == '') {
                 $result['msg'] = 'فیلد رئوس موضوعات طرح شده در جلسه تکمیل نشده است.';
                 $error = 1;
+            } elseif (isset($post['edit']) && !is_numeric($post['edit'])) {
+                $result['msg'] = 'Error id!';
+                $error = 1;
             }
 
             if ($error == 1) {
                 $result['type'] = 'error';
                 $dataStack->add_session('data', $post);
                 $messageStack->add_session('message', $result['msg'], $result['type']);
-                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=jalasat', $result['msg']);
+                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=jalasat'. ((isset($post['edit'])) ? '&id=' . $post['edit'] : ''), $result['msg']);
+            }
+
+            if (isset($post['edit']) && isset($post['edit'])) {
+
+                $editObj = $jalasatObj::find((int) $post['edit']);
+
+                if (!is_object($editObj) && $editObj['result'] == -1) {
+                    $messageStack->add_session('message', $editObj['msg'], 'error');
+                    redirectPage(RELA_DIR . 'admin/?component=shakhes&action=jalasat', $editObj['msg']);
+                }
+                if ($editObj->status != 0  && $editObj->status != 1) {
+                    $result['msg'] = 'شما نمی توانید این شورا را ویرایش کنید.';
+                    $messageStack->add_session('message', $result['msg'], 'error');
+                    redirectPage(RELA_DIR . 'admin/?component=shakhes&action=jalasat', $result['msg']);
+                }
+                $jalasatObj = $editObj;
             }
 
             $jalasatObj->setFields($post);
@@ -754,11 +798,11 @@ class shakhesController
             $jalasatObj->import_admin = $admin_info['admin_id'];
             $jalasatObj->save();
 
-            $result['msg'] = 'ثبت موقت انجام شد.';
-            $result['type'] = 'warning';
+            $result['msg'] = (isset($post['edit'])) ? 'ویرایش انجام شد' : 'ثبت موقت انجام شد.';
+            $result['type'] = (isset($post['edit'])) ? 'success' : 'warning';
         } else {
             $result = $this->onSubmitZirGhalam($jalasatObj, $post);
-            $daneshamukhteObj = $result['obj'];
+            $jalasatObj = $result['obj'];
         }
 
         if (isset($post['confirmFinal'])) {
@@ -793,6 +837,31 @@ class shakhesController
             ->orderBy('admin_id')->getList()['export'];
 
 
+        if (isset($_GET['id'])) {
+            $data['id'] = $_GET['id'];
+        }
+
+        if (count($data) <= 1 && isset($_GET['id']) && is_numeric($_GET['id'])) {
+
+            $editObj = $daneshamukhteObj::find($_GET['id']);
+
+            if (!is_object($editObj) && $editObj['result'] == -1) {
+                $messageStack->add_session('message', $editObj['msg'], 'error');
+                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=daneshamukhte', $editObj['msg']);
+            }
+            if ($editObj->status != 0 && $editObj->status != 1) {
+                $result['msg'] = 'شما نمی توانید این فرم را ویرایش کنید.';
+                $messageStack->add_session('message', $result['msg'], 'error');
+                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=daneshamukhte', $result['msg']);
+            }
+            $data = $editObj->fields;
+
+        }else{
+            $data['startdate'] = convertJToGDate($data['startdate']);
+            $data['finishdate'] = convertJToGDate($data['finishdate']);
+        }
+
+
 
         $this->fileName = 'shakhes.daneshamukhte.php';
         $this->template(compact('daneshamukhte', 'msg', 'data'));
@@ -821,7 +890,7 @@ class shakhesController
 
 
         /* ارسال فرم */
-        if (isset($post['temporary'])) {
+        if (isset($post['temporary'])|| isset($post['edit'])){
             /* اگه فرم درست پر نشه ارور بده */
             $error = 0;
             $this->selectBoxAdmins('daneshamukhte');
@@ -852,14 +921,33 @@ class shakhesController
             } elseif ($post['continue_education'] == '') {
                 $result['msg'] = 'فیلد وضعیت ادامه تحصیل تکمیل نشده است.';
                 $error = 1;
+            } elseif (isset($post['edit']) && !is_numeric($post['edit'])) {
+                $result['msg'] = 'Error id!';
+                $error = 1;
             }
 
             if ($error == 1) {
                 $result['type'] = 'error';
                 $dataStack->add_session('data', $post);
                 $messageStack->add_session('message', $result['msg'], $result['type']);
+                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=daneshamukhte'. ((isset($post['edit'])) ? '&id=' . $post['edit'] : ''), $result['msg']);
+            }
+
+        if (isset($post['edit']) && isset($post['edit'])) {
+
+            $editObj = $daneshamukhteObj::find((int) $post['edit']);
+
+            if (!is_object($editObj) && $editObj['result'] == -1) {
+                $messageStack->add_session('message', $editObj['msg'], 'error');
+                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=daneshamukhte', $editObj['msg']);
+            }
+            if ($editObj->status != 0  && $editObj->status != 1) {
+                $result['msg'] = 'شما نمی توانید این مورد را ویرایش کنید.';
+                $messageStack->add_session('message', $result['msg'], 'error');
                 redirectPage(RELA_DIR . 'admin/?component=shakhes&action=daneshamukhte', $result['msg']);
             }
+            $daneshamukhteObj = $editObj;
+        }
 
 
             $daneshamukhteObj->setFields($post);
@@ -868,12 +956,13 @@ class shakhesController
             $daneshamukhteObj->status = 0;
             $daneshamukhteObj->save();
 
-            $result['msg'] = 'ثبت موقت انجام شد.';
-            $result['type'] = 'warning';
+            $result['msg'] = (isset($post['edit'])) ? 'ویرایش انجام شد' : 'ثبت موقت انجام شد.';
+            $result['type'] = (isset($post['edit'])) ? 'success' : 'warning';
         } else {
             $result = $this->onSubmitZirGhalam($daneshamukhteObj, $post);
             $daneshamukhteObj = $result['obj'];
         }
+
 
         if (isset($post['confirmFinal'])) {
 
@@ -933,7 +1022,6 @@ class shakhesController
             $data['startdate'] = convertJToGDate($data['startdate']); 
             $data['finishdate'] = convertJToGDate($data['finishdate']); 
         }
-
 
         $this->fileName = 'shakhes.ruydad.php';
         $this->template(compact('ruydad', 'msg', 'data'));
@@ -1051,7 +1139,6 @@ class shakhesController
 
             //$this->updateImport($ruydad, 209, 'eligible_students');
         }
-
 
 
         $messageStack->add_session('message', $result['msg'], $result['type']);
