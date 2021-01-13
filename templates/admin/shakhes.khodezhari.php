@@ -21,7 +21,7 @@
         </div>
 
 
-<!--        <div class="panel-heading bg-green">
+        <div class="panel-heading bg-green">
             <h3 class="panel-title rtl "> فرم خود اظهاری</h3>
         </div>
         <div class="panel-body">
@@ -43,51 +43,51 @@
                                     </tr>
                                     </thead>
                                     <div class="col-md-10 col-sm-12 col-sx-12">
-                                        <?/*
+                                        <?
                                         $msg = $messageStack->output('message');
                                         if($msg != ''):
                                             echo $msg;
                                         endif;
-                                        */?>
-                                        <?/* foreach ($child as $v):*/?>
+                                        ?>
+                                        <? foreach ($child as $v):?>
                                             <div class="col-md-2 col-xs-12 col-sm-12 ">
 
                                                 <div class="col-md-12 confirm-vahed ">
                                                     <div class="col-md-12" style="height: 50px">
-                                                        <label for=""><?/*=$v['name'].' '.$v['family']*/?></label>
+                                                        <label for=""><?=$v['name'].' '.$v['family']?></label>
                                                     </div>
                                                     <div class="col-md-12">
-                                                        <a href="<?/*=RELA_DIR*/?>admin/?component=reports&action=confirm&id=<?/*=$v['admin_id']*/?>&s=1" class="btn btn-primary btn-block">تایید</a>
-                                                        <a href="<?/*=RELA_DIR*/?>admin/?component=reports&action=confirm&id=<?/*=$v['admin_id']*/?>&s=2" class="btn btn-primary btn-block">نیازمند اصلاح</a>
+                                                        <a href="<?=RELA_DIR?>admin/?component=reports&action=confirm&id=<?=$v['admin_id']?>&s=1" class="btn btn-primary btn-block">تایید</a>
+                                                        <a href="<?=RELA_DIR?>admin/?component=reports&action=confirm&id=<?=$v['admin_id']?>&s=2" class="btn btn-primary btn-block">نیازمند اصلاح</a>
                                                     </div>
                                                 </div>
                                             </div>
-                                        <?/* endforeach;*/?>
+                                        <? endforeach;?>
                                     </div>
                                     <?php
-/*                                    foreach ($ghalams as $ghalam):
-                                    */?>
+                                    foreach ($ghalams as $ghalam):
+                                    ?>
                                     <tr>
-                                    <td><?/*=$ghalam['ghalam_id']*/?></td>
-                                    <td><?/*=$ghalam['ghalam']*/?></td>
+                                    <td><?=$ghalam['ghalam_id']?></td>
+                                    <td><?=$ghalam['ghalam']?></td>
                                     <td><input class="form-control"></td>
                                     <td><input class="form-control"></td>
                                     <td><input class="form-control"></td>
-                                    <td><input class="form-control"></td>-->
-                                    <td><input name="value6" value="<?/*= $data['value6'] */?>" autocomplete="off" class="form-control"></td>
-                                    <td><input name="value12" value="<?/*= $data['value12'] */?>" autocomplete="off" class="form-control"></td>
-                                    <td><input name="admin_tozihat6" value="<?/*= $data['admin_tozihat6'] */?>" autocomplete="off" class="form-control"></td>
-                                    <td><input name="admin_tozihat12" value="<?/*= $data['admin_tozihat12'] */?>" autocomplete="off" class="form-control"></td>
+                                    <td><input class="form-control"></td>
+                                    <td><input name="value6" value="<?= $data['value6'] ?>" autocomplete="off" class="form-control"></td>
+                                    <td><input name="value12" value="<?= $data['value12'] ?>" autocomplete="off" class="form-control"></td>
+                                    <td><input name="admin_tozihat6" value="<?= $data['admin_tozihat6'] ?>" autocomplete="off" class="form-control"></td>
+                                    <td><input name="admin_tozihat12" value="<?= $data['admin_tozihat12'] ?>" autocomplete="off" class="form-control"></td>
                                     </tr>
                                     <?php
-/*                                       endforeach;
-                                    */?>
+                                       endforeach;
+                                    ?>
 
             </table>
-                                <!--<input type="submit" class="btn btn-info btn-white btn-large " style="font-size: 20px" name="temporary" value="ذخیره موقت" />
+                                <input type="submit" class="btn btn-info btn-white btn-large " style="font-size: 20px" name="temporary" value="ذخیره موقت" />
                                 <input type="submit" class="btn btn-success btn-white btn-large" style="font-size: 20px" name="final" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')"  value="ارسال به مافوق" />
-                            --></div>
+                            </div>
                         </div>
                     </div>
-</div>-->
+</div>
 </div>
