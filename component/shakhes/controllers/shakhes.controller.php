@@ -700,8 +700,7 @@ class shakhesController
             $data = $editObj->fields;
 
         }else{
-            $data['startdate'] = convertJToGDate($data['startdate']);
-            $data['finishdate'] = convertJToGDate($data['finishdate']);
+            $data['date'] = convertJToGDate($data['date']);
         }
 
 
@@ -857,8 +856,7 @@ class shakhesController
             $data = $editObj->fields;
 
         }else{
-            $data['startdate'] = convertJToGDate($data['startdate']);
-            $data['finishdate'] = convertJToGDate($data['finishdate']);
+            $data['graduated_date'] = convertJToGDate($data['graduated_date']);
         }
 
 
