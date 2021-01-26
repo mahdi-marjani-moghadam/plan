@@ -36,7 +36,7 @@ switch ($_GET['action']) {
 
         /** خوداظهاری شاخص */
     case 'khodezhari':
-        if($_GET['method'] =='delete'){
+        if ($_GET['method'] == 'delete') {
             $controller->onDelete('khodezhari');
         }
         if ($_POST) {
@@ -48,7 +48,7 @@ switch ($_GET['action']) {
 
         /** جلسات */
     case 'jalasat':
-        if($_GET['method'] =='delete'){
+        if ($_GET['method'] == 'delete') {
             $controller->onDelete('jalasat');
         }
 
@@ -61,7 +61,7 @@ switch ($_GET['action']) {
 
         /* دانش اموخته */
     case 'daneshamukhte':
-        if($_GET['method'] =='delete'){
+        if ($_GET['method'] == 'delete') {
             $controller->onDelete('daneshamukhte');
         }
         if ($_POST) {
@@ -73,7 +73,7 @@ switch ($_GET['action']) {
 
         /* رویداد */
     case 'ruydad':
-        if($_GET['method'] =='delete'){
+        if ($_GET['method'] == 'delete') {
             $controller->onDelete('ruydad');
         }
         if ($_POST) {
@@ -85,7 +85,7 @@ switch ($_GET['action']) {
 
         /* شورا */
     case 'shora':
-        if($_GET['method'] =='delete'){
+        if ($_GET['method'] == 'delete') {
             $controller->onDelete('shora');
         }
         if ($_POST) {
