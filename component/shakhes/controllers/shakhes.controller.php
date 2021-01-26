@@ -19,7 +19,7 @@ class shakhesController
         include_once ROOT_DIR . 'component/admin/model/admin.model.php';
         $adminObj = new admin;
         $this->admins = $adminObj->getAll()->keyBy('admin_id')->getList()['export']['list'];
-        
+
         /* options */
         $this->options['jalasat'] = $this->options('sh_jalasat');
         $this->options['daneshamukhte'] = $this->options('sh_daneshamukhte');
@@ -119,7 +119,7 @@ class shakhesController
 
         include ROOT_DIR . "component/shakhes/model/shakhes.model.php";
 
-        
+
         // پیدا کردن قلم ها و کلان
         $obj = new shakhes();
         $query = 'select g.ghalam_id , r_k_s.kalan_no , g.ghalam   from sh_ghalam g
@@ -127,9 +127,9 @@ class shakhesController
         left join sh_rel_kalan_shakhes r_k_s on r_g_s.shakhes_id = r_k_s.shakhes_id';
         $res = $obj->query($query)->getList();
         $ghalam = ($res['export']['recordsCount'] > 0) ?  $res['export']['list'] : array();
-        
-        
-        
+
+
+
 
         //فیلترینگ
         if (isset($_GET['filter_columns'])) {
@@ -194,9 +194,50 @@ class shakhesController
 
         $ghalam = ($res['export']['recordsCount'] > 0) ?  $res['export']['list'] : array();
 
-        include_once ROOT_DIR . "component/shakhes/";
+        //باید مقادیر اولیه پر شود
+        $ghalamIdStr = implode(',', array_column($ghalam, 'ghalam_id'));
 
+        include_once ROOT_DIR . "component/shakhes/model/import.model.php";
+        $importObj = new import;
+        $import = $importObj->where('ghalam_id', '=', $ghalamIdStr)->select('id,ghalam_id,motevali_admin_id')->keyBy('id')->getList();
+        if ($import['export']['recordsCount'] > 0) {
+            $import = $import['export']['list'];
+            $sh_importIdStr = implode(',', array_column($import, 'id'));
 
+            include_once ROOT_DIR . "component/shakhes/model/import_confirm.model.php";
+            $importConfirmObj = new importConfirm;
+            $importConfirm = $importConfirmObj->where('sh_import_id', 'in', $sh_importIdStr)->select('sh_import_id,admin,admin_type')->getList();
+
+            if ($importConfirm['export']['recordsCount'] > 0) {
+                $importConfirm = $importConfirm['export']['list'];
+                foreach ($importConfirm as &$item) {
+                    // print_r($item);echo'<br>';
+                    $item['ghalam_id'] = $import[$item['sh_import_id']]['ghalam_id'];
+
+                    $finalImportConfirm[$item['ghalam_id']]['motevali_admin_id'] = array_column($import, 'motevali_admin_id');
+
+                    if ($item['admin_type'] == 'import') $finalImportConfirm[$item['ghalam_id']]['import_admin'] = $item['admin'];
+                    if ($item['admin_type'] == 'confirm1') $finalImportConfirm[$item['ghalam_id']]['confirm_admin_1'] = $item['admin'];
+                    if ($item['admin_type'] == 'confirm2') $finalImportConfirm[$item['ghalam_id']]['confirm_admin_2'] = $item['admin'];
+                    if ($item['admin_type'] == 'confirm3') $finalImportConfirm[$item['ghalam_id']]['confirm_admin_3'] = $item['admin'];
+                }
+            }
+
+            // dd($finalImportConfirm);
+            foreach ($ghalam as $k => &$value) {
+                foreach ($finalImportConfirm as $icghalam_id => $FIC) {
+                    if ($value['ghalam_id'] == $icghalam_id) {
+                        $value['motevali_admin_id'] = $FIC['motevali_admin_id'];
+                        $value['import_admin'] = $FIC['import_admin'];
+                        $value['confirm_admin_1'] = $FIC['confirm_admin_1'];
+                        $value['confirm_admin_2'] = $FIC['confirm_admin_2'];
+                        $value['confirm_admin_3'] = $FIC['confirm_admin_3'];
+                    }
+                }
+            }
+        }
+
+        // dd($ghalam);
 
 
         include_once ROOT_DIR . "component/admin/model/admin.model.php";
@@ -229,9 +270,17 @@ class shakhesController
         foreach ($post['import'] as $ghalam_id => $import) {
             /* ghalam */
             $importObj = import::getBy_ghalam_id($ghalam_id);
+            $importConfirmObj = new importConfirm;
             // dd($importObj->get());
 
             if ($importObj->get()['export']['recordsCount'] > 0) {
+                $icobj = $importConfirmObj->where('sh_import_id', 'in', implode(',', array_column($importObj->getList()['export']['list'], 'id')));
+                
+                if ($icobj->get()['export']['recordsCount'] > 0) {
+                    foreach ($icobj->get()['export']['list'] as $importCObj) {
+                        $importCObj->delete();
+                    }
+                }
                 foreach ($importObj->get()['export']['list'] as $importObj) {
                     $importObj->delete();
                 }
@@ -305,14 +354,14 @@ class shakhesController
                     /* insert confirm3 */
                     $importConfirmObj = new importConfirm;
                     $importConfirmObj->sh_import_id = $importObj->id;
-                    $importConfirmObj->admin = 1;
+                    $importConfirmObj->admin = $import['confirm_admin_3'];
                     $importConfirmObj->admin_type = 'confirm3';
                     $importConfirmObj->save();
                 } else {
                     /* update confirm3 */
                     $importConfirmObj = $importConfirmObj->get()['export']['list'][0];
                     $importConfirmObj->sh_import_id = $importObj->id;
-                    $importConfirmObj->admin = 1;
+                    $importConfirmObj->admin = $import['confirm_admin_3'];
                     $importConfirmObj->admin_type = 'confirm3';
                     $importConfirmObj->save();
                 }
@@ -323,14 +372,14 @@ class shakhesController
                     /* insert confirm4 */
                     $importConfirmObj = new importConfirm;
                     $importConfirmObj->sh_import_id = $importObj->id;
-                    $importConfirmObj->admin = 2;
+                    $importConfirmObj->admin = 1;
                     $importConfirmObj->admin_type = 'confirm4';
                     $importConfirmObj->save();
                 } else {
                     /* update confirm4 */
                     $importConfirmObj = $importConfirmObj->get()['export']['list'][0];
                     $importConfirmObj->sh_import_id = $importObj->id;
-                    $importConfirmObj->admin = 2;
+                    $importConfirmObj->admin = 1;
                     $importConfirmObj->admin_type = 'confirm4';
                     $importConfirmObj->save();
                 }
@@ -569,11 +618,9 @@ class shakhesController
 
         $query = 'select 
             g.ghalam_id , 
-            g.ghalam  , 
-            r_k_s.kalan_no  
+            g.ghalam    
         from sh_ghalam g
-        inner join sh_rel_ghalam_shakhes r_g_s on g.ghalam_id = r_g_s.ghalam_id
-        inner join sh_rel_kalan_shakhes r_k_s on r_g_s.shakhes_id = r_k_s.shakhes_id
+        where g.ghalam_id not in (select ghalam_id from sh_rel_ghalam_zir_ghalam)
         group by ghalam_id';
         $res = $obj->query($query)->getList();
         $ghalams = ($res['export']['recordsCount'] > 0) ?  $res['export']['list'] : array();
@@ -701,8 +748,7 @@ class shakhesController
                 redirectPage(RELA_DIR . 'admin/?component=shakhes&action=jalasat', $result['msg']);
             }
             $data = $editObj->fields;
-
-        }else{
+        } else {
             $data['date'] = convertJToGDate($data['date']);
         }
 
@@ -724,17 +770,17 @@ class shakhesController
         $jalasatObj = new jalasat;
 
 
-        if($this->time['import_time'] == -1){
+        if ($this->time['import_time'] == -1) {
             $result['type'] = 'error';
-                $dataStack->add_session('data', $post);
-                $msg = 'تاریخ اتمام '. convertDate($this->time['finish_date']) . ' می باشد.';
-                $messageStack->add_session('message', $msg, $result['type']);
-                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=jalasat', $msg);
+            $dataStack->add_session('data', $post);
+            $msg = 'تاریخ اتمام ' . convertDate($this->time['finish_date']) . ' می باشد.';
+            $messageStack->add_session('message', $msg, $result['type']);
+            redirectPage(RELA_DIR . 'admin/?component=shakhes&action=jalasat', $msg);
         }
 
 
         /* ارسال فرم */
-        if (isset($post['temporary'])|| isset($post['edit'])) {
+        if (isset($post['temporary']) || isset($post['edit'])) {
             /* اگه فرم درست پر نشه ارور بده */
             /* اگه فرم درست پر نشه ارور بده */
             $error = 0;
@@ -775,7 +821,7 @@ class shakhesController
                 $result['type'] = 'error';
                 $dataStack->add_session('data', $post);
                 $messageStack->add_session('message', $result['msg'], $result['type']);
-                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=jalasat'. ((isset($post['edit'])) ? '&id=' . $post['edit'] : ''), $result['msg']);
+                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=jalasat' . ((isset($post['edit'])) ? '&id=' . $post['edit'] : ''), $result['msg']);
             }
 
             if (isset($post['edit']) && isset($post['edit'])) {
@@ -857,8 +903,7 @@ class shakhesController
                 redirectPage(RELA_DIR . 'admin/?component=shakhes&action=daneshamukhte', $result['msg']);
             }
             $data = $editObj->fields;
-
-        }else{
+        } else {
             $data['graduated_date'] = convertJToGDate($data['graduated_date']);
         }
 
@@ -879,19 +924,19 @@ class shakhesController
         include_once ROOT_DIR . 'component/shakhes/model/daneshamukhte.model.php';
         $daneshamukhteObj = new daneshamukhte;
 
-        if($this->time['import_time'] == -1){
+        if ($this->time['import_time'] == -1) {
             $result['type'] = 'error';
-                $dataStack->add_session('data', $post);
-                $msg = 'تاریخ اتمام '. convertDate($this->time['finish_date']) . ' می باشد.';
-                $messageStack->add_session('message', $msg, $result['type']);
-                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=daneshamukhte', $msg);
+            $dataStack->add_session('data', $post);
+            $msg = 'تاریخ اتمام ' . convertDate($this->time['finish_date']) . ' می باشد.';
+            $messageStack->add_session('message', $msg, $result['type']);
+            redirectPage(RELA_DIR . 'admin/?component=shakhes&action=daneshamukhte', $msg);
         }
 
 
 
 
         /* ارسال فرم */
-        if (isset($post['temporary'])|| isset($post['edit'])){
+        if (isset($post['temporary']) || isset($post['edit'])) {
             /* اگه فرم درست پر نشه ارور بده */
             $error = 0;
             $this->selectBoxAdmins('daneshamukhte');
@@ -931,24 +976,24 @@ class shakhesController
                 $result['type'] = 'error';
                 $dataStack->add_session('data', $post);
                 $messageStack->add_session('message', $result['msg'], $result['type']);
-                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=daneshamukhte'. ((isset($post['edit'])) ? '&id=' . $post['edit'] : ''), $result['msg']);
+                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=daneshamukhte' . ((isset($post['edit'])) ? '&id=' . $post['edit'] : ''), $result['msg']);
             }
 
-        if (isset($post['edit']) && isset($post['edit'])) {
+            if (isset($post['edit']) && isset($post['edit'])) {
 
-            $editObj = $daneshamukhteObj::find((int) $post['edit']);
+                $editObj = $daneshamukhteObj::find((int) $post['edit']);
 
-            if (!is_object($editObj) && $editObj['result'] == -1) {
-                $messageStack->add_session('message', $editObj['msg'], 'error');
-                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=daneshamukhte', $editObj['msg']);
+                if (!is_object($editObj) && $editObj['result'] == -1) {
+                    $messageStack->add_session('message', $editObj['msg'], 'error');
+                    redirectPage(RELA_DIR . 'admin/?component=shakhes&action=daneshamukhte', $editObj['msg']);
+                }
+                if ($editObj->status != 0  && $editObj->status != 1) {
+                    $result['msg'] = 'شما نمی توانید این مورد را ویرایش کنید.';
+                    $messageStack->add_session('message', $result['msg'], 'error');
+                    redirectPage(RELA_DIR . 'admin/?component=shakhes&action=daneshamukhte', $result['msg']);
+                }
+                $daneshamukhteObj = $editObj;
             }
-            if ($editObj->status != 0  && $editObj->status != 1) {
-                $result['msg'] = 'شما نمی توانید این مورد را ویرایش کنید.';
-                $messageStack->add_session('message', $result['msg'], 'error');
-                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=daneshamukhte', $result['msg']);
-            }
-            $daneshamukhteObj = $editObj;
-        }
 
 
             $daneshamukhteObj->setFields($post);
@@ -1018,10 +1063,9 @@ class shakhesController
                 redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $result['msg']);
             }
             $data = $editObj->fields;
-            
-        }else{
-            $data['startdate'] = convertJToGDate($data['startdate']); 
-            $data['finishdate'] = convertJToGDate($data['finishdate']); 
+        } else {
+            $data['startdate'] = convertJToGDate($data['startdate']);
+            $data['finishdate'] = convertJToGDate($data['finishdate']);
         }
 
         $this->fileName = 'shakhes.ruydad.php';
@@ -1038,12 +1082,12 @@ class shakhesController
         include_once ROOT_DIR . 'component/shakhes/model/ruydad.model.php';
         $ruydadObj = new ruydad;
 
-        if($this->time['import_time'] == -1){
+        if ($this->time['import_time'] == -1) {
             $result['type'] = 'error';
-                $dataStack->add_session('data', $post);
-                $msg = 'تاریخ اتمام '. convertDate($this->time['finish_date']) . ' می باشد.';
-                $messageStack->add_session('message', $msg, $result['type']);
-                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $msg);
+            $dataStack->add_session('data', $post);
+            $msg = 'تاریخ اتمام ' . convertDate($this->time['finish_date']) . ' می باشد.';
+            $messageStack->add_session('message', $msg, $result['type']);
+            redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $msg);
         }
 
         /* ارسال فرم */
@@ -1099,7 +1143,6 @@ class shakhesController
                 $dataStack->add_session('data', $post);
                 $messageStack->add_session('message', $result['msg'], $result['type']);
                 redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad' . ((isset($post['edit'])) ? '&id=' . $post['edit'] : ''), $result['msg']);
-                
             }
 
             if (isset($post['edit']) && isset($post['edit'])) {
@@ -1157,7 +1200,7 @@ class shakhesController
 
         $this->selectBoxAdmins('shora');
         $importAdmins = $this->importAdmins('shora');
-        
+
 
         include_once ROOT_DIR . 'component/shakhes/model/shora.model.php';
         $shoraObj = new shora;
@@ -1182,11 +1225,10 @@ class shakhesController
                 redirectPage(RELA_DIR . 'admin/?component=shakhes&action=shora', $result['msg']);
             }
             $data = $editObj->fields;
-        }
-        else if(count($data)>0){
-            
-            $data['start_date'] = convertJToGDate($data['start_date']); 
-            $data['finish_date'] = convertJToGDate($data['finish_date']); 
+        } else if (count($data) > 0) {
+
+            $data['start_date'] = convertJToGDate($data['start_date']);
+            $data['finish_date'] = convertJToGDate($data['finish_date']);
         }
 
 
@@ -1204,12 +1246,12 @@ class shakhesController
         include_once ROOT_DIR . 'component/shakhes/model/shora.model.php';
         $shoraObj = new shora;
 
-        if($this->time['import_time'] == -1){
+        if ($this->time['import_time'] == -1) {
             $result['type'] = 'error';
-                $dataStack->add_session('data', $post);
-                $msg = 'تاریخ اتمام '. convertDate($this->time['finish_date']) . ' می باشد.';
-                $messageStack->add_session('message', $msg, $result['type']);
-                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=shora', $msg);
+            $dataStack->add_session('data', $post);
+            $msg = 'تاریخ اتمام ' . convertDate($this->time['finish_date']) . ' می باشد.';
+            $messageStack->add_session('message', $msg, $result['type']);
+            redirectPage(RELA_DIR . 'admin/?component=shakhes&action=shora', $msg);
         }
 
 
@@ -1252,7 +1294,7 @@ class shakhesController
                 $result['type'] = 'error';
                 $dataStack->add_session('data', $post);
                 $messageStack->add_session('message', $result['msg'], $result['type']);
-                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=shora'. ((isset($post['edit'])) ? '&id=' . $post['edit'] : ''), $result['msg']);
+                redirectPage(RELA_DIR . 'admin/?component=shakhes&action=shora' . ((isset($post['edit'])) ? '&id=' . $post['edit'] : ''), $result['msg']);
             }
 
             if (isset($post['edit']) && isset($post['edit'])) {
@@ -1515,7 +1557,7 @@ class shakhesController
                     on a.admin_id = s.admin_id
                     
                     where a.parent_id not in (0,1) and s.table='$table' and s.import_admin = '{$admin_info['admin_id']}'";
-                    
+
         $this->selectBoxAdmins = $adminObj->query($query)->getList()['export']['list'];
         return true;
     }
