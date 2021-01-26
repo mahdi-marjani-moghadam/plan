@@ -133,7 +133,15 @@
                         <td><input name="website_link" value="<?= $data['website_link'] ?>" class="form-control"></td>
 
                         <td> عنوان حامی </td>
-                        <td><input name="hami_type" value="<?= $data['hami_type'] ?>" class="form-control"></td>
+                        <td>
+                        <select name="hami_type">
+                            <option value="">انتخاب کنید</option>
+                            <? foreach($this->options['ruydad']['hami_type'] as $item):?>
+                            <option <?= ($data['hami_type'] === $item) ? 'selected' : '' ?> value="<?= $item ?>"><?= $item ?></option>
+                            <?endforeach;?>
+                        </select>
+                        <!-- <input name="hami_type" value="<?//= $data['hami_type'] ?>" class="form-control"> -->
+                        </td>
 
                         <td> مبلغ حمایت جذب شده (میلیون ریال)</td>
                         <td><input name="hami_income" type="number" min="0" value="<?= $data['hami_income'] ?>" class="form-control"></td>
