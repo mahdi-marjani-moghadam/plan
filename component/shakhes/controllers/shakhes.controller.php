@@ -196,30 +196,39 @@ class shakhesController
 
         //باید مقادیر اولیه پر شود
         $ghalamIdStr = implode(',', array_column($ghalam, 'ghalam_id'));
+        // dd($ghalamIdStr);
 
         include_once ROOT_DIR . "component/shakhes/model/import.model.php";
         $importObj = new import;
-        $import = $importObj->where('ghalam_id', '=', $ghalamIdStr)->select('id,ghalam_id,motevali_admin_id')->keyBy('id')->getList();
+        $import = $importObj->where('ghalam_id', 'in', $ghalamIdStr)->select('id,ghalam_id,motevali_admin_id')->keyBy('id')->getList();
+        // dd($import);
         if ($import['export']['recordsCount'] > 0) {
             $import = $import['export']['list'];
             $sh_importIdStr = implode(',', array_column($import, 'id'));
-
+            // dd($sh_importIdStr);
             include_once ROOT_DIR . "component/shakhes/model/import_confirm.model.php";
             $importConfirmObj = new importConfirm;
             $importConfirm = $importConfirmObj->where('sh_import_id', 'in', $sh_importIdStr)->select('sh_import_id,admin,admin_type')->getList();
-
+            // dd($importConfirm);
             if ($importConfirm['export']['recordsCount'] > 0) {
                 $importConfirm = $importConfirm['export']['list'];
                 foreach ($importConfirm as &$item) {
-                    // print_r($item);echo'<br>';
+
                     $item['ghalam_id'] = $import[$item['sh_import_id']]['ghalam_id'];
-
-                    $finalImportConfirm[$item['ghalam_id']]['motevali_admin_id'] = array_column($import, 'motevali_admin_id');
-
+                    // print_r($item);echo '<br>';
+                    $keys = array_keys(array_column($import, 'ghalam_id', 'id'), $item['ghalam_id']);
+                    // dd($keys); 
+                    foreach ($keys as $sh_import_id) {
+                        if (!in_array($import[$sh_import_id]['motevali_admin_id'], $finalImportConfirm[$item['ghalam_id']]['motevali_admin_id'])) {
+                            $finalImportConfirm[$item['ghalam_id']]['motevali_admin_id'][] = $import[$sh_import_id]['motevali_admin_id'];
+                        }
+                    }
+                    // dd($import[$keys[0]]);
                     if ($item['admin_type'] == 'import') $finalImportConfirm[$item['ghalam_id']]['import_admin'] = $item['admin'];
                     if ($item['admin_type'] == 'confirm1') $finalImportConfirm[$item['ghalam_id']]['confirm_admin_1'] = $item['admin'];
                     if ($item['admin_type'] == 'confirm2') $finalImportConfirm[$item['ghalam_id']]['confirm_admin_2'] = $item['admin'];
                     if ($item['admin_type'] == 'confirm3') $finalImportConfirm[$item['ghalam_id']]['confirm_admin_3'] = $item['admin'];
+                    // dd($finalImportConfirm);
                 }
             }
 
@@ -268,6 +277,7 @@ class shakhesController
         include_once ROOT_DIR . 'component/shakhes/model/import.model.php';
         include_once ROOT_DIR . 'component/shakhes/model/import_confirm.model.php';
         foreach ($post['import'] as $ghalam_id => $import) {
+            
             /* ghalam */
             $importObj = import::getBy_ghalam_id($ghalam_id);
             $importConfirmObj = new importConfirm;
@@ -275,7 +285,7 @@ class shakhesController
 
             if ($importObj->get()['export']['recordsCount'] > 0) {
                 $icobj = $importConfirmObj->where('sh_import_id', 'in', implode(',', array_column($importObj->getList()['export']['list'], 'id')));
-                
+
                 if ($icobj->get()['export']['recordsCount'] > 0) {
                     foreach ($icobj->get()['export']['list'] as $importCObj) {
                         $importCObj->delete();
@@ -313,7 +323,7 @@ class shakhesController
 
                 $importConfirmObj = importConfirm::getBy_sh_import_id_and_admin($importObj->id, $import['confirm_admin_1']);
 
-                if ($import['import_admin'] != '' && $importConfirmObj->get()['export']['recordsCount'] == 0) {
+                if ($import['confirm_admin_1'] != '' && $importConfirmObj->get()['export']['recordsCount'] == 0) {
                     /* insert confirm1 */
                     $importConfirmObj = new importConfirm;
                     $importConfirmObj->sh_import_id = $importObj->id;
@@ -331,7 +341,7 @@ class shakhesController
 
                 $importConfirmObj = importConfirm::getBy_sh_import_id_and_admin($importObj->id, $import['confirm_admin_2']);
 
-                if ($import['import_admin'] != '' && $importConfirmObj->get()['export']['recordsCount'] == 0) {
+                if ($import['confirm_admin_2'] != '' && $importConfirmObj->get()['export']['recordsCount'] == 0) {
                     /* insert confirm2 */
                     $importConfirmObj = new importConfirm;
                     $importConfirmObj->sh_import_id = $importObj->id;
@@ -348,9 +358,9 @@ class shakhesController
                 }
 
 
-                $importConfirmObj = importConfirm::getBy_sh_import_id_and_admin($importObj->id, 1);
+                $importConfirmObj = importConfirm::getBy_sh_import_id_and_admin($importObj->id, $import['confirm_admin_3']);
 
-                if ($importConfirmObj->get()['export']['recordsCount'] == 0) {
+                if ($import['confirm_admin_3'] != '' && $importConfirmObj->get()['export']['recordsCount'] == 0) {
                     /* insert confirm3 */
                     $importConfirmObj = new importConfirm;
                     $importConfirmObj->sh_import_id = $importObj->id;
