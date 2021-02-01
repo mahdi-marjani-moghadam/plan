@@ -246,6 +246,7 @@
                 </li>
 
 
+                <? if($admin_info['admin_id'] == 1): ?> 
                 <li>
                     <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=setting">
                         <span class="sidebar-text text-16"> تنظیمات شاخص</span>
@@ -256,6 +257,7 @@
                         <span class="sidebar-text text-16"> تنظیمات ادمین</span>
                     </a>
                 </li>
+                <? endif; ?>
             </ul>
         </li>
 
@@ -265,7 +267,7 @@
                 <i class="sidebar-icon fa fa-download"></i>
                 <span class="sidebar-text">راهنمای سامانه</span>
             </a>
-            <ul class="sidebar-child animated fadeInRight">r
+            <ul class="sidebar-child animated fadeInRight">
                 <li>
                     <a href="<?= RELA_DIR ?>statics/sample/Portal GuideLine.pdf">
                         <span class="sidebar-text text-16"> راهنمای منوی پایش</span>

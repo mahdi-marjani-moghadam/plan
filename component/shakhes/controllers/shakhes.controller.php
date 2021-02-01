@@ -225,13 +225,11 @@ class shakhesController
 
         include_once ROOT_DIR . 'component/shakhes/model/import.model.php';
         include_once ROOT_DIR . 'component/shakhes/model/import_confirm.model.php';
-        foreach ($post['import'] as $ghalam_id => $import) {
+        foreach ($post['import'] as $id => $import) {
             
             /* ghalam */
-            $importObj = import::getBy_ghalam_id($ghalam_id);
-            $importConfirmObj = new importConfirm;
-            // dd($importObj->get());
-
+            $importObj = import::getBy_id($ghalam_id);
+        
             if ($importObj->get()['export']['recordsCount'] > 0) {
                 $icobj = $importConfirmObj->where('sh_import_id', 'in', implode(',', array_column($importObj->getList()['export']['list'], 'id')));
 
@@ -244,106 +242,17 @@ class shakhesController
                     $importObj->delete();
                 }
             }
-            // foreach ($import['motevali_admin_id'] as $motevali) {
-                $motevali = $import['motevali_admin_id'];
                 $importObj = new import;
                 $importObj->ghalam_id = $ghalam_id;
-                $importObj->motevali_admin_id = $motevali;
+                $importObj->motevali_admin_id = $import['motevali_admin_id'];
+                $importObj->import = $import['import'];
+                $importObj->confirm1 = $import['confirm1'];
+                $importObj->confirm2 = $import['confirm2'];
+                $importObj->confirm3 = $import['confirm3'];
                 $importObj->year = explode('/', convertDate(date('Y')))[0];
                 $importObj->save();
 
-                $importConfirmObj = importConfirm::getBy_sh_import_id_and_admin($importObj->id, $import['import_admin']);
-
-                if ($import['import_admin'] != '' && $importConfirmObj->get()['export']['recordsCount'] == 0) {
-                    /* insert import admin */
-                    $importConfirmObj = new importConfirm;
-                    $importConfirmObj->sh_import_id = $importObj->id;
-                    $importConfirmObj->admin = $import['import_admin'];
-                    $importConfirmObj->admin_type = 'import';
-                    $importConfirmObj->save();
-                } else {
-                    /* update import admin */
-                    $importConfirmObj = $importConfirmObj->get()['export']['list'][0];
-                    $importConfirmObj->sh_import_id = $importObj->id;
-                    $importConfirmObj->admin = $import['import_admin'];
-                    $importConfirmObj->admin_type = 'import';
-                    $importConfirmObj->save();
-                }
-
-
-                $importConfirmObj = importConfirm::getBy_sh_import_id_and_admin($importObj->id, $import['confirm_admin_1']);
-
-                if ($import['confirm_admin_1'] != '' && $importConfirmObj->get()['export']['recordsCount'] == 0) {
-                    /* insert confirm1 */
-                    $importConfirmObj = new importConfirm;
-                    $importConfirmObj->sh_import_id = $importObj->id;
-                    $importConfirmObj->admin = $import['confirm_admin_1'];
-                    $importConfirmObj->admin_type = 'confirm1';
-                    $importConfirmObj->save();
-                } else {
-                    /* update confirm1 */
-                    $importConfirmObj = $importConfirmObj->get()['export']['list'][0];
-                    $importConfirmObj->sh_import_id = $importObj->id;
-                    $importConfirmObj->admin = $import['confirm_admin_1'];
-                    $importConfirmObj->admin_type = 'confirm1';
-                    $importConfirmObj->save();
-                }
-
-                $importConfirmObj = importConfirm::getBy_sh_import_id_and_admin($importObj->id, $import['confirm_admin_2']);
-
-                if ($import['confirm_admin_2'] != '' && $importConfirmObj->get()['export']['recordsCount'] == 0) {
-                    /* insert confirm2 */
-                    $importConfirmObj = new importConfirm;
-                    $importConfirmObj->sh_import_id = $importObj->id;
-                    $importConfirmObj->admin = $import['confirm_admin_2'];
-                    $importConfirmObj->admin_type = 'confirm2';
-                    $importConfirmObj->save();
-                } else {
-                    /* update confirm2 */
-                    $importConfirmObj = $importConfirmObj->get()['export']['list'][0];
-                    $importConfirmObj->sh_import_id = $importObj->id;
-                    $importConfirmObj->admin = $import['confirm_admin_2'];
-                    $importConfirmObj->admin_type = 'confirm2';
-                    $importConfirmObj->save();
-                }
-
-
-                $importConfirmObj = importConfirm::getBy_sh_import_id_and_admin($importObj->id, $import['confirm_admin_3']);
-
-                if ($import['confirm_admin_3'] != '' && $importConfirmObj->get()['export']['recordsCount'] == 0) {
-                    /* insert confirm3 */
-                    $importConfirmObj = new importConfirm;
-                    $importConfirmObj->sh_import_id = $importObj->id;
-                    $importConfirmObj->admin = $import['confirm_admin_3'];
-                    $importConfirmObj->admin_type = 'confirm3';
-                    $importConfirmObj->save();
-                } else {
-                    /* update confirm3 */
-                    $importConfirmObj = $importConfirmObj->get()['export']['list'][0];
-                    $importConfirmObj->sh_import_id = $importObj->id;
-                    $importConfirmObj->admin = $import['confirm_admin_3'];
-                    $importConfirmObj->admin_type = 'confirm3';
-                    $importConfirmObj->save();
-                }
-
-                $importConfirmObj = importConfirm::getBy_sh_import_id_and_admin($importObj->id, 2);
-
-                if ($importConfirmObj->get()['export']['recordsCount'] == 0) {
-                    /* insert confirm4 */
-                    $importConfirmObj = new importConfirm;
-                    $importConfirmObj->sh_import_id = $importObj->id;
-                    $importConfirmObj->admin = 1;
-                    $importConfirmObj->admin_type = 'confirm4';
-                    $importConfirmObj->save();
-                } else {
-                    /* update confirm4 */
-                    $importConfirmObj = $importConfirmObj->get()['export']['list'][0];
-                    $importConfirmObj->sh_import_id = $importObj->id;
-                    $importConfirmObj->admin = 1;
-                    $importConfirmObj->admin_type = 'confirm4';
-                    $importConfirmObj->save();
-                }
-            // }
+                
         }
 
         $result['msg'] = 'با موفقیت انجام شد.';
