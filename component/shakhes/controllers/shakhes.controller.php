@@ -178,75 +178,24 @@ class shakhesController
         }
 
 
-        // پیدا کردن قلم ها
         include_once ROOT_DIR . "component/shakhes/model/ghalam.model.php";
-        $obj = new ghalam();
+        $ghalam = new ghalam();
+        include_once ROOT_DIR . "component/shakhes/model/import.model.php";
+        $obj = new import();
 
         $PAGE_SIZE = 10;
         $filter['limit']['start'] = (isset($page)) ? ($page - 1) * $PAGE_SIZE : '0';
         $filter['limit']['length'] = $PAGE_SIZE;
-        // $limit['order']['date']='DESC';
-
-
+        
         $res = $obj->getByFilter($filter);
         $pagination = $this->pagination($res, $PAGE_SIZE)['export']['list'];
 
-
-        $ghalam = ($res['export']['recordsCount'] > 0) ?  $res['export']['list'] : array();
-
-        //باید مقادیر اولیه پر شود
-        $ghalamIdStr = implode(',', array_column($ghalam, 'ghalam_id'));
-        // dd($ghalamIdStr);
-
-        include_once ROOT_DIR . "component/shakhes/model/import.model.php";
-        $importObj = new import;
-        $import = $importObj->where('ghalam_id', 'in', $ghalamIdStr)->select('id,ghalam_id,motevali_admin_id')->keyBy('id')->getList();
-        // dd($import);
-        if ($import['export']['recordsCount'] > 0) {
-            $import = $import['export']['list'];
-            $sh_importIdStr = implode(',', array_column($import, 'id'));
-            // dd($sh_importIdStr);
-            include_once ROOT_DIR . "component/shakhes/model/import_confirm.model.php";
-            $importConfirmObj = new importConfirm;
-            $importConfirm = $importConfirmObj->where('sh_import_id', 'in', $sh_importIdStr)->select('sh_import_id,admin,admin_type')->getList();
-            // dd($importConfirm);
-            if ($importConfirm['export']['recordsCount'] > 0) {
-                $importConfirm = $importConfirm['export']['list'];
-                foreach ($importConfirm as &$item) {
-
-                    $item['ghalam_id'] = $import[$item['sh_import_id']]['ghalam_id'];
-                    // print_r($item);echo '<br>';
-                    $keys = array_keys(array_column($import, 'ghalam_id', 'id'), $item['ghalam_id']);
-                    // dd($keys); 
-                    foreach ($keys as $sh_import_id) {
-                        if (!in_array($import[$sh_import_id]['motevali_admin_id'], $finalImportConfirm[$item['ghalam_id']]['motevali_admin_id'])) {
-                            $finalImportConfirm[$item['ghalam_id']]['motevali_admin_id'][] = $import[$sh_import_id]['motevali_admin_id'];
-                        }
-                    }
-                    // dd($import[$keys[0]]);
-                    if ($item['admin_type'] == 'import') $finalImportConfirm[$item['ghalam_id']]['import_admin'] = $item['admin'];
-                    if ($item['admin_type'] == 'confirm1') $finalImportConfirm[$item['ghalam_id']]['confirm_admin_1'] = $item['admin'];
-                    if ($item['admin_type'] == 'confirm2') $finalImportConfirm[$item['ghalam_id']]['confirm_admin_2'] = $item['admin'];
-                    if ($item['admin_type'] == 'confirm3') $finalImportConfirm[$item['ghalam_id']]['confirm_admin_3'] = $item['admin'];
-                    // dd($finalImportConfirm);
-                }
-            }
-
-            // dd($finalImportConfirm);
-            foreach ($ghalam as $k => &$value) {
-                foreach ($finalImportConfirm as $icghalam_id => $FIC) {
-                    if ($value['ghalam_id'] == $icghalam_id) {
-                        $value['motevali_admin_id'] = $FIC['motevali_admin_id'];
-                        $value['import_admin'] = $FIC['import_admin'];
-                        $value['confirm_admin_1'] = $FIC['confirm_admin_1'];
-                        $value['confirm_admin_2'] = $FIC['confirm_admin_2'];
-                        $value['confirm_admin_3'] = $FIC['confirm_admin_3'];
-                    }
-                }
-            }
-        }
-
-        // dd($ghalam);
+        $import = ($res['export']['recordsCount'] > 0) ?  $res['export']['list'] : array();
+        
+        $ghalamStr = implode( ',',array_column($import,'ghalam_id'));
+        
+        $ghalams = $ghalam->where('ghalam_id','in',$ghalamStr)->keyBy('ghalam_id')->getList();
+        $ghalamName = ($ghalams['export']['recordsCount'] > 0) ?  $ghalams['export']['list'] : array();
 
 
         include_once ROOT_DIR . "component/admin/model/admin.model.php";
@@ -266,7 +215,7 @@ class shakhesController
 
 
         $this->fileName = 'shakhes.adminSetting.php';
-        $this->template(compact('ghalam', 'admins', 'pagination', 'msg', 'page'));
+        $this->template(compact('import', 'admins', 'pagination', 'msg', 'page'));
         die();
     }
     public function adminSettingOnSubmmit()
@@ -295,7 +244,8 @@ class shakhesController
                     $importObj->delete();
                 }
             }
-            foreach ($import['motevali_admin_id'] as $motevali) {
+            // foreach ($import['motevali_admin_id'] as $motevali) {
+                $motevali = $import['motevali_admin_id'];
                 $importObj = new import;
                 $importObj->ghalam_id = $ghalam_id;
                 $importObj->motevali_admin_id = $motevali;
@@ -393,7 +343,7 @@ class shakhesController
                     $importConfirmObj->admin_type = 'confirm4';
                     $importConfirmObj->save();
                 }
-            }
+            // }
         }
 
         $result['msg'] = 'با موفقیت انجام شد.';

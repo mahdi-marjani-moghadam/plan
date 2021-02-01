@@ -42,17 +42,16 @@
                             <td>وارد کننده</td>
                             <td>تایید کننده اول</td>
                             <td>تایید کننده دوم</td>
-                            <td>تایید کننده سوم</td>
                         </tr>
-                        <?php foreach ($ghalam as $item) : ?>
+                        <?php foreach ($import as $item) : ?>
                             <tr>
                                 <td><?= $item['ghalam_id'] ?></td>
                                 <td><?= $item['kalan_no'] ?></td>
                                 <td style="white-space:nowrap"><?= $item['ghalam'] ?></td>
                                 <td>
-                                    <select name="import[<?= $item['ghalam_id'] ?>][motevali_admin_id][]" multiple>
+                                    <select name="import[<?= $item['ghalam_id'] ?>][motevali_admin_id]" >
                                         <?php foreach ($admins as $admin) : ?>
-                                            <option value="<?= $admin['admin_id'] ?>" <?php echo ( in_array($admin['admin_id'],$item['motevali_admin_id']) ) ? 'selected' : ''; ?>>
+                                            <option value="<?= $admin['admin_id'] ?>" <?php echo ( $admin['admin_id']==$item['motevali_admin_id'] ) ? 'selected' : ''; ?>>
                                                 <?= $admin['name'] . ' ' . $admin['family'] ?>
                                             </option>
                                         <?php endforeach ?>
@@ -61,7 +60,7 @@
                                 <td>
                                     <select name="import[<?= $item['ghalam_id'] ?>][import_admin]">
                                         <?php foreach ($admins as $admin) : ?>
-                                            <option value="<?= $admin['admin_id'] ?>" <?php echo ($admin['admin_id'] == $item['import_admin']) ? 'selected' : ''; ?>>
+                                            <option value="<?= $admin['admin_id'] ?>" <?php echo ($admin['admin_id'] == $item['import']) ? 'selected' : ''; ?>>
                                                 <?= $admin['name'] . ' ' . $admin['family'] ?>
                                             </option>
                                         <?php endforeach ?>
@@ -70,7 +69,7 @@
                                 <td>
                                     <select name="import[<?= $item['ghalam_id'] ?>][confirm_admin_1]">
                                         <?php foreach ($admins as $admin) : ?>
-                                            <option value="<?= $admin['admin_id'] ?>" <?php echo ($admin['admin_id'] == $item['confirm_admin_1']) ? 'selected' : ''; ?>>
+                                            <option value="<?= $admin['admin_id'] ?>" <?php echo ($admin['admin_id'] == $item['confirm1']) ? 'selected' : ''; ?>>
                                                 <?= $admin['name'] . ' ' . $admin['family'] ?>
                                             </option>
                                         <?php endforeach ?>
@@ -79,22 +78,13 @@
                                 <td>
                                     <select name="import[<?= $item['ghalam_id'] ?>][confirm_admin_2]">
                                         <?php foreach ($admins as $admin) : ?>
-                                            <option value="<?= $admin['admin_id'] ?>" <?php echo ($admin['admin_id'] == $item['confirm_admin_2']) ? 'selected' : ''; ?>>
+                                            <option value="<?= $admin['admin_id'] ?>" <?php echo ($admin['admin_id'] == $item['confirm2']) ? 'selected' : ''; ?>>
                                                 <?= $admin['name'] . ' ' . $admin['family'] ?>
                                             </option>
                                         <?php endforeach ?>
                                     </select>
                                 </td>
-                                <td>
-                                    <select name="import[<?= $item['ghalam_id'] ?>][confirm_admin_3]">
-                                        <?php foreach ($admins as $admin) : ?>
-                                            <option value="<?= $admin['admin_id'] ?>" <?php echo ($admin['admin_id'] == $item['confirm_admin_3']) ? 'selected' : ''; ?>>
-                                                <?= $admin['name'] . ' ' . $admin['family'] ?>
-                                            </option>
-                                        <?php endforeach ?>
-                                    </select>
-                                </td>
-
+                                
                             </tr>
                         <?php endforeach ?>
                     </table>
