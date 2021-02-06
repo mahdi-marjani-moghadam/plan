@@ -186,17 +186,16 @@ class shakhesController
         $PAGE_SIZE = 10;
         $filter['limit']['start'] = (isset($page)) ? ($page - 1) * $PAGE_SIZE : '0';
         $filter['limit']['length'] = $PAGE_SIZE;
-        
+
         $res = $obj->getByFilter($filter);
         $pagination = $this->pagination($res, $PAGE_SIZE)['export']['list'];
 
         $import = ($res['export']['recordsCount'] > 0) ?  $res['export']['list'] : array();
-        
-        $ghalamStr = implode( ',',array_column($import,'ghalam_id'));
-        
-        $ghalams = $ghalam->where('ghalam_id','in',$ghalamStr)->keyBy('ghalam_id')->getList();
-        $ghalamName = ($ghalams['export']['recordsCount'] > 0) ?  $ghalams['export']['list'] : array();
 
+        $ghalamStr = implode(',', array_column($import, 'ghalam_id'));
+
+        $ghalams = $ghalam->where('ghalam_id', 'in', $ghalamStr)->keyBy('ghalam_id')->getList();
+        $ghalamName = ($ghalams['export']['recordsCount'] > 0) ?  $ghalams['export']['list'] : array();
 
         include_once ROOT_DIR . "component/admin/model/admin.model.php";
         // پیدا کردن ستون های واحد
@@ -215,7 +214,7 @@ class shakhesController
 
 
         $this->fileName = 'shakhes.adminSetting.php';
-        $this->template(compact('import', 'admins', 'pagination', 'msg', 'page'));
+        $this->template(compact('import', 'admins', 'ghalamName', 'pagination', 'msg', 'page'));
         die();
     }
     public function adminSettingOnSubmmit()
@@ -226,33 +225,26 @@ class shakhesController
         include_once ROOT_DIR . 'component/shakhes/model/import.model.php';
         include_once ROOT_DIR . 'component/shakhes/model/import_confirm.model.php';
         foreach ($post['import'] as $id => $import) {
-            
             /* ghalam */
-            $importObj = import::getBy_id($ghalam_id);
-        
+            $importObj = import::getBy_id($id);
             if ($importObj->get()['export']['recordsCount'] > 0) {
-                $icobj = $importConfirmObj->where('sh_import_id', 'in', implode(',', array_column($importObj->getList()['export']['list'], 'id')));
-
-                if ($icobj->get()['export']['recordsCount'] > 0) {
-                    foreach ($icobj->get()['export']['list'] as $importCObj) {
-                        $importCObj->delete();
-                    }
-                }
-                foreach ($importObj->get()['export']['list'] as $importObj) {
-                    $importObj->delete();
-                }
-            }
+                $importObj = $importObj->first();
+            }else{
                 $importObj = new import;
-                $importObj->ghalam_id = $ghalam_id;
-                $importObj->motevali_admin_id = $import['motevali_admin_id'];
-                $importObj->import = $import['import'];
-                $importObj->confirm1 = $import['confirm1'];
-                $importObj->confirm2 = $import['confirm2'];
-                $importObj->confirm3 = $import['confirm3'];
-                $importObj->year = explode('/', convertDate(date('Y')))[0];
-                $importObj->save();
-
-                
+            }
+            
+            $importObj->ghalam_id = $importObj->ghalam_id;
+            $importObj->motevali_admin_id = $import['motevali_admin_id'];
+            $importObj->import = $import['import'];
+            $importObj->confirm1 = $import['confirm1'];
+            $importObj->confirm2 = $import['confirm2'];
+            $importObj->confirm3 = $import['confirm3'];
+            $importObj->confirm4 = 1;
+            $importObj->value6 = 0;
+            $importObj->value12 = 0;
+            $importObj->year = explode('/', convertDate(date('Y')))[0];  
+            $importObj->save();
+            
         }
 
         $result['msg'] = 'با موفقیت انجام شد.';

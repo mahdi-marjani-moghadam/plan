@@ -46,7 +46,7 @@
                             <tr>
                                 <td><?= $item['ghalam_id'] ?></td>
                                 <td><?= $item['kalan_no'] ?></td>
-                                <td style="white-space:nowrap"><?= $item['ghalam'] ?></td>
+                                <td style="white-space:nowrap"><?= $ghalamName[$item['ghalam_id']] ?></td>
                                 <td>
                                     <select name="import[<?= $item['id'] ?>][motevali_admin_id]" >
                                         <?php foreach ($admins as $admin) : ?>
@@ -57,7 +57,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <select name="import[<?= $item['id'] ?>][import_admin]">
+                                    <select name="import[<?= $item['id'] ?>][import]">
                                         <?php foreach ($admins as $admin) : ?>
                                             <option value="<?= $admin['admin_id'] ?>" <?php echo ($admin['admin_id'] == $item['import']) ? 'selected' : ''; ?>>
                                                 <?= $admin['name'] . ' ' . $admin['family'] ?>
