@@ -478,11 +478,12 @@ class shakhesController
         $ghalam = new ghalam();
         $shakhes = $obj->getAll()->getList()['export'];
 
-        $query = 'select 
+        $query = "select 
             i.*
         from sh_import i
         where i.ghalam_id not in (select ghalam_id from sh_rel_ghalam_zir_ghalam)
-        ';
+        and i.import = '{$admin_info['admin_id']}'
+        ";
         $res = $obj->query($query)->getList();
         $imports = ($res['export']['recordsCount'] > 0) ?  $res['export']['list'] : array();
 
