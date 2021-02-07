@@ -65,15 +65,11 @@
                                         <? endforeach;?>
                                     </div>
                                     <?php
-                                    foreach ($ghalams as $ghalam) :
+                                    foreach ($imports as $import) :
                                     ?>
                                         <tr>
-                                            <td><?= $ghalam['ghalam_id'] ?></td>
-                                            <td><?= $ghalam['ghalam'] ?></td>
-                                            <td><input class="form-control"></td>
-                                            <td><input class="form-control"></td>
-                                            <td><input class="form-control"></td>
-                                            <td><input class="form-control"></td>
+                                            <td><?= $import['ghalam_id'] ?></td>
+                                            <td><?= $ghalamName[$import['ghalam_id']]['ghalam'] ?></td>
                                             <td><input name="value6" value="<?= $data['value6'] ?>" autocomplete="off" class="form-control"></td>
                                             <td><input name="value12" value="<?= $data['value12'] ?>" autocomplete="off" class="form-control"></td>
                                             <td><input name="admin_tozihat6" value="<?= $data['admin_tozihat6'] ?>" autocomplete="off" class="form-control"></td>

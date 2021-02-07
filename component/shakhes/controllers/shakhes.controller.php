@@ -229,10 +229,10 @@ class shakhesController
             $importObj = import::getBy_id($id);
             if ($importObj->get()['export']['recordsCount'] > 0) {
                 $importObj = $importObj->first();
-            }else{
+            } else {
                 $importObj = new import;
             }
-            
+
             $importObj->ghalam_id = $importObj->ghalam_id;
             $importObj->motevali_admin_id = $import['motevali_admin_id'];
             $importObj->import = $import['import'];
@@ -242,9 +242,8 @@ class shakhesController
             $importObj->confirm4 = 1;
             $importObj->value6 = 0;
             $importObj->value12 = 0;
-            $importObj->year = explode('/', convertDate(date('Y')))[0];  
+            $importObj->year = explode('/', convertDate(date('Y')))[0];
             $importObj->save();
-            
         }
 
         $result['msg'] = 'با موفقیت انجام شد.';
@@ -474,25 +473,28 @@ class shakhesController
 
         // پیدا کردن قلم ها و کلان
         include ROOT_DIR . "component/shakhes/model/shakhes.model.php";
+        include ROOT_DIR . "component/shakhes/model/ghalam.model.php";
         $obj = new shakhes();
+        $ghalam = new ghalam();
         $shakhes = $obj->getAll()->getList()['export'];
 
         $query = 'select 
-            g.ghalam_id , 
-            g.ghalam    
-        from sh_ghalam g
-        where g.ghalam_id not in (select ghalam_id from sh_rel_ghalam_zir_ghalam)
-        group by ghalam_id';
+            i.*
+        from sh_import i
+        where i.ghalam_id not in (select ghalam_id from sh_rel_ghalam_zir_ghalam)
+        ';
         $res = $obj->query($query)->getList();
-        $ghalams = ($res['export']['recordsCount'] > 0) ?  $res['export']['list'] : array();
+        $imports = ($res['export']['recordsCount'] > 0) ?  $res['export']['list'] : array();
 
+        $ghalams = $ghalam->getAll()->keyBy('ghalam_id')->getList();
+        $ghalamName = ($ghalams['export']['recordsCount'] > 0) ?  $ghalams['export']['list'] : array();
 
         //فیلترینگ
         /*        if (isset($_GET['filter_columns'])) {
                     $this->_selectedAdmins = explode(',', $_GET['filter_columns']);
                 }*/
         $this->fileName = 'shakhes.khodezhari.php';
-        $this->template(compact('shakhes', 'ghalams'));
+        $this->template(compact('shakhes', 'imports','ghalamName'));
 
         die();
     }
