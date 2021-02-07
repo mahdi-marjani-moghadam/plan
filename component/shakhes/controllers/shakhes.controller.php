@@ -193,7 +193,7 @@ class shakhesController
         $import = ($res['export']['recordsCount'] > 0) ?  $res['export']['list'] : array();
 
         $ghalamStr = implode(',', array_column($import, 'ghalam_id'));
-
+        // dd($ghalamStr);
         $ghalams = $ghalam->where('ghalam_id', 'in', $ghalamStr)->keyBy('ghalam_id')->getList();
         $ghalamName = ($ghalams['export']['recordsCount'] > 0) ?  $ghalams['export']['list'] : array();
 

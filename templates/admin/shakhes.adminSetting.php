@@ -46,7 +46,7 @@
                             <tr>
                                 <td><?= $item['ghalam_id'] ?></td>
                                 <td><?= $item['kalan_no'] ?></td>
-                                <td style="white-space:nowrap"><?= $ghalamName[$item['ghalam_id']] ?></td>
+                                <td style="white-space:nowrap"><?= $ghalamName[$item['ghalam_id']]['ghalam'] ?></td>
                                 <td>
                                     <select name="import[<?= $item['id'] ?>][motevali_admin_id]" >
                                         <?php foreach ($admins as $admin) : ?>
