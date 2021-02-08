@@ -36,6 +36,7 @@
                                         <tr style="text-align: center">
                                             <td colspan="1">کد قلم</td>
                                             <td colspan="1" bgcolor=#fff8dc>قلم آماری</td>
+                                            <td colspan="1" bgcolor=#fff8dc>متولی </td>
                                             <td colspan="1" bgcolor=#f2a89e>شش ماهه</td>
                                             <td colspan="1" bgcolor=#f2a89e>توضیحات</td>
                                             <td colspan="1" bgcolor=#8DD4FF>یکساله</td>
@@ -70,6 +71,7 @@
                                         <tr>
                                             <td><?= $import['ghalam_id'] ?></td>
                                             <td><?= $ghalamName[$import['ghalam_id']]['ghalam'] ?></td>
+                                            <td><?=$adminName[$import['motevali_admin_id']]['name'].' '.$adminName[$import['motevali_admin_id']]['family'] ?></td>
                                             <td><input name="value6" value="<?= $data['value6'] ?>" autocomplete="off" class="form-control"></td>
                                             <td><input name="value12" value="<?= $data['value12'] ?>" autocomplete="off" class="form-control"></td>
                                             <td><input name="admin_tozihat6" value="<?= $data['admin_tozihat6'] ?>" autocomplete="off" class="form-control"></td>

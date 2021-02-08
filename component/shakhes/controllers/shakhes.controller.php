@@ -472,10 +472,12 @@ class shakhesController
 
 
         // پیدا کردن قلم ها و کلان
-        include ROOT_DIR . "component/shakhes/model/shakhes.model.php";
-        include ROOT_DIR . "component/shakhes/model/ghalam.model.php";
+        include_once ROOT_DIR . "component/shakhes/model/shakhes.model.php";
+        include_once ROOT_DIR . "component/shakhes/model/ghalam.model.php";
+        include_once ROOT_DIR . "component/admin/model/admin.model.php";
         $obj = new shakhes();
         $ghalam = new ghalam();
+        $admin = new admin();
         $shakhes = $obj->getAll()->getList()['export'];
 
         $query = "select 
@@ -483,19 +485,27 @@ class shakhesController
         from sh_import i
         where i.ghalam_id not in (select ghalam_id from sh_rel_ghalam_zir_ghalam)
         and i.import = '{$admin_info['admin_id']}'
+        order by i.ghalam_id 
         ";
         $res = $obj->query($query)->getList();
         $imports = ($res['export']['recordsCount'] > 0) ?  $res['export']['list'] : array();
 
+        // کل قلم ها
         $ghalams = $ghalam->getAll()->keyBy('ghalam_id')->getList();
         $ghalamName = ($ghalams['export']['recordsCount'] > 0) ?  $ghalams['export']['list'] : array();
+
+        //ادمین ها
+        $admins = $admin->getAll()->keyBy('admin_id')->select('admin_id,name,family')->getList();
+        $adminName = ($admins['export']['recordsCount'] > 0) ?  $admins['export']['list'] : array();
+
+
 
         //فیلترینگ
         /*        if (isset($_GET['filter_columns'])) {
                     $this->_selectedAdmins = explode(',', $_GET['filter_columns']);
                 }*/
         $this->fileName = 'shakhes.khodezhari.php';
-        $this->template(compact('shakhes', 'imports','ghalamName'));
+        $this->template(compact('shakhes', 'imports','ghalamName','adminName'));
 
         die();
     }
