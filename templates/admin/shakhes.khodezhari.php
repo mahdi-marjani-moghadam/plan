@@ -21,16 +21,33 @@
         </div>
 
 
-        <div class="panel-heading bg-green">
+        <div class="panel-heading bg-green" id="topOfTable">
             <h3 class="panel-title rtl "> فرم خود اظهاری</h3>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" >
             <table class="table table-striped">
                 <tr>
 
-                    <div class="panel-body">
+                    <div class="panel-body" >
                         <div id="container">
                             <div class='table-cont1'>
+
+                                <form action="/admin/?component=shakhes&action=khodezhari#topOfTable" method="get">
+                                    <input type="hidden" name="component" value="shakhes">
+                                    <input type="hidden" name="action" value="khodezhari">
+                                    <div class="row">
+                                        <label for="">فیلتر بر اساس:</label>
+                                        <select name="filterAdmin" >
+                                            <option value="">لطفا یکی را انتخاب نمایید.</option>
+                                            <?php foreach ($filterAdminsSelectbox as $admin) : ?>
+                                                <option value="<?= $admin['admin_id'] ?>" <?php echo ($admin['admin_id'] == $_GET['filterAdmin']) ? 'selected' : ''; ?>>
+                                                    <?= $admin['name'] . ' ' . $admin['family'] ?>
+                                                </option>
+                                            <?php endforeach ?>
+                                        </select>
+                                    <button class="btn btn-info">اعمال فیلتر</button>
+                                    </div>
+                                </form>
                                 <table id="example" class="companyTable table table-striped table-bordered rtl" cellspacing="0" width="100%">
                                     <thead>
                                         <tr style="text-align: center">
@@ -68,14 +85,14 @@
                                     <?php
                                     foreach ($imports as $import) :
                                     ?>
-                                    
-                                        <tr>
+
+                                        <tr class="<?= $import['motevali_admin_id'] ?>">
                                             <td><?= $import['ghalam_id'] ?></td>
                                             <td><?= $ghalamName[$import['ghalam_id']]['ghalam'] ?></td>
-                                            <td><?=$adminName[$import['motevali_admin_id']]['name'].' '.$adminName[$import['motevali_admin_id']]['family'] ?></td>
-                                            <td><input name="value6" type="number"  pattern="[0-9]+([,\.][0-9]+)?" value="<?= $data['value6'] ?>" autocomplete="off" class="form-control ltr en w-100"></td>
+                                            <td><?= $adminName[$import['motevali_admin_id']]['name'] . ' ' . $adminName[$import['motevali_admin_id']]['family'] ?></td>
+                                            <td><input name="value6" type="number" pattern="[0-9]+([,\.][0-9]+)?" value="<?= $data['value6'] ?>" autocomplete="off" class="form-control ltr en w-100"></td>
                                             <td><input name="admin_tozihat6" value="<?= $data['admin_tozihat6'] ?>" autocomplete="off" class="form-control"></td>
-                                            <td><input name="value12" value="<?= $data['value12'] ?>" autocomplete="off" class="form-control en ltr w-100"></td>
+                                            <td><input name="value12" type="number" pattern="[0-9]+([,\.][0-9]+)?" value="<?= $data['value12'] ?>" autocomplete="off" class="form-control en ltr w-100"></td>
                                             <td><input name="admin_tozihat12" value="<?= $data['admin_tozihat12'] ?>" autocomplete="off" class="form-control"></td>
                                         </tr>
                                     <?php
@@ -94,10 +111,24 @@
     </div>
 
     <style>
-    .en{
-        font-family: Arial, Helvetica, sans-serif;
-    }
-    .w-100{
-        width: 80px;
-    }
+        .en {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .w-100 {
+            width: 80px;
+        }
     </style>
+    <script>
+        $("input[type=number]").blur(function() {
+            this.value = parseFloat(this.value).toFixed(2);
+
+            if (this.value < 0 || this.value > 100) {
+                alert('مقدار وارد شده اشتباه است. و باید بین ۰ تا ۱۰۰ باشد.');
+                this.focus();
+            }
+        });
+
+
+        //فیلترینگ
+    </script>
