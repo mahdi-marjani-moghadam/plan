@@ -68,13 +68,14 @@
                                     <?php
                                     foreach ($imports as $import) :
                                     ?>
+                                    
                                         <tr>
                                             <td><?= $import['ghalam_id'] ?></td>
                                             <td><?= $ghalamName[$import['ghalam_id']]['ghalam'] ?></td>
                                             <td><?=$adminName[$import['motevali_admin_id']]['name'].' '.$adminName[$import['motevali_admin_id']]['family'] ?></td>
-                                            <td><input name="value6" value="<?= $data['value6'] ?>" autocomplete="off" class="form-control"></td>
-                                            <td><input name="value12" value="<?= $data['value12'] ?>" autocomplete="off" class="form-control"></td>
+                                            <td><input name="value6" type="number"  pattern="[0-9]+([,\.][0-9]+)?" value="<?= $data['value6'] ?>" autocomplete="off" class="form-control ltr en w-100"></td>
                                             <td><input name="admin_tozihat6" value="<?= $data['admin_tozihat6'] ?>" autocomplete="off" class="form-control"></td>
+                                            <td><input name="value12" value="<?= $data['value12'] ?>" autocomplete="off" class="form-control en ltr w-100"></td>
                                             <td><input name="admin_tozihat12" value="<?= $data['admin_tozihat12'] ?>" autocomplete="off" class="form-control"></td>
                                         </tr>
                                     <?php
@@ -91,3 +92,12 @@
             </table>
         </div>
     </div>
+
+    <style>
+    .en{
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    .w-100{
+        width: 80px;
+    }
+    </style>
