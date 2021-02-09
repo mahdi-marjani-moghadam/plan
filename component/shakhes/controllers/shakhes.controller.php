@@ -503,7 +503,7 @@ class shakhesController
         $ghalamName = ($ghalams['export']['recordsCount'] > 0) ?  $ghalams['export']['list'] : array();
         
         //ادمین ها
-        $admins = $admin->getAll()->keyBy('admin_id')->select('admin_id,name,family')->getList();
+        $admins = $admin->getAll()->keyBy('admin_id')->select('admin_id,name,family,parent_id')->getList();
         $adminName = ($admins['export']['recordsCount'] > 0) ?  $admins['export']['list'] : array();
         
         
@@ -530,59 +530,49 @@ class shakhesController
         $result = array();
         $post = $_POST;
 
-        include_once ROOT_DIR . 'component/shakhes/model/khodezhari.model.php';
-        $obj = new shakhes;
+        include_once ROOT_DIR . 'component/shakhes/model/import.model.php';
+        $importObj = new import();
 
 
-        /* اگه فرم درست پر نشه ارور بده */
-        $filedsCount = 8 - count(array_filter(
-            $post,
-            function ($x) {
-                return $x !== '';
-            }
-        ));
-        if ($filedsCount !== 0 && !isset($post['confirm'])) {
-            $result['msg'] = 'فیلد ها به درستی پر نشده اند. ' . (int) $filedsCount  . ' فیلد خالی می باشد.';
-            $result['type'] = 'error';
-
-            $dataStack->add_session('data', $post);
-            $messageStack->add_session('message', $result['msg'], $result['type']);
-            redirectPage(RELA_DIR . 'admin/?component=shakhes&action=khodezhari', $result['msg']);
+        foreach($post['import'] as $id => $item){
+            $import = $importObj->find($id);
+            $import->setFields($item);
+            $import->save();
         }
-
-
+        
+        
 
         /* ارسال فرم */
         if (isset($post['temporary'])) {
-            $obj->setFields($post);
-            $obj->date = convertJToGDate($obj->date);
-            $obj->admin_id = $admin_info['admin_id'];
-            $obj->status = 0;
-            $obj->save();
+            // $obj->setFields($post);
+            // $obj->date = convertJToGDate($obj->date);
+            // $obj->admin_id = $admin_info['admin_id'];
+            // $obj->status = 0;
+            // $obj->save();
 
-            $result['msg'] = 'ثبت موقت انجام شد.';
-            $result['type'] = 'warning';
+            // $result['msg'] = 'ثبت موقت انجام شد.';
+            // $result['type'] = 'warning';
         } elseif (isset($post['final'])) {
-            $obj->setFields($post);
-            $obj->date = convertJToGDate($obj->date);
-            $obj->admin_id = $admin_info['admin_id'];
-            $obj->status = 1;
-            $obj->save();
+            // $obj->setFields($post);
+            // $obj->date = convertJToGDate($obj->date);
+            // $obj->admin_id = $admin_info['admin_id'];
+            // $obj->status = 1;
+            // $obj->save();
 
             // محاسبه جدول import
             // اگر status 1 بود
 
 
-            $result['msg'] = '.ثبت نهایی انجام شد';
-            $result['type'] = 'success';
+            // $result['msg'] = '.ثبت نهایی انجام شد';
+            // $result['type'] = 'success';
         } elseif (isset($post['confirm'])) {
             /* فقط برای اونایی که تایید میخوان */
-            $shakhes = $obj::find((int)$post['confirm']);
-            $shakhes->status = 1;
-            $shakhes->save();
+            // $shakhes = $obj::find((int)$post['confirm']);
+            // $shakhes->status = 1;
+            // $shakhes->save();
 
-            $result['msg'] = '.ثبت نهایی انجام شد';
-            $result['type'] = 'success';
+            // $result['msg'] = '.ثبت نهایی انجام شد';
+            // $result['type'] = 'success';
         } else {
         }
 

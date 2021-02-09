@@ -24,20 +24,20 @@
         <div class="panel-heading bg-green" id="topOfTable">
             <h3 class="panel-title rtl "> فرم خود اظهاری</h3>
         </div>
-        <div class="panel-body" >
+        <div class="panel-body">
             <table class="table table-striped">
                 <tr>
 
-                    <div class="panel-body" >
+                    <div class="panel-body">
                         <div id="container">
                             <div class='table-cont1'>
 
-                                <form action="/admin/?component=shakhes&action=khodezhari#topOfTable" method="get">
+                                <form id="filterAdminForm" action="/admin/?component=shakhes&action=khodezhari#topOfTable" method="get">
                                     <input type="hidden" name="component" value="shakhes">
                                     <input type="hidden" name="action" value="khodezhari">
                                     <div class="row">
-                                        <label for="">فیلتر بر اساس:</label>
-                                        <select name="filterAdmin" >
+                                        <label for="filterAdmin">فیلتر بر اساس:</label>
+                                        <select name="filterAdmin" id="filterAdmin">
                                             <option value="">همه واحدها</option>
                                             <?php foreach ($filterAdminsSelectbox as $admin) : ?>
                                                 <option value="<?= $admin['admin_id'] ?>" <?php echo ($admin['admin_id'] == $_GET['filterAdmin']) ? 'selected' : ''; ?>>
@@ -45,63 +45,67 @@
                                                 </option>
                                             <?php endforeach ?>
                                         </select>
-                                    <button class="btn btn-info">اعمال فیلتر</button>
+                                        <button class="btn btn-info">اعمال فیلتر</button>
                                     </div>
                                 </form>
-                                <table id="example" class="companyTable table table-striped table-bordered rtl" cellspacing="0" width="100%">
-                                    <thead>
-                                        <tr style="text-align: center">
-                                            <td colspan="1">کد قلم</td>
-                                            <td colspan="1" bgcolor=#fff8dc>قلم آماری</td>
-                                            <td colspan="1" bgcolor=#fff8dc>متولی </td>
-                                            <td colspan="1" bgcolor=#f2a89e>شش ماهه</td>
-                                            <td colspan="1" bgcolor=#f2a89e>توضیحات</td>
-                                            <td colspan="1" bgcolor=#8DD4FF>یکساله</td>
-                                            <td colspan="1" bgcolor=#8DD4FF>توضیحات</td>
-                                        </tr>
-                                    </thead>
-                                    <div class="col-md-10 col-sm-12 col-sx-12">
-                                        <?
+                                <form action="/admin/?component=shakhes&action=khodezhari" method="POST">
+                                    <table id="example" class="companyTable table table-striped table-bordered rtl" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr style="text-align: center">
+                                                <td colspan="1">کد قلم</td>
+                                                <td colspan="1" bgcolor=#fff8dc>قلم آماری</td>
+                                                <td colspan="1" bgcolor=#fff8dc>متولی </td>
+                                                <td colspan="1" bgcolor=#f2a89e>شش ماهه</td>
+                                                <td colspan="1" bgcolor=#f2a89e>توضیحات</td>
+                                                <td colspan="1" bgcolor=#8DD4FF>یکساله</td>
+                                                <td colspan="1" bgcolor=#8DD4FF>توضیحات</td>
+                                            </tr>
+                                        </thead>
+                                        <div class="col-md-10 col-sm-12 col-sx-12">
+                                            <?
                                         $msg = $messageStack->output('message');
                                         if($msg != ''):
                                             echo $msg;
                                         endif;
                                         ?>
-                                        <? foreach ($child as $v):?>
-                                        <div class="col-md-2 col-xs-12 col-sm-12 ">
+                                            <? foreach ($child as $v):?>
+                                            <div class="col-md-2 col-xs-12 col-sm-12 ">
 
-                                            <div class="col-md-12 confirm-vahed ">
-                                                <div class="col-md-12" style="height: 50px">
-                                                    <label for=""><?= $v['name'] . ' ' . $v['family'] ?></label>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <a href="<?= RELA_DIR ?>admin/?component=reports&action=confirm&id=<?= $v['admin_id'] ?>&s=1" class="btn btn-primary btn-block">تایید</a>
-                                                    <a href="<?= RELA_DIR ?>admin/?component=reports&action=confirm&id=<?= $v['admin_id'] ?>&s=2" class="btn btn-primary btn-block">نیازمند اصلاح</a>
+                                                <div class="col-md-12 confirm-vahed ">
+                                                    <div class="col-md-12" style="height: 50px">
+                                                        <label for=""><?= $v['name'] . ' ' . $v['family'] ?></label>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <a href="<?= RELA_DIR ?>admin/?component=reports&action=confirm&id=<?= $v['admin_id'] ?>&s=1" class="btn btn-primary btn-block">تایید</a>
+                                                        <a href="<?= RELA_DIR ?>admin/?component=reports&action=confirm&id=<?= $v['admin_id'] ?>&s=2" class="btn btn-primary btn-block">نیازمند اصلاح</a>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <? endforeach;?>
                                         </div>
-                                        <? endforeach;?>
-                                    </div>
-                                    <?php
-                                    foreach ($imports as $import) :
-                                    ?>
+                                        <?php
+                                        foreach ($imports as $import) :
+                                        ?>
 
-                                        <tr class="<?= $import['motevali_admin_id'] ?>">
-                                            <td><?= $import['ghalam_id'] ?></td>
-                                            <td><?= $ghalamName[$import['ghalam_id']]['ghalam'] ?></td>
-                                            <td><?= $adminName[$import['motevali_admin_id']]['name'] . ' ' . $adminName[$import['motevali_admin_id']]['family'] ?></td>
-                                            <td><input name="value6" type="number" pattern="[0-9]+([,\.][0-9]+)?" value="<?= $data['value6'] ?>" autocomplete="off" class="form-control ltr en w-100"></td>
-                                            <td><input name="admin_tozihat6" value="<?= $data['admin_tozihat6'] ?>" autocomplete="off" class="form-control"></td>
-                                            <td><input name="value12" type="number" pattern="[0-9]+([,\.][0-9]+)?" value="<?= $data['value12'] ?>" autocomplete="off" class="form-control en ltr w-100"></td>
-                                            <td><input name="admin_tozihat12" value="<?= $data['admin_tozihat12'] ?>" autocomplete="off" class="form-control"></td>
-                                        </tr>
-                                    <?php
-                                    endforeach;
-                                    ?>
+                                            <tr class="<?= $import['motevali_admin_id'] ?>">
+                                                <td><?= $import['ghalam_id'] ?></td>
+                                                <td><?= $ghalamName[$import['ghalam_id']]['ghalam'] ?></td>
+                                                <td><?= $adminName[$import['motevali_admin_id']]['name'] . ' ' . $adminName[$import['motevali_admin_id']]['family'] ?></td>
+                                                <td><input name="import[<?= $import['id'] ?>][value6]" type="number" pattern="[0-9]+([,\.][0-9]+)?" value="<?= $import['value6'] ?>" autocomplete="off" class="form-control ltr en w-100"></td>
+                                                <td><input name="import[<?= $import['id'] ?>][admin_tozihat6]" value="<?= $import['admin_tozihat6'] ?>" autocomplete="off" class="form-control"></td>
+                                                <td><input name="import[<?= $import['id'] ?>][value12]" type="number" pattern="[0-9]+([,\.][0-9]+)?" value="<?= $import['value12'] ?>" autocomplete="off" class="form-control en ltr w-100"></td>
+                                                <td><input name="import[<?= $import['id'] ?>][admin_tozihat12]" value="<?= $import['admin_tozihat12'] ?>" autocomplete="off" class="form-control"></td>
+                                            </tr>
+                                        <?php
+                                        endforeach;
+                                        ?>
 
-                                </table>
-                                <input type="submit" class="btn btn-info btn-white btn-large " style="font-size: 20px" name="temporary" value="ذخیره موقت" />
-                                <input type="submit" class="btn btn-success btn-white btn-large" style="font-size: 20px" name="final" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')" value="ارسال به مافوق" />
+                                    </table>
+                                    <?php if (!isset($_GET['filterAdmin'])) : ?>
+                                        <input type="submit" class="btn btn-info btn-white btn-large " style="font-size: 20px" name="temporary" value="ذخیره موقت" />
+                                        <input type="submit" class="btn btn-success btn-white btn-large" style="font-size: 20px" name="final" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')" value="ارسال به مافوق" />
+                                    <?php endif; ?>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -131,4 +135,17 @@
 
 
         //فیلترینگ
+        $('form#filterAdminForm').submit(function(e) {
+
+            var filterAdmin = parseInt($('#filterAdmin').val());
+
+            console.log(typeof filterAdmin);
+
+            if (Number.isInteger(filterAdmin)) {
+                return true;
+            } else {
+                e.preventDefault();
+                document.location = '/admin/?component=shakhes&action=khodezhari#topOfTable';
+            }
+        });
     </script>
