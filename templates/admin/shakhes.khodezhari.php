@@ -38,7 +38,7 @@
                                     <div class="row">
                                         <label for="">فیلتر بر اساس:</label>
                                         <select name="filterAdmin" >
-                                            <option value="">لطفا یکی را انتخاب نمایید.</option>
+                                            <option value="">همه واحدها</option>
                                             <?php foreach ($filterAdminsSelectbox as $admin) : ?>
                                                 <option value="<?= $admin['admin_id'] ?>" <?php echo ($admin['admin_id'] == $_GET['filterAdmin']) ? 'selected' : ''; ?>>
                                                     <?= $admin['name'] . ' ' . $admin['family'] ?>
@@ -123,10 +123,10 @@
         $("input[type=number]").blur(function() {
             this.value = parseFloat(this.value).toFixed(2);
 
-            if (this.value < 0 || this.value > 100) {
+            /*if (this.value < 0 || this.value > 100) {
                 alert('مقدار وارد شده اشتباه است. و باید بین ۰ تا ۱۰۰ باشد.');
                 this.focus();
-            }
+            }*/
         });
 
 
