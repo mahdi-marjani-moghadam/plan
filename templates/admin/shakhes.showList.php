@@ -14,6 +14,7 @@
         left: 3px;
         right: auto;
     }
+
 </style>
 <div class="content-body">
     <div class="row">
