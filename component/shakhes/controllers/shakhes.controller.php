@@ -183,6 +183,7 @@ class shakhesController
         include_once ROOT_DIR . "component/shakhes/model/import.model.php";
         $obj = new import();
 
+
         $PAGE_SIZE = 10;
         $filter['limit']['start'] = (isset($page)) ? ($page - 1) * $PAGE_SIZE : '0';
         $filter['limit']['length'] = $PAGE_SIZE;
@@ -486,7 +487,7 @@ class shakhesController
             $temp = ($temp['export']['recordsCount'] > 0) ?  $temp['export']['list'] : array();
             $filter['admins'] = 'and motevali_admin_id in (' . implode(',', array_column($temp, 'admin_id')) . ')';
         }
-        
+
 
         $query = "select 
             i.*
@@ -497,25 +498,25 @@ class shakhesController
         order by i.ghalam_id ";
         $res = $obj->query($query)->getList();
         $imports = ($res['export']['recordsCount'] > 0) ?  $res['export']['list'] : array();
-        
+
         // کل قلم ها
         $ghalams = $ghalam->getAll()->keyBy('ghalam_id')->getList();
         $ghalamName = ($ghalams['export']['recordsCount'] > 0) ?  $ghalams['export']['list'] : array();
-        
+
         //ادمین ها
         $admins = $admin->getAll()->keyBy('admin_id')->select('admin_id,name,family,parent_id')->getList();
         $adminName = ($admins['export']['recordsCount'] > 0) ?  $admins['export']['list'] : array();
-        
-        
-        
+
+
+
         //فیلترینگ
         /*        if (isset($_GET['filter_columns'])) {
             $this->_selectedAdmins = explode(',', $_GET['filter_columns']);
         }*/
-        
+
         $filterAdminsSelectbox = $admin->getAll()->keyBy('admin_id')->select('admin_id,name,family')->where('parent_id', '=', 1)->getList();
         $filterAdminsSelectbox = ($filterAdminsSelectbox['export']['recordsCount'] > 0) ?  $filterAdminsSelectbox['export']['list'] : array();
-        
+
 
         $this->fileName = 'shakhes.khodezhari.php';
         $this->template(compact('shakhes', 'imports', 'ghalamName', 'adminName', 'filterAdminsSelectbox'));
@@ -533,14 +534,24 @@ class shakhesController
         include_once ROOT_DIR . 'component/shakhes/model/import.model.php';
         $importObj = new import();
 
-
-        foreach($post['import'] as $id => $item){
+        // همه قلم ها مقدار دهی میشن
+        foreach ($post['import'] as $id => $item) {
             $import = $importObj->find($id);
-            $import->setFields($item);
+
+            if (STEP_FORM1 <= 2) {
+                $import->value6 = $item['value6'];
+                $import->admin_tozihat6 = $item['admin_tozihat6'];
+            } elseif (STEP_FORM1 > 2 && STEP_FORM1 <= 4) {
+                $import->value12 = $item['value12'];
+                $import->admin_tozihat12 = $item['admin_tozihat12'];
+            }
+            $import->status = 1;
+            $import->year = explode('/', convertDate(date('Y')))[0];
             $import->save();
+            
         }
         
-        
+
 
         /* ارسال فرم */
         if (isset($post['temporary'])) {
@@ -550,7 +561,7 @@ class shakhesController
             // $obj->status = 0;
             // $obj->save();
 
-            // $result['msg'] = 'ثبت موقت انجام شد.';
+            $result['msg'] = 'ثبت موقت انجام شد.';
             // $result['type'] = 'warning';
         } elseif (isset($post['final'])) {
             // $obj->setFields($post);
@@ -563,7 +574,7 @@ class shakhesController
             // اگر status 1 بود
 
 
-            // $result['msg'] = '.ثبت نهایی انجام شد';
+            $result['msg'] = '.ثبت نهایی انجام شد';
             // $result['type'] = 'success';
         } elseif (isset($post['confirm'])) {
             /* فقط برای اونایی که تایید میخوان */
@@ -573,10 +584,7 @@ class shakhesController
 
             // $result['msg'] = '.ثبت نهایی انجام شد';
             // $result['type'] = 'success';
-        } else {
-        }
-
-
+        } 
 
 
 

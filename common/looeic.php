@@ -1089,6 +1089,7 @@ class looeic extends DB
         $sql = " UPDATE " . $obj->TABLE_NAME . " SET " . $sql_key_val . " 
          WHERE " . $where . " ";
 
+         
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
