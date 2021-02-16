@@ -1326,7 +1326,7 @@ class shakhesController
             $importObj = $import['list'][0];
         }
 
-        if (in_array($ghalam_id, [208, 209, 213, 214])) { // jalasat
+        if (in_array($ghalam_id, [ 209, 213, 214])) { // jalasat
             $importObj->$value = $importObj->$value + $zirGhalam->$field;
             $importObj->save();
         } elseif (
@@ -1335,35 +1335,36 @@ class shakhesController
         ) {
             $importObj->$value = $importObj->$value + 1;
             $importObj->save();
-        } elseif (in_array($ghalam_id, [212, 215, 216])) {
+        } elseif (in_array($ghalam_id, [208,212, 215, 216])) {
             $importObj->$value = $importObj->$value + 1;
             $importObj->save();
         }
 
-        include_once ROOT_DIR . 'component/shakhes/model/import_confirm.model.php';
-        $impConfObj = new importConfirm;
-        $impConf = $impConfObj::getBy_sh_import_id($importObj->id)->get()['export'];
-        if ($impConf['recordsCount'] == 0) {
-            $impConfObj->sh_import_id = $importObj->id;
-            $impConfObj->admin = $importObj->motevali_admin_id;
-            $impConfObj->admin_type = 'external';
-            $impConfObj->$value = 0;
-        } else {
-            $impConfObj = $impConf['list'][0];
-        }
-        if (in_array($ghalam_id, [208, 209, 212, 213, 214, 215, 216])) {
-            $impConfObj->$value = $importObj->$value;
-            $impConfObj->save();
-        } elseif (
-            in_array($ghalam_id, [210]) && $zirGhalam->$field == 'شاغل به تحصیل در مقطع بالاتر'
-            || in_array($ghalam_id, [211]) && $zirGhalam->$field == 'شاغل'
-        ) {
-            $impConfObj->$value = $importObj->$value;
-            $impConfObj->save();
-        }
+        // include_once ROOT_DIR . 'component/shakhes/model/import_confirm.model.php';
+        // $impConfObj = new importConfirm;
+        // $impConf = $impConfObj::getBy_sh_import_id($importObj->id)->get()['export'];
+        // if ($impConf['recordsCount'] == 0) {
+        //     $impConfObj->sh_import_id = $importObj->id;
+        //     $impConfObj->admin = $importObj->motevali_admin_id;
+        //     $impConfObj->admin_type = 'external';
+        //     $impConfObj->$value = 0;
+        // } else {
+        //     $impConfObj = $impConf['list'][0];
+        // }
+        // if (in_array($ghalam_id, [208, 209, 212, 213, 214, 215, 216])) {
+        //     $impConfObj->$value = $importObj->$value;
+        //     $impConfObj->save();
+        // } elseif (
+        //     in_array($ghalam_id, [210]) && $zirGhalam->$field == 'شاغل به تحصیل در مقطع بالاتر'
+        //     || in_array($ghalam_id, [211]) && $zirGhalam->$field == 'شاغل'
+        // ) {
+        //     $impConfObj->$value = $importObj->$value;
+        //     $impConfObj->save();
+        // }
 
 
-        return compact('importObj', 'impConfObj');
+        // return compact('importObj', 'impConfObj');
+        return compact('importObj');
     }
 
     private function importAdmins($table)
