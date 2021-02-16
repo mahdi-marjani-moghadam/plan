@@ -55,13 +55,13 @@
                                                 <td colspan="1">کد قلم</td>
                                                 <td colspan="1" bgcolor=#fff8dc>قلم آماری</td>
                                                 <td colspan="1" bgcolor=#fff8dc>متولی </td>
-                                                <?php if (STEP_FORM1 <= 2) : ?>
-                                                    <td colspan="1" bgcolor=#f2a89e>شش ماهه</td>
-                                                    <td colspan="1" bgcolor=#f2a89e>توضیحات</td>
-                                                <?php elseif (STEP_FORM1 > 2 && STEP_FORM1 <= 4) : ?>
-                                                    <td colspan="1" bgcolor=#8DD4FF>یکساله</td>
-                                                    <td colspan="1" bgcolor=#8DD4FF>توضیحات</td>
-                                                <?php endif; ?>
+
+                                                <td colspan="1" bgcolor=#f2a89e>شش ماهه</td>
+                                                <td colspan="1" bgcolor=#f2a89e>توضیحات</td>
+
+                                                <td colspan="1" bgcolor=#8DD4FF>یکساله</td>
+                                                <td colspan="1" bgcolor=#8DD4FF>توضیحات</td>
+
                                             </tr>
                                         </thead>
                                         <div class="col-md-10 col-sm-12 col-sx-12">
@@ -94,13 +94,36 @@
                                                 <td><?= $import['ghalam_id'] ?></td>
                                                 <td><?= $ghalamName[$import['ghalam_id']]['ghalam'] ?></td>
                                                 <td><?= $adminName[$import['motevali_admin_id']]['name'] . ' ' . $adminName[$import['motevali_admin_id']]['family'] ?></td>
-                                                <?php if (STEP_FORM1 <= 2) : ?>
-                                                    <td><input name="import[<?= $import['id'] ?>][value6]" step="0.1" type="number" pattern="[0-9]+([,\.][0-9]+)?" value="<?= $import['value6'] ?>" autocomplete="off" class="form-control ltr en w-100"></td>
-                                                    <td><input name="import[<?= $import['id'] ?>][admin_tozihat6]" value="<?= $import['admin_tozihat6'] ?>" autocomplete="off" class="form-control"></td>
-                                                <?php elseif (STEP_FORM1 > 2 && STEP_FORM1 <= 4) : ?>
-                                                    <td><input name="import[<?= $import['id'] ?>][value12]" step="0.1" type="number" pattern="[0-9]+([,\.][0-9]+)?" value="<?= $import['value12'] ?>" autocomplete="off" class="form-control en ltr w-100"></td>
-                                                    <td><input name="import[<?= $import['id'] ?>][admin_tozihat12]" value="<?= $import['admin_tozihat12'] ?>" autocomplete="off" class="form-control"></td>
-                                                <?php endif; ?>
+
+                                                <td>
+                                                    <?php if (STEP_FORM1 <= 2) : ?>
+                                                        <input name="import[<?= $import['id'] ?>][value6]" step="0.1" type="number" pattern="[0-9]+([,\.][0-9]+)?" value="<?= $import['value6'] ?>" autocomplete="off" class="form-control ltr en w-100">
+                                                    <?php else : ?>
+                                                        <?= $import['value6'] ?>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td>
+                                                    <?php if (STEP_FORM1 <= 2) : ?>
+                                                        <input name="import[<?= $import['id'] ?>][admin_tozihat6]" value="<?= $import['admin_tozihat6'] ?>" autocomplete="off" class="form-control">
+                                                    <?php else : ?>
+                                                        <?= $import['admin_tozihat6'] ?>
+                                                    <?php endif; ?>
+                                                </td>
+
+                                                <td>
+                                                    <?php if (STEP_FORM1 > 2 && STEP_FORM1 <= 4) : ?>
+                                                        <input name="import[<?= $import['id'] ?>][value12]" step="0.1" type="number" pattern="[0-9]+([,\.][0-9]+)?" value="<?= $import['value12'] ?>" autocomplete="off" class="form-control en ltr w-100">
+                                                    <?php else : ?>
+                                                        <?= $import['value12'] ?>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td>
+                                                    <?php if (STEP_FORM1 > 2 && STEP_FORM1 <= 4) : ?>
+                                                        <input name="import[<?= $import['id'] ?>][admin_tozihat12]" value="<?= $import['admin_tozihat12'] ?>" autocomplete="off" class="form-control">
+                                                    <?php else : ?>
+                                                        <?= $import['admin_tozihat12'] ?>
+                                                    <?php endif; ?>
+                                                </td>
 
                                             </tr>
                                         <?php
@@ -111,7 +134,7 @@
                                     <?php if (!isset($_GET['filterAdmin'])) : ?>
                                         <input type="submit" class="btn btn-success btn-white btn-large" style="font-size: 20px" name="final" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')" value="ارسال به مافوق" />
                                     <?php endif; ?>
-                                        <input type="submit" class="btn btn-info btn-white btn-large " style="font-size: 20px" name="temporary" value="ذخیره موقت" />
+                                    <input type="submit" class="btn btn-info btn-white btn-large " style="font-size: 20px" name="temporary" value="ذخیره موقت" />
                                 </form>
                             </div>
                         </div>
