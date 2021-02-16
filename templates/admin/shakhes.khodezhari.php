@@ -131,7 +131,7 @@
                                         ?>
 
                                     </table>
-                                    <?php if (!isset($_GET['filterAdmin'])) : ?>
+                                    <?php if (isset($_GET['filterAdmin'])) : ?>
                                         <input type="submit" class="btn btn-success btn-white btn-large" style="font-size: 20px" name="final" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')" value="ارسال به مافوق" />
                                     <?php endif; ?>
                                     <input type="submit" class="btn btn-info btn-white btn-large " style="font-size: 20px" name="temporary" value="ذخیره موقت" />
