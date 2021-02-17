@@ -211,6 +211,7 @@ function redirectPage($page, $message = '')
             setTimeout("window.location='<?= $page ?>'", 1500);
         </script>
         <style>
+            
             @font-face {
                 font-family: Roya;
                 font-weight: normal;

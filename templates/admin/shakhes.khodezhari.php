@@ -49,6 +49,7 @@
                                     </div>
                                 </form>
                                 <form action="/admin/?component=shakhes&action=khodezhari" method="POST">
+                                    <input name="filterAdmin" value="<?= $_GET['filterAdmin'] ?>" type="hidden">
                                     <table id="example" class="companyTable table table-striped table-bordered rtl" cellspacing="0" width="100%">
                                         <thead>
                                             <tr style="text-align: center">
@@ -96,14 +97,14 @@
                                                 <td><?= $adminName[$import['motevali_admin_id']]['name'] . ' ' . $adminName[$import['motevali_admin_id']]['family'] ?></td>
 
                                                 <td>
-                                                    <?php if (STEP_FORM1 <= 2) : ?>
-                                                        <input name="import[<?= $import['id'] ?>][value6]" step="0.1" type="number" pattern="[0-9]+([,\.][0-9]+)?" value="<?= $import['value6'] ?>" autocomplete="off" class="form-control ltr en w-100">
+                                                    <?php if (STEP_FORM1 <= 2 && $adminStatus[$import['motevali_admin_id']]['status6'] == '0') : ?>
+                                                        <input name="import[<?= $import['id'] ?>][value6]" step="0.1" type="text" pattern="[0-9]+([,\.][0-9]+)?" value="<?= $import['value6'] ?>" autocomplete="off" class="form-control ltr en w-100">
                                                     <?php else : ?>
                                                         <?= $import['value6'] ?>
                                                     <?php endif; ?>
                                                 </td>
                                                 <td>
-                                                    <?php if (STEP_FORM1 <= 2) : ?>
+                                                    <?php if (STEP_FORM1 <= 2 && $adminStatus[$import['motevali_admin_id']]['status6'] == '0') : ?>
                                                         <input name="import[<?= $import['id'] ?>][admin_tozihat6]" value="<?= $import['admin_tozihat6'] ?>" autocomplete="off" class="form-control">
                                                     <?php else : ?>
                                                         <?= $import['admin_tozihat6'] ?>
@@ -111,14 +112,15 @@
                                                 </td>
 
                                                 <td>
-                                                    <?php if (STEP_FORM1 > 2 && STEP_FORM1 <= 4) : ?>
-                                                        <input name="import[<?= $import['id'] ?>][value12]" step="0.1" type="number" pattern="[0-9]+([,\.][0-9]+)?" value="<?= $import['value12'] ?>" autocomplete="off" class="form-control en ltr w-100">
+                                                
+                                                    <?php if ((STEP_FORM1 > 2 && STEP_FORM1 <= 4) &&  $adminStatus[$import['motevali_admin_id']]['status12'] == '0') : ?>
+                                                        <input name="import[<?= $import['id'] ?>][value12]" step="0.1" type="text" pattern="[0-9]+([,\.][0-9]+)?" value="<?= $import['value12'] ?>" autocomplete="off" class="form-control en ltr w-100">
                                                     <?php else : ?>
                                                         <?= $import['value12'] ?>
                                                     <?php endif; ?>
                                                 </td>
                                                 <td>
-                                                    <?php if (STEP_FORM1 > 2 && STEP_FORM1 <= 4) : ?>
+                                                    <?php if (STEP_FORM1 > 2 && STEP_FORM1 <= 4 &&  $adminStatus[$import['motevali_admin_id']]['status12'] == '0') : ?>
                                                         <input name="import[<?= $import['id'] ?>][admin_tozihat12]" value="<?= $import['admin_tozihat12'] ?>" autocomplete="off" class="form-control">
                                                     <?php else : ?>
                                                         <?= $import['admin_tozihat12'] ?>
@@ -131,8 +133,9 @@
                                         ?>
 
                                     </table>
+                                    
                                     <?php if (isset($_GET['filterAdmin'])) : ?>
-                                        <input type="submit" class="btn btn-success btn-white btn-large" style="font-size: 20px" name="final" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')" value="ارسال به مافوق" />
+                                        <input type="submit" class="btn btn-success btn-white btn-large" style="font-size: 20px" name="sentToParent" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')" value="ارسال به مافوق" />
                                     <?php endif; ?>
                                     <input type="submit" class="btn btn-info btn-white btn-large " style="font-size: 20px" name="temporary" value="ذخیره موقت" />
                                 </form>
