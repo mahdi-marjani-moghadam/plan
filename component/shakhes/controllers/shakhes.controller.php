@@ -521,8 +521,8 @@ class shakhesController
 
 
         //وضعیت قلم های ارسالی
-        $motevali =  implode(',',array_unique(array_column($imports,'motevali_admin_id')));
-        $adminStatus = $adminStatus->where('admin_id','in',$motevali)->keyBy('admin_id')->select('admin_id,status6,status12')->getList();
+        $motevali =  implode(',', array_unique(array_column($imports, 'motevali_admin_id')));
+        $adminStatus = $adminStatus->where('admin_id', 'in', $motevali)->keyBy('admin_id')->select('admin_id,status6,status12')->getList();
         $adminStatus = ($adminStatus['export']['recordsCount'] > 0) ?  $adminStatus['export']['list'] : array();
 
 
@@ -530,7 +530,7 @@ class shakhesController
 
 
         $this->fileName = 'shakhes.khodezhari.php';
-        $this->template(compact('shakhes', 'imports', 'ghalamName', 'adminName', 'adminStatus','filterAdminsSelectbox'));
+        $this->template(compact('shakhes', 'imports', 'ghalamName', 'adminName', 'adminStatus', 'filterAdminsSelectbox'));
 
         die();
     }
@@ -562,20 +562,20 @@ class shakhesController
             foreach ($post['import'] as $id => $item) {
                 $import = $importObj->find($id);
 
-                $import->value6 = $item[$val];
-                $import->admin_tozihat6 = $item[$tozihat];
+                $import->$val = $item[$val];
+                $import->$tozihat = $item[$tozihat];
                 $import->status = 1;
                 $import->year = explode('/', convertDate(date('Y')))[0];
                 $import->save();
+                
             }
 
             $allMotevali = implode(',', $allMotevali);
 
-
             $result['msg'] = 'ثبت موقت انجام شد.';
             $result['type'] = 'warning';
             $messageStack->add_session('message', $result['msg'], $result['type']);
-            redirectPage(RELA_DIR . 'admin/?component=shakhes&action=khodezhari#topOfTable', $result['msg']);
+            redirectPage(RELA_DIR . 'admin/?component=shakhes&action=khodezhari', $result['msg']);
         } elseif (isset($post['sentToParent'])) {
 
             // همه قلم ها مقدار دهی میشن

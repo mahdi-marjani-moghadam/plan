@@ -133,11 +133,12 @@
                                         ?>
 
                                     </table>
-                                    
-                                    <?php if (isset($_GET['filterAdmin'])) : ?>
-                                        <input type="submit" class="btn btn-success btn-white btn-large" style="font-size: 20px" name="sentToParent" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')" value="ارسال به مافوق" />
+                                    <?php if ($adminStatus[$import['motevali_admin_id']]['status6'] == 0 || $adminStatus[$import['motevali_admin_id']]['status12'] == 0):?>
+                                        <?php if (isset($_GET['filterAdmin'])) : ?>
+                                            <input type="submit" class="btn btn-success btn-white btn-large" style="font-size: 20px" name="sentToParent" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')" value="ارسال به مافوق" />
+                                        <?php endif; ?>
+                                        <input type="submit" class="btn btn-info btn-white btn-large " style="font-size: 20px" name="temporary" value="ذخیره موقت" />
                                     <?php endif; ?>
-                                    <input type="submit" class="btn btn-info btn-white btn-large " style="font-size: 20px" name="temporary" value="ذخیره موقت" />
                                 </form>
                             </div>
                         </div>

@@ -201,7 +201,6 @@ function generatePasswordNumber($length = 9)
 function redirectPage($page, $message = '')
 {
     global $conn, $messageStack;
-
 ?>
     <html>
 
@@ -211,7 +210,6 @@ function redirectPage($page, $message = '')
             setTimeout("window.location='<?= $page ?>'", 1500);
         </script>
         <style>
-            
             @font-face {
                 font-family: Roya;
                 font-weight: normal;
@@ -395,7 +393,7 @@ function convertJToGDate($date)
 
     include_once 'jdf.php';
     $dateTime = explode('/', $date);
-    if($dateTime[0] > 1405) return $date;
+    if ($dateTime[0] > 1405) return $date;
     $g_y = $dateTime[0];
     $g_m = $dateTime[1];
     $g_d = $dateTime[2];
