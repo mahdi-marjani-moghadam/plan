@@ -598,8 +598,8 @@ class shakhesController
 
                 $import = $importObj->find($id);
 
-                $import->value6 = $item[$val];
-                $import->admin_tozihat6 = $item[$tozihat];
+                $import->$val = $item[$val];
+                $import->$tozihat = $item[$tozihat];
                 $import->status = 1;
                 $import->year = explode('/', convertDate(date('Y')))[0];
                 $import->save();
