@@ -63,6 +63,8 @@
                                                 <td colspan="1" bgcolor=#8DD4FF>یکساله</td>
                                                 <td colspan="1" bgcolor=#8DD4FF>توضیحات</td>
 
+
+
                                             </tr>
                                         </thead>
                                         <div class="col-md-10 col-sm-12 col-sx-12">
@@ -97,14 +99,21 @@
                                                 <td><?= $adminName[$import['motevali_admin_id']]['name'] . ' ' . $adminName[$import['motevali_admin_id']]['family'] ?></td>
 
                                                 <td>
-                                                    <?php if (STEP_FORM1 <= 2 && $adminStatus[$import['motevali_admin_id']]['status6'] == '0') : ?>
+                                                    <?php if (
+                                                        STEP_FORM1 <= 2 &&
+                                                        $adminStatus[$import['motevali_admin_id']]['status6'] == '0' &&
+                                                        !in_array($admin_info['admin_id'], [$import['confirm1'], $import['confirm1'], $import['confirm2'], $import['confirm3'], $import['confirm4']])
+                                                    ) : ?>
                                                         <input name="import[<?= $import['id'] ?>][value6]" step="0.1" type="text" pattern="[0-9]+([,\.][0-9]+)?" value="<?= $import['value6'] ?>" autocomplete="off" class="form-control ltr en w-100">
                                                     <?php else : ?>
                                                         <?= $import['value6'] ?>
                                                     <?php endif; ?>
                                                 </td>
                                                 <td>
-                                                    <?php if (STEP_FORM1 <= 2 && $adminStatus[$import['motevali_admin_id']]['status6'] == '0') : ?>
+                                                    <?php if (
+                                                        STEP_FORM1 <= 2 && $adminStatus[$import['motevali_admin_id']]['status6'] == '0' &&
+                                                        !in_array($admin_info['admin_id'], [$import['confirm1'], $import['confirm1'], $import['confirm2'], $import['confirm3'], $import['confirm4']])
+                                                    ) : ?>
                                                         <input name="import[<?= $import['id'] ?>][admin_tozihat6]" value="<?= $import['admin_tozihat6'] ?>" autocomplete="off" class="form-control">
                                                     <?php else : ?>
                                                         <?= $import['admin_tozihat6'] ?>
@@ -112,20 +121,43 @@
                                                 </td>
 
                                                 <td>
-                                                
-                                                    <?php if ((STEP_FORM1 > 2 && STEP_FORM1 <= 4) &&  $adminStatus[$import['motevali_admin_id']]['status12'] == '0') : ?>
+
+                                                    <?php if (
+                                                        (STEP_FORM1 > 2 && STEP_FORM1 <= 4) &&
+                                                        $adminStatus[$import['motevali_admin_id']]['status12'] == '0' &&
+                                                        !in_array($admin_info['admin_id'], [$import['confirm1'], $import['confirm1'], $import['confirm2'], $import['confirm3'], $import['confirm4']])
+                                                    ) : ?>
                                                         <input name="import[<?= $import['id'] ?>][value12]" step="0.1" type="text" pattern="[0-9]+([,\.][0-9]+)?" value="<?= $import['value12'] ?>" autocomplete="off" class="form-control en ltr w-100">
                                                     <?php else : ?>
                                                         <?= $import['value12'] ?>
                                                     <?php endif; ?>
                                                 </td>
                                                 <td>
-                                                    <?php if (STEP_FORM1 > 2 && STEP_FORM1 <= 4 &&  $adminStatus[$import['motevali_admin_id']]['status12'] == '0') : ?>
+                                                    <?php if (
+                                                        STEP_FORM1 > 2 && STEP_FORM1 <= 4 &&
+                                                        $adminStatus[$import['motevali_admin_id']]['status12'] == '0' &&
+                                                        !in_array($admin_info['admin_id'], [$import['confirm1'], $import['confirm1'], $import['confirm2'], $import['confirm3'], $import['confirm4']])
+                                                    ) : ?>
                                                         <input name="import[<?= $import['id'] ?>][admin_tozihat12]" value="<?= $import['admin_tozihat12'] ?>" autocomplete="off" class="form-control">
                                                     <?php else : ?>
                                                         <?= $import['admin_tozihat12'] ?>
                                                     <?php endif; ?>
                                                 </td>
+                                                <?php if (
+                                                    ($adminStatus[$import['motevali_admin_id']]['status6'] == 'sentToParent' or $adminStatus[$import['motevali_admin_id']]['status12'] == 'sentToParent') &&
+                                                    in_array($admin_info['admin_id'], [$import['confirm1'], $import['confirm1'], $import['confirm2'], $import['confirm3'], $import['confirm4']])
+                                                ) : ?>
+                                                    <td>
+                                                        <form action="admin/?component=shakhes&action=khodezhari" method="POST">
+                                                            <input type="hidden" name="confirm" value="<?= $admin_info['admin_id'] ?>">
+                                                            <button class="btn btn-success">تایید</button>
+                                                        </form>
+                                                        <form action="admin/?component=shakhes&action=khodezhari" method="POST">
+                                                            <input type="hidden" name="confirm" value="<?= $admin_info['admin_id'] ?>">
+                                                            <button class="btn btn-warning">نیاز به اصلاح</button>
+                                                        </form>
+                                                    </td>
+                                                <?php endif; ?>
 
                                             </tr>
                                         <?php
@@ -133,12 +165,17 @@
                                         ?>
 
                                     </table>
-                                    <?php if ($adminStatus[$import['motevali_admin_id']]['status6'] == 0 || $adminStatus[$import['motevali_admin_id']]['status12'] == 0):?>
+                                    <?php if (
+                                        ($adminStatus[$import['motevali_admin_id']]['status6'] == 0 || $adminStatus[$import['motevali_admin_id']]['status12'] == 0) &&
+                                        !in_array($admin_info['admin_id'], [$import['confirm1'], $import['confirm1'], $import['confirm2'], $import['confirm3'], $import['confirm4']])
+                                    ) : ?>
                                         <?php if (isset($_GET['filterAdmin'])) : ?>
                                             <input type="submit" class="btn btn-success btn-white btn-large" style="font-size: 20px" name="sentToParent" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')" value="ارسال به مافوق" />
                                         <?php endif; ?>
                                         <input type="submit" class="btn btn-info btn-white btn-large " style="font-size: 20px" name="temporary" value="ذخیره موقت" />
                                     <?php endif; ?>
+
+
                                 </form>
                             </div>
                         </div>
