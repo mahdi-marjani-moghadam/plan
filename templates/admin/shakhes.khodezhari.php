@@ -46,38 +46,41 @@
                                 <button class="btn btn-info">اعمال فیلتر</button>
                             </form>
                         </div>
-                        <div class="col-md-6">
-                            <table class="report" style="float: left;">
-                                <tr>
-                                    <td></td>
-                                    <td>وضعیت ۶ ماهه</td>
-                                    <td>وضعیت ۱۲ ماهه</td>
-                                </tr>
-                                <?php // نمایش وضعیت واحدها
-                                foreach ($adminStatus as $admin) : ?>
-                                    <tr>
-                                        <td>
-                                            <?= $adminName[$admin['admin_id']]['name'] . ' ' . $adminName[$admin['admin_id']]['family'] ?>
-                                        </td>
-                                        <td>
-                                            <?php if ($admin['status6'] == '0') : ?>
-                                                <span class="btn-warning p-1">خوداظهاری</span>
-                                            <?php endif; ?>
-                                            <?php if ($admin['status6'] == 'sentToParent') : ?>
-                                                <span class="btn-warning p-1">ارسال به مافوق</span>
-                                            <?php endif; ?>
-                                        </td>
-                                        <td>
-                                            <?php if ($admin['status12'] == '0') : ?>
-                                                <span class="btn-warning p-1">خوداظهاری</span>
-                                            <?php endif; ?>
-                                            <?php if ($admin['status12'] == 'sentToParent') : ?>
-                                                <span class="btn-warning2 p-1">ارسال به مافوق</span>
-                                            <?php endif; ?>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </table>
+                        <div class="col-md-12">
+
+                            <?php // نمایش وضعیت واحدها
+                            foreach ($adminStatus as $admin) : ?>
+                                <span class="admins-status">
+                                    <?= $adminName[$admin['admin_id']]['name'] . ' ' . $adminName[$admin['admin_id']]['family'] ?>
+
+                                    <?php if (STEP_FORM1 <= 2) : ?>
+
+
+                                        <?php if ($admin['status6'] == '0') : ?>
+                                            <span class="btn-default p-1"> عدم ورود اطلاعات</span>
+                                        <?php endif; ?>
+                                        <?php if ($admin['status6'] == 'sentToParent') : ?>
+                                            <span class="btn-warning2 p-1">ارسال به مافوق</span>
+                                        <?php endif; ?>
+                                        <?php if ($admin['status6'] == 'backToEdit') : ?>
+                                            <span class="btn-warning p-1">نیاز به اصلاح</span>
+                                        <?php endif; ?>
+
+                                    <?php else : ?>
+
+                                        <?php if ($admin['status12'] == '0') : ?>
+                                            <span class="btn-default p-1"> عدم ورود اطلاعات</span>
+                                        <?php endif; ?>
+                                        <?php if ($admin['status12'] == 'sentToParent') : ?>
+                                            <span class="btn-warning p-1">ارسال به مافوق</span>
+                                        <?php endif; ?>
+                                        <?php if ($admin['status12'] == 'backToEdit') : ?>
+                                            <span class="btn-warning2 p-1">نیاز به اصلاح</span>
+                                        <?php endif; ?>
+                                </span>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+
                         </div>
                     </div>
                     <form action="/admin/?component=shakhes&action=khodezhari" method="POST">
@@ -132,7 +135,8 @@
                                     ($status6 == 'sentToParent' or $status12 == 'sentToParent') &&
                                     in_array($admin_info['admin_id'], [$import['confirm1'], $import['confirm2'], $import['confirm3'], $import['confirm4']])
                                 ) : ?>
-                                    <input type="hidden" name="confirm[]" value="<?= $import['id'] ?>">
+                                    <input type="hidden" name="imports[]" value="<?= $import['id'] ?>">
+                                    <input type="hidden" name="motevali[]" value="<?= $import['motevali_admin_id'] ?>">
                                 <?php endif; ?>
 
                                 <tr class="<?= $import['motevali_admin_id'] ?>">
@@ -211,9 +215,9 @@
                             in_array($admin_info['admin_id'], [$import['import']])
                         ) : ?>
                             <?php if (isset($_GET['filterAdmin'])) : ?>
-                                <input type="submit" class="btn btn-success btn-white btn-large" style="font-size: 20px" name="sentToParent" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')" value="ارسال به مافوق" />
+                                <input type="submit" class="btn btn-success btn-white btn-large btn-large2" name="sentToParent" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')" value="ارسال به مافوق" />
                             <?php endif; ?>
-                            <input type="submit" class="btn btn-info btn-white btn-large " style="font-size: 20px" name="temporary" value="ذخیره موقت" />
+                            <input type="submit" class="btn btn-info btn-white btn-large btn-large2" name="temporary" value="ذخیره موقت" />
                         <?php endif; ?>
 
 
@@ -225,8 +229,8 @@
                             in_array($admin_info['admin_id'], [$import['confirm1'], $import['confirm2'], $import['confirm3'], $import['confirm4']])
                         ) : ?>
 
-                            <input class="btn btn-success" name="" value="تایید">
-                            <input class="btn btn-warning" name="" value="نیاز به اصلاح">
+                            <input type="submit" class="btn btn-success btn-white btn-large btn-large2" name="confirm" value="تایید">
+                            <input type="submit" class="btn btn-warning btn-white btn-large btn-large2" name="backToEdit" value="نیاز به اصلاح">
 
                         <?php endif; ?>
 
@@ -260,6 +264,12 @@
     .btn-warning2 {
         background-color: #f4f43f;
     }
+
+    .btn-large2 {
+        font-size: 20px;
+    }
+    .admins-status{background-color: #ccc; padding: 3px 6px; margin: 2px; float: right;}
+    .admins-status .default-span{background-color: #fff;}
 </style>
 <script>
     $("input[type=number]").blur(function() {

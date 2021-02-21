@@ -509,10 +509,10 @@ class shakhesController
         or i.confirm3 = '{$admin_info['admin_id']}')
         {$filter['admins']}
         order by i.ghalam_id ";
-        // dd($query);
         $res = $obj->query($query)->getList();
         $imports = ($res['export']['recordsCount'] > 0) ?  $res['export']['list'] : array();
         // dd($imports);
+
 
         // کل قلم ها
         $ghalams = $ghalam->getAll()->keyBy('ghalam_id')->getList();
@@ -571,7 +571,6 @@ class shakhesController
                 $import->status = 1;
                 $import->year = explode('/', convertDate(date('Y')))[0];
                 $import->save();
-                
             }
 
             $allMotevali = implode(',', $allMotevali);
@@ -626,14 +625,23 @@ class shakhesController
             $result['type'] = 'success';
             $messageStack->add_session('message', $result['msg'], $result['type']);
             redirectPage(RELA_DIR . 'admin/?component=shakhes&action=khodezhari&filterAdmin=' . $post['filterAdmin'] . '#topOfTable', $result['msg']);
+        } elseif (isset($post['backToEdit'])) {
+            include_once ROOT_DIR . "component/admin/model/admin_status.model.php";
+            $adminStatus = new adminStatus();
+            $motevali = implode(',',array_unique($post['motevali']));
+            $adminStatus = $adminStatus->where('admin_id','in',$motevali)->get();
+            foreach($adminStatus['export']['list'] as $s){
+                $s->$status = 'backToEdit';
+                $s->save();
+            }
+
+            $result['msg'] = 'نیاز به اصلاح ارسال شد.';
+            $result['type'] = 'success';
+            $messageStack->add_session('message', $result['msg'], $result['type']);
+            redirectPage(RELA_DIR . 'admin/?component=shakhes&action=khodezhari' . '', $result['msg']);
+
         } elseif (isset($post['confirm'])) {
             /* فقط برای اونایی که تایید میخوان */
-            // $shakhes = $obj::find((int)$post['confirm']);
-            // $shakhes->status = 1;
-            // $shakhes->save();
-
-            // $result['msg'] = '.ثبت نهایی انجام شد';
-            // $result['type'] = 'success';
         }
     }
 
