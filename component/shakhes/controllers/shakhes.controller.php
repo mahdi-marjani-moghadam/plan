@@ -503,12 +503,13 @@ class shakhesController
             i.*
         from sh_import i
         where i.ghalam_id not in (select ghalam_id from sh_rel_ghalam_zir_ghalam)
-        and i.import = '{$admin_info['admin_id']}'
+        and (i.import = '{$admin_info['admin_id']}'
         or i.confirm1 = '{$admin_info['admin_id']}'
         or i.confirm2 = '{$admin_info['admin_id']}'
-        or i.confirm3 = '{$admin_info['admin_id']}'
+        or i.confirm3 = '{$admin_info['admin_id']}')
         {$filter['admins']}
         order by i.ghalam_id ";
+        // dd($query);
         $res = $obj->query($query)->getList();
         $imports = ($res['export']['recordsCount'] > 0) ?  $res['export']['list'] : array();
         // dd($imports);
