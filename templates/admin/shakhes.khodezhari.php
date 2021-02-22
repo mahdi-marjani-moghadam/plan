@@ -51,7 +51,7 @@
                             <?php // نمایش وضعیت واحدها
                             foreach ($adminStatus as $admin) : ?>
                                 <span class="admins-status">
-                                    <?= $adminName[$admin['admin_id']]['name'] . ' ' . $adminName[$admin['admin_id']]['family'] ?>
+                                    <?= $adminName[$admin['admin_id']]['name'] . ' ' . $adminName[$admin['admin_id']]['family'] ?> در مرحله
 
                                     <?php if (STEP_FORM1 <= 2) : ?>
 
@@ -77,6 +77,7 @@
                                         <?php if ($admin['status12'] == 'backToEdit') : ?>
                                             <span class="btn-warning2 p-1">نیاز به اصلاح</span>
                                         <?php endif; ?>
+                                        می باشد.
                                 </span>
                             <?php endif; ?>
                         <?php endforeach; ?>
@@ -262,14 +263,24 @@
     }
 
     .btn-warning2 {
-        background-color: #f4f43f;
+        color: #000;
+        font-weight: bold;
     }
 
     .btn-large2 {
         font-size: 20px;
     }
-    .admins-status{background-color: #ccc; padding: 3px 6px; margin: 2px; float: right;}
-    .admins-status .default-span{background-color: #fff;}
+
+    .admins-status {
+        background-color: #ccc;
+        padding: 3px 6px;
+        margin: 2px;
+        float: right;
+    }
+
+    .admins-status .default-span {
+        background-color: #fff;
+    }
 </style>
 <script>
     $("input[type=number]").blur(function() {
