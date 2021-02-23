@@ -204,9 +204,8 @@
                             <?php
 
                                 if ($status6 != 'sentToParent') $sentToParent6 = '';
-                                if ($status12 != 'sentToParent') {
-                                    $sentToParent12 = '';
-                                }
+                                if ($status12 != 'sentToParent') $sentToParent12 = '';
+
                             endforeach;
                             ?>
 
