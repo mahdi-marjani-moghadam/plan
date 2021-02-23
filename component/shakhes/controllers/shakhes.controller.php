@@ -980,7 +980,7 @@ class shakhesController
 
 
         $ruydad = $ruydadObj->where('admin_id', 'in', $importAdmins)->orWhere('import_admin', 'in', $importAdmins)
-            ->orderBy('admin_id')->getList()['export'];
+            ->orderBy('id','desc')->getList()['export'];
 
 
         if (isset($_GET['id'])) {
