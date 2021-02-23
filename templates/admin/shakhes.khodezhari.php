@@ -148,7 +148,8 @@
                                     <td>
                                         <?php // وقتی وارد کننده باشه و هنوز مقداری وارد نکرده باشه
                                         if (
-                                            STEP_FORM1 <= 2 && $status6 == '0' &&
+                                            STEP_FORM1 <= 2 &&
+                                            ($status6 == '0' || $status6 == 'backToEdit') &&
                                             in_array($admin_info['admin_id'], [$import['import']])
                                         ) : ?>
                                             <input name="import[<?= $import['id'] ?>][value6]" step="0.1" type="text" pattern="[0-9]+([,\.][0-9]+)?" value="<?= $import['value6'] ?>" autocomplete="off" class="form-control ltr en w-100">
@@ -160,7 +161,8 @@
                                     <td>
                                         <?php // وقتی وارد کننده باشه و هنوز مقداری وارد نکرده باشه 
                                         if (
-                                            STEP_FORM1 <= 2 && $status6 == '0' &&
+                                            STEP_FORM1 <= 2 &&
+                                            ($status6 == '0' || $status6 == 'backToEdit') &&
                                             in_array($admin_info['admin_id'], [$import['import']])
                                         ) : ?>
                                             <input name="import[<?= $import['id'] ?>][admin_tozihat6]" value="<?= $import['admin_tozihat6'] ?>" autocomplete="off" class="form-control">
@@ -178,7 +180,7 @@
                                         <?php // وقتی وارد کننده باشه و هنوز مقداری وارد نکرده باشه
                                         if (
                                             (STEP_FORM1 > 2 && STEP_FORM1 <= 4) &&
-                                            $status12 == '0' &&
+                                            ($status12 == '0' || $status12 == 'backToEdit') &&
                                             in_array($admin_info['admin_id'], [$import['import']])
                                         ) : ?>
                                             <input name="import[<?= $import['id'] ?>][value12]" step="0.1" type="text" pattern="[0-9]+([,\.][0-9]+)?" value="<?= $import['value12'] ?>" autocomplete="off" class="form-control en ltr w-100">
@@ -190,7 +192,7 @@
                                         <?php // وقتی وارد کننده باشه و هنوز مقداری وارد نکرده باشه 
                                         if (
                                             STEP_FORM1 > 2 && STEP_FORM1 <= 4 &&
-                                            $status12 == '0' &&
+                                            ($status12 == '0' || $status12 == 'backToEdit') &&
                                             in_array($admin_info['admin_id'], [$import['import']])
                                         ) : ?>
                                             <input name="import[<?= $import['id'] ?>][admin_tozihat12]" value="<?= $import['admin_tozihat12'] ?>" autocomplete="off" class="form-control">
@@ -211,8 +213,11 @@
                         </table>
 
                         <?php // دکمه های مربوط به وارد کننده  
+
                         if (
-                            ($adminStatus[$import['motevali_admin_id']]['status6'] == 0 || $adminStatus[$import['motevali_admin_id']]['status12'] == 0) &&
+                            (
+                                (($adminStatus[$import['motevali_admin_id']]['status6'] == '0' || $adminStatus[$import['motevali_admin_id']]['status6'] == 'backToEdit') && STEP_FORM1 <= 2) ||
+                                (($adminStatus[$import['motevali_admin_id']]['status12'] == '0' || $adminStatus[$import['motevali_admin_id']]['status12'] == 'backToEdit') && STEP_FORM1 >= 3)) &&
                             in_array($admin_info['admin_id'], [$import['import']])
                         ) : ?>
                             <?php if (isset($_GET['filterAdmin'])) : ?>
