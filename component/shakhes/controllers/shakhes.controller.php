@@ -1143,7 +1143,7 @@ class shakhesController
         include_once ROOT_DIR . 'component/shakhes/model/shora.model.php';
         $shoraObj = new shora;
         $shora = $shoraObj->where('admin_id', 'in', $importAdmins)->orWhere('import_admin', 'in', $importAdmins)
-            ->orderBy('admin_id')->getList()['export'];
+            ->orderBy('id','desc')->getList()['export'];
 
         if (isset($_GET['id'])) {
             $data['id'] = $_GET['id'];
