@@ -134,7 +134,7 @@
                                 // وقتی یکی از تایید کنندگان میاد
                                 if (
                                     ($status6 == 'sentToParent' or $status12 == 'sentToParent') &&
-                                    in_array($admin_info['admin_id'], [$import['confirm1'], $import['confirm2'], $import['confirm3'], $import['confirm4']])
+                                    in_array($admin_info['admin_id'], [$import['confirm1'], $import['confirm2'], $import['confirm3']])
                                 ) : ?>
                                     <input type="hidden" name="imports[]" value="<?= $import['id'] ?>">
                                     <input type="hidden" name="motevali[]" value="<?= $import['motevali_admin_id'] ?>">
@@ -220,7 +220,7 @@
                             in_array($admin_info['admin_id'], [$import['import']])
                         ) : ?>
                             <?php if (isset($_GET['filterAdmin'])) : ?>
-                                <input type="submit" class="btn btn-success btn-white btn-large btn-large2" name="sentToParent" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')" value="ارسال به مافوق" />
+                                <input type="submit" class="btn btn-success btn-white btn-large btn-large2" name="sendToConfirm1" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')" value="ارسال به مافوق" />
                             <?php endif; ?>
                             <input type="submit" class="btn btn-info btn-white btn-large btn-large2" name="temporary" value="ذخیره موقت" />
                         <?php endif; ?>
@@ -230,11 +230,11 @@
 
                         <?php // دکمه های مربوط به تایید کننده 
                         if (
-                            ($sentToParent6 == 'sentToParent' or $sentToParent12 == 'sentToParent') &&
-                            in_array($admin_info['admin_id'], [$import['confirm1'], $import['confirm2'], $import['confirm3'], $import['confirm4']])
+                            ($sentToParent6 == 'sendToConfirm1' or $sentToParent12 == 'sendToConfirm1') &&
+                            in_array($admin_info['admin_id'], [$import['confirm1'], $import['confirm2'], $import['confirm3']])
                         ) : ?>
 
-                            <input type="submit" class="btn btn-success btn-white btn-large btn-large2" name="confirm" value="تایید">
+                            <input type="submit" class="btn btn-success btn-white btn-large btn-large2" name="sendToConfirm2" value="تایید">
                             <input type="submit" class="btn btn-warning btn-white btn-large btn-large2" name="backToEdit" value="نیاز به اصلاح">
 
                         <?php endif; ?>

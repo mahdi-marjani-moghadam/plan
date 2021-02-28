@@ -1283,9 +1283,9 @@ class shakhesController
 
     private function onSubmitZirGhalam($class, $post)
     {
-        if (isset($post['sendToParent'])) {
+        if (isset($post['sendToConfirm1'])) {
             /* فقط برای اونایی که تایید میخوان */
-            $obj = $class::find((int)$post['sendToParent']);
+            $obj = $class::find((int)$post['sendToConfirm1']);
             $obj->status = 2;
             $obj->save();
 
