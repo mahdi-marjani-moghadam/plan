@@ -465,6 +465,8 @@ class shakhesController
 
     public function khodezhari()
     {
+
+
         global $messageStack, $dataStack, $admin_info;
         $msg = $messageStack->output('message');
         $data = $dataStack->output('data');
@@ -475,12 +477,14 @@ class shakhesController
         // پیدا کردن قلم ها و کلان
         include_once ROOT_DIR . "component/shakhes/model/shakhes.model.php";
         include_once ROOT_DIR . "component/shakhes/model/ghalam.model.php";
+        include_once ROOT_DIR . "component/shakhes/model/import_status.model.php";
         include_once ROOT_DIR . "component/admin/model/admin.model.php";
         include_once ROOT_DIR . "component/admin/model/admin_status.model.php";
         $obj = new shakhes();
         $ghalam = new ghalam();
         $admin = new admin();
         $adminStatus = new adminStatus();
+        $importStatus = new importStatus();
         $shakhes = $obj->getAll()->getList()['export'];
 
 
@@ -526,9 +530,8 @@ class shakhesController
 
         //وضعیت قلم های ارسالی
         $motevali =  implode(',', array_unique(array_column($imports, 'motevali_admin_id')));
-        $adminStatus = $adminStatus->where('admin_id', 'in', $motevali)->keyBy('admin_id')->select('admin_id,status6,status12')->getList();
-        $adminStatus = ($adminStatus['export']['recordsCount'] > 0) ?  $adminStatus['export']['list'] : array();
-
+        $importStatus = $importStatus->where('motevali', 'in', $motevali)->andWhere('import', '=', $admin_info['admin_id'])->keyBy('motevali')->select('import,motevali,status6,status12')->getList();
+        $adminStatus = ($importStatus['export']['recordsCount'] > 0) ?  $importStatus['export']['list'] : array();
 
 
 
@@ -545,9 +548,10 @@ class shakhesController
         global $messageStack, $admin_info, $dataStack;
         $result = array();
         $post = $_POST;
-
         include_once ROOT_DIR . 'component/shakhes/model/import.model.php';
+        include_once ROOT_DIR . 'component/shakhes/model/import_status.model.php';
         $importObj = new import();
+        $importStatusObj = new importStatus();
 
         if (STEP_FORM1 <= 2) {
             $val = 'value6';
@@ -568,18 +572,17 @@ class shakhesController
 
                 $import->$val = $item[$val];
                 $import->$tozihat = $item[$tozihat];
-                $import->status = 1;
                 $import->year = explode('/', convertDate(date('Y')))[0];
                 $import->save();
             }
 
-            $allMotevali = implode(',', $allMotevali);
+            // $allMotevali = implode(',', $allMotevali);
 
             $result['msg'] = 'ثبت موقت انجام شد.';
             $result['type'] = 'warning';
             $messageStack->add_session('message', $result['msg'], $result['type']);
             redirectPage(RELA_DIR . 'admin/?component=shakhes&action=khodezhari', $result['msg']);
-        } elseif (isset($post['sentToParent'])) {
+        } elseif (isset($post['sendToConfirm1'])) {
 
             // همه قلم ها مقدار دهی میشن
             foreach ($post['import'] as $id => $item) {
@@ -603,7 +606,6 @@ class shakhesController
 
                 $import->$val = $item[$val];
                 $import->$tozihat = $item[$tozihat];
-                $import->status = 1;
                 $import->year = explode('/', convertDate(date('Y')))[0];
                 $import->save();
 
@@ -611,14 +613,27 @@ class shakhesController
                 $allMotevali[] = $import->motevali_admin_id;
             }
 
-            $allMotevaliStr = implode(',', array_unique($allMotevali));
+            //آپدیت وضعیت متولی
+            foreach (array_unique($allMotevali) as $mot) {
 
-            $query = "update sh_admin_status set $status = 'sentToParent' where admin_id in ($allMotevaliStr)";
-            $import->query($query)->get();
+                $oo = $importStatusObj::getBy_import_and_motevali($admin_info['admin_id'], $mot)->get();
+                
 
-
-            // محاسبه جدول import
-            // اگر status 1 بود
+                if ($oo['export']['recordsCount'] == 0) {
+                    $oo = new importStatus();
+                    $oo->import = $admin_info['admin_id'];
+                    $oo->motevali = $mot;
+                    $oo->$status = 'sendToConfirm1';
+                    $oo->save();
+                } else {
+                    $oo = $oo['export']['list'][0];
+                    $oo->import = $admin_info['admin_id'];
+                    $oo->motevali = $mot;
+                    $oo->$status = 'sendToConfirm1';
+                    $oo->save();
+                }
+                
+            }
 
 
             $result['msg'] = '.ثبت نهایی انجام شد';
@@ -626,11 +641,13 @@ class shakhesController
             $messageStack->add_session('message', $result['msg'], $result['type']);
             redirectPage(RELA_DIR . 'admin/?component=shakhes&action=khodezhari&filterAdmin=' . $post['filterAdmin'] . '#topOfTable', $result['msg']);
         } elseif (isset($post['backToEdit'])) {
+
+
             include_once ROOT_DIR . "component/admin/model/admin_status.model.php";
             $adminStatus = new adminStatus();
-            $motevali = implode(',',array_unique($post['motevali']));
-            $adminStatus = $adminStatus->where('admin_id','in',$motevali)->get();
-            foreach($adminStatus['export']['list'] as $s){
+            $motevali = implode(',', array_unique($post['motevali']));
+            $adminStatus = $adminStatus->where('admin_id', 'in', $motevali)->get();
+            foreach ($adminStatus['export']['list'] as $s) {
                 $s->$status = 'backToEdit';
                 $s->save();
             }
@@ -639,7 +656,6 @@ class shakhesController
             $result['type'] = 'success';
             $messageStack->add_session('message', $result['msg'], $result['type']);
             redirectPage(RELA_DIR . 'admin/?component=shakhes&action=khodezhari' . '', $result['msg']);
-
         } elseif (isset($post['confirm'])) {
             /* فقط برای اونایی که تایید میخوان */
         }
@@ -666,7 +682,7 @@ class shakhesController
         include_once ROOT_DIR . 'component/shakhes/model/jalasat.model.php';
         $jalasatObj = new jalasat;
         $jalasat = $jalasatObj->where('admin_id', 'in', $importAdmins)->orWhere('import_admin', 'in', $importAdmins)
-            ->orderBy('id','desc')->getList()['export'];
+            ->orderBy('id', 'desc')->getList()['export'];
 
         if (isset($_GET['id'])) {
             $data['id'] = $_GET['id'];
@@ -820,7 +836,7 @@ class shakhesController
         include_once ROOT_DIR . 'component/shakhes/model/daneshamukhte.model.php';
         $daneshamukhteObj = new daneshamukhte;
         $daneshamukhte = $daneshamukhteObj->where('admin_id', 'in', $importAdmins)->orWhere('import_admin', 'in', $importAdmins)
-            ->orderBy('id','desc')->getList()['export'];
+            ->orderBy('id', 'desc')->getList()['export'];
 
 
         if (isset($_GET['id'])) {
@@ -980,7 +996,7 @@ class shakhesController
 
 
         $ruydad = $ruydadObj->where('admin_id', 'in', $importAdmins)->orWhere('import_admin', 'in', $importAdmins)
-            ->orderBy('id','desc')->getList()['export'];
+            ->orderBy('id', 'desc')->getList()['export'];
 
 
         if (isset($_GET['id'])) {
@@ -1143,7 +1159,7 @@ class shakhesController
         include_once ROOT_DIR . 'component/shakhes/model/shora.model.php';
         $shoraObj = new shora;
         $shora = $shoraObj->where('admin_id', 'in', $importAdmins)->orWhere('import_admin', 'in', $importAdmins)
-            ->orderBy('id','desc')->getList()['export'];
+            ->orderBy('id', 'desc')->getList()['export'];
 
         if (isset($_GET['id'])) {
             $data['id'] = $_GET['id'];

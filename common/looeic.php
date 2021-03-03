@@ -994,6 +994,7 @@ class looeic extends DB
 
     public function save()
     {
+        
         if ($this->fields[$this->PRI_KEY] == '') {
             if ($this->_operation == 'SELECT') {
                 die('SELECT PRIMERI KEY TO CHANGE :D ');

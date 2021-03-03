@@ -51,15 +51,15 @@
                             <?php // نمایش وضعیت واحدها
                             foreach ($adminStatus as $admin) : ?>
                                 <span class="admins-status">
-                                    <?= $adminName[$admin['admin_id']]['name'] . ' ' . $adminName[$admin['admin_id']]['family'] ?> در مرحله
+                                    <?= $adminName[$admin['motevali']]['name'] . ' ' . $adminName[$admin['motevali']]['family'] ?> در مرحله
 
                                     <?php if (STEP_FORM1 <= 2) : ?>
 
-
+                                        
                                         <?php if ($admin['status6'] == '0') : ?>
                                             <span class="btn-default p-1"> عدم ورود اطلاعات</span>
                                         <?php endif; ?>
-                                        <?php if ($admin['status6'] == 'sentToParent') : ?>
+                                        <?php if ($admin['status6'] == 'sendToConfirm1') : ?>
                                             <span class="btn-warning2 p-1">ارسال به مافوق</span>
                                         <?php endif; ?>
                                         <?php if ($admin['status6'] == 'backToEdit') : ?>
@@ -67,11 +67,11 @@
                                         <?php endif; ?>
 
                                     <?php else : ?>
-
+                                    
                                         <?php if ($admin['status12'] == '0') : ?>
                                             <span class="btn-default p-1"> عدم ورود اطلاعات</span>
                                         <?php endif; ?>
-                                        <?php if ($admin['status12'] == 'sentToParent') : ?>
+                                        <?php if ($admin['status12'] == 'sendToConfirm1') : ?>
                                             <span class="btn-warning p-1">ارسال به مافوق</span>
                                         <?php endif; ?>
                                         <?php if ($admin['status12'] == 'backToEdit') : ?>
@@ -126,14 +126,14 @@
                                 <? endforeach;?>
                             </div>
                             <?php
-                            $sentToParent6 = $sentToParent12 = 'sentToParent';
+                            $sentToConfirm1_6 = $sentToConfirm1_12 = 'sentToConfirm1';
                             foreach ($imports as $import) :
                                 $status6 = $adminStatus[$import['motevali_admin_id']]['status6'];
                                 $status12 = $adminStatus[$import['motevali_admin_id']]['status12'];
 
                                 // وقتی یکی از تایید کنندگان میاد
                                 if (
-                                    ($status6 == 'sentToParent' or $status12 == 'sentToParent') &&
+                                    ($status6 == 'sentToConfirm1' or $status12 == 'sentToConfirm1') &&
                                     in_array($admin_info['admin_id'], [$import['confirm1'], $import['confirm2'], $import['confirm3']])
                                 ) : ?>
                                     <input type="hidden" name="imports[]" value="<?= $import['id'] ?>">
@@ -203,8 +203,8 @@
                                 </tr>
                             <?php
 
-                                if ($status6 != 'sentToParent') $sentToParent6 = '';
-                                if ($status12 != 'sentToParent') $sentToParent12 = '';
+                                if ($status6 != 'sentToConfirm1') $sentToConfirm1_6 = '';
+                                if ($status12 != 'sentToConfirm1') $sentToConfirm1_12 = '';
 
                             endforeach;
                             ?>
@@ -212,7 +212,6 @@
                         </table>
 
                         <?php // دکمه های مربوط به وارد کننده  
-
                         if (
                             (
                                 (($adminStatus[$import['motevali_admin_id']]['status6'] == '0' || $adminStatus[$import['motevali_admin_id']]['status6'] == 'backToEdit') && STEP_FORM1 <= 2) ||
@@ -230,7 +229,7 @@
 
                         <?php // دکمه های مربوط به تایید کننده 
                         if (
-                            ($sentToParent6 == 'sendToConfirm1' or $sentToParent12 == 'sendToConfirm1') &&
+                            ($sentToConfirm1_6 == 'sendToConfirm1' or $sentToConfirm1_12 == 'sendToConfirm1') &&
                             in_array($admin_info['admin_id'], [$import['confirm1'], $import['confirm2'], $import['confirm3']])
                         ) : ?>
 
