@@ -530,9 +530,17 @@ class shakhesController
 
         //وضعیت قلم های ارسالی
         $motevali =  implode(',', array_unique(array_column($imports, 'motevali_admin_id')));
-        $importStatus = $importStatus->where('motevali', 'in', $motevali)->andWhere('import', '=', $admin_info['admin_id'])->keyBy('motevali')->select('import,motevali,status6,status12')->getList();
+        $query = "SELECT import,motevali,status6,status12 FROM sh_import_status 
+        WHERE motevali IN($motevali) AND (import = {$admin_info['admin_id']} OR confirm1 = {$admin_info['admin_id']} OR confirm2 = {$admin_info['admin_id']} OR confirm3 = {$admin_info['admin_id']})
+        ";
+        $importStatus = $importStatus->query($query)->keyBy('motevali')->getList();
+        // $importStatus = $importStatus->where('motevali', 'in', $motevali)
+        // ->andWhere('import', '=', $admin_info['admin_id'])
+        // ->orWhere('confirm1','=',$admin_info['admin_id'])
+        // ->orWhere('confirm2','=',$admin_info['admin_id'])
+        // ->orWhere('confirm3','=',$admin_info['admin_id'])
+        // ->keyBy('motevali')->select('import,motevali,status6,status12')->getList();
         $adminStatus = ($importStatus['export']['recordsCount'] > 0) ?  $importStatus['export']['list'] : array();
-
 
 
 

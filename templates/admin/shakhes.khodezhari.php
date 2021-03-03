@@ -6,17 +6,33 @@
     <div id="panel-1" class="panel panel-default border-green">
 
         <div class="panel-body">
-            <div class="alert alert-danger">توجه: در خصوص تکمیل فرم‌های ارزیابی ضروری است واحدها نسبت به تکمیل فرمهای مربوطه طبق تفکیک ذکر شده در زیر دکمه هر فرم اقدام نمایند. لازم به ذکر است در صورت عدم تکمیل فرم‌ها، امتیاز مربوط به فعالیتهای مربوطه کسر خواهد شد. از آنجا که اطلاعات مستخرج از فرمها در شاخصهای عملکرد واحدها نیز لحاظ می‌شود در صورت عدم تکمیل آنها، امتیازی به شاخص‌های مربوطه تعلق نمی‌گیرد.</div>
-            <div class="alert alert-warning"> بازه تکمیل فرم ها از تاریخ <?= convertDate($this->time['start_date']) ?> تا تاریخ <?= convertDate($this->time['finish_date']) ?>می باشد </div>
+            <div class="alert alert-danger">توجه: در خصوص تکمیل فرم‌های ارزیابی ضروری است واحدها نسبت به تکمیل فرمهای
+                مربوطه طبق تفکیک ذکر شده در زیر دکمه هر فرم اقدام نمایند. لازم به ذکر است در صورت عدم تکمیل فرم‌ها،
+                امتیاز مربوط به فعالیتهای مربوطه کسر خواهد شد. از آنجا که اطلاعات مستخرج از فرمها در شاخصهای عملکرد
+                واحدها نیز لحاظ می‌شود در صورت عدم تکمیل آنها، امتیازی به شاخص‌های مربوطه تعلق نمی‌گیرد.</div>
+            <div class="alert alert-warning"> بازه تکمیل فرم ها از تاریخ <?= convertDate($this->time['start_date']) ?>
+                تا تاریخ <?= convertDate($this->time['finish_date']) ?>می باشد </div>
             <!--<div class="alert alert-warning"> بازه تایید فرم ها توسط واحد مافوق از تاریخ <?/*=convertDate($this->time['finish_date_confirm'])*/?> تا تاریخ  <?/*=convertDate($this->time['start_date_confirm'])*/?> می باشد </div>-->
-            <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat">فرم برگزاری جلسات و نشست ها</a>
-            <div class="alert alert-danger">فرم برگزاری جلسات و نشستها: گروه‌های آموزشی؛ دانشکده‌ها؛ شعبه ارومیه؛ مرکز نوآوری</div>
-            <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte">فرم جلب مشارکت دانش آموختگان و دانشجویان</a>
-            <div class="alert alert-danger">فرم جلب مشارکت دانش آموختگان و دانشجویان: گروه‌های آموزشی؛ دانشکده‌ها؛ شعبه ارومیه؛ مرکز نوآوری </div>
-            <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad"> فرم رویدادهای برگزار شده</a>
-            <div class="alert alert-danger">فرم رویدادهای برگزار شده: دانشکده‌ها؛ گروه‌ها؛ مدیریت برنامه، بودجه و تحول سازمانی؛ مدیریت روابط عمومی؛ مرکز رشد واحدهای فناور؛ معاونت فرهنگی و اجتماعی؛ معاونت اداری مالی؛ شعبه ارومیه؛ پژوهشکده زنان؛ معاونت آموزشی و تحصیلات تکمیلی و مدیریت‌های زیرمجموعه شامل(مدیریت تحصیلات تکمیلی - مدیریت خدمات آموزشی - مرکز آموزش های آزاد و مجازی- مدیریت برنامه ریزی و توسعه آموزشی)؛ معاونت پژوهشی و فناوری و مدیریت‌های زیرمجموعه شامل( کتابخانه مرکزی- مدیریت امور پژوهشی-مرکز نوآوری و شکوفایی)؛ معاونت دانشجویی و مدیریت‌های زیرمجموعه شامل(مدیریت تربیت بدنی -مدیریت مرکز مشاوره، بهداشت و سلامت) </div>
-            <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=shora">فرم عضویت در شوراهای برون دانشگاهی</a>
-            <div class="alert alert-danger">فرم عضویت در شوراها و کمیته های برون دانشگاهی: گروه‌های آموزشی؛ دانشکده‌ها؛ شعبه ارومیه؛ معاونت فرهنگی؛ پژوهشکده زنان</div>
+            <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat">فرم
+                برگزاری جلسات و نشست ها</a>
+            <div class="alert alert-danger">فرم برگزاری جلسات و نشستها: گروه‌های آموزشی؛ دانشکده‌ها؛ شعبه ارومیه؛ مرکز
+                نوآوری</div>
+            <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte">فرم جلب مشارکت دانش آموختگان و
+                دانشجویان</a>
+            <div class="alert alert-danger">فرم جلب مشارکت دانش آموختگان و دانشجویان: گروه‌های آموزشی؛ دانشکده‌ها؛ شعبه
+                ارومیه؛ مرکز نوآوری </div>
+            <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad"> فرم
+                رویدادهای برگزار شده</a>
+            <div class="alert alert-danger">فرم رویدادهای برگزار شده: دانشکده‌ها؛ گروه‌ها؛ مدیریت برنامه، بودجه و تحول
+                سازمانی؛ مدیریت روابط عمومی؛ مرکز رشد واحدهای فناور؛ معاونت فرهنگی و اجتماعی؛ معاونت اداری مالی؛ شعبه
+                ارومیه؛ پژوهشکده زنان؛ معاونت آموزشی و تحصیلات تکمیلی و مدیریت‌های زیرمجموعه شامل(مدیریت تحصیلات تکمیلی
+                - مدیریت خدمات آموزشی - مرکز آموزش های آزاد و مجازی- مدیریت برنامه ریزی و توسعه آموزشی)؛ معاونت پژوهشی و
+                فناوری و مدیریت‌های زیرمجموعه شامل( کتابخانه مرکزی- مدیریت امور پژوهشی-مرکز نوآوری و شکوفایی)؛ معاونت
+                دانشجویی و مدیریت‌های زیرمجموعه شامل(مدیریت تربیت بدنی -مدیریت مرکز مشاوره، بهداشت و سلامت) </div>
+            <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=shora">فرم
+                عضویت در شوراهای برون دانشگاهی</a>
+            <div class="alert alert-danger">فرم عضویت در شوراها و کمیته های برون دانشگاهی: گروه‌های آموزشی؛ دانشکده‌ها؛
+                شعبه ارومیه؛ معاونت فرهنگی؛ پژوهشکده زنان</div>
 
         </div>
 
@@ -51,28 +67,47 @@
                             <?php // نمایش وضعیت واحدها
                             foreach ($adminStatus as $admin) : ?>
                                 <span class="admins-status">
-                                    <?= $adminName[$admin['motevali']]['name'] . ' ' . $adminName[$admin['motevali']]['family'] ?> در مرحله
+                                    <?= $adminName[$admin['motevali']]['name'] . ' ' . $adminName[$admin['motevali']]['family'] ?>
+                                    در مرحله
 
                                     <?php if (STEP_FORM1 <= 2) : ?>
 
-                                        
+
                                         <?php if ($admin['status6'] == '0') : ?>
                                             <span class="btn-default p-1"> عدم ورود اطلاعات</span>
                                         <?php endif; ?>
                                         <?php if ($admin['status6'] == 'sendToConfirm1') : ?>
-                                            <span class="btn-warning2 p-1">ارسال به مافوق</span>
+                                            <span class="btn-warning p-1">ارسال به تایید کننده اول</span>
+                                        <?php endif; ?>
+                                        <?php if ($admin['status6'] == 'sendToConfirm2') : ?>
+                                            <span class="btn-warning p-1">ارسال به تایید کننده دوم</span>
+                                        <?php endif; ?>
+                                        <?php if ($admin['status6'] == 'sendToConfirm3') : ?>
+                                            <span class="btn-warning2 p-1">ارسال به تایید کننده سوم</span>
+                                        <?php endif; ?>
+                                        <?php if ($admin['status6'] == 'finish') : ?>
+                                            <span class="btn-success p-1">اتمام</span>
                                         <?php endif; ?>
                                         <?php if ($admin['status6'] == 'backToEdit') : ?>
-                                            <span class="btn-warning p-1">نیاز به اصلاح</span>
+                                            <span class="btn-warning2 p-1">نیاز به اصلاح</span>
                                         <?php endif; ?>
 
                                     <?php else : ?>
-                                    
+
                                         <?php if ($admin['status12'] == '0') : ?>
                                             <span class="btn-default p-1"> عدم ورود اطلاعات</span>
                                         <?php endif; ?>
                                         <?php if ($admin['status12'] == 'sendToConfirm1') : ?>
-                                            <span class="btn-warning p-1">ارسال به مافوق</span>
+                                            <span class="btn-warning p-1">ارسال به تایید کننده اول</span>
+                                        <?php endif; ?>
+                                        <?php if ($admin['status12'] == 'sendToConfirm2') : ?>
+                                            <span class="btn-warning p-1">ارسال به تایید کننده دوم</span>
+                                        <?php endif; ?>
+                                        <?php if ($admin['status12'] == 'sendToConfirm3') : ?>
+                                            <span class="btn-warning p-1">ارسال به تایید کننده سوم</span>
+                                        <?php endif; ?>
+                                        <?php if ($admin['status12'] == 'finish') : ?>
+                                            <span class="btn-success p-1">اتمام</span>
                                         <?php endif; ?>
                                         <?php if ($admin['status12'] == 'backToEdit') : ?>
                                             <span class="btn-warning2 p-1">نیاز به اصلاح</span>
@@ -126,7 +161,10 @@
                                 <? endforeach;?>
                             </div>
                             <?php
-                            $sentToConfirm1_6 = $sentToConfirm1_12 = 'sentToConfirm1';
+                            $sentToConfirm1_6 = $sentToConfirm1_12 = 'sendToConfirm1';
+                            $sentToConfirm2_6 = $sentToConfirm2_12 = 'sendToConfirm2';
+                            $sentToConfirm3_6 = $sentToConfirm3_12 = 'sendToConfirm3';
+
                             foreach ($imports as $import) :
                                 $status6 = $adminStatus[$import['motevali_admin_id']]['status6'];
                                 $status12 = $adminStatus[$import['motevali_admin_id']]['status12'];
@@ -143,7 +181,8 @@
                                 <tr class="<?= $import['motevali_admin_id'] ?>">
                                     <td><?= $import['ghalam_id'] ?></td>
                                     <td><?= $ghalamName[$import['ghalam_id']]['ghalam'] ?></td>
-                                    <td><?= $adminName[$import['motevali_admin_id']]['name'] . ' ' . $adminName[$import['motevali_admin_id']]['family'] ?></td>
+                                    <td><?= $adminName[$import['motevali_admin_id']]['name'] . ' ' . $adminName[$import['motevali_admin_id']]['family'] ?>
+                                    </td>
 
                                     <td>
                                         <?php // وقتی وارد کننده باشه و هنوز مقداری وارد نکرده باشه
@@ -203,15 +242,21 @@
                                 </tr>
                             <?php
 
-                                if ($status6 != 'sentToConfirm1') $sentToConfirm1_6 = '';
-                                if ($status12 != 'sentToConfirm1') $sentToConfirm1_12 = '';
+                                if ($status6 != 'sendToConfirm1') $sentToConfirm1_6 = '';
+                                if ($status12 != 'sendToConfirm1') $sentToConfirm1_12 = '';
+                                if ($status6 != 'sendToConfirm2') $sentToConfirm2_6 = '';
+                                if ($status12 != 'sendToConfirm2') $sentToConfirm2_12 = '';
+                                if ($status6 != 'sendToConfirm3') $sentToConfirm3_6 = '';
+                                if ($status12 != 'sendToConfirm4') $sentToConfirm3_12 = '';
+
+
 
                             endforeach;
                             ?>
 
                         </table>
 
-                        <?php // دکمه های مربوط به وارد کننده  
+                        <?php // دکمه های مربوط به وارد کننده 
                         if (
                             (
                                 (($adminStatus[$import['motevali_admin_id']]['status6'] == '0' || $adminStatus[$import['motevali_admin_id']]['status6'] == 'backToEdit') && STEP_FORM1 <= 2) ||
@@ -227,10 +272,10 @@
 
 
 
-                        <?php // دکمه های مربوط به تایید کننده 
+                        <?php // دکمه های مربوط به تایید کننده اول
                         if (
                             ($sentToConfirm1_6 == 'sendToConfirm1' or $sentToConfirm1_12 == 'sendToConfirm1') &&
-                            in_array($admin_info['admin_id'], [$import['confirm1'], $import['confirm2'], $import['confirm3']])
+                            in_array($admin_info['admin_id'], [$import['confirm1']])
                         ) : ?>
 
                             <input type="submit" class="btn btn-success btn-white btn-large btn-large2" name="sendToConfirm2" value="تایید">
@@ -238,6 +283,28 @@
 
                         <?php endif; ?>
 
+
+                        <?php // دکمه های مربوط به تایید کننده دوم
+                        if (
+                            ($sentToConfirm2_6 == 'sendToConfirm2' or $sentToConfirm2_12 == 'sendToConfirm2') &&
+                            in_array($admin_info['admin_id'], [$import['confirm2']])
+                        ) : ?>
+
+                            <input type="submit" class="btn btn-success btn-white btn-large btn-large2" name="sendToConfirm2" value="تایید">
+                            <input type="submit" class="btn btn-warning btn-white btn-large btn-large2" name="backToEdit" value="نیاز به اصلاح">
+
+                        <?php endif; ?>
+
+                        <?php // دکمه های مربوط به تایید کننده سوم
+                        if (
+                            ($sentToConfirm3_6 == 'sendToConfirm3' or $sentToConfirm3_12 == 'sendToConfirm3') &&
+                            in_array($admin_info['admin_id'], [$import['confirm3']])
+                        ) : ?>
+
+                            <input type="submit" class="btn btn-success btn-white btn-large btn-large2" name="sendToConfirm2" value="تایید">
+                            <input type="submit" class="btn btn-warning btn-white btn-large btn-large2" name="backToEdit" value="نیاز به اصلاح">
+
+                        <?php endif; ?>
                     </form>
                 </div>
             </div>
