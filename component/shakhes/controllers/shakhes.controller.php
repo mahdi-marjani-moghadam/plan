@@ -542,6 +542,7 @@ class shakhesController
         // ->keyBy('motevali')->select('import,motevali,status6,status12')->getList();
         $adminStatus = ($importStatus['export']['recordsCount'] > 0) ?  $importStatus['export']['list'] : array();
 
+        // dd($adminStatus);
 
 
         $this->fileName = 'shakhes.khodezhari.php';
@@ -625,7 +626,7 @@ class shakhesController
             foreach (array_unique($allMotevali) as $mot) {
 
                 $oo = $importStatusObj::getBy_import_and_motevali($admin_info['admin_id'], $mot)->get();
-                
+
 
                 if ($oo['export']['recordsCount'] == 0) {
                     $oo = new importStatus();
@@ -640,7 +641,6 @@ class shakhesController
                     $oo->$status = 'sendToConfirm1';
                     $oo->save();
                 }
-                
             }
 
 
@@ -664,8 +664,53 @@ class shakhesController
             $result['type'] = 'success';
             $messageStack->add_session('message', $result['msg'], $result['type']);
             redirectPage(RELA_DIR . 'admin/?component=shakhes&action=khodezhari' . '', $result['msg']);
-        } elseif (isset($post['confirm'])) {
-            /* فقط برای اونایی که تایید میخوان */
+        } elseif (isset($post['sendToConfirm2'])) {
+
+            // همه قلم ها مقدار دهی میشن
+            foreach ($post['import'] as $id => $item) {
+
+
+                // چک کردن مقادیر وارد شده
+                $result['msg'] = '';
+                if ($item[$val] == '') {
+                    $result['msg'] = "تمام فیلد ها می بایست پر شوند.  ";
+                } else if (!is_numeric($item[$val])) {
+                    $result['msg'] = ". صحیح نمی باشد {$item[$val]} مقدار وارد شده  ";
+                }
+                if ($result['msg'] != '') {
+                    $result['type'] = 'error';
+                    $messageStack->add_session('message', $result['msg'], $result['type']);
+                    redirectPage(RELA_DIR . 'admin/?component=shakhes&action=khodezhari&filterAdmin=' . $post['filterAdmin'] . '#topOfTable', $result['msg']);
+                }
+
+
+                // $import = $importObj->find($id);
+
+                // $import->$val = $item[$val];
+                // $import->$tozihat = $item[$tozihat];
+                // $import->year = explode('/', convertDate(date('Y')))[0];
+                // $import->save();
+
+                //برای اپدیت وضعیت متولی ها
+                $allMotevali[$id]['motevali'] = $import->motevali_admin_id;
+                $allMotevali[$id]['import'] = $import->import;
+            }
+
+            //آپدیت وضعیت متولی
+            foreach (array_unique($allMotevali) as $mot) {
+
+                $oo = $importStatusObj::getBy_import_and_motevali($mot['import'], $mot['motevali'])->get();
+
+                $oo = $oo['export']['list'][0];
+                $oo->$status = 'sendToConfirm2';
+                $oo->save();
+            }
+
+
+            $result['msg'] = '. ارسال به واحد بالا انجام شد';
+            $result['type'] = 'success';
+            $messageStack->add_session('message', $result['msg'], $result['type']);
+            redirectPage(RELA_DIR . 'admin/?component=shakhes&action=khodezhari&filterAdmin=' . $post['filterAdmin'] . '#topOfTable', $result['msg']);
         }
     }
 

@@ -168,10 +168,11 @@
                             foreach ($imports as $import) :
                                 $status6 = $adminStatus[$import['motevali_admin_id']]['status6'];
                                 $status12 = $adminStatus[$import['motevali_admin_id']]['status12'];
+                                // echo $status12.'sssss';die();
 
                                 // وقتی یکی از تایید کنندگان میاد
                                 if (
-                                    ($status6 == 'sentToConfirm1' or $status12 == 'sentToConfirm1') &&
+                                    ($status6 == 'sendToConfirm1' or $status12 == 'sendToConfirm1' ) &&
                                     in_array($admin_info['admin_id'], [$import['confirm1'], $import['confirm2'], $import['confirm3']])
                                 ) : ?>
                                     <input type="hidden" name="imports[]" value="<?= $import['id'] ?>">
