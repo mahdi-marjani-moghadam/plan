@@ -264,10 +264,11 @@
                                 (($adminStatus[$import['motevali_admin_id']]['status12'] == '0' || $adminStatus[$import['motevali_admin_id']]['status12'] == 'backToEdit') && STEP_FORM1 >= 3)) &&
                             in_array($admin_info['admin_id'], [$import['import']])
                         ) : ?>
+                            
+                            <input type="submit" class="btn btn-info btn-white btn-large btn-large2" name="temporary" value="ذخیره موقت" />
                             <?php if (isset($_GET['filterAdmin'])) : ?>
                                 <input type="submit" class="btn btn-success btn-white btn-large btn-large2" name="sendToConfirm1" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')" value="ارسال به مافوق" />
                             <?php endif; ?>
-                            <input type="submit" class="btn btn-info btn-white btn-large btn-large2" name="temporary" value="ذخیره موقت" />
                         <?php endif; ?>
 
 
