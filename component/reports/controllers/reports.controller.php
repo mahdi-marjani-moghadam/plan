@@ -2339,7 +2339,7 @@ WHERE group_list.faaliat_id = $faaliat_id and  group_list.parent_id = {$temp[$id
         $admin->getAll()->select('admin_id,name,family,group_admin,parent_id');
         $admin->keyBy('admin_id');
         $admin->where('parent_id','<>','0');
-        $admin->orderBy('groups,flag','asc');
+        $admin->orderBy('`groups`,flag','asc');
 
 
 
@@ -2366,7 +2366,7 @@ WHERE group_list.faaliat_id = $faaliat_id and  group_list.parent_id = {$temp[$id
             if(isset($_GET['qq'])){
                 $admin->where('admin_id','in',$admin_id);
             }
-            $admin->orderBy('groups,flag','asc');
+            $admin->orderBy('`groups`,flag','asc');
 
         }
 

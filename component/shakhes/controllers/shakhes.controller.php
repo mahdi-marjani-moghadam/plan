@@ -214,12 +214,12 @@ class shakhesController
             if(isset($_GET['qq'])){
                 $admin->where('admin_id','in',$admin_id);
             }
-            $admin->orderBy('groups,flag','asc');
+            $admin->orderBy('`groups`,flag','asc');
             
         }
         
         $groups = $admin->getList()['export']['list'];
-
+        
         
 
 
@@ -276,7 +276,7 @@ class shakhesController
         return true;
 
     }
-    
+
     public function adminSetting()
     {
         global $admin_info, $PARAM, $messageStack;
