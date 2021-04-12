@@ -637,7 +637,7 @@ class shakhesController
 
                 $import->$val = $item[$val];
                 $import->$tozihat = $item[$tozihat];
-                $import->year = explode('/', convertDate(date('Y')))[0];
+//                $import->year = explode('/', convertDate(date('Y')))[0];
                 $import->save();
 
                 //برای اپدیت وضعیت متولی ها
