@@ -158,78 +158,85 @@ class shakhesController
         $this->template(compact('charts', 'list', 'ghalam', 'admins'));
         die();
     }
-    
-    public function showList(){
+
+    public function showList()
+    {
         global $admin_info;
 
         /** filter by q  */
         $admin_id = $admin_info['admin_id'];
         $parent_id = $admin_info['parent_id'];
         $group_admin = $admin_info['group_admin'];
-        include_once ROOT_DIR.'component/admin/model/admin.model.php';
-        if($admin_info['parent_id'] == 0){
+        include_once ROOT_DIR . 'component/admin/model/admin.model.php';
+        if ($admin_info['parent_id'] == 0) {
             /** login by manager */
-            
+
             $admin_id = '';
-            $parent_id = trim($_GET['qq'],',');
+            $parent_id = trim($_GET['qq'], ',');
             $admin = new admin();
             $adminsinfo = $admin->getAll()
-            ->select('admin_id,parent_id,group_admin')
-            ->where('parent_id','in',$parent_id)
-            ->getList()['export']['list'];
-            foreach ($adminsinfo as $admininfo){
-                $admin_id    .= $admininfo['admin_id'].',';
+                ->select('admin.admin_id, admin.parent_id, admin.group_admin')
+                ->where('parent_id', 'in', $parent_id)
+                ->getList()['export']['list'];
+            foreach ($adminsinfo as $admininfo) {
+                $admin_id    .= $admininfo['admin_id'] . ',';
             }
-            $admin_id = trim($admin_id,',').','.$parent_id;
-            
+            $admin_id = trim($admin_id, ',') . ',' . $parent_id;
         }
 
         $admin = new admin();
 
-        $admin->getAll()->select('admin_id,name,family,group_admin,parent_id');
+        $admin->select('admin.admin_id, admin.name, admin.family, admin.group_admin, admin.parent_id');
         $admin->keyBy('admin_id');
-        $admin->where('parent_id','<>','0');
-        $admin->orderBy('`groups`,`flag`','asc');
-        
-        if($group_admin == 1 && $parent_id !=0)
-        {
+        $admin->leftJoin('sh_import_status', 'admin.admin_id', '=', 'sh_import_status.motevali');
+        $admin->where('admin.parent_id', '<>', '0');
+        $admin->orderBy('`groups`,`flag`', 'asc');
+
+        if ($group_admin == 1 && $parent_id != 0) {
             /** login by daneshkade get danesdhkae and group */
-            $admin->andWhere('parent_id','=',$parent_id);
-            
+            $admin->andWhere('admin.parent_id', '=', $parent_id);
+
             /** get tajmi admin*/
-            $admin->orWhere('admin_id','=',$parent_id);
-        }
-        else if($admin_info['group_admin'] != 1 )
-        {
+            $admin->orWhere('admin.admin_id', '=', $parent_id);
+        } else if ($admin_info['group_admin'] != 1) {
             /** login by group */
-            $admin->andWhere('admin_id','=',$admin_id);
+            $admin->andWhere('admin.admin_id', '=', $admin_id);
         }
-        
-        if($admin_info['parent_id']==0 && isset($_GET['qq'])){
+
+        if ($admin_info['parent_id'] == 0 && isset($_GET['qq'])) {
             /** login by manager */
             $admin = new admin();
-            
-            $admin->getAll()->select('admin_id,name,family,group_admin,parent_id');
+
+            $admin->select('admin.admin_id,admin.name,admin.family,admin.group_admin,admin.parent_id');
             $admin->keyBy('admin_id');
-            if(isset($_GET['qq'])){
-                $admin->where('admin_id','in',$admin_id);
+            if (isset($_GET['qq'])) {
+                $admin->where('admin.admin_id', 'in', $admin_id);
             }
-            $admin->orderBy('`groups`,flag','asc');
-            
+            $admin->orderBy('`groups`,flag', 'asc');
         }
-        
+
+        //
+        $admin->orWhere('sh_import_status.motevali', '=', $admin_info['admin_id']);
+        $admin->orWhere('sh_import_status.import', '=', $admin_info['admin_id']);
+        $admin->orWhere('sh_import_status.confirm1', '=', $admin_info['admin_id']);
+        $admin->orWhere('sh_import_status.confirm2', '=', $admin_info['admin_id']);
+        $admin->orWhere('sh_import_status.confirm3', '=', $admin_info['admin_id']);
+
+
+
         $groups = $admin->getList()['export']['list'];
-        
-        
+
+        // dd($groups);
+        // dd($admin);
+
 
 
 
         /** season */
-        $rules = array('STEP_FORM1','STEP_FORM2','STEP_FORM3','STEP_FORM4');
-        if(in_array($_GET['s'],$rules)){
-            $season = str_replace('STEP_FORM','',handleData($_GET['s']));
-        }
-        else{
+        $rules = array('STEP_FORM1', 'STEP_FORM2', 'STEP_FORM3', 'STEP_FORM4');
+        if (in_array($_GET['s'], $rules)) {
+            $season = str_replace('STEP_FORM', '', handleData($_GET['s']));
+        } else {
             $season = '1';
         }
 
@@ -238,22 +245,22 @@ class shakhesController
         /** admins filter */
         $list['showAdmin'] = $this->showAdmin();
 
-        
+
         // اول بدست آوردن بچه ها از جدول admin , import_status
-        
 
 
-        
+
+
         //دوم بدست آوردن قلم ها از جدول import
-        
-        
+
+
         // سوم برای بدست آوردن شاخص ها از جدول ghalam_shakhes , shakhes
-        
-        
+
+
         //وزن ها 
-        
+
         $this->fileName = 'shakhes.showList.php';
-        $this->template(compact('reports','groups','list','season','child','kalanTahlilArray'));
+        $this->template(compact('reports', 'groups', 'list', 'season', 'child', 'kalanTahlilArray'));
         die();
     }
 
@@ -261,12 +268,12 @@ class shakhesController
     private function showAdmin()
     {
         global $admin_info;
-        if($admin_info['parent_id'] == 0){
-            include_once ROOT_DIR.'component/admin/model/admin.model.php';
+        if ($admin_info['parent_id'] == 0) {
+            include_once ROOT_DIR . 'component/admin/model/admin.model.php';
             $objAdmin = new admin();
             $result3 = $objAdmin->getAll()
                 ->select('admin_id,name,family')
-                ->where('parent_id','=',1);
+                ->where('parent_id', '=', 1);
 
             $result3 = $result3->getList();
 
@@ -274,7 +281,6 @@ class shakhesController
             return $list['showAdmin'];
         }
         return true;
-
     }
 
     public function adminSetting()
@@ -734,7 +740,7 @@ class shakhesController
 
                 $import->$val = $item[$val];
                 $import->$tozihat = $item[$tozihat];
-//                $import->year = explode('/', convertDate(date('Y')))[0];
+                //                $import->year = explode('/', convertDate(date('Y')))[0];
                 $import->save();
 
                 //برای اپدیت وضعیت متولی ها
