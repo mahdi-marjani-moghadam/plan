@@ -41,6 +41,8 @@
                             <td>وارد کننده</td>
                             <td>تایید کننده اول</td>
                             <td>تایید کننده دوم</td>
+                            <td>تایید کننده سوم</td>
+                            <td>تایید کننده چهارم</td>
                         </tr>
                         <?php foreach ($import as $item) : ?>
                             <tr>
@@ -87,6 +89,15 @@
                                     <select name="import[<?= $item['id'] ?>][confirm3]">
                                         <?php foreach ($admins as $admin) : ?>
                                             <option value="<?= $admin['admin_id'] ?>" <?php echo ($admin['admin_id'] == $item['confirm3']) ? 'selected' : ''; ?>>
+                                                <?= $admin['name'] . ' ' . $admin['family'] ?>
+                                            </option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="import[<?= $item['id'] ?>][confirm4]">
+                                        <?php foreach ($admins as $admin) : ?>
+                                            <option value="<?= $admin['admin_id'] ?>" <?php echo ($admin['admin_id'] == $item['confirm4']) ? 'selected' : ''; ?>>
                                                 <?= $admin['name'] . ' ' . $admin['family'] ?>
                                             </option>
                                         <?php endforeach ?>
