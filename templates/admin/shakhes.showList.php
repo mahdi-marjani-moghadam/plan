@@ -44,9 +44,9 @@
 
         /** change admin event */
         $('#admin').change(function() {
-
+            
             var adminId = ',' + $(this).val() + ',';
-            if ($(this).val() == 0) {
+            if ($(this).val() == 0 || $(this).val() == null) {
                 location.href = window.location.origin + '/admin/?component=shakhes'
                 <?= (isset($_GET['s'])) ? "+'&s=" . $_GET['s'] . "'" : ''; ?>;
             } else {
@@ -86,7 +86,6 @@
                 <option value="STEP_FORM4" <?= ($_GET['s'] == 'STEP_FORM4') ? 'selected' : ''; ?>>یکساله</option>
             </select>
         </div>
-        <? if ($admin_info['parent_id'] == 0) : ?>
         <div class="col-md-2 col-sm-6 col-xs-12">
             <label for="result">واحد :</label>
             <select id="admin" multiple>
@@ -98,7 +97,6 @@
                 <? endforeach; ?>
             </select>
         </div>
-        <? endif; ?>
         <div class="col-md-1 col-xs-12  pull-left">
             <input type='button' class="btn btn-default btn-block pull-left" style="" id='btn' value='Print' onclick='printDiv();'>
             <style>
@@ -256,8 +254,8 @@
                         <thead>
                             <tr style="text-align: center">
 
-                                <td width="50" style="background-color: #5f9846; color:#fff; " rowspan="2">هدف</td>
-                                <td width="50" style="background-color: #5f9846; color:#fff; " rowspan="2">اقلام</td>
+                                <td width="50" style="background-color: #5f9846; color:#fff; " rowspan="2">شاخص</td>
+                                <td width="50" style="background-color: #5f9846; color:#fff; " rowspan="2">قلم</td>
 
                                 <td width="300" style="background-color: #45639b; color:#fff; " colspan="<?= count($groups) ?>">خوداظهاری</td>
                                 <td width="300" style="background-color: #654c97; color:#fff; " colspan="<?= count($groups) ?>">نهایی(تائیدشده)</td>

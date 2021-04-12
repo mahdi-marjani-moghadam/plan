@@ -354,6 +354,11 @@ class DB {
         return $this->_addWhereOn($cond1, $operand, $cond2, '', 'where');
     }
 
+    public function whereOpen($cond1, $operand, $cond2) {
+        return $this->_addWhereOn($cond1, $operand, $cond2, '', 'where','(');
+    }
+
+
     public function andWhereOpen($cond1, $operand, $cond2) {
         return $this->_addWhereOn($cond1, $operand, $cond2, 'AND', 'where','(');
     }
