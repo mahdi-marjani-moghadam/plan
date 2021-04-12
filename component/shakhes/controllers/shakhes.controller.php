@@ -113,8 +113,9 @@ class shakhesController
         ا ۶ تا جدول به ازا اهداف داشته باشیم
         اونایی که group_admin اونها ۱ باشه میتونن همه رو ببینن
      */
-    public function showList()
+    public function showListOld()
     {
+        die(1);
         global $admin_info;
 
         include ROOT_DIR . "component/shakhes/model/shakhes.model.php";
@@ -153,6 +154,27 @@ class shakhesController
 
 
 
+        $this->fileName = 'shakhes.showListOld.php';
+        $this->template(compact('charts', 'list', 'ghalam', 'admins'));
+        die();
+    }
+    
+    public function showList(){
+        global $admin_info;
+
+        // اول بدست آوردن بچه ها از جدول admin , import_status
+        
+
+
+        
+        //دوم بدست آوردن قلم ها از جدول import
+        
+        
+        // سوم برای بدست آوردن شاخص ها از جدول ghalam_shakhes , shakhes
+        
+        
+        //وزن ها 
+        
         $this->fileName = 'shakhes.showList.php';
         $this->template(compact('charts', 'list', 'ghalam', 'admins'));
         die();
