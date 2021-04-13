@@ -106,6 +106,35 @@ class shakhesController
         //print_r_debug($childs);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /**
         اول باید اهداف اون ادمینی که اومده تو رو ببینیم
         بعد شاخص این ادمینی که اومده بیرون میکشیم
@@ -159,6 +188,9 @@ class shakhesController
         die();
     }
 
+
+
+
     public function showList()
     {
         global $admin_info;
@@ -180,18 +212,16 @@ class shakhesController
         $list['showAdmin'] = $this->showAdmin();
 
 
-
-
         //دوم بدست آوردن قلم ها از جدول import
-
+        $ghalams = $this->getGhalam($groups);
 
         // سوم برای بدست آوردن شاخص ها از جدول ghalam_shakhes , shakhes
-
+        $shakhes = $this->getShakhesByGhalam($ghalams);
 
         //وزن ها 
 
         $this->fileName = 'shakhes.showList.php';
-        $this->template(compact('reports', 'groups', 'list', 'season', 'child', 'kalanTahlilArray'));
+        $this->template(compact('shakhes', 'groups', 'list', 'season', 'child', 'kalanTahlilArray'));
         die();
     }
 
@@ -215,7 +245,7 @@ class shakhesController
         $admin->orderBy('`groups`,`flag`', 'asc');
 
 
-        $admin->whereOpen('admin.parent_id', '<>', '0');// <> 1
+        $admin->whereOpen('admin.parent_id', '<>', '0'); // <> 1
 
 
         if ($group_admin == 1 && $parent_id != 0) {
@@ -240,22 +270,20 @@ class shakhesController
 
         if (isset($_GET['qq'])) {
 
-            
-            
-                $admin_id = '';
-                $parent_id = trim($_GET['qq'], ',');
-                $admin2 = $admin;
-                $adminsinfo = $admin2->getAll()->select('admin.admin_id, admin.parent_id, admin.group_admin')
-                    ->where('parent_id', 'in', $parent_id)
-                    ->getList()['export']['list'];
-                foreach ($adminsinfo as $admininfo) {
-                    $admin_id    .= $admininfo['admin_id'] . ',';
-                }
-                $admin_id = trim($admin_id, ',') . ',' . $parent_id;
-    
-                $admin->andWhere('admin.admin_id', 'in', $admin_id);
-                
-            
+
+
+            $admin_id = '';
+            $parent_id = trim($_GET['qq'], ',');
+            $admin2 = $admin;
+            $adminsinfo = $admin2->getAll()->select('admin.admin_id, admin.parent_id, admin.group_admin')
+                ->where('parent_id', 'in', $parent_id)
+                ->getList()['export']['list'];
+            foreach ($adminsinfo as $admininfo) {
+                $admin_id    .= $admininfo['admin_id'] . ',';
+            }
+            $admin_id = trim($admin_id, ',') . ',' . $parent_id;
+
+            $admin->andWhere('admin.admin_id', 'in', $admin_id);
         }
 
 
@@ -268,8 +296,6 @@ class shakhesController
 
     private function showAdmin()
     {
-        // global $admin_info;
-        // if ($admin_info['parent_id'] == 0) {
         include_once ROOT_DIR . 'component/admin/model/admin.model.php';
         $objAdmin = new admin();
         $result3 = $objAdmin->getAll()
@@ -280,9 +306,62 @@ class shakhesController
 
         $list['showAdmin'] = $result3['export']['list'];
         return $list['showAdmin'];
-        // }
-        // return true;
     }
+
+
+    public function getGhalam($admins)
+    {
+        include_once ROOT_DIR . 'component/shakhes/model/import.model.php';
+        $import = new import();
+        $import->select('sh_import.ghalam_id,sh_ghalam.ghalam');
+        $import->keyBy('ghalam_id');
+        $import->leftJoin('sh_ghalam', 'sh_ghalam.ghalam_id', '=', 'sh_import.ghalam_id');
+        $import->where('sh_import.motevali_admin_id', 'in', implode(',', array_column($admins, 'admin_id')));
+        $ghalam = $import->getList()['export']['list'];
+
+        return $ghalam;
+    }
+
+    public function getShakhesByGhalam($ghalams)
+    {
+
+        include_once ROOT_DIR . 'component/shakhes/model/rel.ghalam.shakhes.model.php';
+        $relGhalamShakhes = new relGhalamShakhes();
+        $relGhalamShakhes->select('distinct sh_shakhes.shakhes, sh_rel_kalan_shakhes.kalan_no');
+        $relGhalamShakhes->leftJoin('sh_shakhes', 'sh_shakhes.shakhes_id', '=', 'sh_rel_ghalam_shakhes.shakhes_id');
+        $relGhalamShakhes->leftJoin('sh_rel_kalan_shakhes', 'sh_rel_kalan_shakhes.shakhes_id', '=', 'sh_rel_ghalam_shakhes.shakhes_id');
+        $relGhalamShakhes->where('sh_rel_ghalam_shakhes.ghalam_id', 'in', implode(',', array_column($ghalams, 'ghalam_id')));
+        $shakhes = $relGhalamShakhes->getList()['export']['list'];
+
+        // dd($relGhalamShakhes);
+        // dd($shakhes);
+
+        return $shakhes;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function adminSetting()
     {
@@ -1211,10 +1290,10 @@ class shakhesController
         global $messageStack, $admin_info, $dataStack;
         $result = array();
         $post = $_POST;
-
+        
         include_once ROOT_DIR . 'component/shakhes/model/ruydad.model.php';
         $ruydadObj = new ruydad;
-
+        
         if ($this->time['import_time'] == -1) {
             $result['type'] = 'error';
             $dataStack->add_session('data', $post);
@@ -1222,7 +1301,8 @@ class shakhesController
             $messageStack->add_session('message', $msg, $result['type']);
             redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $msg);
         }
-
+        
+        
         /* ارسال فرم */
         if (isset($post['temporary']) || isset($post['edit'])) {
             /* اگه فرم درست پر نشه ارور بده */
@@ -1478,9 +1558,9 @@ class shakhesController
 
     private function onSubmitZirGhalam($class, $post)
     {
-        if (isset($post['sendToConfirm1'])) {
+        if (isset($post['sendToParent'])) {
             /* فقط برای اونایی که تایید میخوان */
-            $obj = $class::find((int)$post['sendToConfirm1']);
+            $obj = $class::find((int)$post['sendToParent']);
             $obj->status = 2;
             $obj->save();
 

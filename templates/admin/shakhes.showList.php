@@ -204,12 +204,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <? foreach ($reports as $kalan_no => $kalan_value) : ?>
-                            <? foreach ($kalan_value['amaliatis'] as $amaliati_no => $amaliati_value) : ?>
-                            <? foreach ($amaliati_value['eghdams'] as $eghdam_id => $eghdam_value) : ?>
+                            <? foreach ($shakhes as $shakhes_id => $sh) : ?>
                             <tr>
-                                <td class="text-center"><?= $kalan_no ?></td>
-                                <td><?= $eghdam_value['eghdam_name'] ?></td>
+                                <td class="text-center"><?= $sh['kalan_no'] ?></td>
+                                <td><?= $sh['shakhes'] ?></td>
                                 <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
                                 <td>
                                     <?
@@ -224,8 +222,6 @@
                                 </td>
                                 <? endforeach; ?>
                             </tr>
-                            <? endforeach; ?>
-                            <? endforeach; ?>
                             <? endforeach; ?>
 
 
