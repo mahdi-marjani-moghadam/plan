@@ -1038,7 +1038,7 @@ class shakhesController
         $jalasatObj = new jalasat;
 
         $jalasatObj->select('sh_jalasat.*,sh_forms_permission.confirm1,sh_forms_permission.confirm2');
-        $jalasatObj->where('sh_jalasat.admin_id', 'in', $importAdmins)->orWhere('sh_jalasat.import_admin', 'in', $importAdmins);
+        $jalasatObj->where('sh_jalasat.admin_id', 'in', $importAdmins['admins'])->orWhere('sh_jalasat.import_admin', 'in', $importAdmins['admins']);
         $jalasatObj->leftJoin('sh_forms_permission', 'sh_forms_permission.import_admin', '=', 'sh_jalasat.import_admin');
         $jalasatObj->orderBy('id', 'desc');
         $jalasat = $jalasatObj->getList()['export'];
@@ -1067,7 +1067,7 @@ class shakhesController
 
 
         $this->fileName = 'shakhes.jalasat.php';
-        $this->template(compact('jalasat', 'msg', 'data'));
+        $this->template(compact('jalasat', 'msg', 'data','importAdmins'));
         die();
     }
 
@@ -1158,7 +1158,7 @@ class shakhesController
             $jalasatObj->status = 1;
             $jalasatObj->import_admin = $admin_info['admin_id'];
             $jalasatObj->save();
-
+            // dd($jalasatObj);
             $result['msg'] = (isset($post['edit'])) ? 'ویرایش انجام شد' : 'ثبت موقت انجام شد.';
             $result['type'] = (isset($post['edit'])) ? 'success' : 'warning';
         } else {
@@ -1196,7 +1196,7 @@ class shakhesController
         $daneshamukhteObj = new daneshamukhte;
 
         $daneshamukhteObj->select('sh_daneshamukhte.*,sh_forms_permission.confirm1,sh_forms_permission.confirm2');
-        $daneshamukhteObj->where('sh_daneshamukhte.admin_id', 'in', $importAdmins)->orWhere('sh_daneshamukhte.import_admin', 'in', $importAdmins);
+        $daneshamukhteObj->where('sh_daneshamukhte.admin_id', 'in', $importAdmins['admins'])->orWhere('sh_daneshamukhte.import_admin', 'in', $importAdmins['admins']);
         $daneshamukhteObj->leftJoin('sh_forms_permission', 'sh_forms_permission.import_admin', '=', 'sh_daneshamukhte.import_admin');
         $daneshamukhteObj->orderBy('id', 'desc');
         $daneshamukhte = $daneshamukhteObj->getList()['export'];
@@ -1227,7 +1227,7 @@ class shakhesController
 
 
         $this->fileName = 'shakhes.daneshamukhte.php';
-        $this->template(compact('daneshamukhte', 'msg', 'data'));
+        $this->template(compact('daneshamukhte', 'msg', 'data','importAdmins'));
         die();
     }
 
@@ -1533,7 +1533,7 @@ class shakhesController
         $shoraObj = new shora;
 
         $shoraObj->select('sh_shora.*,sh_forms_permission.confirm1,sh_forms_permission.confirm2');
-        $shoraObj->where('.sh_shora.admin_id', 'in', $importAdmins)->orWhere('sh_shora.import_admin', 'in', $importAdmins);
+        $shoraObj->where('.sh_shora.admin_id', 'in', $importAdmins['admins'])->orWhere('sh_shora.import_admin', 'in', $importAdmins['admins']);
         $shoraObj->leftJoin('sh_forms_permission', 'sh_forms_permission.import_admin', '=', 'sh_shora.import_admin');
         $shoraObj->orderBy('id', 'desc');
         $shora = $shoraObj->getList()['export'];
@@ -1566,7 +1566,7 @@ class shakhesController
 
 
         $this->fileName = 'shakhes.shora.php';
-        $this->template(compact('shora', 'msg', 'data'));
+        $this->template(compact('shora', 'msg', 'data','importAdmins'));
         die();
     }
 
