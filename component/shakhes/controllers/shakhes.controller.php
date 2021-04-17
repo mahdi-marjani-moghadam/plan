@@ -1838,8 +1838,8 @@ class shakhesController
 
         $result['start_date'] = $adminStatusObj->start_date;
         $result['finish_date'] = $adminStatusObj->finish_date;
-        $result['start_date_confirm'] = $adminStatusObj->start_date_confirm;
-        $result['finish_date_confirm'] = $adminStatusObj->finish_date_confirm;
+        // $result['start_date_confirm'] = $adminStatusObj->start_date_confirm;
+        // $result['finish_date_confirm'] = $adminStatusObj->finish_date_confirm;
         $result['status6'] = $adminStatusObj->status6;
         $result['status12'] = $adminStatusObj->status12;
 
@@ -1849,11 +1849,11 @@ class shakhesController
         } else {
             $result['import_time'] = -1;
         }
-        if (date('Y-m-d') >= $adminStatusObj->start_date_confirm && date('Y-m-d') <= $adminStatusObj->finish_date_confirm) {
-            $result['confirm_time'] = 1;
-        } else {
-            $result['confirm_time'] = -1;
-        }
+        // if (date('Y-m-d') >= $adminStatusObj->start_date_confirm && date('Y-m-d') <= $adminStatusObj->finish_date_confirm) {
+        //     $result['confirm_time'] = 1;
+        // } else {
+        //     $result['confirm_time'] = -1;
+        // }
 
 
         return $result;

@@ -161,7 +161,7 @@
                                         <? endif;?>
                                     <? endif;?>
                                 <? endif;?>
-                                <?php if ($this->time['confirm_time'] == 1): ?>
+                                <?php if ($this->time['import_time'] == 1): ?>
                                     <?php if ($admin_info['admin_id'] == $v['confirm1']):?>
                                         <?php if ($v['status'] == 2):?>
                                         <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=shora&edit" method="post">
