@@ -1037,9 +1037,8 @@ class shakhesController
         include_once ROOT_DIR . 'component/shakhes/model/jalasat.model.php';
         $jalasatObj = new jalasat;
 
-        $jalasatObj->select('sh_jalasat.*,sh_forms_permission.confirm1,sh_forms_permission.confirm2');
+        $jalasatObj->select('sh_jalasat.*');
         $jalasatObj->where('sh_jalasat.admin_id', 'in', $importAdmins['admins'])->orWhere('sh_jalasat.import_admin', 'in', $importAdmins['admins']);
-        $jalasatObj->leftJoin('sh_forms_permission', 'sh_forms_permission.import_admin', '=', 'sh_jalasat.import_admin');
         $jalasatObj->orderBy('id', 'desc');
         $jalasat = $jalasatObj->getList()['export'];
 
@@ -1195,9 +1194,8 @@ class shakhesController
         include_once ROOT_DIR . 'component/shakhes/model/daneshamukhte.model.php';
         $daneshamukhteObj = new daneshamukhte;
 
-        $daneshamukhteObj->select('sh_daneshamukhte.*,sh_forms_permission.confirm1,sh_forms_permission.confirm2');
+        $daneshamukhteObj->select('sh_daneshamukhte.*');
         $daneshamukhteObj->where('sh_daneshamukhte.admin_id', 'in', $importAdmins['admins'])->orWhere('sh_daneshamukhte.import_admin', 'in', $importAdmins['admins']);
-        $daneshamukhteObj->leftJoin('sh_forms_permission', 'sh_forms_permission.import_admin', '=', 'sh_daneshamukhte.import_admin');
         $daneshamukhteObj->orderBy('id', 'desc');
         $daneshamukhte = $daneshamukhteObj->getList()['export'];
 
@@ -1532,9 +1530,8 @@ class shakhesController
         include_once ROOT_DIR . 'component/shakhes/model/shora.model.php';
         $shoraObj = new shora;
 
-        $shoraObj->select('sh_shora.*,sh_forms_permission.confirm1,sh_forms_permission.confirm2');
+        $shoraObj->select('sh_shora.*');
         $shoraObj->where('.sh_shora.admin_id', 'in', $importAdmins['admins'])->orWhere('sh_shora.import_admin', 'in', $importAdmins['admins']);
-        $shoraObj->leftJoin('sh_forms_permission', 'sh_forms_permission.import_admin', '=', 'sh_shora.import_admin');
         $shoraObj->orderBy('id', 'desc');
         $shora = $shoraObj->getList()['export'];
 
