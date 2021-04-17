@@ -162,16 +162,16 @@
                                     <? endif;?>
                                 <? endif;?>
                                 <?php if ($this->time['import_time'] == 1): ?>
-                                    <?php if ($admin_info['admin_id'] == $v['confirm1']):?>
+                                    <? if($admin_info['admin_id'] == $importAdmins['confirms'][$v['admin_id']]['confirm1']): ?>
                                         <?php if ($v['status'] == 2):?>
                                         <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=shora&edit" method="post">
                                                 <button name="edit" value="<?= $v['id'] ?>" onclick="return confirm('مطمئن هستید که نیازمند اصلاح می باشد؟')"
                                                     class="btn btn-block btn-xs btn-warning pull-right">نیازمند اصلاح</button>
                                         </form>
-                                        <!--<form action="<?/*= RELA_DIR */?>admin/?component=shakhes&action=shora&confirm" method="post">
-                                            <button name="confirm"  value="<?/*= $v['id'] */?>" onclick="return confirm('آیا از تائید مطمئن هستید؟')"
+                                        <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=shora&confirm" method="post">
+                                            <button name="confirm"  value="<?= $v['id'] ?>" onclick="return confirm('آیا از تائید مطمئن هستید؟')"
                                                     class="btn btn-xs btn-block btn-success pull-right">تایید</button>
-                                        </form>-->
+                                        </form>
                                         <?php else:?>
                                             <?= ($v['status'] == 3) ? 'تایید توسط مافوق' : '' ?>
                                             <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>
@@ -179,7 +179,7 @@
                                     <?php endif;?>
 
 
-                                    <?php if ($admin_info['admin_id'] == $v['confirm2']):?>
+                                    <? if($admin_info['admin_id'] == $importAdmins['confirms'][$v['admin_id']]['confirm2']): ?>
                                         <?php if ($v['status'] == 3):?>
                                         <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=shora&confirmFinal" method="post">
                                             <button name="confirmFinal"  value="<?= $v['id'] ?>" onclick="return confirm('آیا از تائید مطمئن هستید؟')"
