@@ -262,8 +262,8 @@
                                     
                                     <? if($admin_info['admin_id'] == $importAdmins['confirms'][$v['admin_id']]['confirm1']): ?>
                                         <? if($v['status'] == 2 ): ?>
-                                        <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad&edit" method="post">
-                                            <button name="edit" value="<?= $v['id'] ?>" onclick="return confirm('مطمئن هستید که نیازمند اصلاح می باشد؟')"
+                                        <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad&sendToEdit" method="post">
+                                            <button name="sendToEdit" value="<?= $v['id'] ?>" onclick="return confirm('مطمئن هستید که نیازمند اصلاح می باشد؟')"
                                                     class="btn btn-block btn-xs btn-warning pull-right">نیازمند اصلاح</button>
                                         </form>
                                         <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad&confirm" method="post">

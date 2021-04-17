@@ -1687,8 +1687,8 @@ class shakhesController
             $result['obj'] = $obj;
             $result['msg'] = '. ارسال به مافوق انجام شد';
             $result['type'] = 'success';
-        } elseif (isset($post['edit'])) {
-            $obj = $class::find((int)$post['edit']);
+        } elseif (isset($post['sendToEdit'])) {
+            $obj = $class::find((int)$post['sendToEdit']);
             $obj->status = 1;
             $obj->save();
 
