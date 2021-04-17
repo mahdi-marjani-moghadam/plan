@@ -258,16 +258,18 @@
                                 <? endif;?>
                                 
                                 <?php if ($this->time['import_time'] == 1): ?>
-                                    <? if($admin_info['admin_id'] == $v['confirm1']):?>
-                                        <? if($v['status'] == 2 ):?>
+
+                                    
+                                    <? if($admin_info['admin_id'] == $importAdmins['confirms'][$v['admin_id']]['confirm1']): ?>
+                                        <? if($v['status'] == 2 ): ?>
                                         <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad&edit" method="post">
                                             <button name="edit" value="<?= $v['id'] ?>" onclick="return confirm('مطمئن هستید که نیازمند اصلاح می باشد؟')"
                                                     class="btn btn-block btn-xs btn-warning pull-right">نیازمند اصلاح</button>
                                         </form>
-                                        <!--<form action="<?/*= RELA_DIR */?>admin/?component=shakhes&action=ruydad&confirm" method="post">
-                                            <button name="confirm"  value="<?/*= $v['id'] */?>" onclick="return confirm('آیا از تائید مطمئن هستید؟')"
+                                        <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad&confirm" method="post">
+                                            <button name="confirm"  value="<?= $v['id'] ?>" onclick="return confirm('آیا از تائید مطمئن هستید؟')"
                                                     class="btn btn-xs btn-block btn-success pull-right">تائید</button>
-                                        </form>-->
+                                        </form>
                                         <? else:?>
                                             <?= ($v['status'] == 3) ? 'تایید توسط مافوق' : '' ?>
                                             <?= ($v['status'] == 4) ? 'تایید نهایی ' : '' ?>
@@ -275,7 +277,7 @@
                                     <? endif;?>
 
 
-                                    <? if($admin_info['admin_id'] == $v['confirm2']):?>
+                                    <? if($admin_info['admin_id'] == $importAdmins['confirms'][$v['admin_id']]['confirm2']): ?>
                                         <? if($v['status'] == 3):?>
                                         <form action="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad&confirmFinal" method="post">
                                             <button name="confirmFinal"  value="<?= $v['id'] ?>" onclick="confirm('آیا از تائید مطمئن هستید؟')"

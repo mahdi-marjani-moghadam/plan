@@ -142,7 +142,7 @@ class shakhesController
         ا ۶ تا جدول به ازا اهداف داشته باشیم
         اونایی که group_admin اونها ۱ باشه میتونن همه رو ببینن
      */
-    
+
     public function showList()
     {
         global $admin_info;
@@ -165,10 +165,10 @@ class shakhesController
 
 
         //دوم بدست آوردن قلم ها از جدول import
-        $ghalamsPrev = $this->getGhalam($groups,1398);
-        $ghalamsNext = $this->getGhalam($groups,1399);
+        $ghalamsPrev = $this->getGhalam($groups, 1398);
+        $ghalamsNext = $this->getGhalam($groups, 1399);
 
-        
+
         // سوم برای بدست آوردن شاخص ها از جدول ghalam_shakhes , shakhes
         $shakhesPrev = $this->getShakhesByGhalam($ghalamsPrev);
         $shakhesNext = $this->getShakhesByGhalam($ghalamsNext);
@@ -181,13 +181,14 @@ class shakhesController
         $this->fileName = 'shakhes.showList.php';
         $this->template(compact(
             'shakhesNext',
-            'shakhesPrev', 
+            'shakhesPrev',
             'list',
-            'groups', 
-            'ghalams', 
-            'season', 
-            'child', 
-            'kalanTahlilArray'));
+            'groups',
+            'ghalams',
+            'season',
+            'child',
+            'kalanTahlilArray'
+        ));
         die();
     }
 
@@ -275,7 +276,7 @@ class shakhesController
     }
 
 
-    public function getGhalam($admins,$year='1399')
+    public function getGhalam($admins, $year = '1399')
     {
         include_once ROOT_DIR . 'component/shakhes/model/import.model.php';
         $import = new import();
@@ -292,7 +293,7 @@ class shakhesController
         // $import->keyBy('ghalam_id');
         $import->leftJoin('sh_ghalam', 'sh_ghalam.ghalam_id', '=', 'sh_import.ghalam_id');
         $import->where('sh_import.motevali_admin_id', 'in', implode(',', array_column($admins, 'admin_id')));
-        $import->andWhere('year','=','1399');
+        $import->andWhere('year', '=', '1399');
         $imports = $import->getList()['export']['list'];
         // dd($import);
 
@@ -362,7 +363,7 @@ class shakhesController
                     // dd($shakhes);
                     foreach ($gh['admins'] as $motevali => $import) {
                         $shakhes[$shakhes_id]['ghalams'][$ghalam_id]['ghalam'] = $import['ghalam'];
-                        
+
                         // dd($shakhes);
                         if ($type == 'equal') {
                             $shakhes[$shakhes_id]['ghalams'][$ghalam_id]['admins'][$motevali]['amalkard6'] = $import['value6'];
@@ -1035,8 +1036,12 @@ class shakhesController
         رو میبینه */
         include_once ROOT_DIR . 'component/shakhes/model/jalasat.model.php';
         $jalasatObj = new jalasat;
-        $jalasat = $jalasatObj->where('admin_id', 'in', $importAdmins)->orWhere('import_admin', 'in', $importAdmins)
-            ->orderBy('id', 'desc')->getList()['export'];
+
+        $jalasatObj->select('sh_jalasat.*,sh_forms_permission.confirm1,sh_forms_permission.confirm2');
+        $jalasatObj->where('sh_jalasat.admin_id', 'in', $importAdmins)->orWhere('sh_jalasat.import_admin', 'in', $importAdmins);
+        $jalasatObj->leftJoin('sh_forms_permission', 'sh_forms_permission.import_admin', '=', 'sh_jalasat.import_admin');
+        $jalasatObj->orderBy('id', 'desc');
+        $jalasat = $jalasatObj->getList()['export'];
 
         if (isset($_GET['id'])) {
             $data['id'] = $_GET['id'];
@@ -1189,8 +1194,12 @@ class shakhesController
 
         include_once ROOT_DIR . 'component/shakhes/model/daneshamukhte.model.php';
         $daneshamukhteObj = new daneshamukhte;
-        $daneshamukhte = $daneshamukhteObj->where('admin_id', 'in', $importAdmins)->orWhere('import_admin', 'in', $importAdmins)
-            ->orderBy('id', 'desc')->getList()['export'];
+
+        $daneshamukhteObj->select('sh_daneshamukhte.*,sh_forms_permission.confirm1,sh_forms_permission.confirm2');
+        $daneshamukhteObj->where('sh_daneshamukhte.admin_id', 'in', $importAdmins)->orWhere('sh_daneshamukhte.import_admin', 'in', $importAdmins);
+        $daneshamukhteObj->leftJoin('sh_forms_permission', 'sh_forms_permission.import_admin', '=', 'sh_daneshamukhte.import_admin');
+        $daneshamukhteObj->orderBy('id', 'desc');
+        $daneshamukhte = $daneshamukhteObj->getList()['export'];
 
 
         if (isset($_GET['id'])) {
@@ -1347,11 +1356,19 @@ class shakhesController
 
         $this->selectBoxAdmins('ruydad');
         $importAdmins = $this->importAdmins('ruydad');
+        // dd($importAdmins);
+        
+        $ruydadObj->select('sh_ruydad.*');
+        // $ruydadObj->leftJoin('sh_forms_permission', 'sh_forms_permission.admin_id', '=', 'sh_ruydad.import_admin');
+        $ruydadObj->where('sh_ruydad.admin_id', 'in', $importAdmins['admins'])->orWhere('sh_ruydad.import_admin', 'in', $importAdmins['admins']);
+        // $ruydadObj->andWhere('sh_forms_permission.table','=','ruydad');
+        $ruydadObj->orderBy('id', 'desc');
+        $ruydad = $ruydadObj->getList()['export'];
 
+        // $ruydad = $this->getFormsPermisstion($importAdmins,'ruydad');
 
-        $ruydad = $ruydadObj->where('admin_id', 'in', $importAdmins)->orWhere('import_admin', 'in', $importAdmins)
-            ->orderBy('id', 'desc')->getList()['export'];
-
+        // dd($ruydadObj);
+        // dd($ruydad);
 
         if (isset($_GET['id'])) {
             $data['id'] = $_GET['id'];
@@ -1377,7 +1394,7 @@ class shakhesController
         }
 
         $this->fileName = 'shakhes.ruydad.php';
-        $this->template(compact('ruydad', 'msg', 'data'));
+        $this->template(compact('ruydad', 'msg', 'data','importAdmins'));
         die();
     }
 
@@ -1475,7 +1492,7 @@ class shakhesController
             $ruydadObj->finishdate = convertJToGDate($ruydadObj->finishdate);
             $ruydadObj->import_admin = $admin_info['admin_id'];
             $ruydadObj->status = 0;
-            $ruydadObj->save(); 
+            $ruydadObj->save();
             // dd($ruydadObj);
 
             $result['msg'] = (isset($post['edit'])) ? 'ویرایش انجام شد' : 'ثبت موقت انجام شد.';
@@ -1514,8 +1531,14 @@ class shakhesController
 
         include_once ROOT_DIR . 'component/shakhes/model/shora.model.php';
         $shoraObj = new shora;
-        $shora = $shoraObj->where('admin_id', 'in', $importAdmins)->orWhere('import_admin', 'in', $importAdmins)
-            ->orderBy('id', 'desc')->getList()['export'];
+
+        $shoraObj->select('sh_shora.*,sh_forms_permission.confirm1,sh_forms_permission.confirm2');
+        $shoraObj->where('.sh_shora.admin_id', 'in', $importAdmins)->orWhere('sh_shora.import_admin', 'in', $importAdmins);
+        $shoraObj->leftJoin('sh_forms_permission', 'sh_forms_permission.import_admin', '=', 'sh_shora.import_admin');
+        $shoraObj->orderBy('id', 'desc');
+        $shora = $shoraObj->getList()['export'];
+
+        
 
         if (isset($_GET['id'])) {
             $data['id'] = $_GET['id'];
@@ -1804,13 +1827,29 @@ class shakhesController
                         or  p.confirm1 = {$admin_info['admin_id']}
                         or p.confirm2 = {$admin_info['admin_id']})";
 
-        $ids = array_column($jalasatObj->query($query)->getList()['export']['list'], 'admin_id');
+        $ids['admins'] = array_column($jalasatObj->query($query)->getList()['export']['list'], 'admin_id');
 
-        array_push($ids, $admin_info['admin_id']);
-        $ids = array_unique($ids);
+        array_push($ids['admins'], $admin_info['admin_id']);
+        $ids['admins'] = array_unique($ids['admins']);
+
+
+        include_once ROOT_DIR . 'component/shakhes/model/forms_permission.model.php';
+        $formsPermission = new formsPermission();
+
+        $formsPermission->select('admin_id,confirm1,confirm2');
+        $formsPermission->keyBy('admin_id');
+        $formsPermission->where('admin_id','in',$ids['admins']);
+        $formsPermission->andWhere('`table`','=',$table);
+        $ids['confirms'] = $formsPermission->getList()['export']['list'];
+
+
+        // dd($formsPermission);
+        
+        // dd($ids);
         return $ids;
     }
 
+    
     private function checkAdminStatus($adminId)
     {
         /* manager */
