@@ -44,7 +44,7 @@
 
         /** change admin event */
         $('#admin').change(function() {
-            
+
             var adminId = ',' + $(this).val() + ',';
             if ($(this).val() == 0 || $(this).val() == null) {
                 location.href = window.location.origin + '/admin/?component=shakhes'
@@ -60,7 +60,7 @@
     .table-cont1,
     .table-cont2,
     .table-cont3 {
-        max-height: 400px;
+        /* max-height: 400px; */
         overflow: auto;
     }
 </style>
@@ -79,15 +79,16 @@
 <div class="content-body">
     <div class="row">
 
-        <div class="col-md-2 col-sm-12 col-xs-12">
+        <div class="col-md-2 col-sm-4 col-xs-4">
             <label for="level">دوره ارزیابی:</label>
             <select name="season" id="level">
-                <option value="STEP_FORM2" <?= ($_GET['s'] == 'STEP_FORM2') ? 'selected' : ''; ?>>شش ماهه</option>
-                <option value="STEP_FORM4" <?= ($_GET['s'] == 'STEP_FORM4') ? 'selected' : ''; ?>>یکساله</option>
+                <option value="6" <?= ($_GET['s'] == '6') ? 'selected' : ''; ?>>شش ماهه</option>
+                <option value="12" <?= ($_GET['s'] == '12') ? 'selected' : ''; ?>>یکساله</option>
             </select>
         </div>
-        <div class="col-md-2 col-sm-6 col-xs-12">
-            <label for="result">واحد :</label>
+        <div class="col-md-2 col-sm-4 col-xs-4">
+            <label style="width: 100%;" for="result">واحد :</label>
+            
             <select id="admin" multiple>
                 <option value="0">انتخاب کنید</option>
                 <? foreach ($list['showAdmin'] as $k => $admins) : ?>
@@ -97,7 +98,7 @@
                 <? endforeach; ?>
             </select>
         </div>
-        <div class="col-md-1 col-xs-12  pull-left">
+        <div class="col-md-1 col-sm-1 col-xs-1  pull-left">
             <input type='button' class="btn btn-default btn-block pull-left" style="" id='btn' value='Print' onclick='printDiv();'>
             <style>
                 @media print {
@@ -174,6 +175,21 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <div class="row xsmallSpace"></div>
     <div id="panel-2" class="panel panel-default border-green">
         <div class="panel-heading bg-green">
@@ -194,31 +210,53 @@
                                 <td style="background-color: #5f9846; color:#fff; " rowspan="2">هدف</td>
                                 <td width="300" style="background-color: #5f9846; color:#fff; " rowspan="2">شاخص</td>
 
+                                <td width="300" style="background-color: #45639b; color:#fff; " colspan="<?= count($groups) ?>">خوداظهاری</td>
                                 <td style="background-color: #654c97; color:#fff; " colspan="<?= count($groups) ?>">نهایی(تائیدشده)</td>
                             </tr>
                             <tr style="text-align: center">
                                 <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
                                 <td><?= $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
                                 <? endforeach; ?>
-                                
+                                <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
+                                <td><?= $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
+                                <? endforeach; ?>
+
                             </tr>
                         </thead>
                         <tbody>
-                            <? foreach ($shakhes as $shakhes_id => $sh) : ?>
+                            <? foreach ($shakhesNext as $shakhes_id => $sh) : ?>
                             <tr>
                                 <td class="text-center"><?= $sh['kalan_no'] ?></td>
                                 <td><?= $sh['shakhes'] ?></td>
                                 <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
                                 <td>
+
                                     <?
-                                                    if ($head_admin_info['parent_id'] == 1) {
-                                                        /** tajmi */
-                                                        echo substr($eghdam_value['admins'][$head_admin_id]['C' . $season], 0, 5);
-                                                    } else {
-                                                        /**  */
-                                                        echo substr($eghdam_value['admins'][$head_admin_info['parent_id']]['groups'][$head_admin_id]['R' . $season], 0, 5);
-                                                    }
-                                                    ?>
+                                    echo 'o\'';
+
+                                    if ($head_admin_info['parent_id'] == 1) {
+                                        /** tajmi */
+                                        echo substr($eghdam_value['admins'][$head_admin_id]['C' . $season], 0, 5);
+                                    } else {
+                                        /**  */
+                                        echo substr($eghdam_value['admins'][$head_admin_info['parent_id']]['groups'][$head_admin_id]['R' . $season], 0, 5);
+                                    }
+                                    ?>
+                                </td>
+                                <? endforeach; ?>
+                                <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
+                                <td>
+                                    <?
+                                    echo 'o';
+
+                                    if ($head_admin_info['parent_id'] == 1) {
+                                        /** tajmi */
+                                        echo substr($eghdam_value['admins'][$head_admin_id]['C' . $season], 0, 5);
+                                    } else {
+                                        /**  */
+                                        echo substr($eghdam_value['admins'][$head_admin_info['parent_id']]['groups'][$head_admin_id]['R' . $season], 0, 5);
+                                    }
+                                    ?>
                                 </td>
                                 <? endforeach; ?>
                             </tr>
@@ -231,6 +269,23 @@
             </div>
         </div>
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     <div class="row xsmallSpace"></div>
@@ -266,44 +321,34 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <? foreach ($reports as $kalan_no => $kalan_value) : ?>
-                            <? foreach ($kalan_value['amaliatis'] as $amaliati_no => $amaliati_value) : ?>
-                            <? foreach ($amaliati_value['eghdams'] as $eghdam_id => $eghdam_value) : ?>
-                            <? foreach ($eghdam_value['faaliats'] as $faaliat_id => $faaliat_value) : ?>
+                            <? foreach ($shakhesNext as $shakhes_id => $sh) : ?>
+                            <? foreach ($sh['ghalams'] as $ghalam_id => $gh) : ?>
+
                             <tr>
-                                <td width="50" class="text-center"><?= $kalan_no ?></td>
-                                <td width="50"><?= $eghdam_id ?></td>
-                                <td width="300"><?= $faaliat_value['faaliat_name'] ?></td>
+                                <td width="50" class="text-center"><?= $shakhes_id ?></td>
+                                <td width="50"><?= $gh['ghalam'] ?>
+
+                                </td>
                                 <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
                                 <td width="<?= 300 / count($groups) ?>">
-                                    <?
+                                    
+                                    عملکرد: <?= $shakhesNext[$shakhes_id]['ghalams'][$ghalam_id]['admins'][$head_admin_info['admin_id']]['amalkard6'] ?>
 
-                                                                                        if ($head_admin_info['parent_id'] == 1) {
-                                                                                            /** tajmi */
-                                                                                            echo substr($faaliat_value['admins'][$head_admin_id]['AA' . $season], 0, 5);
-                                                                                        } else {
-                                                                                            /**  */
-                                                                                            echo substr($faaliat_value['admins'][$head_admin_info['parent_id']]['groups'][$head_admin_id]['OO' . $season], 0, 5);
-                                                                                        }
-                                                                                        ?>
                                 </td>
                                 <? endforeach; ?>
                                 <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
                                 <td width="<?= 300 / count($groups) ?>">
                                     <?
-                                                                                        if ($head_admin_info['parent_id'] == 1) {
-                                                                                            /** tajmi */
-                                                                                            echo substr($faaliat_value['admins'][$head_admin_id]['A' . $season], 0, 5);
-                                                                                        } else {
-                                                                                            /**  */
-                                                                                            echo substr($faaliat_value['admins'][$head_admin_info['parent_id']]['groups'][$head_admin_id]['O' . $season], 0, 5);
-                                                                                        }
-                                                                                        ?>
+                                                if ($head_admin_info['parent_id'] == 1) {
+                                                    /** tajmi */
+                                                    echo substr($faaliat_value['admins'][$head_admin_id]['A' . $season], 0, 5);
+                                                } else {                                                           /**  */
+                                                    echo substr($faaliat_value['admins'][$head_admin_info['parent_id']]['groups'][$head_admin_id]['O' . $season], 0, 5);
+                                                }
+                                                ?>
                                 </td>
                                 <? endforeach; ?>
                             </tr>
-                            <? endforeach; ?>
-                            <? endforeach; ?>
                             <? endforeach; ?>
                             <? endforeach; ?>
                         </tbody>
