@@ -1475,7 +1475,8 @@ class shakhesController
             $ruydadObj->finishdate = convertJToGDate($ruydadObj->finishdate);
             $ruydadObj->import_admin = $admin_info['admin_id'];
             $ruydadObj->status = 0;
-            $ruydadObj->save();
+            $ruydadObj->save(); 
+            // dd($ruydadObj);
 
             $result['msg'] = (isset($post['edit'])) ? 'ویرایش انجام شد' : 'ثبت موقت انجام شد.';
             $result['type'] = (isset($post['edit'])) ? 'success' : 'warning';

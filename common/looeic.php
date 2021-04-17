@@ -434,11 +434,11 @@ class looeic extends DB
 
     private function get_object_or_list($object = 1, $key = '')
     {
-        
+
         if (strlen($this->sql) < 1) {
             $this->sql = $this->build();
         }
-        
+
         if (strlen($this->sql) < 1) {
             $result['result'] = -1;
             $result['Number'] = 1;
@@ -448,16 +448,16 @@ class looeic extends DB
         }
         $conn = dbConn::getConnection();
 
-            //    print_r($this->sql);
-        
+        //    print_r($this->sql);
+
 
         $stmt = $conn->prepare($this->sql);
-        
+
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
-        
+
         $stmt->execute();
-        
-        
+
+
         if (!$stmt) {
             $result['result'] = -1;
             $result['Number'] = 1;
@@ -518,13 +518,13 @@ class looeic extends DB
                 //$temp_object = $this->findModel($row[ $this->PRI_KEY ]);
 
                 $temp_object = clone ($this);
-                
+
                 // print_r_debug($row);
                 $temp_object->fields = $row;
-                
+
                 //print_r_debug($temp_object);
                 //$temp_object = $this->findModel($row[$this->PRI_KEY]);
-                
+
 
                 if ($key != '') {
                     if ($this->overWrite == 0) {
@@ -533,7 +533,7 @@ class looeic extends DB
                         $result['export']['list'][$temp_object->$key] = clone ($temp_object);
                     }
                 } else {
-                    
+
                     $result['export']['list'][] = clone ($temp_object);
                 }
             }
@@ -994,7 +994,7 @@ class looeic extends DB
 
     public function save()
     {
-        
+
         if ($this->fields[$this->PRI_KEY] == '') {
             if ($this->_operation == 'SELECT') {
                 die('SELECT PRIMERI KEY TO CHANGE :D ');
@@ -1024,6 +1024,8 @@ class looeic extends DB
         $conn = dbConn::getConnection();
         $sql = "
                     INSERT INTO " . $this->TABLE_NAME . "( " . $sql_key . " ) VALUES ( " . $sql_val . " ) ";
+
+        // dd($sql);
 
         $stmt = $conn->prepare($sql);
         $stmt->execute();
@@ -1090,7 +1092,7 @@ class looeic extends DB
         $sql = " UPDATE " . $obj->TABLE_NAME . " SET " . $sql_key_val . " 
          WHERE " . $where . " ";
 
-         
+
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -1135,7 +1137,7 @@ class looeic extends DB
 
 
         // dd($sql);
-         $stmt = $conn->prepare($sql);
+        $stmt = $conn->prepare($sql);
         $stmt->execute();
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
