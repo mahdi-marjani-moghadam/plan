@@ -1249,14 +1249,14 @@ class shakhesController
 
 
 
-
         /* ارسال فرم */
         if (isset($post['temporary']) || isset($post['edit'])) {
             /* اگه فرم درست پر نشه ارور بده */
             $error = 0;
             $this->selectBoxAdmins('daneshamukhte');
+            
             if (count($this->selectBoxAdmins) == 0) {
-                $result['msg'] = 'نیاز به تکمیل این فرم برای شما نیاز به تکمیل این فرم برای شما نمی باشد';
+                $result['msg'] = '.نیاز به تکمیل این فرم برای شما نمی باشد';
                 $error = 1;
             } elseif ($post['student_status'] == '') {
                 $result['msg'] = 'فیلد دانشجو/دانش آموخته تکمیل نشده است.';
@@ -1690,7 +1690,7 @@ class shakhesController
             $obj->save();
 
             $result['obj'] = $obj;
-            $result['msg'] = '.   نیاز به اصلاح';
+            $result['msg'] = '.نیاز به اصلاح';
             $result['type'] = 'success';
         } elseif (isset($post['confirm'])) {
             $obj = $class::find((int)$post['confirm']);

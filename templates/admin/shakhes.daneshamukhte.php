@@ -42,7 +42,7 @@
                         <td><input name="name_family" value="<?= $data['name_family'] ?>" class="form-control"></td>
 
                         <td>تاریخ فارغ التحصیلی*</td>
-                        <td><input name="graduated_date" value="<?= $data['graduated_date'] ?>" autocomplete="off" class="form-control date"></td>
+                        <td><input name="graduated_date" value="<?=convertDate($data['graduated_date']) ?>" autocomplete="off" class="form-control date"></td>
                     </tr>
                     <tr>
                         <td>مقطع*</td>
