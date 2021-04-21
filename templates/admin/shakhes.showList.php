@@ -225,14 +225,27 @@
                         </thead>
                         <tbody>
                             <? foreach ($shakhesNext as $shakhes_id => $sh) : ?>
+                                <?
+                                $amalkardPrev = $shakhesPrev[$shakhes_id]['ghalams'][$ghalam_id]['admins'][$head_admin_info['admin_id']]['amalkard6'] ?? 1;
+                                $amalkardNext = $shakhesNext[$shakhes_id]['ghalams'][$ghalam_id]['admins'][$head_admin_info['admin_id']]['amalkard6'];
+                                $shakhes_standard = 1;
+                                ?>
                             <tr>
                                 <td class="text-center"><?= $sh['kalan_no'] ?></td>
                                 <td><?= $sh['shakhes'] ?></td>
                                 <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
                                 <td>
-
+                                    A98:<?=$amalkardPrev  ?>
+                                    A99:<?= $amalkardNext ?>
+                                    <br>
+                                    <br>
+                                    نرخ رشد:<?=(($amalkardNext / $amalkardPrev) -1 ) * 100 ?>
+                                    <br>
+                                    <br>
+                                    درصد تحقق:
+                                    <?=((($amalkardNext / $amalkardPrev) -1 ) * 100) / $shakhes_standard * $amalkardPrev?>
                                     <?
-                                    echo 'o\'';
+
 
                                     if ($head_admin_info['parent_id'] == 1) {
                                         /** tajmi */
@@ -330,10 +343,22 @@
 
                                 </td>
                                 <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
+                                    <?
+                                        $amalkardPrev = $shakhesPrev[$shakhes_id]['ghalams'][$ghalam_id]['admins'][$head_admin_info['admin_id']]['amalkard6'] ?? 1;
+                                        $amalkardNext = $shakhesNext[$shakhes_id]['ghalams'][$ghalam_id]['admins'][$head_admin_info['admin_id']]['amalkard6'];
+                                        $shakhes_standard = 1;
+                                    ?>
                                 <td width="<?= 300 / count($groups) ?>">
                                     
-                                    عملکرد: <?= $shakhesNext[$shakhes_id]['ghalams'][$ghalam_id]['admins'][$head_admin_info['admin_id']]['amalkard6'] ?>
-
+                                    A98:<?=$amalkardPrev  ?>
+                                    A99:<?= $amalkardNext ?>
+                                    <br>
+                                    <br>
+                                    نرخ رشد:<?=(($amalkardNext / $amalkardPrev) -1 ) * 100 ?>
+                                    <br>
+                                    <br>
+                                    درصد تحقق:
+                                    <?=((($amalkardNext / $amalkardPrev) -1 ) * 100) / $shakhes_standard * $amalkardPrev?>
                                 </td>
                                 <? endforeach; ?>
                                 <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>

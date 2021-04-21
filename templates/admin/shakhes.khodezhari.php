@@ -19,7 +19,7 @@
                 نوآوری</div>
             <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte">فرم جلب مشارکت دانش آموختگان و
                 دانشجویان</a>
-            <div class="alert alert-danger">فرم جلب مشارکت دانش آموختگان و دانشجویان: گروه‌های آموزشی؛ دانشکده‌ها؛ شعبه
+            <div class="alert alert-danger">فرم جلب مشارکت دانش آموختگان و دانشجویان: گروه‌های آموزشی؛ شعبه
                 ارومیه؛ مرکز نوآوری </div>
             <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad"> فرم
                 رویدادهای برگزار شده</a>
@@ -31,7 +31,7 @@
                 دانشجویی و مدیریت‌های زیرمجموعه شامل(مدیریت تربیت بدنی -مدیریت مرکز مشاوره، بهداشت و سلامت) </div>
             <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=shora">فرم
                 عضویت در شوراهای برون دانشگاهی</a>
-            <div class="alert alert-danger">فرم عضویت در شوراها و کمیته های برون دانشگاهی: گروه‌های آموزشی؛ دانشکده‌ها؛
+            <div class="alert alert-danger">فرم عضویت در شوراها و کمیته های برون دانشگاهی: گروه‌های آموزشی؛
                 شعبه ارومیه؛ معاونت فرهنگی؛ پژوهشکده زنان</div>
 
         </div>

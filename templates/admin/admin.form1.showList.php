@@ -586,7 +586,7 @@
     .tr-faaliat{display: none}
     .tr-faaliat-admins,.tr-eghdam-admins,.tr-amaliati-admins,.tr-kalan-admins,.tr-admins-group{display: none }
     .select2-container-multi .select2-choices li{float: right}
-    .select2-container-multi .select2-choices .select2-search-choice{padding: 3px 16px 3px 5px}
+    .select2-container-multi .select2-choices .select2-search-choice{padding: 3px 3px 3px 16px}
     table.dataTable thead>tr>th, table.dataTable thead>tr>td{padding-right: 10px}
     th {        text-align: center !important;  }
     input.w100{ width: 40px}

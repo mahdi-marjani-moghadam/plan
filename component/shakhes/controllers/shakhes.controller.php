@@ -168,12 +168,16 @@ class shakhesController
         $ghalamsPrev = $this->getGhalam($groups, 1398);
         $ghalamsNext = $this->getGhalam($groups, 1399);
 
+//        dd($ghalamsNext);
 
         // سوم برای بدست آوردن شاخص ها از جدول ghalam_shakhes , shakhes
         $shakhesPrev = $this->getShakhesByGhalam($ghalamsPrev);
         $shakhesNext = $this->getShakhesByGhalam($ghalamsNext);
 
-        // dd($shakhesNext);
+//         dd($shakhesNext);
+
+        // شاخص استاندارد
+//        $shakhesStandard = $this->shakhesStandard();
 
         // $shakhesReport = $this->shakhesReport($shakhes, $ghalams);
         //وزن ها 
@@ -293,10 +297,10 @@ class shakhesController
         // $import->keyBy('ghalam_id');
         $import->leftJoin('sh_ghalam', 'sh_ghalam.ghalam_id', '=', 'sh_import.ghalam_id');
         $import->where('sh_import.motevali_admin_id', 'in', implode(',', array_column($admins, 'admin_id')));
-        $import->andWhere('year', '=', '1399');
+        $import->andWhere('year', '=', $year);
         $imports = $import->getList()['export']['list'];
-        // dd($import);
-
+//        if($year == 99)  dd($import);
+        $ghalam = array();
         foreach ($imports as $item) {
             // dd($item);
             $ghalam[$item['ghalam_id']][$item['motevali_admin_id']]['motevali_admin_id'] = $item['motevali_admin_id'];
@@ -330,7 +334,7 @@ class shakhesController
         $relGhalamShakhes->leftJoin('sh_rel_kalan_shakhes', 'sh_rel_kalan_shakhes.shakhes_id', '=', 'sh_rel_ghalam_shakhes.shakhes_id');
         $relGhalamShakhes->where('sh_rel_ghalam_shakhes.ghalam_id', 'in', implode(',', array_unique(array_keys($ghalams))));
         $rels = $relGhalamShakhes->getList()['export']['list'];
-        // dd($rels);
+//         dd($rels);
         foreach ($rels as $rel) {
             // dd($ghalams);
             $shakhes[$rel['shakhes_id']]['shakhes'] = $rel['shakhes'];
@@ -343,7 +347,7 @@ class shakhesController
             // $shakhes[$rel['shakhes_id']]['amalkard6'] = $this->getAllShakhesFunctionsKeyByShakhesId($rel['type'],$ghalams[$rel['ghalam_id']]);
         }
 
-        // dd($shakhes);
+//         dd($shakhes);
 
         $shakhes = $this->getAllShakhesFunctionsKeyByShakhesId($functionsRequirement, $shakhes);
         // dd($shakhes);
@@ -398,44 +402,17 @@ class shakhesController
         // dd($shakhes);
         return $shakhes;
 
+    }
+    public function shakhesStandard(){
+        include_once ROOT_DIR . 'component/shakhes/model/rel.shakhes.admin.model.php';
+        $relShakhesAdmin = new relShakhesAdmin();
+
+        $ShakhesAdmin = $relShakhesAdmin->getAll();
+        $ShakhesAdmin->getList()['export']['list'];
 
 
-        include_once ROOT_DIR . 'component/shakhes/model/rel.ghalam.shakhes.model.php';
-        $relGhalamShakhes = new relGhalamShakhes();
-        $relGhalamShakhes->getAll();
-        $rels = $relGhalamShakhes->getList()['export']['list'];
 
-        // dd($allGhalam);
-        dd($rels);
-
-        foreach ($rels as $rel) {
-            $functions[$rel['shakhes_id']]['type'] = $rel['type'];
-            $value6 = $allGhalam[$rel['ghalam_id']]['value6'];
-            $value12 = $allGhalam[$rel['ghalam_id']]['value12'];
-
-            if ($rel['type'] == 'equal') {
-                $functions[$rel['shakhes_id']]['function6'] = $value6;
-                $functions[$rel['shakhes_id']]['function12'] = $value12;
-            } else if ($rel['type'] == 'sum') {
-                $functions[$rel['shakhes_id']]['function6'] = $functions[$rel['shakhes_id']]['function6'] + $value6;
-                $functions[$rel['shakhes_id']]['function12'] = $functions[$rel['shakhes_id']]['function12'] + $value12;
-            } else if (in_array($rel['type'], ['up', 'down'])) {
-                $functions[$rel['shakhes_id']]['type'] = 'div';
-
-                if ($rel['type'] == 'up') {
-                    $functions[$rel['shakhes_id']]['function6Up'] = $functions[$rel['shakhes_id']]['function6Up'] +  $value6;
-                    $functions[$rel['shakhes_id']]['function12Up'] = $functions[$rel['shakhes_id']]['function12Up'] +  $value12;
-                } else {
-                    $functions[$rel['shakhes_id']]['function6Down'] = $functions[$rel['shakhes_id']]['function6Down'] + $value6;
-                    $functions[$rel['shakhes_id']]['function12Down'] = $functions[$rel['shakhes_id']]['function12Down'] + $value12;
-                }
-
-                $functions[$rel['shakhes_id']]['function6'] = $functions[$rel['shakhes_id']]['function6Up'] / $functions[$rel['shakhes_id']]['function6Down'];
-                $functions[$rel['shakhes_id']]['function12'] = $functions[$rel['shakhes_id']]['function12Up'] / $functions[$rel['shakhes_id']]['function12Down'];
-            }
-        }
-        dd($functions);
-        return $functions;
+        return $ShakhesAdmin;
     }
 
 
