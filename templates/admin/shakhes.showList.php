@@ -12,7 +12,13 @@
         $('#level').change(function() {
             var season = $(this).val();
 
-            location.href = window.location.origin + '/admin/?component=shakhes&s=' + season <?= (isset($_GET['qq'])) ? "+'&qq=" . $_GET['qq'] . "'" : ''; ?>;
+            location.href = window.location.origin + '/admin/?component=shakhes&s=' + season <?= (isset($_GET['qq'])) ? "+'&qq=" . $_GET['qq'] . "'" : ''; ?> <?= (isset($_GET['y'])) ? "+'&y=" . $_GET['y'] . "'" : ''; ?>;
+        });
+
+        $('#year').change(function() {
+            var year = $(this).val();
+
+            location.href = window.location.origin + '/admin/?component=shakhes&y=' + year <?= (isset($_GET['qq'])) ? "+'&qq=" . $_GET['qq'] . "'" : ''; ?> <?= (isset($_GET['s'])) ? "+'&s=" . $_GET['s'] . "'" : ''; ?>;
         });
 
 
@@ -48,9 +54,10 @@
             var adminId = ',' + $(this).val() + ',';
             if ($(this).val() == 0 || $(this).val() == null) {
                 location.href = window.location.origin + '/admin/?component=shakhes'
-                <?= (isset($_GET['s'])) ? "+'&s=" . $_GET['s'] . "'" : ''; ?>;
+                <?= (isset($_GET['s'])) ? "+'&s=" . $_GET['s'] . "'" : ''; ?>
+                <?= (isset($_GET['y'])) ? "+'&y=" . $_GET['y'] . "'" : ''; ?>;
             } else {
-                location.href = window.location.origin + '/admin/?component=shakhes&qq=' + adminId <?= (isset($_GET['s'])) ? "+'&s=" . $_GET['s'] . "'" : ''; ?>;
+                location.href = window.location.origin + '/admin/?component=shakhes&qq=' + adminId <?= (isset($_GET['s'])) ? "+'&s=" . $_GET['s'] . "'" : ''; ?> <?= (isset($_GET['y'])) ? "+'&y=" . $_GET['y'] . "'" : ''; ?>;
             }
         });
     });
@@ -96,6 +103,14 @@
                     <?= $admins['name'] . ' ' . $admins['family'] ?>
                 </option>
                 <? endforeach; ?>
+            </select>
+        </div>
+        <div class="col-md-2 col-sm-4 col-xs-4">
+            <label for="level">سال :</label>
+            <select name="season" id="year">
+                <option value="1398-1399" <?= ($_GET['y'] == '1398-1399') ? 'selected' : ''; ?>>۱۳۹۸-۱۳۹۹</option>
+                <option value="1399-1400" <?= ($_GET['y'] == '1399-1400') ? 'selected' : ''; ?>>۱۳۹۹-۱۴۰۰</option>
+                <option value="1400-1401" <?= ($_GET['y'] == '1400-1401') ? 'selected' : ''; ?>>۱۴۰۰-۱۴۰۱</option>
             </select>
         </div>
         <div class="col-md-1 col-sm-1 col-xs-1  pull-left">
@@ -145,29 +160,7 @@
                 echo $msg;
             endif;
             ?>
-            <? foreach ($child as $v) : ?>
-            <? if ($v['finish_date'] >= date('Y-m-d')) : ?>
-            <div class="col-md-2 col-xs-12 col-sm-12 ">
-
-                <div class="col-md-12 confirm-vahed ">
-                    <div class="col-md-12" style="height: 50px">
-                        <label for=""><?= $v['name'] . ' ' . $v['family'] ?></label>
-                    </div>
-                    <div class="col-md-12">
-                        <a href="<?= RELA_DIR ?>admin/?component=reports&action=confirm&id=<?= $v['admin_id'] ?>&s=1" class="btn btn-primary btn-block">تایید</a>
-                        <a href="<?= RELA_DIR ?>admin/?component=reports&action=confirm&id=<?= $v['admin_id'] ?>&s=2" class="btn btn-primary btn-block">نیازمند اصلاح</a>
-                    </div>
-                    <?/* if($admin_info['status'] == 2):*/ ?>
-                    <!--
-                                <div class="alert alert-success">
-                                    <strong >zzzzzz </strong>
-                                </div>
-                            -->
-                    <?/* endif;*/ ?>
-                </div>
-            </div>
-            <? endif; ?>
-            <? endforeach; ?>
+            
         </div>
     </div>
 
@@ -334,18 +327,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <? foreach ($shakhesNext as $shakhes_id => $sh) : ?>
-                            <? foreach ($sh['ghalams'] as $ghalam_id => $gh) : ?>
+                            <? foreach ($ghalamsNext as $ghalam_id => $gh) : ?>
 
                             <tr>
                                 <td width="50" class="text-center"><?= $shakhes_id ?></td>
                                 <td width="50"><?= $gh['ghalam'] ?>
+                                <?= $gh['ghalam_id'] ?>
 
                                 </td>
                                 <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
                                     <?
-                                        $amalkardPrev = $shakhesPrev[$shakhes_id]['ghalams'][$ghalam_id]['admins'][$head_admin_info['admin_id']]['amalkard6'] ?? 1;
-                                        $amalkardNext = $shakhesNext[$shakhes_id]['ghalams'][$ghalam_id]['admins'][$head_admin_info['admin_id']]['amalkard6'];
+                                        $amalkardPrev = $ghalamsPrev[$ghalam_id]['admins'][$head_admin_info['admin_id']]['value'.$season] ?? 1;
+                                        $amalkardNext = $gh['admins'][$head_admin_info['admin_id']]['value'.$season];
                                         $shakhes_standard = 1;
                                     ?>
                                 <td width="<?= 300 / count($groups) ?>">
@@ -362,19 +355,25 @@
                                 </td>
                                 <? endforeach; ?>
                                 <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                <td width="<?= 300 / count($groups) ?>">
                                     <?
-                                                if ($head_admin_info['parent_id'] == 1) {
-                                                    /** tajmi */
-                                                    echo substr($faaliat_value['admins'][$head_admin_id]['A' . $season], 0, 5);
-                                                } else {                                                           /**  */
-                                                    echo substr($faaliat_value['admins'][$head_admin_info['parent_id']]['groups'][$head_admin_id]['O' . $season], 0, 5);
-                                                }
-                                                ?>
+                                        $amalkardPrev = $ghalamsPrev[$ghalam_id]['admins'][$head_admin_info['admin_id']]['value'.$season] ?? 1;
+                                        $amalkardNext = $gh['admins'][$head_admin_info['admin_id']]['value'.$season];
+                                        $shakhes_standard = 1;
+                                    ?>
+                                <td width="<?= 300 / count($groups) ?>">
+                                    
+                                    A98:<?=$amalkardPrev  ?>
+                                    A99:<?= $amalkardNext ?>
+                                    <br>
+                                    <br>
+                                    نرخ رشد:<?=(($amalkardNext / $amalkardPrev) -1 ) * 100 ?>
+                                    <br>
+                                    <br>
+                                    درصد تحقق:
+                                    <?=((($amalkardNext / $amalkardPrev) -1 ) * 100) / $shakhes_standard * $amalkardPrev?>
                                 </td>
                                 <? endforeach; ?>
                             </tr>
-                            <? endforeach; ?>
                             <? endforeach; ?>
                         </tbody>
                     </table>

@@ -135,6 +135,9 @@ class shakhesController
 
 
 
+
+
+
     /**
         اول باید اهداف اون ادمینی که اومده تو رو ببینیم
         بعد شاخص این ادمینی که اومده بیرون میکشیم
@@ -149,7 +152,7 @@ class shakhesController
 
         // اول بدست آوردن بچه ها از جدول admin , import_status
         $groups = $this->child();
-
+        
 
         /** season */
         $rules = array('6', '12');
@@ -159,20 +162,26 @@ class shakhesController
             $season = '6';
         }
 
+        if(isset($_GET['y']))
+        {
+            $year = explode('-',handleData($_GET['y']));
+        }else{
+            $year = array(98,99);
+        }
 
         /** admins filter */
         $list['showAdmin'] = $this->showAdmin();
 
 
         //دوم بدست آوردن قلم ها از جدول import
-        $ghalamsPrev = $this->getGhalam($groups, 1398);
-        $ghalamsNext = $this->getGhalam($groups, 1399);
+        $ghalamsNext = $this->getGhalam($groups, $year[1]);
+        $ghalamsPrev = $this->getGhalam($groups, $year[0]);
 
-//        dd($ghalamsNext);
+    //    dd($ghalamsNext);
 
         // سوم برای بدست آوردن شاخص ها از جدول ghalam_shakhes , shakhes
-        $shakhesPrev = $this->getShakhesByGhalam($ghalamsPrev);
         $shakhesNext = $this->getShakhesByGhalam($ghalamsNext);
+        $shakhesPrev = $this->getShakhesByGhalam($ghalamsPrev);
 
 //         dd($shakhesNext);
 
@@ -188,7 +197,8 @@ class shakhesController
             'shakhesPrev',
             'list',
             'groups',
-            'ghalams',
+            'ghalamsNext',
+            'ghalamsPrev',
             'season',
             'child',
             'kalanTahlilArray'
@@ -282,6 +292,7 @@ class shakhesController
 
     public function getGhalam($admins, $year = '1399')
     {
+
         include_once ROOT_DIR . 'component/shakhes/model/import.model.php';
         $import = new import();
         $import->select('
@@ -296,21 +307,23 @@ class shakhesController
         ');
         // $import->keyBy('ghalam_id');
         $import->leftJoin('sh_ghalam', 'sh_ghalam.ghalam_id', '=', 'sh_import.ghalam_id');
-        $import->where('sh_import.motevali_admin_id', 'in', implode(',', array_column($admins, 'admin_id')));
+        $import->where('sh_import.motevali_admin_id', 'in', array_column($admins, 'admin_id'));
         $import->andWhere('year', '=', $year);
         $imports = $import->getList()['export']['list'];
-//        if($year == 99)  dd($import);
+        // dd($imports);
         $ghalam = array();
         foreach ($imports as $item) {
             // dd($item);
-            $ghalam[$item['ghalam_id']][$item['motevali_admin_id']]['motevali_admin_id'] = $item['motevali_admin_id'];
-            $ghalam[$item['ghalam_id']][$item['motevali_admin_id']]['ghalam'] = $item['ghalam'];
-            $ghalam[$item['ghalam_id']][$item['motevali_admin_id']]['import'] = $item['import'];
-            $ghalam[$item['ghalam_id']][$item['motevali_admin_id']]['ghalam_id'] = $item['ghalam_id'];
-            $ghalam[$item['ghalam_id']][$item['motevali_admin_id']]['value6_import'] = $item['value6_import'];
-            $ghalam[$item['ghalam_id']][$item['motevali_admin_id']]['value6'] = $item['value6'];
-            $ghalam[$item['ghalam_id']][$item['motevali_admin_id']]['value12_import'] = $item['value12_import'];
-            $ghalam[$item['ghalam_id']][$item['motevali_admin_id']]['value12'] = $item['value12'];
+            $ghalam[$item['ghalam_id']]['ghalam'] = $item['ghalam'];
+            $ghalam[$item['ghalam_id']]['ghalam_id'] = $item['ghalam_id'];
+            $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['ghalam'] = $item['ghalam'];
+            $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['ghalam_id'] = $item['ghalam_id'];
+            $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['motevali_admin_id'] = $item['motevali_admin_id'];
+            $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['import'] = $item['import'];
+            $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['value6_import'] = $item['value6_import'];
+            $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['value6'] = $item['value6'];
+            $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['value12_import'] = $item['value12_import'];
+            $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['value12'] = $item['value12'];
         }
 
         // dd($ghalam);
@@ -334,7 +347,7 @@ class shakhesController
         $relGhalamShakhes->leftJoin('sh_rel_kalan_shakhes', 'sh_rel_kalan_shakhes.shakhes_id', '=', 'sh_rel_ghalam_shakhes.shakhes_id');
         $relGhalamShakhes->where('sh_rel_ghalam_shakhes.ghalam_id', 'in', implode(',', array_unique(array_keys($ghalams))));
         $rels = $relGhalamShakhes->getList()['export']['list'];
-//         dd($rels);
+        // dd($rels);
         foreach ($rels as $rel) {
             // dd($ghalams);
             $shakhes[$rel['shakhes_id']]['shakhes'] = $rel['shakhes'];
