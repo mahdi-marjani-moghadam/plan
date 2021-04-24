@@ -166,7 +166,7 @@ class shakhesController
         {
             $year = explode('-',handleData($_GET['y']));
         }else{
-            $year = array(98,99);
+            $year = array(1398,1399);
         }
 
         /** admins filter */
@@ -310,14 +310,14 @@ class shakhesController
         $import->where('sh_import.motevali_admin_id', 'in', array_column($admins, 'admin_id'));
         $import->andWhere('year', '=', $year);
         $imports = $import->getList()['export']['list'];
-        // dd($imports);
+        // dd($import);
         $ghalam = array();
         foreach ($imports as $item) {
             // dd($item);
             $ghalam[$item['ghalam_id']]['ghalam'] = $item['ghalam'];
             $ghalam[$item['ghalam_id']]['ghalam_id'] = $item['ghalam_id'];
-            $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['ghalam'] = $item['ghalam'];
-            $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['ghalam_id'] = $item['ghalam_id'];
+            // $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['ghalam'] = $item['ghalam'];
+            // $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['ghalam_id'] = $item['ghalam_id'];
             $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['motevali_admin_id'] = $item['motevali_admin_id'];
             $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['import'] = $item['import'];
             $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['value6_import'] = $item['value6_import'];
