@@ -99,9 +99,11 @@
             <select id="admin" multiple>
                 <option value="0">انتخاب کنید</option>
                 <? foreach ($list['showAdmin'] as $k => $admins) : ?>
-                <option <? if (strpos($_GET['qq'], ',' . $admins['admin_id'] . ',' ) !==false) { echo 'selected' ; } ?> value="<?= $admins['admin_id'] ?>">
-                    <?= $admins['name'] . ' ' . $admins['family'] ?>
-                </option>
+                    <option <? if (strpos($_GET['qq'], ',' . $admins['admin_id'] . ',') !== false) {
+                                echo 'selected';
+                            } ?> value="<?= $admins['admin_id'] ?>">
+                        <?= $admins['name'] . ' ' . $admins['family'] ?>
+                    </option>
                 <? endforeach; ?>
             </select>
         </div>
@@ -208,64 +210,38 @@
                             </tr>
                             <tr style="text-align: center">
                                 <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                <td><?= $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
+                                    <td><?= $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
                                 <? endforeach; ?>
                                 <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                <td><?= $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
+                                    <td><?= $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
                                 <? endforeach; ?>
 
                             </tr>
                         </thead>
                         <tbody>
                             <? foreach ($shakhesNext as $shakhes_id => $sh) : ?>
-                            <?
-                                $amalkardPrev = $shakhesPrev[$shakhes_id]['ghalams'][$ghalam_id]['admins'][$head_admin_info['admin_id']]['amalkard6'] ?? 1;
-                                $amalkardNext = $shakhesNext[$shakhes_id]['ghalams'][$ghalam_id]['admins'][$head_admin_info['admin_id']]['amalkard6'];
-                                $shakhes_standard = 1;
-                                ?>
-                            <tr>
-                                <td class="text-center"><?= $sh['kalan_no'] ?></td>
-                                <td><?= $sh['shakhes'] ?></td>
-                                <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                <td>
-                                    A98:<?= $amalkardPrev  ?>
-                                    A99:<?= $amalkardNext ?>
-                                    <br>
-                                    <br>
-                                    نرخ رشد:<?= (($amalkardNext / $amalkardPrev) - 1) * 100 ?>
-                                    <br>
-                                    <br>
-                                    درصد تحقق:
-                                    <?= ((($amalkardNext / $amalkardPrev) - 1) * 100) / $shakhes_standard * $amalkardPrev ?>
-                                    <?
-
-
-                                    if ($head_admin_info['parent_id'] == 1) {
-                                        /** tajmi */
-                                        echo substr($eghdam_value['admins'][$head_admin_id]['C' . $season], 0, 5);
-                                    } else {
-                                        /**  */
-                                        echo substr($eghdam_value['admins'][$head_admin_info['parent_id']]['groups'][$head_admin_id]['R' . $season], 0, 5);
-                                    }
-                                    ?>
-                                </td>
-                                <? endforeach; ?>
-                                <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                <td>
-                                    <?
-                                    echo 'o';
-
-                                    if ($head_admin_info['parent_id'] == 1) {
-                                        /** tajmi */
-                                        echo substr($eghdam_value['admins'][$head_admin_id]['C' . $season], 0, 5);
-                                    } else {
-                                        /**  */
-                                        echo substr($eghdam_value['admins'][$head_admin_info['parent_id']]['groups'][$head_admin_id]['R' . $season], 0, 5);
-                                    }
-                                    ?>
-                                </td>
-                                <? endforeach; ?>
-                            </tr>
+                                <tr>
+                                    <td class="text-center"><?= $sh['kalan_no'] ?></td>
+                                    <td><?= $sh['shakhes'] ?></td>
+                                    <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
+                                        <td style="direction: ltr;">
+                                            1
+                                        </td>
+                                    <? endforeach; ?>
+                                    <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
+                                        <td>
+                                            A98:<?= $reports[$shakhes_id][$head_admin_id]['amalkardPrev']  ?>
+                                            A99:<?= $reports[$shakhes_id][$head_admin_id]['amalkardNext'] ?>
+                                            <br>
+                                            <br>
+                                            نرخ رشد:<?= $reports[$shakhes_id][$head_admin_id]['nerkh'] ?>
+                                            <br>
+                                            <br>
+                                            درصد تحقق:<?= $reports[$shakhes_id][$head_admin_id]['roshd'] ?>
+                                            
+                                        </td>
+                                    <? endforeach; ?>
+                                </tr>
                             <? endforeach; ?>
 
 
@@ -318,64 +294,60 @@
                                 <td width="300" style="background-color: #654c97; color:#fff; " colspan="<?= count($groups) ?>">نهایی(تائیدشده)</td>
                             </tr>
                             <tr style="text-align: center">
-                                    <td></td>
+
                                 <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                <td width="<?= 300 / count($groups) ?>"><?= $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
+                                    <td width="<?= 300 / count($groups) ?>"><?= $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
                                 <? endforeach; ?>
                                 <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                <td width="<?= 300 / count($groups) ?>"><?= $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
+                                    <td width="<?= 300 / count($groups) ?>"><?= $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
                                 <? endforeach; ?>
                             </tr>
                         </thead>
                         <tbody>
-                            <? 
-                            $i=0;
+                            <?
+                            $i = 0;
                             foreach ($ghalamsNext as $ghalam_id => $gh) : ?>
-                            <? $i++;?>
-                            <tr>
-                                <td><?= $i ?></td>
-                                <td width="50" class="text-center"><?= $shakhes_id ?></td>
-                                <td width="50"><?= $gh['ghalam'] ?>
-                                    <?= $gh['ghalam_id'] ?>
+                                <? $i++; ?>
+                                <tr>
+                                    <td><?= $i ?></td>
+                                    <td width="50" class="text-center"><?= $shakhes_id ?></td>
+                                    <td width="50"><?= $gh['ghalam'] ?>
+                                        <?= $gh['ghalam_id'] ?>
 
-                                </td>
-                                <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                <?
-                                        $amalkardPrev = $ghalamsPrev[$ghalam_id]['admins'][$head_admin_info['admin_id']]['value'.$season] ?? 1;
-                                        $amalkardNext = $gh['admins'][$head_admin_info['admin_id']]['value'.$season];
-                                        $shakhes_standard = 1;
-                                    ?>
-                                <td style="direction: ltr;" width="<?= 300 / count($groups) ?>">
+                                    </td>
+                                    <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
+                                        <?
 
-                                    A98:<?= $amalkardPrev  ?>
-                                    A99:<?= $amalkardNext ?>
-                                    <br>
-                                    N:<?= (($amalkardNext / $amalkardPrev) - 1) * 100 ?>
-                                    <br>
-                                    %
-                                    <?= ((($amalkardNext / $amalkardPrev) - 1) * 100) / $shakhes_standard * $amalkardPrev ?>
-                                </td>
-                                <? endforeach; ?>
-                                <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                <?
-                                        $amalkardPrev = $ghalamsPrev[$ghalam_id]['admins'][$head_admin_info['admin_id']]['value'.$season] ?? 1;
-                                        $amalkardNext = $gh['admins'][$head_admin_info['admin_id']]['value'.$season];
-                                        $shakhes_standard = 1;
-                                    ?>
-                                <td width="<?= 300 / count($groups) ?>">
+                                        $amalkardPrev = $ghalamsPrev[$ghalam_id]['admins'][$head_admin_id]['value_import'] ;
+                                        $amalkardNext = $gh['admins'][$head_admin_id]['value_import'] ;
 
-                                    A98:<?= $amalkardPrev  ?>
-                                    A99:<?= $amalkardNext ?>
-                                    <br>
-                                    <br>
-                                    نرخ رشد:<?= (($amalkardNext / $amalkardPrev) - 1) * 100 ?>
-                                    <br>
-                                    <br>
-                                    درصد تحقق:
-                                    <?= ((($amalkardNext / $amalkardPrev) - 1) * 100) / $shakhes_standard * $amalkardPrev ?>
-                                </td>
-                                <? endforeach; ?>
-                            </tr>
+                                        ?>
+                                        <td style="direction: ltr;" width="<?= 300 / count($groups) ?>">
+
+                                            A98:<?= $amalkardPrev  ?>
+                                            A99:<?= $amalkardNext ?>
+                                            <br>
+                                            N:<?= (($amalkardNext / $amalkardPrev) - 1) * 100 ?>
+
+                                        </td>
+                                    <? endforeach; ?>
+
+                                    <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
+                                        <?
+                                        $amalkardPrev = $ghalamsPrev[$ghalam_id]['admins'][$head_admin_id]['value'] ;
+                                        $amalkardNext = $gh['admins'][$head_admin_id]['value'] ;
+                                        ?>
+                                        <td width="<?= 300 / count($groups) ?>">
+
+                                            A98:<?= $amalkardPrev  ?>
+                                            A99:<?= $amalkardNext ?>
+                                            <br>
+                                            <br>
+                                            N:<?= (($amalkardNext / $amalkardPrev) - 1) * 100 ?>
+
+                                        </td>
+                                    <? endforeach; ?>
+                                </tr>
                             <? endforeach; ?>
                         </tbody>
                     </table>

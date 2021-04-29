@@ -152,7 +152,7 @@ class shakhesController
 
         // اول بدست آوردن بچه ها از جدول admin , import_status
         $groups = $this->child();
-        
+
 
         /** season */
         $rules = array('6', '12');
@@ -162,11 +162,10 @@ class shakhesController
             $season = '6';
         }
 
-        if(isset($_GET['y']))
-        {
-            $year = explode('-',handleData($_GET['y']));
-        }else{
-            $year = array(1398,1399);
+        if (isset($_GET['y'])) {
+            $year = explode('-', handleData($_GET['y']));
+        } else {
+            $year = array(1398, 1399);
         }
 
         /** admins filter */
@@ -174,19 +173,19 @@ class shakhesController
 
 
         //دوم بدست آوردن قلم ها از جدول import
-        $ghalamsNext = $this->getGhalam($groups, $year[1]);
-        $ghalamsPrev = $this->getGhalam($groups, $year[0]);
+        $ghalamsNext = $this->getGhalam($groups, $year[1],$season);
+        $ghalamsPrev = $this->getGhalam($groups, $year[0],$season);
 
-    //    dd($ghalamsNext);
+        //    dd($ghalamsNext[102001]['admins'][1102]);
 
         // سوم برای بدست آوردن شاخص ها از جدول ghalam_shakhes , shakhes
         $shakhesNext = $this->getShakhesByGhalam($ghalamsNext);
         $shakhesPrev = $this->getShakhesByGhalam($ghalamsPrev);
 
-//         dd($shakhesNext);
+        // dd($shakhesNext);
 
-        // شاخص استاندارد
-//        $shakhesStandard = $this->shakhesStandard();
+        $reports = $this->getReports($shakhesNext, $ghalamsNext, $ghalamsPrev, $groups);
+
 
         // $shakhesReport = $this->shakhesReport($shakhes, $ghalams);
         //وزن ها 
@@ -195,6 +194,7 @@ class shakhesController
         $this->template(compact(
             'shakhesNext',
             'shakhesPrev',
+            'reports',
             'list',
             'groups',
             'ghalamsNext',
@@ -290,7 +290,7 @@ class shakhesController
     }
 
 
-    public function getGhalam($admins, $year = '1399')
+    public function getGhalam($admins, $year = '1399',$season=6)
     {
 
         include_once ROOT_DIR . 'component/shakhes/model/import.model.php';
@@ -300,30 +300,26 @@ class shakhesController
         sh_import.motevali_admin_id,
         sh_import.import,
         sh_import.ghalam_id,
-        sh_import.value6_import,
-        sh_import.value6,
-        sh_import.value12_import,
-        sh_import.value12
+        sh_import.value'.$season.'_import as value_import,
+        sh_import.value'.$season.' as value
         ');
         // $import->keyBy('ghalam_id');
         $import->leftJoin('sh_ghalam', 'sh_ghalam.ghalam_id', '=', 'sh_import.ghalam_id');
         $import->where('sh_import.motevali_admin_id', 'in', array_column($admins, 'admin_id'));
         $import->andWhere('year', '=', $year);
         $imports = $import->getList()['export']['list'];
-        // dd($import);
+        // dd($imports);
         $ghalam = array();
         foreach ($imports as $item) {
             // dd($item);
             $ghalam[$item['ghalam_id']]['ghalam'] = $item['ghalam'];
             $ghalam[$item['ghalam_id']]['ghalam_id'] = $item['ghalam_id'];
-            // $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['ghalam'] = $item['ghalam'];
-            // $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['ghalam_id'] = $item['ghalam_id'];
             $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['motevali_admin_id'] = $item['motevali_admin_id'];
             $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['import'] = $item['import'];
-            $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['value6_import'] = $item['value6_import'];
-            $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['value6'] = $item['value6'];
-            $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['value12_import'] = $item['value12_import'];
-            $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['value12'] = $item['value12'];
+            
+            $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['value_import'] = $item['value_import'];
+            $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['value'] = $item['value'];
+            
         }
 
         // dd($ghalam);
@@ -353,16 +349,13 @@ class shakhesController
             $shakhes[$rel['shakhes_id']]['shakhes'] = $rel['shakhes'];
             $shakhes[$rel['shakhes_id']]['shakhes_id'] = $rel['shakhes_id'];
             $shakhes[$rel['shakhes_id']]['kalan_no'] = $rel['kalan_no'];
-            $functionsRequirement[$rel['shakhes_id']][$rel['type']][$rel['ghalam_id']]['admins'] = $ghalams[$rel['ghalam_id']];
-            // $shakhes[$rel['shakhes_id']]['ghalams'][$rel['type']][$rel['ghalam_id']]['admins'] = $ghalams[$rel['ghalam_id']];
-            // $shakhes[$rel['shakhes_id']]['ghalams'][$rel['ghalam_id']]['type'] = $rel['type'];
-            // dd($ghalams);
-            // $shakhes[$rel['shakhes_id']]['amalkard6'] = $this->getAllShakhesFunctionsKeyByShakhesId($rel['type'],$ghalams[$rel['ghalam_id']]);
+            $shakhes[$rel['shakhes_id']]['function'] = $this->shakhesFunction($rel['shakhes_id']);
+            // $functionsRequirement[$rel['shakhes_id']][$rel['type']][$rel['ghalam_id']]['admins'] = $ghalams[$rel['ghalam_id']];
         }
 
-//         dd($shakhes);
+        // dd($shakhes);
 
-        $shakhes = $this->getAllShakhesFunctionsKeyByShakhesId($functionsRequirement, $shakhes);
+        // $shakhes = $this->getAllShakhesFunctionsKeyByShakhesId($functionsRequirement, $shakhes);
         // dd($shakhes);
 
         // dd($relGhalamShakhes);
@@ -414,27 +407,92 @@ class shakhesController
 
         // dd($shakhes);
         return $shakhes;
-
     }
-    public function shakhesStandard(){
+
+    public function shakhesFunction($skakhesId = '0')
+    {
+        include_once ROOT_DIR . 'component/shakhes/model/rel.ghalam.shakhes.model.php';
+        $relGhalamShakhes = new relGhalamShakhes();
+
+        $resp = $relGhalamShakhes->where('shakhes_id', '=', $skakhesId)->getList()['export']['list'];
+        // dd($resp);   
+        $func = '';
+        foreach ($resp as  $sh) {
+            $type = $sh['type'];
+            if ($type == 'equal') {
+                $func = $sh['ghalam_id'];
+            } else if ($type == 'sum') {
+                $func = $func . '+' . $sh['ghalam_id'];
+            } else {
+
+                if ($type == 'up') {
+                    $up = $up . '+' . $sh['ghalam_id'];
+                } else {
+                    $down = $down . '+' . $sh['ghalam_id'];
+                }
+                $func = trim($up,'+') . '/' . trim($down,'+');
+
+                // dd('ss');
+            }
+            // dd($sh);
+        }
+
+        return trim($func, '+');
+    }
+
+    public function getReports($sh, $ghN, $ghP, $admins)
+    {
+        
+        foreach ($sh as $shakhes_id => $shakhes) {
+            $function = $shakhes['function'];
+            $amalkardNext = $this->calcuteFunction($function, $ghN);
+            $amalkardPrev = $this->calcuteFunction($function, $ghP);
+            foreach ($admins as $motevali => $admin) {
+                $nerkh[$motevali] = (($amalkardNext[$motevali] / $amalkardPrev[$motevali]) - 1) * 100;
+                $darsad[$motevali] = ($amalkardNext[$motevali] / $this->standard($shakhes_id, $motevali)) * 100;   
+                
+                $data[$shakhes_id][$motevali]['amalkardNext'] = $amalkardNext[$motevali]; 
+                $data[$shakhes_id][$motevali]['amalkardPrev'] = $amalkardPrev[$motevali]; 
+                $data[$shakhes_id][$motevali]['nerkh'] = $nerkh[$motevali]; 
+                $data[$shakhes_id][$motevali]['darsad'] = $darsad[$motevali]; 
+            }
+        }
+        return $data;
+    }
+    private function calcuteFunction($func, $gh)
+    {
+        // $func = '101109+101109/101109+101109';
+        // $func = '101109/101109';
+        // $func = '101109';
+
+        $f = explode('/', $func);
+        $fU = explode('+', $f[0]);
+        $v = $d = array();
+        foreach ($fU as $u) {
+            foreach ($gh[$u]['admins'] as $g) {
+                $v[$g['motevali_admin_id']] = $v[$g['motevali_admin_id']] + $g['value'];
+            }
+        }
+
+        if (isset($f[1])) {
+            $fD = explode('+', $f[1]);
+            foreach ($fD as $u) {
+                foreach ($gh[$u]['admins'] as $g) {
+                    $d[$g['motevali_admin_id']] = $d[$g['motevali_admin_id']] + $g['value'];
+                    $v[$g['motevali_admin_id']] = $v[$g['motevali_admin_id']] / $d[$g['motevali_admin_id']];
+                }
+            }
+        }
+        return $v;
+    }
+    private function standard($shakhes, $admin)
+    {
         include_once ROOT_DIR . 'component/shakhes/model/rel.shakhes.admin.model.php';
         $relShakhesAdmin = new relShakhesAdmin();
-
-        $ShakhesAdmin = $relShakhesAdmin->getAll();
-        $ShakhesAdmin->getList()['export']['list'];
-
-
-
-        return $ShakhesAdmin;
+        $resp = $relShakhesAdmin->where('shakhes_id', '=', $shakhes)->andWhere('admin_id', '=', $admin)->first();
+        
+        return $resp->shakhes_standard;
     }
-
-
-
-
-
-
-
-
 
 
 
@@ -1056,7 +1114,7 @@ class shakhesController
 
 
         $this->fileName = 'shakhes.jalasat.php';
-        $this->template(compact('jalasat', 'msg', 'data','importAdmins'));
+        $this->template(compact('jalasat', 'msg', 'data', 'importAdmins'));
         die();
     }
 
@@ -1215,7 +1273,7 @@ class shakhesController
 
 
         $this->fileName = 'shakhes.daneshamukhte.php';
-        $this->template(compact('daneshamukhte', 'msg', 'data','importAdmins'));
+        $this->template(compact('daneshamukhte', 'msg', 'data', 'importAdmins'));
         die();
     }
 
@@ -1244,7 +1302,7 @@ class shakhesController
             /* اگه فرم درست پر نشه ارور بده */
             $error = 0;
             $this->selectBoxAdmins('daneshamukhte');
-            
+
             if (count($this->selectBoxAdmins) == 0) {
                 $result['msg'] = '.نیاز به تکمیل این فرم برای شما نمی باشد';
                 $error = 1;
@@ -1345,7 +1403,7 @@ class shakhesController
         $this->selectBoxAdmins('ruydad');
         $importAdmins = $this->importAdmins('ruydad');
         // dd($importAdmins);
-        
+
         $ruydadObj->select('sh_ruydad.*');
         // $ruydadObj->leftJoin('sh_forms_permission', 'sh_forms_permission.admin_id', '=', 'sh_ruydad.import_admin');
         $ruydadObj->where('sh_ruydad.admin_id', 'in', $importAdmins['admins'])->orWhere('sh_ruydad.import_admin', 'in', $importAdmins['admins']);
@@ -1382,7 +1440,7 @@ class shakhesController
         }
 
         $this->fileName = 'shakhes.ruydad.php';
-        $this->template(compact('ruydad', 'msg', 'data','importAdmins'));
+        $this->template(compact('ruydad', 'msg', 'data', 'importAdmins'));
         die();
     }
 
@@ -1525,7 +1583,7 @@ class shakhesController
         $shoraObj->orderBy('id', 'desc');
         $shora = $shoraObj->getList()['export'];
 
-        
+
 
         if (isset($_GET['id'])) {
             $data['id'] = $_GET['id'];
@@ -1553,7 +1611,7 @@ class shakhesController
 
 
         $this->fileName = 'shakhes.shora.php';
-        $this->template(compact('shora', 'msg', 'data','importAdmins'));
+        $this->template(compact('shora', 'msg', 'data', 'importAdmins'));
         die();
     }
 
@@ -1825,18 +1883,18 @@ class shakhesController
 
         $formsPermission->select('admin_id,confirm1,confirm2');
         $formsPermission->keyBy('admin_id');
-        $formsPermission->where('admin_id','in',$ids['admins']);
-        $formsPermission->andWhere('`table`','=',$table);
+        $formsPermission->where('admin_id', 'in', $ids['admins']);
+        $formsPermission->andWhere('`table`', '=', $table);
         $ids['confirms'] = $formsPermission->getList()['export']['list'];
 
 
         // dd($formsPermission);
-        
+
         // dd($ids);
         return $ids;
     }
 
-    
+
     private function checkAdminStatus($adminId)
     {
         /* manager */
