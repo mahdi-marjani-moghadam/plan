@@ -238,7 +238,7 @@
                                             <br>
                                             <br>
                                             درصد تحقق:<?= $reports[$shakhes_id][$head_admin_id]['roshd'] ?>
-                                            
+
                                         </td>
                                     <? endforeach; ?>
                                 </tr>
@@ -318,8 +318,8 @@
                                     <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
                                         <?
 
-                                        $amalkardPrev = $ghalamsPrev[$ghalam_id]['admins'][$head_admin_id]['value_import'] ;
-                                        $amalkardNext = $gh['admins'][$head_admin_id]['value_import'] ;
+                                        $amalkardPrev = $ghalamsPrev[$ghalam_id]['admins'][$head_admin_id]['value_import'];
+                                        $amalkardNext = $gh['admins'][$head_admin_id]['value_import'];
 
                                         ?>
                                         <td style="direction: ltr;" width="<?= 300 / count($groups) ?>">
@@ -334,17 +334,28 @@
 
                                     <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
                                         <?
-                                        $amalkardPrev = $ghalamsPrev[$ghalam_id]['admins'][$head_admin_id]['value'] ;
-                                        $amalkardNext = $gh['admins'][$head_admin_id]['value'] ;
+                                        $amalkardPrev = $ghalamsPrev[$ghalam_id]['admins'][$head_admin_id]['value'];
+                                        $amalkardNext = $gh['admins'][$head_admin_id]['value'];
                                         ?>
                                         <td width="<?= 300 / count($groups) ?>">
-
-                                            A98:<?= $amalkardPrev  ?>
-                                            A99:<?= $amalkardNext ?>
-                                            <br>
-                                            <br>
-                                            N:<?= (($amalkardNext / $amalkardPrev) - 1) * 100 ?>
-
+                                            <table class="fixed">
+                                                <tr>
+                                                    <td>A98</td>
+                                                    <td>A99</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><?= $amalkardPrev  ?></td>
+                                                    <td><?= $amalkardNext ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2">رشد:</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <?= (($amalkardNext / $amalkardPrev) - 1) * 100 ?>
+                                                    </td>
+                                                </tr>
+                                            </table>
                                         </td>
                                     <? endforeach; ?>
                                 </tr>
@@ -358,3 +369,13 @@
     <div class="panel-footer clearfix"></div>
 </div>
 </div>
+
+<style>
+    .fixed {
+        text-align: center;
+    }
+    .fixed td{padding: 4px;}
+    table.fixed tr:nth-child(2n+1){background: #f4f4f4;}
+    table.fixed td:first-child{background: none !important;}
+
+</style>
