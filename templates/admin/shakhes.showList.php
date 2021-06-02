@@ -113,6 +113,7 @@
                 <option value="1398-1399" <?= ($_GET['y'] == '1398-1399') ? 'selected' : ''; ?>>۱۳۹۸-۱۳۹۹</option>
                 <option value="1399-1400" <?= ($_GET['y'] == '1399-1400') ? 'selected' : ''; ?>>۱۳۹۹-۱۴۰۰</option>
                 <option value="1400-1401" <?= ($_GET['y'] == '1400-1401') ? 'selected' : ''; ?>>۱۴۰۰-۱۴۰۱</option>
+                <option value="1401-1402" <?= ($_GET['y'] == '1401-1402') ? 'selected' : ''; ?>>1401-1402</option>
             </select>
         </div>
         <div class="col-md-1 col-sm-1 col-xs-1  pull-left">
@@ -225,20 +226,58 @@
                                     <td><?= $sh['shakhes'] ?></td>
                                     <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
                                         <td style="direction: ltr;">
-                                            1
+                                            <table class="fixed">
+                                                <tr class="green">
+                                                    <td colspan="2"> عملکرد سال</td>
+                                                </tr>
+                                                <tr class="green">
+                                                    <td>98</td>
+                                                    <td>99</td>
+                                                </tr>
+                                                <tr class="gray">
+                                                    <td><?= $reports[$shakhes_id][$head_admin_id]['amalkardPrev']['value_import']  ?></td>
+                                                    <td><?= $reports[$shakhes_id][$head_admin_id]['amalkardNext']['value_import'] ?></td>
+                                                </tr>
+                                                <tr class="green">
+                                                    <td >نرخ رشد</td>
+                                                    <td>درصد تحقق</td>
+                                                </tr>
+                                                <tr class="gray">
+                                                    <td><?= $reports[$shakhes_id][$head_admin_id]['nerkh']['value_import'] ?> </td>
+                                                    <td><?= $reports[$shakhes_id][$head_admin_id]['darsad']['value_import'] ?></td>
+                                                </tr>
+
+
+
+                                            </table>
                                         </td>
                                     <? endforeach; ?>
                                     <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
                                         <td>
-                                            A98:<?= $reports[$shakhes_id][$head_admin_id]['amalkardPrev']  ?>
-                                            A99:<?= $reports[$shakhes_id][$head_admin_id]['amalkardNext'] ?>
-                                            <br>
-                                            <br>
-                                            نرخ رشد:<?= $reports[$shakhes_id][$head_admin_id]['nerkh'] ?>
-                                            <br>
-                                            <br>
-                                            درصد تحقق:<?= $reports[$shakhes_id][$head_admin_id]['roshd'] ?>
+                                            <table class="fixed">
+                                                <tr class="green">
+                                                    <td colspan="2"> عملکرد سال</td>
+                                                </tr>
+                                                <tr class="green">
+                                                    <td>98</td>
+                                                    <td>99</td>
+                                                </tr>
+                                                <tr class="gray">
+                                                    <td><?= $reports[$shakhes_id][$head_admin_id]['amalkardPrev']['value']  ?></td>
+                                                    <td><?= $reports[$shakhes_id][$head_admin_id]['amalkardNext']['value'] ?></td>
+                                                </tr>
+                                                <tr class="green">
+                                                    <td >نرخ رشد</td>
+                                                    <td>درصد تحقق</td>
+                                                </tr>
+                                                <tr class="gray">
+                                                    <td><?= $reports[$shakhes_id][$head_admin_id]['nerkh']['value'] ?> </td>
+                                                    <td><?= $reports[$shakhes_id][$head_admin_id]['darsad']['value'] ?></td>
+                                                </tr>
 
+
+
+                                            </table>
                                         </td>
                                     <? endforeach; ?>
                                 </tr>
@@ -315,46 +354,53 @@
                                         <?= $gh['ghalam_id'] ?>
 
                                     </td>
-                                    <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
+                                    <?
+                                    $amalkardPrevVahed = $amalkardNextVahed = 0;
+                                    foreach ($groups as $head_admin_id => $head_admin_info) : ?>
                                         <?
-
-                                        $amalkardPrev = $ghalamsPrev[$ghalam_id]['admins'][$head_admin_id]['value_import'];
-                                        $amalkardNext = $gh['admins'][$head_admin_id]['value_import'];
-
+                                        $amalkardPrev = $ghalamsPrev[$ghalam_id]['admins'][$head_admin_id]['value_import'] ?? 0;
+                                        $amalkardNext = $gh['admins'][$head_admin_id]['value_import'] ?? 0;
+                                        $amalkardPrevVahed += $amalkardPrev;
+                                        $amalkardNextVahed += $amalkardNext;
                                         ?>
                                         <td style="direction: ltr;" width="<?= 300 / count($groups) ?>">
+                                            <table class="fixed">
 
-                                            A98:<?= $amalkardPrev  ?>
-                                            A99:<?= $amalkardNext ?>
-                                            <br>
-                                            N:<?= (($amalkardNext / $amalkardPrev) - 1) * 100 ?>
+                                                <tr class="green">
+                                                    <td>98</td>
+                                                    <td>99</td>
+                                                </tr>
+                                                <tr class="gray">
+                                                <tr class="gray">
+                                                    <td><?= ($head_admin_info['parent_id'] != 1) ? $amalkardPrev : $amalkardPrevVahed  ?></td>
+                                                    <td><?= ($head_admin_info['parent_id'] != 1) ? $amalkardNext : $amalkardNextVahed  ?></td>
+                                                </tr>
+                                            </table>
 
                                         </td>
                                     <? endforeach; ?>
 
-                                    <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
+                                    <?
+                                    $amalkardPrevVahed = $amalkardNextVahed = 0;
+                                    foreach ($groups as $head_admin_id => $head_admin_info) : ?>
                                         <?
-                                        $amalkardPrev = $ghalamsPrev[$ghalam_id]['admins'][$head_admin_id]['value'];
-                                        $amalkardNext = $gh['admins'][$head_admin_id]['value'];
+                                        $amalkardPrev = $ghalamsPrev[$ghalam_id]['admins'][$head_admin_id]['value'] ?? 0;
+                                        $amalkardNext = $gh['admins'][$head_admin_id]['value'] ?? 0;
+                                        $amalkardPrevVahed += $amalkardPrev;
+                                        $amalkardNextVahed += $amalkardNext;
                                         ?>
                                         <td width="<?= 300 / count($groups) ?>">
                                             <table class="fixed">
-                                                <tr>
-                                                    <td>A98</td>
-                                                    <td>A99</td>
+
+                                                <tr class="green">
+                                                    <td>98</td>
+                                                    <td>99</td>
                                                 </tr>
-                                                <tr>
-                                                    <td><?= $amalkardPrev  ?></td>
-                                                    <td><?= $amalkardNext ?></td>
+                                                <tr class="gray">
+                                                    <td><?= ($head_admin_info['parent_id'] != 1) ? $amalkardPrev : $amalkardPrevVahed  ?></td>
+                                                    <td><?= ($head_admin_info['parent_id'] != 1) ? $amalkardNext : $amalkardNextVahed  ?></td>
                                                 </tr>
-                                                <tr>
-                                                    <td colspan="2">رشد:</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="2">
-                                                        <?= (($amalkardNext / $amalkardPrev) - 1) * 100 ?>
-                                                    </td>
-                                                </tr>
+
                                             </table>
                                         </td>
                                     <? endforeach; ?>
@@ -375,7 +421,9 @@
         text-align: center;
     }
     .fixed td{padding: 4px;}
-    table.fixed tr:nth-child(2n+1){background: #f4f4f4;}
+    /*table.fixed tr:nth-child(2n+1){background: #f4f4f4;}*/
     table.fixed td:first-child{background: none !important;}
+    table.fixed .gray{ background-color: #f4f4f4 !important;}
+    table.fixed .green td{ background-color: #d3e6d4 !important;color: #000 !important}
 
 </style>
