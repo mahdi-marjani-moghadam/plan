@@ -240,6 +240,20 @@
                         <input id="add-shakhes" class="form-control ">
                     </div>
 
+                    <div class="col-md-12 col-xs-12 col-sm-12">
+                        <label> هدف کلان</label>
+                        <div class="row">
+                            <select class="add-kalan col-md-12 col-xs-12 col-sm-12 ">
+                                <? foreach ($kalans as $k => $kalan) : ?>
+                                    <option value="$g<?= $kalan['kalan_no'] ?>"><?= $kalan['kalan'] ?></option>
+                                <? endforeach ?>
+                            </select>
+                        </div>
+
+                    </div>
+
+
+
                     <label class="col-md-12 col-xs-12 col-sm-12"> فرمول</label>
                     <br>
                     <select id="add-select-box" class="col-md-6 col-xs-6 col-sm-6 pull-right">

@@ -788,11 +788,14 @@ class shakhesController
         $res2 = $obj2->query($query)->getList();
         $ghalam = ($res2['export']['recordsCount'] > 0) ?  $res2['export']['list'] : array();
 
-        // dd($ghalam);
+        include_once ROOT_DIR.'component/eghdam/model/eghdam.model.php';
+        $obj3 = new eghdam();
+        $kalans = $obj3->getAll()->groupBy('kalan_no')->keyBy('kalan_no')->getList()['export']['list'];
+
 
 
         $this->fileName = 'shakhes.setting.showList.php';
-        $this->template(compact('shakhes', 'ghalam'));
+        $this->template(compact('shakhes', 'ghalam','kalans'));
         die();
     }
 
@@ -820,8 +823,6 @@ class shakhesController
 
         /** shakhes */
 
-        // $sh = new shakhes();
-        // $sh->shakhes_id =
 
         /** rel ghalam shakhes */
 
