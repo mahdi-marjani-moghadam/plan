@@ -177,6 +177,73 @@
 
 
 
+    <div class="row xsmallSpace"></div>
+    <div id="panel-2" class="panel panel-default border-green">
+        <div class="panel-heading bg-green">
+            <h3 class="panel-title rtl ">مقایسه عملکرد واحد در سطح کلان</h3>
+            <div class="panel-actions">
+                <button data-expand="#panel-2" title="نمایش" class="btn-panel"><i class="fa fa-expand"></i></button>
+                <button data-collapse="#panel-2" title="بازکردن" class="btn-panel"><i class="fa fa-caret-down"></i>
+                </button>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div id="container">
+                <div class='table-cont2' id="table2">
+                    <table class="table  table-bordered ">
+                        <thead>
+                        <tr style="text-align: center">
+                            <td style="background-color: #5f9846; color:#fff; " rowspan="2">هدف</td>
+                            <td width="300" style="background-color: #45639b; color:#fff; " colspan="<?= count($groups) ?>">خوداظهاری</td>
+                            <td style="background-color: #654c97; color:#fff; " colspan="<?= count($groups) ?>">نهایی(تائیدشده)</td>
+                        </tr>
+                        <tr style="text-align: center">
+                            <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
+                                <td><?= $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
+                            <? endforeach; ?>
+                            <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
+                                <td><?= $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
+                            <? endforeach; ?>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <? foreach ($kalans as $kalan_no => $kalan) : ?>
+                            <tr>
+                                <td><?= $kalan_no ?></td>
+
+                                <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
+                                    <td>
+                                        <?= $kalan[$head_admin_id]['darsad']['value_import'] ?>
+                                    </td>
+                                <? endforeach; ?>
+                                <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
+                                    <td>
+                                        <?= $kalan[$head_admin_id]['darsad']['value'] ?>
+                                    </td>
+                                <? endforeach; ?>
+                            </tr>
+                        <? endforeach; ?>
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -423,7 +490,7 @@
     .fixed td{padding: 4px;}
     /*table.fixed tr:nth-child(2n+1){background: #f4f4f4;}*/
     table.fixed td:first-child{background: none !important;}
-    table.fixed .gray{ background-color: #f4f4f4 !important;}
+    table.fixed .gray{ background-color: #f4f4f4 !important;direction: ltr}
     table.fixed .green td{ background-color: #d3e6d4 !important;color: #000 !important}
 
 </style>

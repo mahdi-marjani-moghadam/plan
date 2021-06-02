@@ -193,16 +193,16 @@ class shakhesController
 //         dd($shakhesNext);
 
         $reports = $this->getReports($shakhesNext, $ghalamsNext, $ghalamsPrev, $groups);
+        $kalans = $reports['kalan'];
+        unset($reports['kalan']);
 
-
-        // $shakhesReport = $this->shakhesReport($shakhes, $ghalams);
-        //وزن ها 
 
         $this->fileName = 'shakhes.showList.php';
         $this->template(compact(
             'shakhesNext',
             'shakhesPrev',
             'reports',
+            'kalans',
             'list',
             'groups',
             'ghalamsNext',
@@ -452,6 +452,7 @@ class shakhesController
     {
 
         foreach ($sh as $shakhes_id => $shakhes) {
+
             $function = $shakhes['function'];
             $amalkardNext = $this->calcuteFunction($function, $ghN);
             $amalkardPrev = $this->calcuteFunction($function, $ghP);
@@ -468,6 +469,9 @@ class shakhesController
                     $data[$shakhes_id][$motevali]['amalkardPrev']['value'] = $amalkardPrev[$motevali]['value'];
                     $data[$shakhes_id][$motevali]['nerkh']['value'] = $nerkh[$motevali]['value'];
                     $data[$shakhes_id][$motevali]['darsad']['value'] = $darsad[$motevali]['value'];
+
+                    $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value'] += $data[$shakhes_id][$motevali]['darsad']['value'] * $this->shakhesVazn($shakhes_id,$motevali);
+                    $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value_import'] += $data[$shakhes_id][$motevali]['darsad']['value_import'] * $this->shakhesVazn($shakhes_id,$motevali);
 
                     // اعلامي
                     $nerkh[$motevali]['value_import'] = (($amalkardNext[$motevali]['value_import'] / $amalkardPrev[$motevali]['value_import']) - 1) * 100;
@@ -506,6 +510,8 @@ class shakhesController
 
                         $data[$shakhes_id][$admin['parent_id']]['nerkh'][$tmp[$i]] = (($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]] ) - 1 ) * 100;
                         $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]] = ($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $this->standard($shakhes_id, $admin['parent_id'])) * 100;
+
+                        $data['kalan'][$shakhes['kalan_no']][$admin['parent_id']]['darsad'][$tmp[$i]] += $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]] * $this->shakhesVazn($shakhes_id,$admin['parent_id']);
 
 
                     }
@@ -565,6 +571,14 @@ class shakhesController
         $resp = $relShakhesAdmin->where('shakhes_id', '=', $shakhes)->andWhere('admin_id', '=', $admin)->first();
         
         return $resp->shakhes_standard;
+    }
+    private function shakhesVazn($shakhes, $admin)
+    {
+        include_once ROOT_DIR . 'component/shakhes/model/rel.shakhes.admin.model.php';
+        $relShakhesAdmin = new relShakhesAdmin();
+        $resp = $relShakhesAdmin->where('shakhes_id', '=', $shakhes)->andWhere('admin_id', '=', $admin)->first();
+
+        return $resp->shakhes_vazn;
     }
 
 
