@@ -159,14 +159,15 @@ class shakhesController
         if (in_array($_GET['s'], $rules)) {
             $season = handleData($_GET['s']);
         } else {
-            if(in_array(STEP_FORM1, [1,2])){
+            if (in_array(STEP_FORM1, [1, 2])) {
                 $season = '6';
             }
 
-            if(in_array(STEP_FORM1, [3,4]))
-            {$season = '12';}
+            if (in_array(STEP_FORM1, [3, 4])) {
+                $season = '12';
+            }
 
-            $_GET['s']= $season;
+            $_GET['s'] = $season;
         }
 
         if (isset($_GET['y'])) {
@@ -180,17 +181,17 @@ class shakhesController
 
 
         //دوم بدست آوردن قلم ها از جدول import
-        $ghalamsNext = $this->getGhalam($groups, $year[1],$season);
-        $ghalamsPrev = $this->getGhalam($groups, $year[0],$season);
+        $ghalamsNext = $this->getGhalam($groups, $year[1], $season);
+        $ghalamsPrev = $this->getGhalam($groups, $year[0], $season);
 
-//           dd($ghalamsNext[102001]['admins'][1102]);
-//           dd($ghalamsPrev[102001]['admins'][1102]);
+        //           dd($ghalamsNext[102001]['admins'][1102]);
+        //           dd($ghalamsPrev[102001]['admins'][1102]);
 
         // سوم برای بدست آوردن شاخص ها از جدول ghalam_shakhes , shakhes
         $shakhesNext = $this->getShakhesByGhalam($ghalamsNext);
         $shakhesPrev = $this->getShakhesByGhalam($ghalamsPrev);
 
-//         dd($shakhesNext);
+        //         dd($shakhesNext);
 
         $reports = $this->getReports($shakhesNext, $ghalamsNext, $ghalamsPrev, $groups);
         $kalans = $reports['kalan'];
@@ -298,7 +299,7 @@ class shakhesController
     }
 
 
-    public function getGhalam($admins, $year = '1399',$season=6)
+    public function getGhalam($admins, $year = '1399', $season = 6)
     {
 
         include_once ROOT_DIR . 'component/shakhes/model/import.model.php';
@@ -308,8 +309,8 @@ class shakhesController
         sh_import.motevali_admin_id,
         sh_import.import,
         sh_import.ghalam_id,
-        sh_import.value'.$season.'_import as value_import,
-        sh_import.value'.$season.' as value
+        sh_import.value' . $season . '_import as value_import,
+        sh_import.value' . $season . ' as value
         ');
         // $import->keyBy('ghalam_id');
         $import->leftJoin('sh_ghalam', 'sh_ghalam.ghalam_id', '=', 'sh_import.ghalam_id');
@@ -324,19 +325,18 @@ class shakhesController
             $ghalam[$item['ghalam_id']]['ghalam_id'] = $item['ghalam_id'];
             $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['motevali_admin_id'] = $item['motevali_admin_id'];
             $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['import'] = $item['import'];
-            
+
             $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['value_import'] = $item['value_import'];
             $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['value'] = $item['value'];
-            
         }
 
-//         dd($ghalam);
+        //         dd($ghalam);
         return $ghalam;
     }
 
     public function getShakhesByGhalam($ghalams)
     {
-//         dd($ghalams);
+        //         dd($ghalams);
         include_once ROOT_DIR . 'component/shakhes/model/rel.ghalam.shakhes.model.php';
         $relGhalamShakhes = new relGhalamShakhes();
         $relGhalamShakhes->select(' 
@@ -361,7 +361,7 @@ class shakhesController
             // $functionsRequirement[$rel['shakhes_id']][$rel['type']][$rel['ghalam_id']]['admins'] = $ghalams[$rel['ghalam_id']];
         }
 
-//         dd($shakhes);
+        //         dd($shakhes);
 
         // $shakhes = $this->getAllShakhesFunctionsKeyByShakhesId($functionsRequirement, $shakhes);
         // dd($shakhes);
@@ -438,7 +438,7 @@ class shakhesController
                 } else {
                     $down = $down . '+' . $sh['ghalam_id'];
                 }
-                $func = trim($up,'+') . '/' . trim($down,'+');
+                $func = trim($up, '+') . '/' . trim($down, '+');
 
                 // dd('ss');
             }
@@ -454,12 +454,13 @@ class shakhesController
         foreach ($sh as $shakhes_id => $shakhes) {
 
             $function = $shakhes['function'];
+
             $amalkardNext = $this->calcuteFunction($function, $ghN);
             $amalkardPrev = $this->calcuteFunction($function, $ghP);
             $data[$shakhes_id] = $EupNext = $EupPrev = $EdownNext = $EdownPrev = array();
             foreach ($admins as $motevali => $admin) {
 
-                if($admin['parent_id'] != 1){
+                if ($admin['parent_id'] != 1) {
                     //براي واحد ها
                     //نهايي
                     $nerkh[$motevali]['value'] = (($amalkardNext[$motevali]['value'] / $amalkardPrev[$motevali]['value']) - 1) * 100;
@@ -470,8 +471,8 @@ class shakhesController
                     $data[$shakhes_id][$motevali]['nerkh']['value'] = $nerkh[$motevali]['value'];
                     $data[$shakhes_id][$motevali]['darsad']['value'] = $darsad[$motevali]['value'];
 
-                    $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value'] += $data[$shakhes_id][$motevali]['darsad']['value'] * $this->shakhesVazn($shakhes_id,$motevali);
-                    $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value_import'] += $data[$shakhes_id][$motevali]['darsad']['value_import'] * $this->shakhesVazn($shakhes_id,$motevali);
+                    $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value'] += $data[$shakhes_id][$motevali]['darsad']['value'] * $this->shakhesVazn($shakhes_id, $motevali);
+                    $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value_import'] += $data[$shakhes_id][$motevali]['darsad']['value_import'] * $this->shakhesVazn($shakhes_id, $motevali);
 
                     // اعلامي
                     $nerkh[$motevali]['value_import'] = (($amalkardNext[$motevali]['value_import'] / $amalkardPrev[$motevali]['value_import']) - 1) * 100;
@@ -486,42 +487,36 @@ class shakhesController
 
                     //براي  کل واحد
                     // Ez
-                    for ($i=1;$i<=2;$i++){
+                    for ($i = 1; $i <= 2; $i++) {
 
-                        $tmp = array(1=>'value',2=>'value_import');
+                        $tmp = array(1 => 'value', 2 => 'value_import');
 
                         $EupNext[$tmp[$i]] +=  $amalkardNext[$motevali]['up'][$tmp[$i]];
-                        if(isset($amalkardNext[$motevali]['down'][$tmp[$i]])){
-                            $EdownNext[$tmp[$i]] +=  $amalkardNext[$motevali]['down'][$tmp[$i]] ;
-                        }else{
+                        if (isset($amalkardNext[$motevali]['down'][$tmp[$i]])) {
+                            $EdownNext[$tmp[$i]] +=  $amalkardNext[$motevali]['down'][$tmp[$i]];
+                        } else {
                             $EdownNext[$tmp[$i]] = null;
                         }
                         $EupPrev[$tmp[$i]] +=  $amalkardPrev[$motevali]['up'][$tmp[$i]];
-                        if(isset( $amalkardPrev[$motevali]['down'][$tmp[$i]])){
-                            $EdownPrev[$tmp[$i]] +=  $amalkardPrev[$motevali]['down'][$tmp[$i]] ;
-                        }
-                        else{
+                        if (isset($amalkardPrev[$motevali]['down'][$tmp[$i]])) {
+                            $EdownPrev[$tmp[$i]] +=  $amalkardPrev[$motevali]['down'][$tmp[$i]];
+                        } else {
                             $EdownPrev[$tmp[$i]] = null;
                         }
 
 
-                        $data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] = $EupNext[$tmp[$i]] / (($EdownNext[$tmp[$i]] == null)?1:$EdownNext[$tmp[$i]]) ;
-                        $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]] = $EupPrev[$tmp[$i]] / (($EdownPrev[$tmp[$i]]==null)?1:$EdownPrev[$tmp[$i]]);
+                        $data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] = $EupNext[$tmp[$i]] / (($EdownNext[$tmp[$i]] == null) ? 1 : $EdownNext[$tmp[$i]]);
+                        $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]] = $EupPrev[$tmp[$i]] / (($EdownPrev[$tmp[$i]] == null) ? 1 : $EdownPrev[$tmp[$i]]);
 
-                        $data[$shakhes_id][$admin['parent_id']]['nerkh'][$tmp[$i]] = (($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]] ) - 1 ) * 100;
+                        $data[$shakhes_id][$admin['parent_id']]['nerkh'][$tmp[$i]] = (($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]]) - 1) * 100;
                         $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]] = ($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $this->standard($shakhes_id, $admin['parent_id'])) * 100;
 
-                        $data['kalan'][$shakhes['kalan_no']][$admin['parent_id']]['darsad'][$tmp[$i]] += $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]] * $this->shakhesVazn($shakhes_id,$admin['parent_id']);
-
-
+                        $data['kalan'][$shakhes['kalan_no']][$admin['parent_id']]['darsad'][$tmp[$i]] += $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]] * $this->shakhesVazn($shakhes_id, $admin['parent_id']);
                     }
-
-
-
                 }
             }
 
-//                dd($data);
+            //                dd($data);
 
         }
         return $data;
@@ -543,25 +538,30 @@ class shakhesController
 
                 $v[$g['motevali_admin_id']]['up']['value'] = $v[$g['motevali_admin_id']]['value'];
                 $v[$g['motevali_admin_id']]['up']['value_import'] = $v[$g['motevali_admin_id']]['value_import'];
-
             }
         }
+        // dd($v);
 
         if (isset($f[1])) {
             $fD = explode('+', $f[1]);
             foreach ($fD as $u) {
                 foreach ($gh[$u]['admins'] as $g) {
-                    $d[$g['motevali_admin_id']] += $g['value'];
-                    $v[$g['motevali_admin_id']]['value'] = $v[$g['motevali_admin_id']]['value'] / $d[$g['motevali_admin_id']];
-                    $v[$g['motevali_admin_id']]['value_import'] = $v[$g['motevali_admin_id']]['value_import'] / $d[$g['motevali_admin_id']];
+                    $d[$g['motevali_admin_id']]['value'] += $g['value'];
+                    $d[$g['motevali_admin_id']]['value_import'] += $g['value_import'];
 
-                    $v[$g['motevali_admin_id']]['down']['value'] = $v[$g['motevali_admin_id']]['value'];
-                    $v[$g['motevali_admin_id']]['down']['value_import'] = $v[$g['motevali_admin_id']]['value_import'];
+                    // $v[$g['motevali_admin_id']]['value'] = $v[$g['motevali_admin_id']]['value'] / $d[$g['motevali_admin_id']];
+                    // $v[$g['motevali_admin_id']]['value_import'] = $v[$g['motevali_admin_id']]['value_import'] / $d[$g['motevali_admin_id']];
+
+                    $v[$g['motevali_admin_id']]['down']['value'] = $d[$g['motevali_admin_id']]['value'];
+                    $v[$g['motevali_admin_id']]['down']['value_import'] = $d[$g['motevali_admin_id']]['value_import'];
                 }
             }
-        }
 
-//        dd($v);
+            $v[$g['motevali_admin_id']]['value'] = $v[$g['motevali_admin_id']]['value'] / $d[$g['motevali_admin_id']]['value'];
+            $v[$g['motevali_admin_id']]['value_import'] = $v[$g['motevali_admin_id']]['value_import'] / $d[$g['motevali_admin_id']]['value_import'];
+        }
+        // dd($d);
+        // dd($v);
         return $v;
     }
     private function standard($shakhes, $admin)
@@ -569,7 +569,7 @@ class shakhesController
         include_once ROOT_DIR . 'component/shakhes/model/rel.shakhes.admin.model.php';
         $relShakhesAdmin = new relShakhesAdmin();
         $resp = $relShakhesAdmin->where('shakhes_id', '=', $shakhes)->andWhere('admin_id', '=', $admin)->first();
-        
+
         return $resp->shakhes_standard;
     }
     private function shakhesVazn($shakhes, $admin)
@@ -788,14 +788,14 @@ class shakhesController
         $res2 = $obj2->query($query)->getList();
         $ghalam = ($res2['export']['recordsCount'] > 0) ?  $res2['export']['list'] : array();
 
-        include_once ROOT_DIR.'component/eghdam/model/eghdam.model.php';
+        include_once ROOT_DIR . 'component/eghdam/model/eghdam.model.php';
         $obj3 = new eghdam();
         $kalans = $obj3->getAll()->groupBy('kalan_no')->keyBy('kalan_no')->getList()['export']['list'];
 
 
 
         $this->fileName = 'shakhes.setting.showList.php';
-        $this->template(compact('shakhes', 'ghalam','kalans'));
+        $this->template(compact('shakhes', 'ghalam', 'kalans'));
         die();
     }
 

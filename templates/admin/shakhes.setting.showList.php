@@ -21,10 +21,10 @@
                     $i = 1;
                     foreach ($shakhes as $k => $sh) : ?>
                         <tr>
-                            <td><?= $i++ ?></td>
-                            <td><?= $sh['shakhes'] ?></td>
+                            <td><?php echo  $i++ ?></td>
+                            <td><?php echo  $sh['shakhes'] ?></td>
                             <td>
-                                <?
+                                <?php 
                                 switch ($sh['logic']['type']) {
                                     case 'equal':
                                         echo 'تساوی';
@@ -39,11 +39,11 @@
 
                                 ?>
                             </td>
-                            <td dir="ltr"><?= $sh['logic']['function'] ?></td>
+                            <td dir="ltr"><?php echo  $sh['logic']['function'] ?></td>
                             <td>
-                                <a class="btn btn-warning edit" data-shakhesid="<?= $k ?>" data-toggle="modal" data-target="#edit">ویرایش</a>
-                                <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=delete&id=<?= $sh['id'] ?>" class="btn btn-danger " onclick="return confirm('آیا مطمئن هستید؟')">حذف</a>
-                                <a class="btn btn-info copy" data-shakhesid="<?= $k ?>" data-toggle="modal" data-target="#copy">کپی و ساخت شاخص جدید</a>
+                                <a class="btn btn-warning edit" data-shakhesid="<?php echo  $k ?>" data-toggle="modal" data-target="#edit">ویرایش</a>
+                                <a href="<?php echo  RELA_DIR ?>admin/?component=shakhes&action=delete&id=<?php echo  $sh['id'] ?>" class="btn btn-danger " onclick="return confirm('آیا مطمئن هستید؟')">حذف</a>
+                                <a class="btn btn-info copy" data-shakhesid="<?php echo  $k ?>" data-toggle="modal" data-target="#copy">کپی و ساخت شاخص جدید</a>
 
 
 
@@ -79,9 +79,9 @@
                 <label class="col-md-12 col-xs-12 col-sm-12"> فرمول</label>
                 <select class="type">
                     <option class="" value="null">لطفا یکی را انتخاب نمایید ...</option>
-                    <option class="select-equal" value="equal" data-sh="<?= $k ?>">تساوی</option>
-                    <option class="select-sum" value="sum" data-sh="<?= $k ?>">مجموع</option>
-                    <option class="select-divid" value="divid" data-sh="<?= $k ?>">نسبت</option>
+                    <option class="select-equal" value="equal" data-sh="<?php echo  $k ?>">تساوی</option>
+                    <option class="select-sum" value="sum" data-sh="<?php echo  $k ?>">مجموع</option>
+                    <option class="select-divid" value="divid" data-sh="<?php echo  $k ?>">نسبت</option>
                 </select>
 
 
@@ -89,9 +89,9 @@
                     <label class=" col-md-12 col-xs-12 col-sm-12">قلم</label><br>
                     <select class="edit-equal">
                         <option class="" value="null">لطفا یکی را انتخاب نمایید ...</option>
-                        <? foreach ($ghalam as $k => $gh) : ?>
-                        <option value="<?= $gh['ghalam_id'] ?>"><?= $gh['ghalam'] ?></option>
-                        <? endforeach ?>
+                        <?php foreach ($ghalam as $k => $gh) : ?>
+                        <option value="<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
+                        <?php endforeach ?>
                     </select>
                 </div>
 
@@ -100,9 +100,9 @@
                 <div class="row edit-sum">
                     <label class=" col-md-12 col-xs-12 col-sm-12">اقلام</label><br>
                     <select class="edit-sum" multiple>
-                        <? foreach ($ghalam as $k => $gh) : ?>
-                        <option value="<?= $gh['ghalam_id'] ?>"><?= $gh['ghalam'] ?></option>
-                        <? endforeach ?>
+                        <?php foreach ($ghalam as $k => $gh) : ?>
+                        <option value="<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
+                        <?php endforeach ?>
                     </select>
                 </div>
 
@@ -111,18 +111,18 @@
 
                     <label class=" col-md-12 col-xs-12 col-sm-12">اقلام (صورت کسر)</label><br>
                     <select class=" edit-divid-up   " multiple>
-                        <? foreach ($ghalam as $k => $gh) : ?>
-                        <option value="<?= $gh['ghalam_id'] ?>"><?= $gh['ghalam'] ?></option>
-                        <? endforeach ?>
+                        <?php foreach ($ghalam as $k => $gh) : ?>
+                        <option value="<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
+                        <?php endforeach ?>
                     </select>
                     <br>
 
 
                     <label class=" col-md-12 col-xs-12 col-sm-12">اقلام (مخرج کسر)</label><br>
                     <select class=" edit-divid-down   " multiple>
-                        <? foreach ($ghalam as $k => $gh) : ?>
-                        <option value="<?= $gh['ghalam_id'] ?>"><?= $gh['ghalam'] ?></option>
-                        <? endforeach ?>
+                        <?php foreach ($ghalam as $k => $gh) : ?>
+                        <option value="<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
+                        <?php endforeach ?>
                     </select>
 
                 </div>
@@ -161,18 +161,18 @@
                 <br>
                 <label class="col-md-12 col-xs-12 col-sm-12"> فرمول</label>
                 <select class="type">
-                    <option class="select-equal" value="equal" data-sh="<?= $k ?>">تساوی</option>
-                    <option class="select-sum" value="sum" data-sh="<?= $k ?>">مجموع</option>
-                    <option class="select-divid" value="divid" data-sh="<?= $k ?>">نسبت</option>
+                    <option class="select-equal" value="equal" data-sh="<?php echo  $k ?>">تساوی</option>
+                    <option class="select-sum" value="sum" data-sh="<?php echo  $k ?>">مجموع</option>
+                    <option class="select-divid" value="divid" data-sh="<?php echo  $k ?>">نسبت</option>
                 </select>
 
 
                 <div class="copy-equal">
                     <label class="copy-equal col-md-12 col-xs-12 col-sm-12">قلم</label><br>
                     <select class="copy-equal">
-                        <? foreach ($ghalam as $k => $gh) : ?>
-                        <option value="<?= $gh['ghalam_id'] ?>"><?= $gh['ghalam'] ?></option>
-                        <? endforeach ?>
+                        <?php foreach ($ghalam as $k => $gh) : ?>
+                        <option value="<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
+                        <?php endforeach ?>
                     </select>
                 </div>
 
@@ -181,9 +181,9 @@
                 <div class="row copy-sum">
                     <label class=" col-md-12 col-xs-12 col-sm-12">اقلام</label><br>
                     <select class="copy-sum" multiple>
-                        <? foreach ($ghalam as $k => $gh) : ?>
-                        <option value="<?= $gh['ghalam_id'] ?>"><?= $gh['ghalam'] ?></option>
-                        <? endforeach ?>
+                        <?php foreach ($ghalam as $k => $gh) : ?>
+                        <option value="<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
+                        <?php endforeach ?>
                     </select>
                 </div>
 
@@ -192,18 +192,18 @@
 
                     <label class=" col-md-12 col-xs-12 col-sm-12">اقلام (صورت کسر)</label><br>
                     <select class=" copy-divid-up   " multiple>
-                        <? foreach ($ghalam as $k => $gh) : ?>
-                        <option value="<?= $gh['ghalam_id'] ?>"><?= $gh['ghalam'] ?></option>
-                        <? endforeach ?>
+                        <?php foreach ($ghalam as $k => $gh) : ?>
+                        <option value="<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
+                        <?php endforeach ?>
                     </select>
                     <br>
 
 
                     <label class=" col-md-12 col-xs-12 col-sm-12">اقلام (مخرج کسر)</label><br>
                     <select class=" copy-divid-down   " multiple>
-                        <? foreach ($ghalam as $k => $gh) : ?>
-                        <option value="<?= $gh['ghalam_id'] ?>"><?= $gh['ghalam'] ?></option>
-                        <? endforeach ?>
+                        <?php foreach ($ghalam as $k => $gh) : ?>
+                        <option value="<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
+                        <?php endforeach ?>
                     </select>
 
                 </div>
@@ -244,9 +244,9 @@
                         <label> هدف کلان</label>
                         <div class="row">
                             <select class="add-kalan col-md-12 col-xs-12 col-sm-12 ">
-                                <? foreach ($kalans as $k => $kalan) : ?>
-                                    <option value="$g<?= $kalan['kalan_no'] ?>"><?= $kalan['kalan'] ?></option>
-                                <? endforeach ?>
+                                <?php foreach ($kalans as $k => $kalan) : ?>
+                                    <option value="$g<?php echo  $kalan['kalan_no'] ?>"><?php echo  $kalan['kalan'] ?></option>
+                                <?php endforeach ?>
                             </select>
                         </div>
 
@@ -269,34 +269,34 @@
                     <div class="row">
                         <label class="add-equal col-md-12 col-xs-12 col-sm-12">قلم</label><br>
                         <select class="add-equal col-md-6 col-xs-6 col-sm-6 pull-right">
-                            <? foreach ($ghalam as $k => $gh) : ?>
-                            <option value="$g<?= $gh['ghalam_id'] ?>"><?= $gh['ghalam'] ?></option>
-                            <? endforeach ?>
+                            <?php foreach ($ghalam as $k => $gh) : ?>
+                            <option value="$g<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
+                            <?php endforeach ?>
                         </select>
                     </div>
 
                     <div class="row">
                         <label class="add-sum col-md-12 col-xs-12 col-sm-12">اقلام</label><br>
                         <select class="add-sum col-md-6 col-xs-6 col-sm-6 pull-right" multiple>
-                            <? foreach ($ghalam as $k => $gh) : ?>
-                            <option value="$g<?= $gh['ghalam_id'] ?>"><?= $gh['ghalam'] ?></option>
-                            <? endforeach ?>
+                            <?php foreach ($ghalam as $k => $gh) : ?>
+                            <option value="$g<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
+                            <?php endforeach ?>
                         </select>
                     </div>
 
                     <div class="row">
                         <label class="add-divid col-md-12 col-xs-12 col-sm-12">اقلام (صورت کسر)</label><br>
                         <select class="add-divid add-divid-up col-md-6 col-xs-6 col-sm-6 pull-right" multiple>
-                            <? foreach ($ghalam as $k => $gh) : ?>
-                            <option value="$g<?= $gh['ghalam_id'] ?>"><?= $gh['ghalam'] ?></option>
-                            <? endforeach ?>
+                            <?php foreach ($ghalam as $k => $gh) : ?>
+                            <option value="$g<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
+                            <?php endforeach ?>
                         </select>
                         <br>
                         <label class="add-divid col-md-12 col-xs-12 col-sm-12">اقلام (مخرج کسر)</label><br>
                         <select class="add-divid add-divid-down col-md-6 col-xs-6 col-sm-6 pull-right" multiple>
-                            <? foreach ($ghalam as $k => $gh) : ?>
-                            <option value="$g<?= $gh['ghalam_id'] ?>"><?= $gh['ghalam'] ?></option>
-                            <? endforeach ?>
+                            <?php foreach ($ghalam as $k => $gh) : ?>
+                            <option value="$g<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
+                            <?php endforeach ?>
                         </select>
                     </div>
 
@@ -315,7 +315,7 @@
 <script>
     $(document).ready(function() {
 
-        var shakhes = JSON.parse(`<?= json_encode($shakhes) ?>`);
+        var shakhes = JSON.parse(`<?php echo  json_encode($shakhes) ?>`);
 
 
         /** add form*/

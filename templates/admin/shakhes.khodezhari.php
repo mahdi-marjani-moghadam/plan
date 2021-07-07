@@ -10,18 +10,18 @@
                 مربوطه طبق تفکیک ذکر شده در زیر دکمه هر فرم اقدام نمایند. لازم به ذکر است در صورت عدم تکمیل فرم‌ها،
                 امتیاز مربوط به فعالیتهای مربوطه کسر خواهد شد. از آنجا که اطلاعات مستخرج از فرمها در شاخصهای عملکرد
                 واحدها نیز لحاظ می‌شود در صورت عدم تکمیل آنها، امتیازی به شاخص‌های مربوطه تعلق نمی‌گیرد.</div>
-            <div class="alert alert-warning"> بازه تکمیل فرم ها از تاریخ <?= convertDate($this->time['start_date']) ?>
-                تا تاریخ <?= convertDate($this->time['finish_date']) ?>می باشد </div>
+            <div class="alert alert-warning"> بازه تکمیل فرم ها از تاریخ <?php echo convertDate($this->time['start_date']) ?>
+                تا تاریخ <?php echo convertDate($this->time['finish_date']) ?>می باشد </div>
             <!--<div class="alert alert-warning"> بازه تایید فرم ها توسط واحد مافوق از تاریخ <?/*=convertDate($this->time['finish_date_confirm'])*/?> تا تاریخ  <?/*=convertDate($this->time['start_date_confirm'])*/?> می باشد </div>-->
-            <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=jalasat">فرم
+            <a class="btn btn-info btn-lg btn-block" href="<?php echo RELA_DIR ?>admin/?component=shakhes&action=jalasat">فرم
                 برگزاری جلسات و نشست ها</a>
             <div class="alert alert-danger">فرم برگزاری جلسات و نشستها: گروه‌های آموزشی؛ دانشکده‌ها؛ شعبه ارومیه؛ مرکز
                 نوآوری</div>
-            <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte">فرم جلب مشارکت دانش آموختگان و
+            <a class="btn btn-info btn-lg btn-block" href="<?php echo RELA_DIR ?>admin/?component=shakhes&action=daneshamukhte">فرم جلب مشارکت دانش آموختگان و
                 دانشجویان</a>
             <div class="alert alert-danger">فرم جلب مشارکت دانش آموختگان و دانشجویان: گروه‌های آموزشی؛ شعبه
                 ارومیه؛ مرکز نوآوری </div>
-            <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=ruydad"> فرم
+            <a class="btn btn-info btn-lg btn-block" href="<?php echo RELA_DIR ?>admin/?component=shakhes&action=ruydad"> فرم
                 رویدادهای برگزار شده</a>
             <div class="alert alert-danger">فرم رویدادهای برگزار شده: دانشکده‌ها؛ گروه‌ها؛ مدیریت برنامه، بودجه و تحول
                 سازمانی؛ مدیریت روابط عمومی؛ مرکز رشد واحدهای فناور؛ معاونت فرهنگی و اجتماعی؛ معاونت اداری مالی؛ شعبه
@@ -29,7 +29,7 @@
                 - مدیریت خدمات آموزشی - مرکز آموزش های آزاد و مجازی- مدیریت برنامه ریزی و توسعه آموزشی)؛ معاونت پژوهشی و
                 فناوری و مدیریت‌های زیرمجموعه شامل( کتابخانه مرکزی- مدیریت امور پژوهشی-مرکز نوآوری و شکوفایی)؛ معاونت
                 دانشجویی و مدیریت‌های زیرمجموعه شامل(مدیریت تربیت بدنی -مدیریت مرکز مشاوره، بهداشت و سلامت) </div>
-            <a class="btn btn-info btn-lg btn-block" href="<?= RELA_DIR ?>admin/?component=shakhes&action=shora">فرم
+            <a class="btn btn-info btn-lg btn-block" href="<?php echo RELA_DIR ?>admin/?component=shakhes&action=shora">فرم
                 عضویت در شوراهای برون دانشگاهی</a>
             <div class="alert alert-danger">فرم عضویت در شوراها و کمیته های برون دانشگاهی: گروه‌های آموزشی؛
                 شعبه ارومیه؛ معاونت فرهنگی؛ پژوهشکده زنان</div>
@@ -54,8 +54,8 @@
                                 <select name="filterAdmin" id="filterAdmin">
                                     <option value="">همه واحدها</option>
                                     <?php foreach ($filterAdminsSelectbox as $admin) : ?>
-                                        <option value="<?= $admin['admin_id'] ?>" <?php echo ($admin['admin_id'] == $_GET['filterAdmin']) ? 'selected' : ''; ?>>
-                                            <?= $admin['name'] . ' ' . $admin['family'] ?>
+                                        <option value="<?php echo $admin['admin_id'] ?>" <?php echo ($admin['admin_id'] == $_GET['filterAdmin']) ? 'selected' : ''; ?>>
+                                            <?php echo $admin['name'] . ' ' . $admin['family'] ?>
                                         </option>
                                     <?php endforeach ?>
                                 </select>
@@ -67,7 +67,7 @@
                             <?php // نمایش وضعیت واحدها
                             foreach ($adminStatus as $admin) : ?>
                                 <span class="admins-status">
-                                    <?= $adminName[$admin['motevali']]['name'] . ' ' . $adminName[$admin['motevali']]['family'] ?>
+                                    <?php echo $adminName[$admin['motevali']]['name'] . ' ' . $adminName[$admin['motevali']]['family'] ?>
                                     در مرحله
 
                                     <?php if (STEP_FORM1 <= 2) : ?>
@@ -120,7 +120,7 @@
                         </div>
                     </div>
                     <form action="/admin/?component=shakhes&action=khodezhari" method="POST">
-                        <input name="filterAdmin" value="<?= $_GET['filterAdmin'] ?>" type="hidden">
+                        <input name="filterAdmin" value="<?php echo $_GET['filterAdmin'] ?>" type="hidden">
                         <table id="example" class="companyTable table table-striped table-bordered rtl" cellspacing="0" width="100%">
                             <thead>
                                 <tr style="text-align: center">
@@ -139,26 +139,26 @@
                                 </tr>
                             </thead>
                             <div class="col-md-10 col-sm-12 col-sx-12">
-                                <?
+                                <?php
                                         $msg = $messageStack->output('message');
                                         if($msg != ''):
                                             echo $msg;
                                         endif;
                                         ?>
-                                <? foreach ($child as $v):?>
+                                <?php foreach ($child as $v):?>
                                 <div class="col-md-2 col-xs-12 col-sm-12 ">
 
                                     <div class="col-md-12 confirm-vahed ">
                                         <div class="col-md-12" style="height: 50px">
-                                            <label for=""><?= $v['name'] . ' ' . $v['family'] ?></label>
+                                            <label for=""><?php echo $v['name'] . ' ' . $v['family'] ?></label>
                                         </div>
                                         <div class="col-md-12">
-                                            <a href="<?= RELA_DIR ?>admin/?component=reports&action=confirm&id=<?= $v['admin_id'] ?>&s=1" class="btn btn-primary btn-block">تایید</a>
-                                            <a href="<?= RELA_DIR ?>admin/?component=reports&action=confirm&id=<?= $v['admin_id'] ?>&s=2" class="btn btn-primary btn-block">نیازمند اصلاح</a>
+                                            <a href="<?php echo RELA_DIR ?>admin/?component=reports&action=confirm&id=<?php echo $v['admin_id'] ?>&s=1" class="btn btn-primary btn-block">تایید</a>
+                                            <a href="<?php echo RELA_DIR ?>admin/?component=reports&action=confirm&id=<?php echo $v['admin_id'] ?>&s=2" class="btn btn-primary btn-block">نیازمند اصلاح</a>
                                         </div>
                                     </div>
                                 </div>
-                                <? endforeach;?>
+                                <?php endforeach;?>
                             </div>
                             <?php
                             $sentToConfirm1_6 = $sentToConfirm1_12 = 'sendToConfirm1';
@@ -175,14 +175,14 @@
                                     ($status6 == 'sendToConfirm1' or $status12 == 'sendToConfirm1' ) &&
                                     in_array($admin_info['admin_id'], [$import['confirm1'], $import['confirm2'], $import['confirm3']])
                                 ) : ?>
-                                    <input type="hidden" name="imports[]" value="<?= $import['id'] ?>">
-                                    <input type="hidden" name="motevali[]" value="<?= $import['motevali_admin_id'] ?>">
+                                    <input type="hidden" name="imports[]" value="<?php echo $import['id'] ?>">
+                                    <input type="hidden" name="motevali[]" value="<?php echo $import['motevali_admin_id'] ?>">
                                 <?php endif; ?>
 
-                                <tr class="<?= $import['motevali_admin_id'] ?>">
-                                    <td><?= $import['ghalam_id'] ?></td>
-                                    <td><?= $ghalamName[$import['ghalam_id']]['ghalam'] ?></td>
-                                    <td><?= $adminName[$import['motevali_admin_id']]['name'] . ' ' . $adminName[$import['motevali_admin_id']]['family'] ?>
+                                <tr class="<?php echo $import['motevali_admin_id'] ?>">
+                                    <td><?php echo $import['ghalam_id'] ?></td>
+                                    <td><?php echo $ghalamName[$import['ghalam_id']]['ghalam'] ?></td>
+                                    <td><?php echo $adminName[$import['motevali_admin_id']]['name'] . ' ' . $adminName[$import['motevali_admin_id']]['family'] ?>
                                     </td>
 
                                     <td>
@@ -192,10 +192,10 @@
                                             ($status6 == '0' || $status6 == 'backToEdit') &&
                                             in_array($admin_info['admin_id'], [$import['import']])
                                         ) : ?>
-                                            <input name="import[<?= $import['id'] ?>][value6]" step="0.1" type="text" pattern="[0-9]+([,\.][0-9]+)?" value="<?= $import['value6'] ?>" autocomplete="off" class="form-control ltr en w-100">
+                                            <input name="import[<?php echo $import['id'] ?>][value6]" step="0.1" type="text" pattern="[0-9]+([,\.][0-9]+)?" value="<?php echo $import['value6'] ?>" autocomplete="off" class="form-control ltr en w-100">
                                         <?php // بعد از ثبت نهایی
                                         else : ?>
-                                            <?= $import['value6'] ?>
+                                            <?php echo $import['value6'] ?>
                                         <?php endif; ?>
                                     </td>
                                     <td>
@@ -205,9 +205,9 @@
                                             ($status6 == '0' || $status6 == 'backToEdit') &&
                                             in_array($admin_info['admin_id'], [$import['import']])
                                         ) : ?>
-                                            <input name="import[<?= $import['id'] ?>][admin_tozihat6]" value="<?= $import['admin_tozihat6'] ?>" autocomplete="off" class="form-control">
+                                            <input name="import[<?php echo $import['id'] ?>][admin_tozihat6]" value="<?php echo $import['admin_tozihat6'] ?>" autocomplete="off" class="form-control">
                                         <?php else : ?>
-                                            <?= $import['admin_tozihat6'] ?>
+                                            <?php echo $import['admin_tozihat6'] ?>
                                         <?php endif; ?>
                                     </td>
 
@@ -223,9 +223,9 @@
                                             ($status12 == '0' || $status12 == 'backToEdit') &&
                                             in_array($admin_info['admin_id'], [$import['import']])
                                         ) : ?>
-                                            <input name="import[<?= $import['id'] ?>][value12]" step="0.1" type="text" pattern="[0-9]+([,\.][0-9]+)?" value="<?= $import['value12'] ?>" autocomplete="off" class="form-control en ltr w-100">
+                                            <input name="import[<?php echo $import['id'] ?>][value12]" step="0.1" type="text" pattern="[0-9]+([,\.][0-9]+)?" value="<?php echo $import['value12'] ?>" autocomplete="off" class="form-control en ltr w-100">
                                         <?php else : ?>
-                                            <?= $import['value12'] ?>
+                                            <?php echo $import['value12'] ?>
                                         <?php endif; ?>
                                     </td>
                                     <td>
@@ -235,9 +235,9 @@
                                             ($status12 == '0' || $status12 == 'backToEdit') &&
                                             in_array($admin_info['admin_id'], [$import['import']])
                                         ) : ?>
-                                            <input name="import[<?= $import['id'] ?>][admin_tozihat12]" value="<?= $import['admin_tozihat12'] ?>" autocomplete="off" class="form-control">
+                                            <input name="import[<?php echo $import['id'] ?>][admin_tozihat12]" value="<?php echo $import['admin_tozihat12'] ?>" autocomplete="off" class="form-control">
                                         <?php else : ?>
-                                            <?= $import['admin_tozihat12'] ?>
+                                            <?php echo $import['admin_tozihat12'] ?>
                                         <?php endif; ?>
                                     </td>
                                 </tr>

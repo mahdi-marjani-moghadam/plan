@@ -12,13 +12,13 @@
         $('#level').change(function() {
             var season = $(this).val();
 
-            location.href = window.location.origin + '/admin/?component=shakhes&s=' + season <?= (isset($_GET['qq'])) ? "+'&qq=" . $_GET['qq'] . "'" : ''; ?> <?= (isset($_GET['y'])) ? "+'&y=" . $_GET['y'] . "'" : ''; ?>;
+            location.href = window.location.origin + '/admin/?component=shakhes&s=' + season <?php echo (isset($_GET['qq'])) ? "+'&qq=" . $_GET['qq'] . "'" : ''; ?> <?php echo (isset($_GET['y'])) ? "+'&y=" . $_GET['y'] . "'" : ''; ?>;
         });
 
         $('#year').change(function() {
             var year = $(this).val();
 
-            location.href = window.location.origin + '/admin/?component=shakhes&y=' + year <?= (isset($_GET['qq'])) ? "+'&qq=" . $_GET['qq'] . "'" : ''; ?> <?= (isset($_GET['s'])) ? "+'&s=" . $_GET['s'] . "'" : ''; ?>;
+            location.href = window.location.origin + '/admin/?component=shakhes&y=' + year <?php echo (isset($_GET['qq'])) ? "+'&qq=" . $_GET['qq'] . "'" : ''; ?> <?php echo (isset($_GET['s'])) ? "+'&s=" . $_GET['s'] . "'" : ''; ?>;
         });
 
 
@@ -54,10 +54,10 @@
             var adminId = ',' + $(this).val() + ',';
             if ($(this).val() == 0 || $(this).val() == null) {
                 location.href = window.location.origin + '/admin/?component=shakhes'
-                <?= (isset($_GET['s'])) ? "+'&s=" . $_GET['s'] . "'" : ''; ?>
-                <?= (isset($_GET['y'])) ? "+'&y=" . $_GET['y'] . "'" : ''; ?>;
+                <?php echo (isset($_GET['s'])) ? "+'&s=" . $_GET['s'] . "'" : ''; ?>
+                <?php echo (isset($_GET['y'])) ? "+'&y=" . $_GET['y'] . "'" : ''; ?>;
             } else {
-                location.href = window.location.origin + '/admin/?component=shakhes&qq=' + adminId <?= (isset($_GET['s'])) ? "+'&s=" . $_GET['s'] . "'" : ''; ?> <?= (isset($_GET['y'])) ? "+'&y=" . $_GET['y'] . "'" : ''; ?>;
+                location.href = window.location.origin + '/admin/?component=shakhes&qq=' + adminId <?php echo (isset($_GET['s'])) ? "+'&s=" . $_GET['s'] . "'" : ''; ?> <?php echo (isset($_GET['y'])) ? "+'&y=" . $_GET['y'] . "'" : ''; ?>;
             }
         });
     });
@@ -89,8 +89,8 @@
         <div class="col-md-2 col-sm-4 col-xs-4">
             <label for="level">دوره ارزیابی:</label>
             <select name="season" id="level">
-                <option value="6" <?= ($_GET['s'] == '6') ? 'selected' : ''; ?>>شش ماهه</option>
-                <option value="12" <?= ($_GET['s'] == '12') ? 'selected' : ''; ?>>یکساله</option>
+                <option value="6" <?php echo ($_GET['s'] == '6') ? 'selected' : ''; ?>>شش ماهه</option>
+                <option value="12" <?php echo ($_GET['s'] == '12') ? 'selected' : ''; ?>>یکساله</option>
             </select>
         </div>
         <div class="col-md-2 col-sm-4 col-xs-4">
@@ -98,22 +98,22 @@
 
             <select id="admin" multiple>
                 <option value="0">انتخاب کنید</option>
-                <? foreach ($list['showAdmin'] as $k => $admins) : ?>
-                    <option <? if (strpos($_GET['qq'], ',' . $admins['admin_id'] . ',') !== false) {
+                <?php foreach ($list['showAdmin'] as $k => $admins) : ?>
+                    <option <?php if (strpos($_GET['qq'], ',' . $admins['admin_id'] . ',') !== false) {
                                 echo 'selected';
-                            } ?> value="<?= $admins['admin_id'] ?>">
-                        <?= $admins['name'] . ' ' . $admins['family'] ?>
+                            } ?> value="<?php echo $admins['admin_id'] ?>">
+                        <?php echo $admins['name'] . ' ' . $admins['family'] ?>
                     </option>
-                <? endforeach; ?>
+                <?php endforeach; ?>
             </select>
         </div>
         <div class="col-md-2 col-sm-4 col-xs-4">
             <label for="level">سال :</label>
             <select name="season" id="year">
-                <option value="1398-1399" <?= ($_GET['y'] == '1398-1399') ? 'selected' : ''; ?>>۱۳۹۸-۱۳۹۹</option>
-                <option value="1399-1400" <?= ($_GET['y'] == '1399-1400') ? 'selected' : ''; ?>>۱۳۹۹-۱۴۰۰</option>
-                <option value="1400-1401" <?= ($_GET['y'] == '1400-1401') ? 'selected' : ''; ?>>۱۴۰۰-۱۴۰۱</option>
-                <option value="1401-1402" <?= ($_GET['y'] == '1401-1402') ? 'selected' : ''; ?>>1401-1402</option>
+                <option value="1398-1399" <?php echo ($_GET['y'] == '1398-1399') ? 'selected' : ''; ?>>۱۳۹۸-۱۳۹۹</option>
+                <option value="1399-1400" <?php echo ($_GET['y'] == '1399-1400') ? 'selected' : ''; ?>>۱۳۹۹-۱۴۰۰</option>
+                <option value="1400-1401" <?php echo ($_GET['y'] == '1400-1401') ? 'selected' : ''; ?>>۱۴۰۰-۱۴۰۱</option>
+                <option value="1401-1402" <?php echo ($_GET['y'] == '1401-1402') ? 'selected' : ''; ?>>1401-1402</option>
             </select>
         </div>
         <div class="col-md-1 col-sm-1 col-xs-1  pull-left">
@@ -157,7 +157,7 @@
         </div>
 
         <div class="col-md-10 col-sm-12 col-sx-12">
-            <?
+            <?php
             $msg = $messageStack->output('message');
             if ($msg != '') :
                 echo $msg;
@@ -194,35 +194,35 @@
                         <thead>
                         <tr style="text-align: center">
                             <td style="background-color: #5f9846; color:#fff; " rowspan="2">هدف</td>
-                            <td width="300" style="background-color: #45639b; color:#fff; " colspan="<?= count($groups) ?>">خوداظهاری</td>
-                            <td style="background-color: #654c97; color:#fff; " colspan="<?= count($groups) ?>">نهایی(تائیدشده)</td>
+                            <td width="300" style="background-color: #45639b; color:#fff; " colspan="<?php echo count($groups) ?>">خوداظهاری</td>
+                            <td style="background-color: #654c97; color:#fff; " colspan="<?php echo count($groups) ?>">نهایی(تائیدشده)</td>
                         </tr>
                         <tr style="text-align: center">
-                            <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                <td><?= $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
-                            <? endforeach; ?>
-                            <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                <td><?= $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
-                            <? endforeach; ?>
+                            <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
+                                <td><?php echo $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
+                            <?php endforeach; ?>
+                            <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
+                                <td><?php echo $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
+                            <?php endforeach; ?>
                         </tr>
                         </thead>
                         <tbody>
-                        <? foreach ($kalans as $kalan_no => $kalan) : ?>
+                        <?php foreach ($kalans as $kalan_no => $kalan) : ?>
                             <tr>
-                                <td><?= $kalan_no ?></td>
+                                <td><?php echo $kalan_no ?></td>
 
-                                <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
+                                <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
                                     <td>
-                                        <?= $kalan[$head_admin_id]['darsad']['value_import'] ?>
+                                        <?php echo $kalan[$head_admin_id]['darsad']['value_import'] ?>
                                     </td>
-                                <? endforeach; ?>
-                                <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
+                                <?php endforeach; ?>
+                                <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
                                     <td>
-                                        <?= $kalan[$head_admin_id]['darsad']['value'] ?>
+                                        <?php echo $kalan[$head_admin_id]['darsad']['value'] ?>
                                     </td>
-                                <? endforeach; ?>
+                                <?php endforeach; ?>
                             </tr>
-                        <? endforeach; ?>
+                        <?php endforeach; ?>
 
 
                         </tbody>
@@ -273,25 +273,25 @@
                                 <td style="background-color: #5f9846; color:#fff; " rowspan="2">هدف</td>
                                 <td width="300" style="background-color: #5f9846; color:#fff; " rowspan="2">شاخص</td>
 
-                                <td width="300" style="background-color: #45639b; color:#fff; " colspan="<?= count($groups) ?>">خوداظهاری</td>
-                                <td style="background-color: #654c97; color:#fff; " colspan="<?= count($groups) ?>">نهایی(تائیدشده)</td>
+                                <td width="300" style="background-color: #45639b; color:#fff; " colspan="<?php echo count($groups) ?>">خوداظهاری</td>
+                                <td style="background-color: #654c97; color:#fff; " colspan="<?php echo count($groups) ?>">نهایی(تائیدشده)</td>
                             </tr>
                             <tr style="text-align: center">
-                                <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                    <td><?= $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
-                                <? endforeach; ?>
-                                <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                    <td><?= $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
-                                <? endforeach; ?>
+                                <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
+                                    <td><?php echo $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
+                                <?php endforeach; ?>
+                                <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
+                                    <td><?php echo $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
+                                <?php endforeach; ?>
 
                             </tr>
                         </thead>
                         <tbody>
-                            <? foreach ($shakhesNext as $shakhes_id => $sh) : ?>
+                            <?php foreach ($shakhesNext as $shakhes_id => $sh) : ?>
                                 <tr>
-                                    <td class="text-center"><?= $sh['kalan_no'] ?></td>
-                                    <td><?= $sh['shakhes'] ?></td>
-                                    <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
+                                    <td class="text-center"><?php echo $sh['kalan_no'] ?></td>
+                                    <td><?php echo $sh['shakhes'] ?></td>
+                                    <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
                                         <td style="direction: ltr;">
                                             <table class="fixed">
                                                 <tr class="green">
@@ -302,24 +302,24 @@
                                                     <td>99</td>
                                                 </tr>
                                                 <tr class="gray">
-                                                    <td><?= $reports[$shakhes_id][$head_admin_id]['amalkardPrev']['value_import']  ?></td>
-                                                    <td><?= $reports[$shakhes_id][$head_admin_id]['amalkardNext']['value_import'] ?></td>
+                                                    <td><?php echo $reports[$shakhes_id][$head_admin_id]['amalkardPrev']['value_import']  ?></td>
+                                                    <td><?php echo $reports[$shakhes_id][$head_admin_id]['amalkardNext']['value_import'] ?></td>
                                                 </tr>
                                                 <tr class="green">
                                                     <td >نرخ رشد</td>
                                                     <td>درصد تحقق</td>
                                                 </tr>
                                                 <tr class="gray">
-                                                    <td><?= $reports[$shakhes_id][$head_admin_id]['nerkh']['value_import'] ?> </td>
-                                                    <td><?= $reports[$shakhes_id][$head_admin_id]['darsad']['value_import'] ?></td>
+                                                    <td><?php echo $reports[$shakhes_id][$head_admin_id]['nerkh']['value_import'] ?> </td>
+                                                    <td><?php echo $reports[$shakhes_id][$head_admin_id]['darsad']['value_import'] ?></td>
                                                 </tr>
 
 
 
                                             </table>
                                         </td>
-                                    <? endforeach; ?>
-                                    <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
+                                    <?php endforeach; ?>
+                                    <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
                                         <td>
                                             <table class="fixed">
                                                 <tr class="green">
@@ -330,25 +330,25 @@
                                                     <td>99</td>
                                                 </tr>
                                                 <tr class="gray">
-                                                    <td><?= $reports[$shakhes_id][$head_admin_id]['amalkardPrev']['value']  ?></td>
-                                                    <td><?= $reports[$shakhes_id][$head_admin_id]['amalkardNext']['value'] ?></td>
+                                                    <td><?php echo $reports[$shakhes_id][$head_admin_id]['amalkardPrev']['value']  ?></td>
+                                                    <td><?php echo $reports[$shakhes_id][$head_admin_id]['amalkardNext']['value'] ?></td>
                                                 </tr>
                                                 <tr class="green">
                                                     <td >نرخ رشد</td>
                                                     <td>درصد تحقق</td>
                                                 </tr>
                                                 <tr class="gray">
-                                                    <td><?= $reports[$shakhes_id][$head_admin_id]['nerkh']['value'] ?> </td>
-                                                    <td><?= $reports[$shakhes_id][$head_admin_id]['darsad']['value'] ?></td>
+                                                    <td><?php echo $reports[$shakhes_id][$head_admin_id]['nerkh']['value'] ?> </td>
+                                                    <td><?php echo $reports[$shakhes_id][$head_admin_id]['darsad']['value'] ?></td>
                                                 </tr>
 
 
 
                                             </table>
                                         </td>
-                                    <? endforeach; ?>
+                                    <?php endforeach; ?>
                                 </tr>
-                            <? endforeach; ?>
+                            <?php endforeach; ?>
 
 
                         </tbody>
@@ -396,41 +396,41 @@
                                 <td width="50" style="background-color: #5f9846; color:#fff; " rowspan="2">شاخص</td>
                                 <td width="50" style="background-color: #5f9846; color:#fff; " rowspan="2">قلم</td>
 
-                                <td width="300" style="background-color: #45639b; color:#fff; " colspan="<?= count($groups) ?>">خوداظهاری</td>
-                                <td width="300" style="background-color: #654c97; color:#fff; " colspan="<?= count($groups) ?>">نهایی(تائیدشده)</td>
+                                <td width="300" style="background-color: #45639b; color:#fff; " colspan="<?php echo count($groups) ?>">خوداظهاری</td>
+                                <td width="300" style="background-color: #654c97; color:#fff; " colspan="<?php echo count($groups) ?>">نهایی(تائیدشده)</td>
                             </tr>
                             <tr style="text-align: center">
 
-                                <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                    <td width="<?= 300 / count($groups) ?>"><?= $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
-                                <? endforeach; ?>
-                                <? foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                    <td width="<?= 300 / count($groups) ?>"><?= $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
-                                <? endforeach; ?>
+                                <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
+                                    <td width="<?php echo 300 / count($groups) ?>"><?php echo $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
+                                <?php endforeach; ?>
+                                <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
+                                    <td width="<?php echo 300 / count($groups) ?>"><?php echo $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
+                                <?php endforeach; ?>
                             </tr>
                         </thead>
                         <tbody>
-                            <?
+                            <?php
                             $i = 0;
                             foreach ($ghalamsNext as $ghalam_id => $gh) : ?>
-                                <? $i++; ?>
+                                <?php $i++; ?>
                                 <tr>
-                                    <td><?= $i ?></td>
-                                    <td width="50" class="text-center"><?= $shakhes_id ?></td>
-                                    <td width="50"><?= $gh['ghalam'] ?>
-                                        <?= $gh['ghalam_id'] ?>
+                                    <td><?php echo $i ?></td>
+                                    <td width="50" class="text-center"><?php echo $shakhes_id ?></td>
+                                    <td width="50"><?php echo $gh['ghalam'] ?>
+                                        <?php echo $gh['ghalam_id'] ?>
 
                                     </td>
-                                    <?
+                                    <?php
                                     $amalkardPrevVahed = $amalkardNextVahed = 0;
                                     foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                        <?
+                                        <?php
                                         $amalkardPrev = $ghalamsPrev[$ghalam_id]['admins'][$head_admin_id]['value_import'] ?? 0;
                                         $amalkardNext = $gh['admins'][$head_admin_id]['value_import'] ?? 0;
                                         $amalkardPrevVahed += $amalkardPrev;
                                         $amalkardNextVahed += $amalkardNext;
                                         ?>
-                                        <td style="direction: ltr;" width="<?= 300 / count($groups) ?>">
+                                        <td style="direction: ltr;" width="<?php echo 300 / count($groups) ?>">
                                             <table class="fixed">
 
                                                 <tr class="green">
@@ -439,24 +439,24 @@
                                                 </tr>
                                                 <tr class="gray">
                                                 <tr class="gray">
-                                                    <td><?= ($head_admin_info['parent_id'] != 1) ? $amalkardPrev : $amalkardPrevVahed  ?></td>
-                                                    <td><?= ($head_admin_info['parent_id'] != 1) ? $amalkardNext : $amalkardNextVahed  ?></td>
+                                                    <td><?php echo ($head_admin_info['parent_id'] != 1) ? $amalkardPrev : $amalkardPrevVahed  ?></td>
+                                                    <td><?php echo ($head_admin_info['parent_id'] != 1) ? $amalkardNext : $amalkardNextVahed  ?></td>
                                                 </tr>
                                             </table>
 
                                         </td>
-                                    <? endforeach; ?>
+                                    <?php endforeach; ?>
 
-                                    <?
+                                    <?php
                                     $amalkardPrevVahed = $amalkardNextVahed = 0;
                                     foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                        <?
+                                        <?php
                                         $amalkardPrev = $ghalamsPrev[$ghalam_id]['admins'][$head_admin_id]['value'] ?? 0;
                                         $amalkardNext = $gh['admins'][$head_admin_id]['value'] ?? 0;
                                         $amalkardPrevVahed += $amalkardPrev;
                                         $amalkardNextVahed += $amalkardNext;
                                         ?>
-                                        <td width="<?= 300 / count($groups) ?>">
+                                        <td width="<?php echo 300 / count($groups) ?>">
                                             <table class="fixed">
 
                                                 <tr class="green">
@@ -464,15 +464,15 @@
                                                     <td>99</td>
                                                 </tr>
                                                 <tr class="gray">
-                                                    <td><?= ($head_admin_info['parent_id'] != 1) ? $amalkardPrev : $amalkardPrevVahed  ?></td>
-                                                    <td><?= ($head_admin_info['parent_id'] != 1) ? $amalkardNext : $amalkardNextVahed  ?></td>
+                                                    <td><?php echo ($head_admin_info['parent_id'] != 1) ? $amalkardPrev : $amalkardPrevVahed  ?></td>
+                                                    <td><?php echo ($head_admin_info['parent_id'] != 1) ? $amalkardNext : $amalkardNextVahed  ?></td>
                                                 </tr>
 
                                             </table>
                                         </td>
-                                    <? endforeach; ?>
+                                    <?php endforeach; ?>
                                 </tr>
-                            <? endforeach; ?>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
