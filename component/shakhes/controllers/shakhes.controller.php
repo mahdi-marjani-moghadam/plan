@@ -456,6 +456,7 @@ class shakhesController
             $function = $shakhes['function'];
 
             $amalkardNext = $this->calcuteFunction($function, $ghN);
+            // dd($amalkardNext);
             $amalkardPrev = $this->calcuteFunction($function, $ghP);
             $data[$shakhes_id] = $EupNext = $EupPrev = $EdownNext = $EdownPrev = array();
             foreach ($admins as $motevali => $admin) {
@@ -516,7 +517,7 @@ class shakhesController
                 }
             }
 
-            //                dd($data);
+                        //    dd($data);
 
         }
         return $data;
@@ -549,16 +550,17 @@ class shakhesController
                     $d[$g['motevali_admin_id']]['value'] += $g['value'];
                     $d[$g['motevali_admin_id']]['value_import'] += $g['value_import'];
 
-                    // $v[$g['motevali_admin_id']]['value'] = $v[$g['motevali_admin_id']]['value'] / $d[$g['motevali_admin_id']];
-                    // $v[$g['motevali_admin_id']]['value_import'] = $v[$g['motevali_admin_id']]['value_import'] / $d[$g['motevali_admin_id']];
-
+                   
                     $v[$g['motevali_admin_id']]['down']['value'] = $d[$g['motevali_admin_id']]['value'];
                     $v[$g['motevali_admin_id']]['down']['value_import'] = $d[$g['motevali_admin_id']]['value_import'];
+
+
+
                 }
             }
 
-            $v[$g['motevali_admin_id']]['value'] = $v[$g['motevali_admin_id']]['value'] / $d[$g['motevali_admin_id']]['value'];
-            $v[$g['motevali_admin_id']]['value_import'] = $v[$g['motevali_admin_id']]['value_import'] / $d[$g['motevali_admin_id']]['value_import'];
+           
+            // dd($g['motevali_admin_id']);
         }
         // dd($d);
         // dd($v);

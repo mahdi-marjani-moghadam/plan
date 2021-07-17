@@ -9,16 +9,16 @@
     <div class="col-md-12 text-center" style="margin-bottom: 30px">
         <?php if($msg!='')
         { ?>
-            <?= $msg ?>
+            <?php echo  $msg ?>
             <?php
         }else{
 
         ?>  <img width="100" src="<?php echo RELA_DIR;?>templates/<?php echo CURRENT_SKIN; ?>/images/logo@2x.png" >
-            <span style="font-size: 2em"  > کاربر گرامی؛  <?=$admin_info['name']?> <?=$admin_info['family']?> خوش آمدید</span>
+            <span style="font-size: 2em"  > کاربر گرامی؛  <?php echo $admin_info['name']?> <?php echo $admin_info['family']?> خوش آمدید</span>
             <div class="alert alert-danger"> توجه: کاربر گرامی به منظور سهولت در ارائه و کاهش حجم مستندات درخواستی و همچنین ایجاد وحدت رویه واحدها در ارائه اطلاعات موردنیاز برخی فعالیتها، فرمهایی در سامانه پیاده سازی گردیده است، لذا ضروریست علاوه بر ارائه درصد پیشرفت فعالیت‌ها در منوی پایش، نسبت به تکمیل فرم خوداظهاری در منوی ارزیابی اقدام نمایید.</div>
-<?}?>
+<?php } ?>
     </div>
-    <?if($admin_info['parent_id'] == 0 ):?>
+    <?php if($admin_info['parent_id'] == 0 ):?>
         <div class="col-md-2 " style="display: none" >
             <div id="overall-visitor" class="panel panel-animated panel-success bg-cloud">
                 <div class="panel-body">
@@ -40,7 +40,7 @@
                 </div><!--/panel-body-->
             </div><!--/panel overal-visitor-->
         </div><!--/cols-->
-    <? endif;?>
+    <?php endif;?>
 <!--    <span style="font-size: 1.5em; color: #FF7700"  > با توجه به ابلاغ ریاست محترم دانشگاه مبنی بر تمدید برنامه عملیاتی 98-97 تا پایان سال 1398؛ ضرورت دارد درصدهای پیشرفت از مهر تا اسفند 98 را بر مبنای مقیاس 0 تا 100 ثبت نمایید.   </span>
 -->
     </span>
@@ -73,7 +73,7 @@
           </script>
 
 
-        <p class="lead">دوره ارزیابی <?=$season?></p><!--/lead as title-->
+        <p class="lead">دوره ارزیابی <?php echo $season?></p><!--/lead as title-->
           <select id="status">
               <option value="0">عدم ورود اطلاعات</option>
               <option value="1">ثبت موقت اطلاعات</option>
@@ -81,21 +81,21 @@
               <option value="4">تایید  توسط مافوق</option>
               <option value="0,1,2,3">عدم ثبت نهایی اطلاعات</option>
               <option value="4"> ثبت نهایی اطلاعات توسط واحد</option>
-              <?if($admin_info['parent_id'] == 0):?>
+              <?php if($admin_info['parent_id'] == 0):?>
                   <option value="5">ارزیاب</option>
                   <option value="6">تایید اولیه</option>
-              <? endif;?>
+              <?php endif;?>
               <option value="7">تایید نهایی مرکز ارزیابی</option>
           </select>
 
           <div class="admins row">
 
 
-              <? foreach ($child as $v):?>
-                <div class="col-md-2 col-xs-12 col-sm-4 " data-status="<?=$v['status']?>">
-                    <span><a href="<?=RELA_DIR?>admin/?component=form&q=,<?=$v['admin_id']?>,"><?=readMore($v['name'].' '.$v['family'],55,0)?></a></span>
+              <?php foreach ($child as $v):?>
+                <div class="col-md-2 col-xs-12 col-sm-4 " data-status="<?php echo $v['status']?>">
+                    <span><a href="<?php echo RELA_DIR?>admin/?component=form&q=,<?php echo $v['admin_id']?>,"><?php echo readMore($v['name'].' '.$v['family'],55,0)?></a></span>
                 </div>
-              <? endforeach;?>
+              <?php endforeach;?>
 
           </div><!--/list-percentages-->
 
