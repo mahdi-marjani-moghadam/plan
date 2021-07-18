@@ -529,10 +529,10 @@ class shakhesController
         // $func = '101109';
 
         $f = explode('/', $func);
-        $fU = explode('+', $f[0]);
+        $functionUp = explode('+', $f[0]);
         $v = $d = array();
-        foreach ($fU as $u) {
-            foreach ($gh[$u]['admins'] as $g) {
+        foreach ($functionUp as $ghId) {
+            foreach ($gh[$ghId]['admins'] as $g) {
                 //براي واحد ها
                 $v[$g['motevali_admin_id']]['value'] += $g['value'];
                 $v[$g['motevali_admin_id']]['value_import'] += $g['value_import'];
@@ -544,9 +544,13 @@ class shakhesController
         // dd($v);
 
         if (isset($f[1])) {
-            $fD = explode('+', $f[1]);
-            foreach ($fD as $u) {
-                foreach ($gh[$u]['admins'] as $g) {
+            $functionDown = explode('+', $f[1]);
+            $lastFunctionDown = count($functionDown);
+            
+            foreach ($functionDown as $ghId) {
+                $lastFunctionDown--;
+
+                foreach ($gh[$ghId]['admins'] as $g) {
                     $d[$g['motevali_admin_id']]['value'] += $g['value'];
                     $d[$g['motevali_admin_id']]['value_import'] += $g['value_import'];
 
@@ -554,7 +558,10 @@ class shakhesController
                     $v[$g['motevali_admin_id']]['down']['value'] = $d[$g['motevali_admin_id']]['value'];
                     $v[$g['motevali_admin_id']]['down']['value_import'] = $d[$g['motevali_admin_id']]['value_import'];
 
-
+                    if($lastFunctionDown == 0){
+                        $v[$g['motevali_admin_id']]['value'] = $v[$g['motevali_admin_id']]['value'] / $v[$g['motevali_admin_id']]['down']['value'];
+                        $v[$g['motevali_admin_id']]['value_import'] = $v[$g['motevali_admin_id']]['value_import'] / $v[$g['motevali_admin_id']]['down']['value_import'];
+                    }
 
                 }
             }
