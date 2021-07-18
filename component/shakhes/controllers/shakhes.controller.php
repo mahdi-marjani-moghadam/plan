@@ -492,7 +492,7 @@ class shakhesController
 
                     //براي  کل واحد
                     // Ez
-                    
+
                     for ($i = 1; $i <= 2; $i++) {
 
                         $tmp = array(1 => 'value', 2 => 'value_import');
@@ -501,24 +501,25 @@ class shakhesController
                         if (isset($amalkardNext[$motevali]['down'][$tmp[$i]])) {
                             $EdownNext[$tmp[$i]] +=  $amalkardNext[$motevali]['down'][$tmp[$i]];
                         } else {
-                            $EdownNext[$tmp[$i]] = null;
+                            $EdownNext[$tmp[$i]] += 0;
                         }
 
                         $EupPrev[$tmp[$i]] +=  $amalkardPrev[$motevali]['up'][$tmp[$i]];
                         if (isset($amalkardPrev[$motevali]['down'][$tmp[$i]])) {
                             $EdownPrev[$tmp[$i]] +=  $amalkardPrev[$motevali]['down'][$tmp[$i]];
                         } else {
-                            $EdownPrev[$tmp[$i]] = null;
+                            $EdownPrev[$tmp[$i]] += 0;
                         }
 
-                        // if($admin['parent_id'] == 111){
-                        // echo $amalkardNext[$motevali]['up'][$tmp[$i]].'-';
-                        // echo $admin['parent_id'].'-';
-                        // echo $motevali.'-';
-                        // echo $EupNext[$tmp[$i]].'<br>';
+                        // if ($admin['parent_id'] == 110 && $i == 1) {
+                        //     echo 'motevali:' . $motevali . ' -';
+                        //     // echo ' parent:'.$admin['parent_id'].' -';
+                        //     echo ' EupNex:'.$EupNext[$tmp[$i]] . ' -';
+                        //     echo ' EdownNex:'.$EdownNext[$tmp[$i]] . ' - ';
+                        //     echo ' amaliati:' . $EupNext[$tmp[$i]] / (($EdownNext[$tmp[$i]] == 0) ? 1 : $EdownNext[$tmp[$i]]) . ' <br>';
                         // }
-                        $data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] = $EupNext[$tmp[$i]] / (($EdownNext[$tmp[$i]] == null) ? 1 : $EdownNext[$tmp[$i]]);
-                        $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]] = $EupPrev[$tmp[$i]] / (($EdownPrev[$tmp[$i]] == null) ? 1 : $EdownPrev[$tmp[$i]]);
+                        $data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] = $EupNext[$tmp[$i]] / (($EdownNext[$tmp[$i]] == 0) ? 1 : $EdownNext[$tmp[$i]]);
+                        $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]] = $EupPrev[$tmp[$i]] / (($EdownPrev[$tmp[$i]] == 0) ? 1 : $EdownPrev[$tmp[$i]]);
 
                         $data[$shakhes_id][$admin['parent_id']]['nerkh'][$tmp[$i]] = (($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]]) - 1) * 100;
                         $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]] = ($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $this->standard($shakhes_id, $admin['parent_id'])) * 100;
