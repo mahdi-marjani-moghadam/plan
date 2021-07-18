@@ -458,7 +458,8 @@ class shakhesController
             $amalkardNext = $this->calcuteFunction($function, $ghN);
             // dd($amalkardNext);
             $amalkardPrev = $this->calcuteFunction($function, $ghP);
-            $data[$shakhes_id] = $EupNext = $EupPrev = $EdownNext = $EdownPrev = array();
+            $data[$shakhes_id] =  array();
+            // dd($admins);
             foreach ($admins as $motevali => $admin) {
 
                 if ($admin['parent_id'] != 1) {
@@ -488,6 +489,7 @@ class shakhesController
 
                     //براي  کل واحد
                     // Ez
+
                     for ($i = 1; $i <= 2; $i++) {
 
                         $tmp = array(1 => 'value', 2 => 'value_import');
@@ -498,6 +500,7 @@ class shakhesController
                         } else {
                             $EdownNext[$tmp[$i]] = null;
                         }
+
                         $EupPrev[$tmp[$i]] +=  $amalkardPrev[$motevali]['up'][$tmp[$i]];
                         if (isset($amalkardPrev[$motevali]['down'][$tmp[$i]])) {
                             $EdownPrev[$tmp[$i]] +=  $amalkardPrev[$motevali]['down'][$tmp[$i]];
@@ -505,7 +508,12 @@ class shakhesController
                             $EdownPrev[$tmp[$i]] = null;
                         }
 
-
+                        // if($admin['parent_id'] == 111){
+                        // echo $amalkardNext[$motevali]['up'][$tmp[$i]].'-';
+                        // echo $admin['parent_id'].'-';
+                        // echo $motevali.'-';
+                        // echo $EupNext[$tmp[$i]].'<br>';
+                        // }
                         $data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] = $EupNext[$tmp[$i]] / (($EdownNext[$tmp[$i]] == null) ? 1 : $EdownNext[$tmp[$i]]);
                         $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]] = $EupPrev[$tmp[$i]] / (($EdownPrev[$tmp[$i]] == null) ? 1 : $EdownPrev[$tmp[$i]]);
 
@@ -514,11 +522,12 @@ class shakhesController
 
                         $data['kalan'][$shakhes['kalan_no']][$admin['parent_id']]['darsad'][$tmp[$i]] += $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]] * $this->shakhesVazn($shakhes_id, $admin['parent_id']);
                     }
+                } else {
+                    $EupNext = $EupPrev = $EdownNext = $EdownPrev = array();
                 }
             }
 
-                        //    dd($data);
-
+            // dd($data);
         }
         return $data;
     }
@@ -546,7 +555,7 @@ class shakhesController
         if (isset($f[1])) {
             $functionDown = explode('+', $f[1]);
             $lastFunctionDown = count($functionDown);
-            
+
             foreach ($functionDown as $ghId) {
                 $lastFunctionDown--;
 
@@ -554,19 +563,18 @@ class shakhesController
                     $d[$g['motevali_admin_id']]['value'] += $g['value'];
                     $d[$g['motevali_admin_id']]['value_import'] += $g['value_import'];
 
-                   
+
                     $v[$g['motevali_admin_id']]['down']['value'] = $d[$g['motevali_admin_id']]['value'];
                     $v[$g['motevali_admin_id']]['down']['value_import'] = $d[$g['motevali_admin_id']]['value_import'];
 
-                    if($lastFunctionDown == 0){
+                    if ($lastFunctionDown == 0) {
                         $v[$g['motevali_admin_id']]['value'] = $v[$g['motevali_admin_id']]['value'] / $v[$g['motevali_admin_id']]['down']['value'];
                         $v[$g['motevali_admin_id']]['value_import'] = $v[$g['motevali_admin_id']]['value_import'] / $v[$g['motevali_admin_id']]['down']['value_import'];
                     }
-
                 }
             }
 
-           
+
             // dd($g['motevali_admin_id']);
         }
         // dd($d);
