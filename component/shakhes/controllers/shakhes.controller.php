@@ -458,9 +458,12 @@ class shakhesController
             $amalkardNext = $this->calcuteFunction($function, $ghN);
             // dd($amalkardNext);
             $amalkardPrev = $this->calcuteFunction($function, $ghP);
-            $data[$shakhes_id] =  array();
+            $data[$shakhes_id] = $EupNext = $EupPrev = $EdownNext = $EdownPrev =  array();
             // dd($admins);
             foreach ($admins as $motevali => $admin) {
+
+                // اول واحد ها پر میشن بعد کل واحد 
+                //برای اینکه دچار مشکل نشه وقتی به کل واحد میرسیم ازش با شرط زیر رد میشیم
 
                 if ($admin['parent_id'] != 1) {
                     //براي واحد ها
@@ -489,7 +492,7 @@ class shakhesController
 
                     //براي  کل واحد
                     // Ez
-
+                    
                     for ($i = 1; $i <= 2; $i++) {
 
                         $tmp = array(1 => 'value', 2 => 'value_import');
@@ -523,6 +526,8 @@ class shakhesController
                         $data['kalan'][$shakhes['kalan_no']][$admin['parent_id']]['darsad'][$tmp[$i]] += $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]] * $this->shakhesVazn($shakhes_id, $admin['parent_id']);
                     }
                 } else {
+                    //ترتیب این خط خیلی مهمه برای محاسبه کل واحد باید اینجا ریست بشه
+                    //برای حل مشکل کل واحد الهیات اینجا گذاشته شده
                     $EupNext = $EupPrev = $EdownNext = $EdownPrev = array();
                 }
             }
