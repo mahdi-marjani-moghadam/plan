@@ -1,9 +1,9 @@
 
-<? if($admin_info['result'] != -1):?>
+<?php if($admin_info['result'] != -1):?>
 <!-- section header -->
         <header class="header fixed">
             <div class=" pull-right" style="line-height: 3em">
-                <h1 style="font-size: 14px"> کاربر گرامی، <?global $admin_info;?> <?=$admin_info['name']?> <?=$admin_info['family']?> خوش آمدید </h1>
+                <h1 style="font-size: 14px"> کاربر گرامی، <?php global $admin_info;?> <?php echo $admin_info['name']?> <?php echo $admin_info['family']?> خوش آمدید </h1>
 
             </div>
             <!-- header-profile -->
@@ -29,4 +29,4 @@
             <a id="toggleSideBar"><i class="fa fa-bars"></i></a>
         </header><!--/header-->
 
-        <? endif; ?>
+        <?php endif; ?>

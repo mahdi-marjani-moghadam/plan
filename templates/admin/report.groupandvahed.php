@@ -4,14 +4,14 @@
         $('#season').change(function () {
             var season = $(this).val();
 
-            location.href = window.location.origin + '/admin/?component=chart&action=<?=$_GET['action']?>&s=' + season <?=(isset($_GET['r']))?"+'&r=".$_GET['r']."'":'';?> <?=(isset($_GET['qq']))?"+'&qq=".$_GET['qq']."'":'';?>;
+            location.href = window.location.origin + '/admin/?component=chart&action=<?php echo $_GET['action']?>&s=' + season <?php echo (isset($_GET['r']))?"+'&r=".$_GET['r']."'":'';?> <?php echo (isset($_GET['qq']))?"+'&qq=".$_GET['qq']."'":'';?>;
         });
 
         /** change result event */
         $('#result').change(function () {
             var result = $(this).val();
 
-            location.href = window.location.origin + '/admin/?component=chart&action=<?=$_GET['action']?>&r=' + result <?=(isset($_GET['s']))?"+'&s=".$_GET['s']."'":'';?> <?=(isset($_GET['qq']))?"+'&qq=".$_GET['qq']."'":'';?>;
+            location.href = window.location.origin + '/admin/?component=chart&action=<?php echo $_GET['action']?>&r=' + result <?php echo (isset($_GET['s']))?"+'&s=".$_GET['s']."'":'';?> <?php echo (isset($_GET['qq']))?"+'&qq=".$_GET['qq']."'":'';?>;
         });
 
         /** change admin event */
@@ -19,10 +19,10 @@
 
             var adminId = ','+$(this).val()+',';
             if($(this).val() == 0){
-                location.href = window.location.origin + '/admin/?component=chart&action=<?=$_GET['action']?>'  <?=(isset($_GET['s']))?"+'&s=".$_GET['s']."'":'';?> <?=(isset($_GET['r']))?"+'&r=".$_GET['r']."'":'';?>;
+                location.href = window.location.origin + '/admin/?component=chart&action=<?php echo $_GET['action']?>'  <?php echo (isset($_GET['s']))?"+'&s=".$_GET['s']."'":'';?> <?php echo (isset($_GET['r']))?"+'&r=".$_GET['r']."'":'';?>;
             }
             else{
-                location.href = window.location.origin + '/admin/?component=chart&action=<?=$_GET['action']?>&qq=' + adminId <?=(isset($_GET['s']))?"+'&s=".$_GET['s']."'":'';?> <?=(isset($_GET['r']))?"+'&r=".$_GET['r']."'":'';?>;
+                location.href = window.location.origin + '/admin/?component=chart&action=<?php echo $_GET['action']?>&qq=' + adminId <?php echo (isset($_GET['s']))?"+'&s=".$_GET['s']."'":'';?> <?php echo (isset($_GET['r']))?"+'&r=".$_GET['r']."'":'';?>;
             }
         });
 
@@ -51,31 +51,31 @@
             <div class="col-md-2 col-sm-6 col-xs-12">
                 <label for="season">دوره ارزیابی:</label>
                 <select name="season" id="season" >
-                    <option value="1" <?=($_GET['s'] == '1')?'selected':'';?>>سه ماهه</option>
-                    <option value="2" <?=($_GET['s'] == '2')?'selected':'';?>>شش ماهه</option>
-                    <option value="3" <?=($_GET['s'] == '3')?'selected':'';?>>نه ماهه</option>
-                    <option value="4" <?=($_GET['s'] == '4')?'selected':'';?>>یکساله</option>
+                    <option value="1" <?php echo ($_GET['s'] == '1')?'selected':'';?>>سه ماهه</option>
+                    <option value="2" <?php echo ($_GET['s'] == '2')?'selected':'';?>>شش ماهه</option>
+                    <option value="3" <?php echo ($_GET['s'] == '3')?'selected':'';?>>نه ماهه</option>
+                    <option value="4" <?php echo ($_GET['s'] == '4')?'selected':'';?>>یکساله</option>
                 </select>
             </div>
             <div class="col-md-2 col-sm-6 col-xs-12" >
                 <label for="result">اعلامی / نهایی :</label>
                 <select name="season" id="result" >
-                    <option value="1" <?=($_GET['r'] == '1')?'selected':'';?>> همه</option>
-                    <option value="2" <?=($_GET['r'] == '2')?'selected':'';?>> نهایی (تایید شده)</option>
-                    <option value="3" <?=($_GET['r'] == '3')?'selected':'';?>>خود اظهاری</option>
+                    <option value="1" <?php echo ($_GET['r'] == '1')?'selected':'';?>> همه</option>
+                    <option value="2" <?php echo ($_GET['r'] == '2')?'selected':'';?>> نهایی (تایید شده)</option>
+                    <option value="3" <?php echo ($_GET['r'] == '3')?'selected':'';?>>خود اظهاری</option>
                 </select>
             </div>
-            <? if($admin_info['parent_id'] == 0):?>
+            <?php if($admin_info['parent_id'] == 0):?>
                 <div class="col-md-2 col-sm-6 col-xs-12" >
                     <label for="result">واحد :</label>
                     <select id="admin"   >
                         <option value="0">انتخاب کنید</option>
-                        <? foreach ($list['showAdmin'] as $k => $admins):?>
-                            <option <? if(strpos($_GET['qq'], ','.$admins['admin_id'].',') !== false){ echo 'selected';}?> value="<?=$admins['admin_id']?>"><?=$admins['name'].' '.$admins['family']?></option>
-                        <? endforeach; ?>
+                        <?php foreach ($list['showAdmin'] as $k => $admins):?>
+                            <option <?php if(strpos($_GET['qq'], ','.$admins['admin_id'].',') !== false){ echo 'selected';}?> value="<?php echo $admins['admin_id']?>"><?php echo $admins['name'].' '.$admins['family']?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
-            <? endif;?>
+            <?php endif;?>
             <div class="col-md-1 pull-left">
                 <input type='button' class="btn btn-default btn-block pull-left" style="" id='btn' value='Print' onclick='printDiv();'>
                 <style>
@@ -90,10 +90,10 @@
                     function printDiv()
                     {
                         var html ='';
-                        <? foreach ($charts as $k =>$chart):?>
-                            var divToPrint<?=$k?> = document.getElementById('panel-<?=$k?>');
-                            html += divToPrint<?=$k?>.innerHTML+"<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>";
-                        <? endforeach; ?>
+                        <?php foreach ($charts as $k =>$chart):?>
+                            var divToPrint<?php echo $k?> = document.getElementById('panel-<?php echo $k?>');
+                            html += divToPrint<?php echo $k?>.innerHTML+"<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>";
+                        <?php endforeach; ?>
 
 
                         var newWin=window.open('','Print-Window');
@@ -113,32 +113,32 @@
 
     <div class="clearfix"><br></div>
 
-    <script src="<?=TEMPLATE_DIR?>assets/js/highstock.js"></script>
-    <script src="<?=TEMPLATE_DIR?>assets/js/exporting.js"></script>
-    <script src="<?=TEMPLATE_DIR?>assets/js/export-data.js"></script>
-    <script src="<?=TEMPLATE_DIR?>assets/js/pattern-fill.js"></script>
-
-
+    <script src="<?php echo TEMPLATE_DIR?>assets/js/highstock.js"></script>
+    <script src="<?php echo TEMPLATE_DIR?>assets/js/exporting.js"></script>
+    <script src="<?php echo TEMPLATE_DIR?>assets/js/export-data.js"></script>
+    <script src="<?php echo TEMPLATE_DIR?>assets/js/pattern-fill.js"></script>
 
 
     <div class="row">
-    <? foreach ($charts as $k =>$chart):?>
+    <?php
+    
+    foreach ($charts as $k =>$chart):?>
         <div class="col-md-12">
-            <div id="panel-<?=$k?>" class="panel panel-default border-green ">
+            <div id="panel-<?php echo $k?>" class="panel panel-default border-green ">
         <div class="panel-heading bg-green">
-            <h3 class="panel-title rtl "><?=$chart['name']?></h3>
+            <h3 class="panel-title rtl "><?php echo $chart['name']?></h3>
             <div class="panel-actions">
-                <button data-expand="#panel-<?=$k?>" title="نمایش" class="btn-panel"><i class="fa fa-expand"></i></button>
-                <button data-collapse="#panel-<?=$k?>" title="بازکردن" class="btn-panel"><i class="fa fa-caret-down"></i>
+                <button data-expand="#panel-<?php echo $k?>" title="نمایش" class="btn-panel"><i class="fa fa-expand"></i></button>
+                <button data-collapse="#panel-<?php echo $k?>" title="بازکردن" class="btn-panel"><i class="fa fa-caret-down"></i>
                 </button>
             </div>
         </div>
         <div class="panel-body">
 
-            <div id="container<?=$k?>" style="overflow:visible; "></div>
+            <div id="container<?php echo $k?>" style="overflow:visible; "></div>
 
             <script>
-                Highcharts.chart('container<?=$k?>', {
+                Highcharts.chart('container<?php echo $k?>', {
 
                     chart: {
                         type: 'column'
@@ -151,7 +151,7 @@
                     },
 
                     xAxis: {
-                        categories: <?=$chart['categories']?>,
+                        categories: <?php echo $chart['categories']?>,
                         //crosshair: true,
                         reversed: true,
                         labels: {
@@ -223,7 +223,7 @@
                         scale: 2
                     },
 
-                    series:  <?=$chart['series']?>
+                    series:  <?php echo $chart['series']?>
 
 
                 });
@@ -232,7 +232,7 @@
     </div>
         </div>
 
-    <? endforeach;?>
+    <?php endforeach;?>
 
 
 

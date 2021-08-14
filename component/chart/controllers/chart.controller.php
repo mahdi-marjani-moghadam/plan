@@ -326,20 +326,20 @@ class chartController
             }
         }
 
-
         $season = $this->_season;
         $result = $this->_result;
 
         include_once ROOT_DIR.'component/reports/controllers/reports.controller.php';
         $reportsController = new reportsController();
         $report = $reportsController->reportsProcess();
+        
         $charts = array();
         foreach ($report['kalans'] as $kalan_no => $kalan){
-
+            // dd($kalan['admins']);
             if(!isset($kalan['admins'][$parent])){continue;}
-
+            // dd($report['kalans']);
             $tempCat = $temp2 = array();
-
+            
             $temp2 = $this->categoryName($season,$result);
 
                     foreach ($kalan['admins'] as $admins){
@@ -403,7 +403,7 @@ class chartController
 
         $list['showAdmin'] = $this->showAdmin();
 
-
+     
         $this->fileName = 'report.groupandvahed.php';
         $this->template(compact('charts','list'));
         die();

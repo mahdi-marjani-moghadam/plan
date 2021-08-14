@@ -427,8 +427,11 @@
                                         <?php
                                         $amalkardPrev = $ghalamsPrev[$ghalam_id]['admins'][$head_admin_id]['value_import'] ?? 0;
                                         $amalkardNext = $gh['admins'][$head_admin_id]['value_import'] ?? 0;
+                                        // echo $head_admin_info['parent_id'].'<br>';
+                                        // dd($head_admin_id);
                                         $amalkardPrevVahed += $amalkardPrev;
                                         $amalkardNextVahed += $amalkardNext;
+                                        
                                         ?>
                                         <td style="direction: ltr;" width="<?php echo 300 / count($groups) ?>">
                                             <table class="fixed">
@@ -445,7 +448,10 @@
                                             </table>
 
                                         </td>
-                                    <?php endforeach; ?>
+                                        
+                                        <?php 
+                                    if($head_admin_info['parent_id'] == 1) $amalkardPrevVahed = $amalkardNextVahed = 0;
+                                    endforeach; ?>
 
                                     <?php
                                     $amalkardPrevVahed = $amalkardNextVahed = 0;

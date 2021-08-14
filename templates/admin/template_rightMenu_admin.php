@@ -15,7 +15,7 @@
             </a>
             <ul class="sidebar-child animated fadeInRight">
                 <li>
-                    <a href="<?php print RELA_DIR; ?>admin/?component=reports&s=STEP_FORM<?= STEP_FORM1 ?>">
+                    <a href="<?php print RELA_DIR; ?>admin/?component=reports&s=STEP_FORM<?php echo  STEP_FORM1 ?>">
                         <!--<i class="sidebar-icon fa fa-list"></i>-->
                         <span class="sidebar-text">گزارش عملکرد</span>
                     </a>
@@ -55,13 +55,13 @@
                         </a>
                         <ul class="sidebar-child animated fadeInRight">
                             <li>
-                                <a href="<?= RELA_DIR ?>admin/?component=chart&action=1&s=<?= STEP_FORM1 ?>">
+                                <a href="<?php echo  RELA_DIR ?>admin/?component=chart&action=1&s=<?php echo  STEP_FORM1 ?>">
                                     <span class="sidebar-text text-16">مقایسه در سطح هدف</span>
                                 </a>
                             </li>
                             <!--/child-item-->
                             <li>
-                                <a href="<?= RELA_DIR ?>admin/?component=chart&action=2&s=<?= STEP_FORM1 ?>">
+                                <a href="<?php echo  RELA_DIR ?>admin/?component=chart&action=2&s=<?php echo  STEP_FORM1 ?>">
                                     <span class="sidebar-text text-16">مقایسه اقدامات در سطح هدف</span>
                                 </a>
                             </li>
@@ -77,24 +77,24 @@
                         </a>
                         <ul class="sidebar-child animated fadeInRight">
                             <li>
-                                <a href="<?= RELA_DIR ?>admin/?component=chart&action=1&s=<?= STEP_FORM1 ?>">
+                                <a href="<?php echo  RELA_DIR ?>admin/?component=chart&action=1&s=<?php echo  STEP_FORM1 ?>">
                                     <span class="sidebar-text text-16">مقایسه در سطح هدف</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="<?= RELA_DIR ?>admin/?component=chart&action=2&s=<?= STEP_FORM1 ?>">
+                                <a href="<?php echo  RELA_DIR ?>admin/?component=chart&action=2&s=<?php echo  STEP_FORM1 ?>">
                                     <span class="sidebar-text text-16">مقایسه در سطح اقدام</span>
                                 </a>
                             </li>
                             <!--/child-item-->
                             <li>
-                                <a href="<?= RELA_DIR ?>admin/?component=chart&action=3&s=<?= STEP_FORM1 ?>">
+                                <a href="<?php echo  RELA_DIR ?>admin/?component=chart&action=3&s=<?php echo  STEP_FORM1 ?>">
                                     <span class="sidebar-text text-16">مقایسه اقدامات در سطح هدف</span>
                                 </a>
                             </li>
                             <!--/child-item-->
                             <li>
-                                <a href="<?= RELA_DIR ?>admin/?component=chart&action=4&s=<?= STEP_FORM1 ?>">
+                                <a href="<?php echo  RELA_DIR ?>admin/?component=chart&action=4&s=<?php echo  STEP_FORM1 ?>">
                                     <span class="sidebar-text text-16">مقایسه اهداف</span>
                                 </a>
                             </li>
@@ -110,13 +110,13 @@
                         </a>
                         <ul class="sidebar-child animated fadeInRight">
                             <li>
-                                <a href="<?= RELA_DIR ?>admin/?component=chart&action=g1&s=<?= STEP_FORM1 ?>">
+                                <a href="<?php echo  RELA_DIR ?>admin/?component=chart&action=g1&s=<?php echo  STEP_FORM1 ?>">
                                     <span class="sidebar-text text-16">مقایسه در سطح هدف</span>
                                 </a>
                             </li>
                             <!--/child-item-->
                             <li>
-                                <a href="<?= RELA_DIR ?>admin/?component=chart&action=g2&s=<?= STEP_FORM1 ?>">
+                                <a href="<?php echo  RELA_DIR ?>admin/?component=chart&action=g2&s=<?php echo  STEP_FORM1 ?>">
                                     <span class="sidebar-text text-16">مقایسه اقدامات در سطح هدف</span>
                                 </a>
                             </li>
@@ -130,25 +130,25 @@
                         </a>
                         <ul class="sidebar-child animated fadeInRight">
                             <li>
-                                <a href="<?= RELA_DIR ?>admin/?component=chart&action=v1&s=<?= STEP_FORM1 ?>">
+                                <a href="<?php echo  RELA_DIR ?>admin/?component=chart&action=v1&s=<?php echo  STEP_FORM1 ?>">
                                     <span class="sidebar-text text-16">مقایسه در سطح هدف</span>
                                 </a>
                             </li>
                             <!--/child-item-->
                             <li>
-                                <a href="<?= RELA_DIR ?>admin/?component=chart&action=v2&s=<?= STEP_FORM1 ?>">
+                                <a href="<?php echo  RELA_DIR ?>admin/?component=chart&action=v2&s=<?php echo  STEP_FORM1 ?>">
                                     <span class="sidebar-text text-16">مقایسه در سطح اقدام</span>
                                 </a>
                             </li>
                             <!--/child-item-->
                             <li>
-                                <a href="<?= RELA_DIR ?>admin/?component=chart&action=v3&s=<?= STEP_FORM1 ?>">
+                                <a href="<?php echo  RELA_DIR ?>admin/?component=chart&action=v3&s=<?php echo  STEP_FORM1 ?>">
                                     <span class="sidebar-text text-16">مقایسه اقدامات در سطح هدف</span>
                                 </a>
                             </li>
                             <!--/child-item-->
                             <li>
-                                <a href="<?= RELA_DIR ?>admin/?component=chart&action=v4&s=<?= STEP_FORM1 ?>">
+                                <a href="<?php echo  RELA_DIR ?>admin/?component=chart&action=v4&s=<?php echo  STEP_FORM1 ?>">
                                     <span class="sidebar-text text-16">مقایسه اهداف</span>
                                 </a>
                             </li>
@@ -162,21 +162,21 @@
                         </a>
                         <ul class="sidebar-child animated fadeInRight">
                             <li>
-                                <a href="<?= RELA_DIR ?>admin/?component=chart&action=1&s=<?= STEP_FORM1 ?>">
+                                <a href="<?php echo  RELA_DIR ?>admin/?component=chart&action=1&s=<?php echo  STEP_FORM1 ?>">
                                     <span class="sidebar-text text-16">مقایسه واحدها در سطح هدف</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="<?= RELA_DIR ?>admin/?component=chart&action=2&s=<?= STEP_FORM1 ?>">
+                                <a href="<?php echo  RELA_DIR ?>admin/?component=chart&action=2&s=<?php echo  STEP_FORM1 ?>">
                                     <span class="sidebar-text text-16">وضعیت دانشگاه در سطح هدف کلان</span>
                                 </a>
                             </li>
                             <!--/child-item-->
                             <li>
-                                <a href="<?= RELA_DIR ?>admin/?component=chart&action=3&s=<?= STEP_FORM1 ?>">
+                                <a href="<?php echo  RELA_DIR ?>admin/?component=chart&action=3&s=<?php echo  STEP_FORM1 ?>">
                                     <span class="sidebar-text text-16">میانگین دانشکده ها</span>
                                 </a>
-                                <a href="<?= RELA_DIR ?>admin/?component=chart&action=4&s=<?= STEP_FORM1 ?>">
+                                <a href="<?php echo  RELA_DIR ?>admin/?component=chart&action=4&s=<?php echo  STEP_FORM1 ?>">
                                     <span class="sidebar-text text-16">میانگین ستاد</span>
                                 </a>
                             </li>
@@ -190,9 +190,9 @@
 
 
 
-                <?/* if(($res1['export']['recordsCount']>0)):*/ ?>
+                <?php /* if(($res1['export']['recordsCount']>0)):*/ ?>
                 <!--
-            <?/* if($admin_info['group_admin']==1): */ ?>
+            <?php /* if($admin_info['group_admin']==1): */ ?>
             <li>
                 <a href="<?php /*print RELA_DIR; */ ?>admin/?component=admin&action=child">
                     <i class="sidebar-icon fa fa-users"></i>
@@ -200,10 +200,10 @@
                 </a>
             </li>-->
                 <!--/sidebar-item-->
-                <?/* endif;*/ ?>
+                <?php /* endif;*/ ?>
                 <!--
         -->
-                <?/* endif;*/ ?>
+                <?php /* endif;*/ ?>
             </ul>
         </li>
 
@@ -215,49 +215,49 @@
             </a>
             <ul class="sidebar-child animated fadeInRight">
                 <li>
-                    <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=khodezhari">
+                    <a href="<?php echo  RELA_DIR ?>admin/?component=shakhes&action=khodezhari">
                         <span class="sidebar-text text-16"> خوداظهاری</span></a>
                     <!--<ul class="sidebar-child animated fadeInRight">
                             <li>
-                                <a href="<?/*= RELA_DIR */?>admin/?component=shakhes&action=shora">
+                                <a href="<?php /*= RELA_DIR */?>admin/?component=shakhes&action=shora">
                                     <span class="sidebar-text text-16">فرم عضویت در شوراهای برون دانشگاهی</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="<?/*= RELA_DIR */?>admin/?component=shakhes&action=jalasat">
+                                <a href="<?php /*= RELA_DIR */?>admin/?component=shakhes&action=jalasat">
                                     <span class="sidebar-text text-16">فرم جلسات توجیهی تحصیلات تکمیلی</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="<?/*= RELA_DIR */?>admin/?component=shakhes&action=daneshamukhte">
+                                <a href="<?php /*= RELA_DIR */?>admin/?component=shakhes&action=daneshamukhte">
                                     <span class="sidebar-text text-16">فرم همکاری دانش آموختگان و دانشجویان </span>
                                 </a>
                             </li>
                             <li>
-                                <a href="<?/*= RELA_DIR */?>admin/?component=shakhes&action=ruydad">
+                                <a href="<?php /*= RELA_DIR */?>admin/?component=shakhes&action=ruydad">
                                     <span class="sidebar-text text-16">فرم رویدادهای برگزار شده</span>
                                 </a>
                             </li>
                         </ul>-->
                 <li>
-                    <a href="<?= RELA_DIR ?>admin/?component=shakhes">
+                    <a href="<?php echo  RELA_DIR ?>admin/?component=shakhes">
                         <span class="sidebar-text text-16"> گزارش</span>
                     </a>
                 </li>
 
 
-                <? if($admin_info['admin_id'] == 1): ?> 
+                <?php if($admin_info['admin_id'] == 1): ?> 
                 <li>
-                    <a href="<?= RELA_DIR ?>admin/?component=shakhes&action=setting">
+                    <a href="<?php echo  RELA_DIR ?>admin/?component=shakhes&action=setting">
                         <span class="sidebar-text text-16"> تنظیمات شاخص</span>
                     </a>
                 </li>
                 <li>
-                    <a href="<?= RELA_DIR ?>admin/page/1/?component=shakhes&action=adminSetting">
+                    <a href="<?php echo  RELA_DIR ?>admin/page/1/?component=shakhes&action=adminSetting">
                         <span class="sidebar-text text-16"> تنظیمات ادمین</span>
                     </a>
                 </li>
-                <? endif; ?>
+                <?php endif; ?>
             </ul>
         </li>
 
@@ -269,18 +269,18 @@
             </a>
             <ul class="sidebar-child animated fadeInRight">
                 <li>
-                    <a href="<?= RELA_DIR ?>statics/sample/Portal GuideLine.pdf">
+                    <a href="<?php echo  RELA_DIR ?>statics/sample/Portal GuideLine.pdf">
                         <span class="sidebar-text text-16"> راهنمای منوی پایش</span>
                     </a>
                 </li>
                 <!--/child-item-->
                 <li>
-                    <a href="<?= RELA_DIR ?>statics/sample/movie.rar">
+                    <a href="<?php echo  RELA_DIR ?>statics/sample/movie.rar">
                         <span class="sidebar-text text-16"> راهنمای ویدیویی منوی پایش</span>
                     </a>
                 </li>
                 <li>
-                    <a href="<?= RELA_DIR ?>statics/sample/formsguide.pdf">
+                    <a href="<?php echo  RELA_DIR ?>statics/sample/formsguide.pdf">
                         <span class="sidebar-text text-16"> راهنمای منوی ارزیابی</span>
                     </a>
                 </li>
@@ -289,7 +289,7 @@
         </li>
 
         <li>
-            <a class='download' href="<?= RELA_DIR ?>statics/sample/شیوه نامه.pdf">
+            <a class='download' href="<?php echo  RELA_DIR ?>statics/sample/شیوه نامه.pdf">
                 <i class="sidebar-icon fa fa-download"></i>
                 <span class="sidebar-text">شیوه نامه ارزیابی</span>
             </a>
@@ -317,7 +317,7 @@
         <!--/sidebar-item-->
 
 
-        <?/* if($admin_info['parent_id'] == '0' ):*/ ?>
+        <?php /* if($admin_info['parent_id'] == '0' ):*/ ?>
         <!--
             <li>
                 <a href="<?php /*print RELA_DIR; */ ?>admin/?component=rate">
@@ -325,7 +325,7 @@
                     <span class="sidebar-text">محاسبه امتیاز کل</span>
                 </a>
             </li><!--/sidebar-item-->
-        <?/* endif;*/ ?>
+        <?php /* endif;*/ ?>
 
 
 

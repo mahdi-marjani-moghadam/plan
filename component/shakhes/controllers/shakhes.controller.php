@@ -194,6 +194,7 @@ class shakhesController
         //         dd($shakhesNext);
 
         $reports = $this->getReports($shakhesNext, $ghalamsNext, $ghalamsPrev, $groups);
+
         $kalans = $reports['kalan'];
         unset($reports['kalan']);
 
@@ -330,7 +331,7 @@ class shakhesController
             $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['value'] = $item['value'];
         }
 
-        //         dd($ghalam);
+                // dd($ghalam);
         return $ghalam;
     }
 
@@ -450,9 +451,9 @@ class shakhesController
 
     public function getReports($sh, $ghN, $ghP, $admins)
     {
-
+        
         foreach ($sh as $shakhes_id => $shakhes) {
-
+            
             $function = $shakhes['function'];
 
             $amalkardNext = $this->calcuteFunction($function, $ghN);
@@ -461,7 +462,7 @@ class shakhesController
             $data[$shakhes_id] = $EupNext = $EupPrev = $EdownNext = $EdownPrev =  array();
             // dd($admins);
             foreach ($admins as $motevali => $admin) {
-
+                
                 // اول واحد ها پر میشن بعد کل واحد 
                 //برای اینکه دچار مشکل نشه وقتی به کل واحد میرسیم ازش با شرط زیر رد میشیم
 
@@ -524,6 +525,11 @@ class shakhesController
                         $data[$shakhes_id][$admin['parent_id']]['nerkh'][$tmp[$i]] = (($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]]) - 1) * 100;
                         $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]] = ($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $this->standard($shakhes_id, $admin['parent_id'])) * 100;
 
+                        // if ($admin['parent_id'] == 110 && $i == 1) {
+                        //     echo $data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]].'-';
+                        //     echo $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]];
+                        //     echo '<br>';
+                        // }
                         $data['kalan'][$shakhes['kalan_no']][$admin['parent_id']]['darsad'][$tmp[$i]] += $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]] * $this->shakhesVazn($shakhes_id, $admin['parent_id']);
                     }
                 } else {
@@ -532,7 +538,7 @@ class shakhesController
                     $EupNext = $EupPrev = $EdownNext = $EdownPrev = array();
                 }
             }
-
+            // dd(1);
             // dd($data);
         }
         return $data;
