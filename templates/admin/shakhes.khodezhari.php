@@ -12,7 +12,7 @@
                 واحدها نیز لحاظ می‌شود در صورت عدم تکمیل آنها، امتیازی به شاخص‌های مربوطه تعلق نمی‌گیرد.</div>
             <div class="alert alert-warning"> بازه تکمیل فرم ها از تاریخ <?php echo convertDate($this->time['start_date']) ?>
                 تا تاریخ <?php echo convertDate($this->time['finish_date']) ?>می باشد </div>
-            <!--<div class="alert alert-warning"> بازه تایید فرم ها توسط واحد مافوق از تاریخ <?/*=convertDate($this->time['finish_date_confirm'])*/?> تا تاریخ  <?/*=convertDate($this->time['start_date_confirm'])*/?> می باشد </div>-->
+            <!--<div class="alert alert-warning"> بازه تایید فرم ها توسط واحد مافوق از تاریخ <?/*=convertDate($this->time['finish_date_confirm'])*/ ?> تا تاریخ  <?/*=convertDate($this->time['start_date_confirm'])*/ ?> می باشد </div>-->
             <a class="btn btn-info btn-lg btn-block" href="<?php echo RELA_DIR ?>admin/?component=shakhes&action=jalasat">فرم
                 برگزاری جلسات و نشست ها</a>
             <div class="alert alert-danger">فرم برگزاری جلسات و نشستها: گروه‌های آموزشی؛ دانشکده‌ها؛ شعبه ارومیه؛ مرکز
@@ -65,9 +65,10 @@
                         <div class="col-md-12">
 
                             <?php // نمایش وضعیت واحدها
-                            foreach ($adminStatus as $admin) : ?>
+                            foreach ($importStatus as $k => $admin) : ?>
+
                                 <span class="admins-status">
-                                    <?php echo $adminName[$admin['motevali']]['name'] . ' ' . $adminName[$admin['motevali']]['family'] ?>
+                                    <?php echo $adminName[$admin['motevali_admin_id']]['name'] . ' ' . $adminName[$admin['motevali_admin_id']]['family'] ?>
                                     در مرحله
 
                                     <?php if (STEP_FORM1 <= 2) : ?>
@@ -134,31 +135,31 @@
                                     <td colspan="1" bgcolor=#8DD4FF>یکساله</td>
                                     <td colspan="1" bgcolor=#8DD4FF>توضیحات</td>
 
-
+                                    <td></td>
 
                                 </tr>
                             </thead>
                             <div class="col-md-10 col-sm-12 col-sx-12">
                                 <?php
-                                        $msg = $messageStack->output('message');
-                                        if($msg != ''):
-                                            echo $msg;
-                                        endif;
-                                        ?>
-                                <?php foreach ($child as $v):?>
-                                <div class="col-md-2 col-xs-12 col-sm-12 ">
+                                $msg = $messageStack->output('message');
+                                if ($msg != '') :
+                                    echo $msg;
+                                endif;
+                                ?>
+                                <?php foreach ($child as $v) : ?>
+                                    <div class="col-md-2 col-xs-12 col-sm-12 ">
 
-                                    <div class="col-md-12 confirm-vahed ">
-                                        <div class="col-md-12" style="height: 50px">
-                                            <label for=""><?php echo $v['name'] . ' ' . $v['family'] ?></label>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <a href="<?php echo RELA_DIR ?>admin/?component=reports&action=confirm&id=<?php echo $v['admin_id'] ?>&s=1" class="btn btn-primary btn-block">تایید</a>
-                                            <a href="<?php echo RELA_DIR ?>admin/?component=reports&action=confirm&id=<?php echo $v['admin_id'] ?>&s=2" class="btn btn-primary btn-block">نیازمند اصلاح</a>
+                                        <div class="col-md-12 confirm-vahed ">
+                                            <div class="col-md-12" style="height: 50px">
+                                                <label for=""><?php echo $v['name'] . ' ' . $v['family'] ?></label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <a href="<?php echo RELA_DIR ?>admin/?component=reports&action=confirm&id=<?php echo $v['admin_id'] ?>&s=1" class="btn btn-primary btn-block">تایید</a>
+                                                <a href="<?php echo RELA_DIR ?>admin/?component=reports&action=confirm&id=<?php echo $v['admin_id'] ?>&s=2" class="btn btn-primary btn-block">نیازمند اصلاح</a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <?php endforeach;?>
+                                <?php endforeach; ?>
                             </div>
                             <?php
                             $sentToConfirm1_6 = $sentToConfirm1_12 = 'sendToConfirm1';
@@ -166,13 +167,20 @@
                             $sentToConfirm3_6 = $sentToConfirm3_12 = 'sendToConfirm3';
 
                             foreach ($imports as $import) :
-                                $status6 = $adminStatus[$import['motevali_admin_id']]['status6'];
-                                $status12 = $adminStatus[$import['motevali_admin_id']]['status12'];
+                                $status6 = $import['status6'];
+                                $status12 = $import['status12'];
+                                if (STEP_FORM1 <= 2) {
+                                    $status = $import['status6'];
+                                    $season = 6;
+                                } else {
+                                    $status = $import['status12'];
+                                    $season = 12;
+                                }
                                 // echo $status12.'sssss';die();
 
                                 // وقتی یکی از تایید کنندگان میاد
                                 if (
-                                    ($status6 == 'sendToConfirm1' or $status12 == 'sendToConfirm1' ) &&
+                                    ($status6 == 'sendToConfirm1' or $status12 == 'sendToConfirm1') &&
                                     in_array($admin_info['admin_id'], [$import['confirm1'], $import['confirm2'], $import['confirm3']])
                                 ) : ?>
                                     <input type="hidden" name="imports[]" value="<?php echo $import['id'] ?>">
@@ -182,7 +190,7 @@
                                 <tr class="<?php echo $import['motevali_admin_id'] ?>">
                                     <td><?php echo $import['ghalam_id'] ?></td>
                                     <td><?php echo $ghalamName[$import['ghalam_id']]['ghalam'] ?></td>
-                                    <td><?php echo $adminName[$import['motevali_admin_id']]['name'] . ' ' . $adminName[$import['motevali_admin_id']]['family'] ?>
+                                    <td style="color:#<?php echo $import['motevali_admin_id'] ?>00"><?php echo $adminName[$import['motevali_admin_id']]['name'] . ' ' . $adminName[$import['motevali_admin_id']]['family'] ?>
                                     </td>
 
                                     <td>
@@ -240,6 +248,12 @@
                                             <?php echo $import['admin_tozihat12'] ?>
                                         <?php endif; ?>
                                     </td>
+                                    <td>
+                                        <?php if ($status != 0 || $status != 'backToEdit') : ?>
+                                            <a class="btn btn-warning btn-white " data-toggle="modal" data-target="#backToEdit" data-season="<?php echo $season ?>" data-import="<?php echo $import['id'] ?>" data-motevali="<?php echo $adminName[$import['motevali_admin_id']]['name'] . ' ' . $adminName[$import['motevali_admin_id']]['family'] ?>" data-confirmnumber="<?php echo str_replace('sendToConfirm', '', $status) ?>" data-ghalamname="<?php echo $ghalamName[$import['ghalam_id']]['ghalam'] ?>">نیاز به اصلاح</a>
+
+                                    </td>
+                                <?php endif ?>
                                 </tr>
                             <?php
 
@@ -260,14 +274,16 @@
                         <?php // دکمه های مربوط به وارد کننده 
                         if (
                             (
-                                (($adminStatus[$import['motevali_admin_id']]['status6'] == '0' || $adminStatus[$import['motevali_admin_id']]['status6'] == 'backToEdit') && STEP_FORM1 <= 2) ||
-                                (($adminStatus[$import['motevali_admin_id']]['status12'] == '0' || $adminStatus[$import['motevali_admin_id']]['status12'] == 'backToEdit') && STEP_FORM1 >= 3)) &&
+                                (($import['status6'] == '0' || $import['status6'] == 'backToEdit') && STEP_FORM1 <= 2) ||
+                                (($import['status12'] == '0' || $import['status12'] == 'backToEdit') && STEP_FORM1 >= 3)) &&
                             in_array($admin_info['admin_id'], [$import['import']])
                         ) : ?>
-                            
+
                             <input type="submit" class="btn btn-info btn-white btn-large btn-large2" name="temporary" value="ذخیره موقت" />
                             <?php if (isset($_GET['filterAdmin'])) : ?>
                                 <input type="submit" class="btn btn-success btn-white btn-large btn-large2" name="sendToConfirm1" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')" value="ارسال به مافوق" />
+                            <?php else : ?>
+                                برای ثبت نهایی بر اساس واحد فیلتر نمایید
                             <?php endif; ?>
                         <?php endif; ?>
 
@@ -281,7 +297,6 @@
                         ) : ?>
 
                             <input type="submit" class="btn btn-success btn-white btn-large btn-large2" name="sendToConfirm2" value="تایید">
-                            <input type="submit" class="btn btn-warning btn-white btn-large btn-large2" name="backToEdit" value="نیاز به اصلاح">
 
                         <?php endif; ?>
 
@@ -293,18 +308,16 @@
                         ) : ?>
 
                             <input type="submit" class="btn btn-success btn-white btn-large btn-large2" name="sendToConfirm2" value="تایید">
-                            <input type="submit" class="btn btn-warning btn-white btn-large btn-large2" name="backToEdit" value="نیاز به اصلاح">
 
                         <?php endif; ?>
 
                         <?php // دکمه های مربوط به تایید کننده سوم
                         if (
-                            ($sentToConfirm3_6 == 'sendToConfirm3' or $sentToConfirm3_12 == 'sendToConfirm3') &&
+                            ($status6 == 'sendToConfirm3' or $status12 == 'sendToConfirm3') &&
                             in_array($admin_info['admin_id'], [$import['confirm3']])
                         ) : ?>
 
                             <input type="submit" class="btn btn-success btn-white btn-large btn-large2" name="sendToConfirm2" value="تایید">
-                            <input type="submit" class="btn btn-warning btn-white btn-large btn-large2" name="backToEdit" value="نیاز به اصلاح">
 
                         <?php endif; ?>
                     </form>
@@ -314,7 +327,31 @@
 
     </div>
 </div>
+<div class="modal fade" id="backToEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">نیاز به اصلاح</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="backToEditForm" action="">
+                    <input type="hidden" name="import" id="import" value="">
+                    <input type="hidden" id="season" value="">
+                    <input type="hidden" id="confirmnumber" value="">
+                    <input type="text" class="form-control" name="" placeholder="دلیل اصلاح را بنویسید" id="tozihat">
+                    <br>
 
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">انصراف </button>
+                    <button  class="btn btn-warning">ارسال به اصلاح مجدد</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
 <style>
     .en {
         font-family: Arial, Helvetica, sans-serif;
@@ -378,5 +415,59 @@
             e.preventDefault();
             document.location = '/admin/?component=shakhes&action=khodezhari#topOfTable';
         }
+    });
+
+    var modal;
+    $('#backToEdit').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget);
+
+
+        var importId = button.data('import');
+        var ghalamName = button.data('ghalamname');
+        var motevali = button.data('motevali');
+        var confirmnumber = button.data('confirmnumber');
+        var season = button.data('season');
+
+
+
+        modal = $(this);
+        modal.find('.modal-title').text(ghalamName + '-' + motevali);
+        modal.find('input#import').val(importId);
+        modal.find('input#confirmnumber').val(confirmnumber);
+        modal.find('input#season').val(season);
+
+
+        setTimeout(function() {
+            $('#tozihat').focus();
+
+        }, 500);
+
+
+
+
+
+    });
+
+    $(document).ready(function() {
+       
+        $('.modal form').submit(function(e) {
+
+            e.preventDefault();
+            
+            $.ajax({
+                type: "POST",
+                url: "/admin/?component=shakhes&action=khodezhari&func=backToEdit",
+                data: {
+                    importid: $('input#import').val(),
+                    season:$('input#season').val(),
+                    tozihatFieldName: 'confirm' + $('input#confirmnumber').val() + '_tozihat' + $('input#season').val(),
+                    tozihat: $('input#tozihat').val()
+                },
+                success: function(result) {
+                    modal.modal('hide');
+                    $('a[data-import='+$('input#import').val()+']').hide()
+                }
+            });
+        });
     });
 </script>

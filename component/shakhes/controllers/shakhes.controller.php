@@ -935,7 +935,6 @@ class shakhesController
     public function khodezhari()
     {
 
-
         global $messageStack, $dataStack, $admin_info;
         $msg = $messageStack->output('message');
         $data = $dataStack->output('data');
@@ -944,23 +943,30 @@ class shakhesController
         // پیدا کردن قلم ها و کلان
         include_once ROOT_DIR . "component/shakhes/model/shakhes.model.php";
         include_once ROOT_DIR . "component/shakhes/model/ghalam.model.php";
-        include_once ROOT_DIR . "component/shakhes/model/import_status.model.php";
+        // include_once ROOT_DIR . "component/shakhes/model/import_status.model.php";
         include_once ROOT_DIR . "component/admin/model/admin_status.model.php";
         include_once ROOT_DIR . "component/admin/model/admin.model.php";
         $obj = new shakhes();
         $ghalam = new ghalam();
-        $importStatus = new importStatus();
-        // $adminStatus = new adminStatus();
+        // $importStatus = new importStatus(); 
         $admin = new admin();
+
+
+
+        // 1
+        // همه شاخص ها
         $shakhes = $obj->getAll()->getList()['export'];
 
+        
 
+        // 2
         // مقادیر داخل باکس فیلتر
         $filterAdminsSelectbox = $admin->getAll()->keyBy('admin_id')->select('admin_id,name,family')->where('parent_id', '=', 1)->getList();
         $filterAdminsSelectbox = ($filterAdminsSelectbox['export']['recordsCount'] > 0) ?  $filterAdminsSelectbox['export']['list'] : array();
 
 
 
+        // 3
         //فیلتر کردن بر اساس filterAdmin
         if (isset($_GET['filterAdmin']) && is_numeric($_GET['filterAdmin'])) {
             $temp = $admin->where('parent_id', '=', $_GET['filterAdmin'])->getList();
@@ -969,7 +975,10 @@ class shakhesController
         }
 
 
-        // قلم ها و مقادیر وارد شده
+
+
+        // 4
+        // قلم ها و مقادیر وارد شده - وضعیت - توضیحاتی تایید کننده ها
         $query = "select 
             i.*
         from sh_import i
@@ -977,43 +986,70 @@ class shakhesController
         and (i.import = '{$admin_info['admin_id']}'
         or i.confirm1 = '{$admin_info['admin_id']}'
         or i.confirm2 = '{$admin_info['admin_id']}'
-        or i.confirm3 = '{$admin_info['admin_id']}')
+        or i.confirm3 = '{$admin_info['admin_id']}'
+        or i.confirm4 = '{$admin_info['admin_id']}')
         {$filter['admins']}
-        order by i.ghalam_id ";
+        and year = ".KHODEZHARI_YEAR."
+        order by i.ghalam_id " ;
         $res = $obj->query($query)->getList();
         $imports = ($res['export']['recordsCount'] > 0) ?  $res['export']['list'] : array();
+    
         // dd($imports);
 
+        
 
+
+        // 5
         // کل قلم ها
         $ghalams = $ghalam->getAll()->keyBy('ghalam_id')->getList();
         $ghalamName = ($ghalams['export']['recordsCount'] > 0) ?  $ghalams['export']['list'] : array();
+        // dd($ghalams);
 
 
+        
+        // 6
         //ادمین ها
         $admins = $admin->getAll()->keyBy('admin_id')->select('admin_id,name,family,parent_id')->getList();
         $adminName = ($admins['export']['recordsCount'] > 0) ?  $admins['export']['list'] : array();
 
 
-        //وضعیت قلم های ارسالی
-        $motevali =  implode(',', array_unique(array_column($imports, 'motevali_admin_id')));
-        $query = "SELECT import,motevali,status6,status12 FROM sh_import_status 
-        WHERE motevali IN($motevali) AND (import = {$admin_info['admin_id']} OR confirm1 = {$admin_info['admin_id']} OR confirm2 = {$admin_info['admin_id']} OR confirm3 = {$admin_info['admin_id']})
-        ";
-        $importStatus = $importStatus->query($query)->keyBy('motevali')->getList();
-        // $importStatus = $importStatus->where('motevali', 'in', $motevali)
-        // ->andWhere('import', '=', $admin_info['admin_id'])
-        // ->orWhere('confirm1','=',$admin_info['admin_id'])
-        // ->orWhere('confirm2','=',$admin_info['admin_id'])
-        // ->orWhere('confirm3','=',$admin_info['admin_id'])
-        // ->keyBy('motevali')->select('import,motevali,status6,status12')->getList();
-        $adminStatus = ($importStatus['export']['recordsCount'] > 0) ?  $importStatus['export']['list'] : array();
 
-        // dd($adminStatus);
+        // 7
+        //وضعیت قلم های ارسالی
+        // $motevali =  implode(',', array_unique(array_column($imports, 'motevali_admin_id')));
+        // $query = "SELECT import,motevali,status6,status12 FROM sh_import_status 
+        // WHERE motevali IN($motevali) 
+        // AND (import = {$admin_info['admin_id']} 
+        // OR confirm1 = {$admin_info['admin_id']} 
+        // OR confirm2 = {$admin_info['admin_id']} 
+        // OR confirm3 = {$admin_info['admin_id']})
+        // ";
+        // $importStatus = $importStatus->query($query)->keyBy('motevali')->getList();
+        // $adminStatus = ($importStatus['export']['recordsCount'] > 0) ?  $importStatus['export']['list'] : array();
+
+        // 7
+        // وضعیت متولی
+        $query = "select 
+        i.motevali_admin_id,i.status6, i.status12
+        from sh_import i
+        where i.ghalam_id not in (select ghalam_id from sh_rel_ghalam_zir_ghalam)
+        and (i.import = '{$admin_info['admin_id']}'
+        or i.confirm1 = '{$admin_info['admin_id']}'
+        or i.confirm2 = '{$admin_info['admin_id']}'
+        or i.confirm3 = '{$admin_info['admin_id']}'
+        or i.confirm4 = '{$admin_info['admin_id']}')
+        {$filter['admins']}
+        and year = ".KHODEZHARI_YEAR."
+        and (status6 != 'finish' or status12 = 'finish')
+        group by motevali_admin_id
+        order by i.ghalam_id " ;
+        $res2 = $obj->query($query)->getList();
+        $importStatus = ($res2['export']['recordsCount'] > 0) ?  $res2['export']['list'] : array();
+        // dd($importStatus);
 
 
         $this->fileName = 'shakhes.khodezhari.php';
-        $this->template(compact('shakhes', 'imports', 'ghalamName', 'adminName', 'adminStatus', 'filterAdminsSelectbox'));
+        $this->template(compact('shakhes', 'imports', 'ghalamName', 'adminName', 'filterAdminsSelectbox','importStatus'));
 
         die();
     }
@@ -1025,9 +1061,9 @@ class shakhesController
         $result = array();
         $post = $_POST;
         include_once ROOT_DIR . 'component/shakhes/model/import.model.php';
-        include_once ROOT_DIR . 'component/shakhes/model/import_status.model.php';
+        // include_once ROOT_DIR . 'component/shakhes/model/import_status.model.php';
         $importObj = new import();
-        $importStatusObj = new importStatus();
+        // $importStatusObj = new importStatus();
 
         if (STEP_FORM1 <= 2) {
             $val = 'value6';
@@ -1038,6 +1074,9 @@ class shakhesController
             $tozihat = 'admin_tozihat12';
             $status = 'status12';
         }
+
+
+
 
         /* ارسال فرم */
         if (isset($post['temporary'])) {
@@ -1082,33 +1121,21 @@ class shakhesController
 
                 $import->$val = $item[$val];
                 $import->$tozihat = $item[$tozihat];
-                //                $import->year = explode('/', convertDate(date('Y')))[0];
+                if($import->confirm1 != 0){
+                    $import->$status = 'sendToConfirm1';
+                }elseif($import->confirm2 != 0){
+                    $import->$status = 'sendToConfirm2';
+                }elseif($import->confirm3 != 0){
+                    $import->$status = 'sendToConfirm3';
+                }else{
+                    $import->$status = 'sendToConfirm4';
+                }
+                
                 $import->save();
 
-                //برای اپدیت وضعیت متولی ها
-                $allMotevali[] = $import->motevali_admin_id;
             }
 
-            //آپدیت وضعیت متولی
-            foreach (array_unique($allMotevali) as $mot) {
-
-                $oo = $importStatusObj::getBy_import_and_motevali($admin_info['admin_id'], $mot)->get();
-
-
-                if ($oo['export']['recordsCount'] == 0) {
-                    $oo = new importStatus();
-                    $oo->import = $admin_info['admin_id'];
-                    $oo->motevali = $mot;
-                    $oo->$status = 'sendToConfirm1';
-                    $oo->save();
-                } else {
-                    $oo = $oo['export']['list'][0];
-                    $oo->import = $admin_info['admin_id'];
-                    $oo->motevali = $mot;
-                    $oo->$status = 'sendToConfirm1';
-                    $oo->save();
-                }
-            }
+           
 
 
             $result['msg'] = '.ثبت نهایی انجام شد';
@@ -1117,6 +1144,8 @@ class shakhesController
             redirectPage(RELA_DIR . 'admin/?component=shakhes&action=khodezhari&filterAdmin=' . $post['filterAdmin'] . '#topOfTable', $result['msg']);
         } elseif (isset($post['backToEdit'])) {
 
+            //تغییر ساختار
+            dd(1);
 
             include_once ROOT_DIR . "component/admin/model/admin_status.model.php";
             $adminStatus = new adminStatus();
@@ -1181,7 +1210,21 @@ class shakhesController
         }
     }
 
+    public function backToEdit(){
 
+        include_once ROOT_DIR . 'component/shakhes/model/import.model.php';
+        $importObj = new import();
+        $import = $importObj::find($_POST['importid']);
+        $field  = $_POST['tozihatFieldName'];
+        $status = 'status'.$_POST['season'];
+        $import->$field = $_POST['tozihat'];
+        $import->$status = 'backToEdit';
+        $import->save();
+        
+        echo true;
+        die();
+
+    }
 
 
 

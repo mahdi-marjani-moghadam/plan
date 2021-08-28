@@ -39,6 +39,9 @@ switch ($_GET['action']) {
         if ($_GET['method'] == 'delete') {
             $controller->onDelete('khodezhari');
         }
+        if ($_GET['func'] == 'backToEdit') {
+            $controller->backToEdit();
+        }
         if ($_POST) {
             $controller->khodezhariOnSubmit();
         } else {
