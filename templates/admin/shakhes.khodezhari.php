@@ -165,6 +165,8 @@
                             $sentToConfirm1_6 = $sentToConfirm1_12 = 'sendToConfirm1';
                             $sentToConfirm2_6 = $sentToConfirm2_12 = 'sendToConfirm2';
                             $sentToConfirm3_6 = $sentToConfirm3_12 = 'sendToConfirm3';
+                            $sentToConfirm4_6 = $sentToConfirm4_12 = 'sendToConfirm4';
+                            $activeImportButton = $activeSendToConfirm1 = $activeSendToConfirm2 = $activeSendToConfirm3 = $activeSendToConfirm4 = false;
 
                             foreach ($imports as $import) :
                                 $status6 = $import['status6'];
@@ -176,11 +178,11 @@
                                     $status = $import['status12'];
                                     $season = 12;
                                 }
-                                // echo $status12.'sssss';die();
+                                
 
                                 // وقتی یکی از تایید کنندگان میاد
                                 if (
-                                    ($status6 == 'sendToConfirm1' or $status12 == 'sendToConfirm1') &&
+                                    $status == 'sendToConfirm1' &&
                                     in_array($admin_info['admin_id'], [$import['confirm1'], $import['confirm2'], $import['confirm3']])
                                 ) : ?>
                                     <input type="hidden" name="imports[]" value="<?php echo $import['id'] ?>">
@@ -192,6 +194,9 @@
                                     <td><?php echo $ghalamName[$import['ghalam_id']]['ghalam'] ?></td>
                                     <td style="color:#<?php echo $import['motevali_admin_id'] ?>00"><?php echo $adminName[$import['motevali_admin_id']]['name'] . ' ' . $adminName[$import['motevali_admin_id']]['family'] ?>
                                     </td>
+
+
+
 
                                     <td>
                                         <?php // وقتی وارد کننده باشه و هنوز مقداری وارد نکرده باشه
@@ -216,6 +221,10 @@
                                             <input name="import[<?php echo $import['id'] ?>][admin_tozihat6]" value="<?php echo $import['admin_tozihat6'] ?>" autocomplete="off" class="form-control">
                                         <?php else : ?>
                                             <?php echo $import['admin_tozihat6'] ?>
+                                            <?php echo $import['confirm1_tozihat6'] ?>
+                                            <?php echo $import['confirm2_tozihat6'] ?>
+                                            <?php echo $import['confirm3_tozihat6'] ?>
+                                            <?php echo $import['confirm4_tozihat6'] ?>
                                         <?php endif; ?>
                                     </td>
 
@@ -246,25 +255,46 @@
                                             <input name="import[<?php echo $import['id'] ?>][admin_tozihat12]" value="<?php echo $import['admin_tozihat12'] ?>" autocomplete="off" class="form-control">
                                         <?php else : ?>
                                             <?php echo $import['admin_tozihat12'] ?>
+                                            <?php echo $import['confirm1_tozihat12'] ?>
+                                            <?php echo $import['confirm2_tozihat12'] ?>
+                                            <?php echo $import['confirm3_tozihat12'] ?>
+                                            <?php echo $import['confirm4_tozihat12'] ?>
                                         <?php endif; ?>
                                     </td>
+
+
+
+
+
                                     <td>
                                         <?php if ($status != 0 || $status != 'backToEdit') : ?>
-                                            <a class="btn btn-warning btn-white " data-toggle="modal" data-target="#backToEdit" data-season="<?php echo $season ?>" data-import="<?php echo $import['id'] ?>" data-motevali="<?php echo $adminName[$import['motevali_admin_id']]['name'] . ' ' . $adminName[$import['motevali_admin_id']]['family'] ?>" data-confirmnumber="<?php echo str_replace('sendToConfirm', '', $status) ?>" data-ghalamname="<?php echo $ghalamName[$import['ghalam_id']]['ghalam'] ?>">نیاز به اصلاح</a>
-
+                                            <?php if (in_array($admin_info['admin_id'], [$import['confirm1'], $import['confirm2'], $import['confirm3'], $import['confirm4']])) : ?>
+                                                <a class="btn btn-warning btn-white " data-toggle="modal" data-target="#backToEdit" data-season="<?php echo $season ?>" data-import="<?php echo $import['id'] ?>" data-motevali="<?php echo $adminName[$import['motevali_admin_id']]['name'] . ' ' . $adminName[$import['motevali_admin_id']]['family'] ?>" data-confirmnumber="<?php echo str_replace('sendToConfirm', '', $status) ?>" data-ghalamname="<?php echo $ghalamName[$import['ghalam_id']]['ghalam'] ?>">نیاز به اصلاح</a>
+                                            <?php endif; ?>
                                     </td>
                                 <?php endif ?>
                                 </tr>
                             <?php
 
-                                if ($status6 != 'sendToConfirm1') $sentToConfirm1_6 = '';
-                                if ($status12 != 'sendToConfirm1') $sentToConfirm1_12 = '';
-                                if ($status6 != 'sendToConfirm2') $sentToConfirm2_6 = '';
-                                if ($status12 != 'sendToConfirm2') $sentToConfirm2_12 = '';
-                                if ($status6 != 'sendToConfirm3') $sentToConfirm3_6 = '';
-                                if ($status12 != 'sendToConfirm4') $sentToConfirm3_12 = '';
+                                if ($status6 != 'sendToConfirm1') $sentToConfirm1_6 = '0';
+                                if ($status12 != 'sendToConfirm1') $sentToConfirm1_12 = '0';
+
+                                if ($status6 != 'sendToConfirm2') $sentToConfirm2_6 = '0';
+                                if ($status12 != 'sendToConfirm2') $sentToConfirm2_12 = '0';
+
+                                if ($status6 != 'sendToConfirm3') $sentToConfirm3_6 = '0';
+                                if ($status12 != 'sendToConfirm3') $sentToConfirm3_12 = '0';
+
+                                if ($status6 != 'sendToConfirm4') $sentToConfirm4_6 = '0';
+                                if ($status12 != 'sendToConfirm4') $sentToConfirm4_12 = '0';
 
 
+                                
+                                if($status == '0' || $status == 'backToEdit') $activeImportButton = true;
+                                if($status == 'sendToConfirm1') $activeSendToConfirm1 = true;
+                                if($status == 'sendToConfirm2') $activeSendToConfirm2 = true;
+                                if($status == 'sendToConfirm3') $activeSendToConfirm3 = true;
+                                if($status == 'sendToConfirm4') $activeSendToConfirm4 = true;
 
                             endforeach;
                             ?>
@@ -272,10 +302,9 @@
                         </table>
 
                         <?php // دکمه های مربوط به وارد کننده 
+                        
                         if (
-                            (
-                                (($import['status6'] == '0' || $import['status6'] == 'backToEdit') && STEP_FORM1 <= 2) ||
-                                (($import['status12'] == '0' || $import['status12'] == 'backToEdit') && STEP_FORM1 >= 3)) &&
+                            $activeImportButton &&
                             in_array($admin_info['admin_id'], [$import['import']])
                         ) : ?>
 
@@ -292,7 +321,7 @@
 
                         <?php // دکمه های مربوط به تایید کننده اول
                         if (
-                            ($sentToConfirm1_6 == 'sendToConfirm1' or $sentToConfirm1_12 == 'sendToConfirm1') &&
+                            $activeSendToConfirm1 == 'sendToConfirm1'  && $activeImportButton == false &&
                             in_array($admin_info['admin_id'], [$import['confirm1']])
                         ) : ?>
 
@@ -303,21 +332,31 @@
 
                         <?php // دکمه های مربوط به تایید کننده دوم
                         if (
-                            ($sentToConfirm2_6 == 'sendToConfirm2' or $sentToConfirm2_12 == 'sendToConfirm2') &&
+                            $activeSendToConfirm2 == 'sendToConfirm2' && $activeImportButton == false &&
                             in_array($admin_info['admin_id'], [$import['confirm2']])
                         ) : ?>
 
-                            <input type="submit" class="btn btn-success btn-white btn-large btn-large2" name="sendToConfirm2" value="تایید">
+                            <input type="submit" class="btn btn-success btn-white btn-large btn-large2" name="sendToConfirm3" value="تایید">
 
                         <?php endif; ?>
 
                         <?php // دکمه های مربوط به تایید کننده سوم
                         if (
-                            ($status6 == 'sendToConfirm3' or $status12 == 'sendToConfirm3') &&
+                            $activeSendToConfirm3 == 'sendToConfirm3' && $activeImportButton == false &&
                             in_array($admin_info['admin_id'], [$import['confirm3']])
                         ) : ?>
 
-                            <input type="submit" class="btn btn-success btn-white btn-large btn-large2" name="sendToConfirm2" value="تایید">
+                            <input type="submit" class="btn btn-success btn-white btn-large btn-large2" name="sendToConfirm4" value="تایید">
+
+                        <?php endif; ?>
+
+                        <?php // دکمه های مربوط به تایید کننده چهارم
+                        if (
+                            $activeSendToConfirm4 == 'sendToConfirm4' && $activeImportButton == false &&
+                            in_array($admin_info['admin_id'], [$import['confirm4']])
+                        ) : ?>
+
+                            <input type="submit" class="btn btn-success btn-white btn-large btn-large2" name="finish" value="تایید">
 
                         <?php endif; ?>
                     </form>
@@ -345,7 +384,7 @@
                     <br>
 
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">انصراف </button>
-                    <button  class="btn btn-warning">ارسال به اصلاح مجدد</button>
+                    <button class="btn btn-warning">ارسال به اصلاح مجدد</button>
                 </form>
             </div>
 
@@ -449,23 +488,24 @@
     });
 
     $(document).ready(function() {
-       
+
         $('.modal form').submit(function(e) {
 
             e.preventDefault();
-            
+
             $.ajax({
                 type: "POST",
                 url: "/admin/?component=shakhes&action=khodezhari&func=backToEdit",
                 data: {
                     importid: $('input#import').val(),
-                    season:$('input#season').val(),
+                    season: $('input#season').val(),
                     tozihatFieldName: 'confirm' + $('input#confirmnumber').val() + '_tozihat' + $('input#season').val(),
                     tozihat: $('input#tozihat').val()
                 },
                 success: function(result) {
                     modal.modal('hide');
-                    $('a[data-import='+$('input#import').val()+']').hide()
+                    $('a[data-import=' + $('input#import').val() + ']').before('بازگشت به اصلاح')
+                    $('a[data-import=' + $('input#import').val() + ']').hide()
                 }
             });
         });
