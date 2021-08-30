@@ -267,7 +267,7 @@
 
 
                                     <td>
-                                        <?php if ($status != 0 && $status != 'backToEdit' && $status != 'finish') : ?>
+                                        <?php if (in_array($status,['sendToConfirm1','sendToConfirm2','sendToConfirm3','sendToConfirm4']) ) : ?>
                                             <?php if (in_array($admin_info['admin_id'], [$import['confirm1'], $import['confirm2'], $import['confirm3'], $import['confirm4']])) : ?>
                                                 <a class="btn btn-warning btn-white " data-toggle="modal" data-target="#backToEdit" data-season="<?php echo $season ?>" data-import="<?php echo $import['id'] ?>" data-motevali="<?php echo $adminName[$import['motevali_admin_id']]['name'] . ' ' . $adminName[$import['motevali_admin_id']]['family'] ?>" data-confirmnumber="<?php echo str_replace('sendToConfirm', '', $status) ?>" data-ghalamname="<?php echo $ghalamName[$import['ghalam_id']]['ghalam'] ?>">نیاز به اصلاح</a>
                                             <?php endif; ?>
