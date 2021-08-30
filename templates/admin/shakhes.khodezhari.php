@@ -218,13 +218,17 @@
                                             ($status6 == '0' || $status6 == 'backToEdit') &&
                                             in_array($admin_info['admin_id'], [$import['import']])
                                         ) : ?>
-                                            <input name="import[<?php echo $import['id'] ?>][admin_tozihat6]" value="<?php echo $import['admin_tozihat6'] ?>" autocomplete="off" class="form-control">
-                                        <?php else : ?>
-                                            <?php echo $import['admin_tozihat6'] ?>
-                                            <?php echo $import['confirm1_tozihat6'] ?>
-                                            <?php echo $import['confirm2_tozihat6'] ?>
-                                            <?php echo $import['confirm3_tozihat6'] ?>
+                                            <input name="import[<?php echo $import['id'] ?>][import_tozihat6]" value="<?php echo $import['import_tozihat6'] ?>" autocomplete="off" class="form-control">
+                                            <br><?php echo $import['confirm1_tozihat6'] ?>
+                                            <br><?php echo $import['confirm2_tozihat6'] ?>
+                                            <br><?php echo $import['confirm3_tozihat6'] ?>
                                             <?php echo $import['confirm4_tozihat6'] ?>
+                                        <?php else : ?>
+                                            <?php echo $import['import_tozihat6'] ?>
+                                            <br><?php echo $import['confirm1_tozihat6'] ?>
+                                            <br><?php echo $import['confirm2_tozihat6'] ?>
+                                            <br><?php echo $import['confirm3_tozihat6'] ?>
+                                            <br><?php echo $import['confirm4_tozihat6'] ?>
                                         <?php endif; ?>
                                     </td>
 
@@ -252,13 +256,17 @@
                                             ($status12 == '0' || $status12 == 'backToEdit') &&
                                             in_array($admin_info['admin_id'], [$import['import']])
                                         ) : ?>
-                                            <input name="import[<?php echo $import['id'] ?>][admin_tozihat12]" value="<?php echo $import['admin_tozihat12'] ?>" autocomplete="off" class="form-control">
+                                            <input name="import[<?php echo $import['id'] ?>][import_tozihat12]" value="<?php echo $import['import_tozihat12'] ?>" autocomplete="off" class="form-control">
+                                            <br><?php echo $import['confirm1_tozihat12'] ?>
+                                            <br><?php echo $import['confirm2_tozihat12'] ?>
+                                            <br><?php echo $import['confirm3_tozihat12'] ?>
+                                            <br><?php echo $import['confirm4_tozihat12'] ?>
                                         <?php else : ?>
-                                            <?php echo $import['admin_tozihat12'] ?>
-                                            <?php echo $import['confirm1_tozihat12'] ?>
-                                            <?php echo $import['confirm2_tozihat12'] ?>
-                                            <?php echo $import['confirm3_tozihat12'] ?>
-                                            <?php echo $import['confirm4_tozihat12'] ?>
+                                            <?php echo $import['import_tozihat12'] ?>
+                                            <br><?php echo $import['confirm1_tozihat12'] ?>
+                                            <br><?php echo $import['confirm2_tozihat12'] ?>
+                                            <br><?php echo $import['confirm3_tozihat12'] ?>
+                                            <br><?php echo $import['confirm4_tozihat12'] ?>
                                         <?php endif; ?>
                                     </td>
 
@@ -267,12 +275,16 @@
 
 
                                     <td>
-                                        <?php if (in_array($status,['sendToConfirm1','sendToConfirm2','sendToConfirm3','sendToConfirm4']) ) : ?>
-                                            <?php if (in_array($admin_info['admin_id'], [$import['confirm1'], $import['confirm2'], $import['confirm3'], $import['confirm4']])) : ?>
-                                                <a class="btn btn-warning btn-white " data-toggle="modal" data-target="#backToEdit" data-season="<?php echo $season ?>" data-import="<?php echo $import['id'] ?>" data-motevali="<?php echo $adminName[$import['motevali_admin_id']]['name'] . ' ' . $adminName[$import['motevali_admin_id']]['family'] ?>" data-confirmnumber="<?php echo str_replace('sendToConfirm', '', $status) ?>" data-ghalamname="<?php echo $ghalamName[$import['ghalam_id']]['ghalam'] ?>">نیاز به اصلاح</a>
-                                            <?php endif; ?>
+                                        <?php if (
+                                            ($status == 'sendToConfirm1' && $admin_info['admin_id'] == $import['confirm1'])
+                                            || ($status == 'sendToConfirm2' && $admin_info['admin_id'] == $import['confirm2'])
+                                            || ($status == 'sendToConfirm3' && $admin_info['admin_id'] == $import['confirm3'])
+                                            || ($status == 'sendToConfirm4' && $admin_info['admin_id'] == $import['confirm4'])
+                                        ) : ?>
+                                            <a class="btn btn-warning btn-white " data-toggle="modal" data-target="#backToEdit" data-season="<?php echo $season ?>" data-import="<?php echo $import['id'] ?>" data-motevali="<?php echo $adminName[$import['motevali_admin_id']]['name'] . ' ' . $adminName[$import['motevali_admin_id']]['family'] ?>" data-confirmnumber="<?php echo str_replace('sendToConfirm', '', $status) ?>" data-ghalamname="<?php echo $ghalamName[$import['ghalam_id']]['ghalam'] ?>">نیاز به اصلاح</a>
+                                        <?php endif; ?>
+
                                     </td>
-                                <?php endif ?>
                                 </tr>
 
                             <?php
