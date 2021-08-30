@@ -1045,16 +1045,15 @@ class shakhesController
          ";
         $res2 = $obj->query($query)->getList();
         $importStatusAll = ($res2['export']['recordsCount'] > 0) ?  $res2['export']['list'] : array();
-        // dd($importStatusAll);
-
+        
+        
         $statusA = array_flip(array('finish','sendToConfirm4','sendToConfirm3','sendToConfirm2','sendToConfirm1','backToEdit','0'));
-        // dd(array_flip($statusA));
+        
         foreach ($importStatusAll as $k => $v) {
             $importStatus[$v['motevali_admin_id']]['motevali_admin_id'] = $v['motevali_admin_id'];
 
 
             for ($i = 1; $i <= 2; $i++) {
-                // echo $i;
                 $j = $i * 6;
                 
                 if(!isset($importStatus[$v['motevali_admin_id']]['status' . $j])){
@@ -1067,44 +1066,10 @@ class shakhesController
                 }
                 
 
-                // if ($importStatus[$v['motevali_admin_id']]['status' . $j] == 'finish') {
-                //     $v['status' . $j] = 'finish';
-                // }
-                // echo $v['status' . $j];
-                // if ($importStatus[$v['motevali_admin_id']]['status' . $j] == 'sendToConfirm4') {
-                //     $v['status' . $j] = 'sendToConfirm4';
-                // }
-                // echo $v['status' . $j];
-                // if ($importStatus[$v['motevali_admin_id']]['status' . $j] == 'sendToConfirm3') {
-                //     $v['status' . $j] = 'sendToConfirm3';
-                // }
-                // echo $v['status' . $j];
-                // if ($importStatus[$v['motevali_admin_id']]['status' . $j] == 'sendToConfirm2') {
-                //     $v['status' . $j] = 'sendToConfirm2';
-                // }
-                // echo $v['status' . $j];
-                // if ($importStatus[$v['motevali_admin_id']]['status' . $j] == 'sendToConfirm1') {
-                //     $v['status' . $j] = 'sendToConfirm2';
-                // }
-                // echo $v['status' . $j];
-                // if ($importStatus[$v['motevali_admin_id']]['status' . $j] == 'backToEdit') {
-                //     $v['status' . $j] = 'backToEdit';
-                // }
-                // echo $v['status' . $j];
-                // if ($importStatus[$v['motevali_admin_id']]['status' . $j] == '0') {
-                //     $v['status' . $j] = '0';
-                // }
-
-                // echo $v['status' . $j];
-                
-                // $importStatus[$v['motevali_admin_id']]['status' . $j] = $v['status' . $j];
-
-                // echo $importStatus[$v['motevali_admin_id']]['status' . $j].'<br>';
             }
 
         }
-        // dd($importStatus);
-
+        
         $this->fileName = 'shakhes.khodezhari.php';
         $this->template(compact('shakhes', 'imports', 'ghalamName', 'adminName', 'filterAdminsSelectbox', 'importStatus'));
 
