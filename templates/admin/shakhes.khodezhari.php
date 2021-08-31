@@ -521,7 +521,7 @@
                 },
                 success: function(result) {
                     modal.modal('hide');
-                    $('a[data-import=' + $('input#import').val() + ']').before('بازگشت به اصلاح')
+                    $('a[data-import=' + $('input#import').val() + ']').before('نیازمند اصلاح')
                     $('a[data-import=' + $('input#import').val() + ']').hide()
                 }
             });

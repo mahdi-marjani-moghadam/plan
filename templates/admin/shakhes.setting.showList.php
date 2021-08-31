@@ -585,7 +585,7 @@
                 error: function(data, status, xhr) {
                     alert('مشکلی در سرور بوجود آمده است.');
                 }
-            });
+            });s
 
         });
         /** end edit */

@@ -1192,7 +1192,7 @@ class shakhesController
 
 
 
-            $result['msg'] = '. ارسال به واحد بالا انجام شد';
+            $result['msg'] = '.تایید اطلاعات صورت گرفت و برای واحد مربوطه ارسال شد';
             $result['type'] = 'success';
             $messageStack->add_session('message', $result['msg'], $result['type']);
             redirectPage(RELA_DIR . 'admin/?component=shakhes&action=khodezhari&filterAdmin=' . $post['filterAdmin'] . '#topOfTable', $result['msg']);
@@ -1215,7 +1215,7 @@ class shakhesController
             }
 
 
-            $result['msg'] = '. ارسال به واحد بالا انجام شد';
+            $result['msg'] = '. ارسال2 صورت گرفت';
             $result['type'] = 'success';
             $messageStack->add_session('message', $result['msg'], $result['type']);
             redirectPage(RELA_DIR . 'admin/?component=shakhes&action=khodezhari&filterAdmin=' . $post['filterAdmin'] . '#topOfTable', $result['msg']);
@@ -1229,7 +1229,7 @@ class shakhesController
                 $import->save();
             }
 
-            $result['msg'] = '. ارسال به واحد بالا انجام شد';
+            $result['msg'] = '. ارسال3 صورت گرفت';
             $result['type'] = 'success';
             $messageStack->add_session('message', $result['msg'], $result['type']);
             redirectPage(RELA_DIR . 'admin/?component=shakhes&action=khodezhari&filterAdmin=' . $post['filterAdmin'] . '#topOfTable', $result['msg']);
