@@ -1043,6 +1043,7 @@ class shakhesController
         and (status6 != 'finish' or status12 = 'finish')
         group by status12,motevali_admin_id
          ";
+         
         $res2 = $obj->query($query)->getList();
         $importStatusAll = ($res2['export']['recordsCount'] > 0) ?  $res2['export']['list'] : array();
         

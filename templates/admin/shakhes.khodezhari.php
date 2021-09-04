@@ -281,7 +281,7 @@
                                             || ($status == 'sendToConfirm3' && $admin_info['admin_id'] == $import['confirm3'])
                                             || ($status == 'sendToConfirm4' && $admin_info['admin_id'] == $import['confirm4'])
                                         ) : ?>
-                                            <a class="btn btn-warning btn-white " data-toggle="modal" data-target="#backToEdit" data-season="<?php echo $season ?>" data-import="<?php echo $import['id'] ?>" data-motevali="<?php echo $adminName[$import['motevali_admin_id']]['name'] . ' ' . $adminName[$import['motevali_admin_id']]['family'] ?>" data-confirmnumber="<?php echo str_replace('sendToConfirm', '', $status) ?>" data-ghalamname="<?php echo $ghalamName[$import['ghalam_id']]['ghalam'] ?>">نیاز به اصلاح</a>
+                                            <a class="btn btn-warning btn-white " data-toggle="modal" data-target="#backToEdit" data-season="<?php echo $season ?>" data-import="<?php echo $import['id'] ?>" data-motevali="<?php echo $adminName[$import['motevali_admin_id']]['name'] . ' ' . $adminName[$import['motevali_admin_id']]['family'] ?>" data-confirmnumber="<?php echo str_replace('sendToConfirm', '', $status) ?>" data-ghalamname="<?php echo $ghalamName[$import['ghalam_id']]['ghalam'] ?>" onclick="return confirm(' پس از ارسال به اصلاح، \nامکان تایید برای باقی قلم ها تا زمانی که تمام اقلام کامل شوند، وجود ندارد.\n آیا مطمئن هستید؟')">نیاز به اصلاح</a>
                                         <?php endif; ?>
 
                                     </td>
@@ -343,7 +343,7 @@
                             in_array($admin_info['admin_id'], [$import['confirm1']])
                         ) : ?>
 
-                            <input type="submit" class="btn btn-success btn-white btn-large btn-large2" name="sendToConfirm2" value="تایید">
+                            <input type="submit" class="btn btn-success btn-white btn-large btn-large2 sendToConfirm" name="sendToConfirm2" value="تایید" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')">
 
                         <?php endif; ?>
 
@@ -354,7 +354,7 @@
                             in_array($admin_info['admin_id'], [$import['confirm2']])
                         ) : ?>
 
-                            <input type="submit" class="btn btn-success btn-white btn-large btn-large2" name="sendToConfirm3" value="ارسال به ارزیاب">
+                            <input type="submit" class="btn btn-success btn-white btn-large btn-large2 sendToConfirm" name="sendToConfirm3" value="ارسال به ارزیاب" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')">
 
                         <?php endif; ?>
 
@@ -363,7 +363,7 @@
                             $activeSendToConfirm3 == 'sendToConfirm3' && $activeImportButton == false &&
                             in_array($admin_info['admin_id'], [$import['confirm3']])
                         ) : ?>
-                            <input type="submit" class="btn btn-success btn-white btn-large btn-large2" name="sendToConfirm4" value="ارسال به مدیریت" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')">
+                            <input type="submit" class="btn btn-success btn-white btn-large btn-large2 sendToConfirm" name="sendToConfirm4" value="ارسال به مدیریت" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')">
 
                         <?php endif; ?>
 
@@ -373,7 +373,7 @@
                             in_array($admin_info['admin_id'], [$import['confirm4']])
                         ) : ?>
 
-                            <input type="submit" class="btn btn-success btn-white btn-large btn-large2" name="finish" value="تایید نهایی" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')">
+                            <input type="submit" class="btn btn-success btn-white btn-large btn-large2 sendToConfirm" name="finish" value="تایید نهایی" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')">
 
                         <?php endif; ?>
                     </form>
@@ -521,8 +521,9 @@
                 },
                 success: function(result) {
                     modal.modal('hide');
-                    $('a[data-import=' + $('input#import').val() + ']').before('بازگشت به اصلاح')
-                    $('a[data-import=' + $('input#import').val() + ']').hide()
+                    $('a[data-import=' + $('input#import').val() + ']').before('بازگشت به اصلاح');
+                    $('a[data-import=' + $('input#import').val() + ']').hide();
+                    $('input.sendToConfirm').hide();
                 }
             });
         });
