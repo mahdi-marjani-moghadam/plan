@@ -21,6 +21,7 @@ $stmt = $db->query($sql);
 /*** echo number of columns ***/
 $obj = $stmt->fetchAll(PDO::FETCH_OBJ);
 
+
 foreach( $obj as $v )
 {
 

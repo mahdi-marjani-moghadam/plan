@@ -44,7 +44,7 @@
         <div class="panel-body">
             <div id="container">
                 <div class='table-cont1'>
-
+                    <div class="alert alert-warning">برای تایید بر اساس کل یک واحد فیلتر کنید</div>
                     <div class="row">
                         <div class="col-md-6">
                             <form id="filterAdminForm" action="/admin/?component=shakhes&action=khodezhari#topOfTable" method="get">
@@ -139,7 +139,7 @@
 
                                 </tr>
                             </thead>
-                            <div class="col-md-10 col-sm-12 col-sx-12">
+                            <div class="col-md-12 col-sm-12 col-sx-12">
                                 <?php
                                 $msg = $messageStack->output('message');
                                 if ($msg != '') :
@@ -202,12 +202,20 @@
                                         <?php // وقتی وارد کننده باشه و هنوز مقداری وارد نکرده باشه
                                         if (
                                             STEP_FORM1 <= 2 &&
-                                            ($status6 == '0' || $status6 == 'backToEdit') &&
-                                            in_array($admin_info['admin_id'], [$import['import']])
+                                            in_array($admin_info['admin_id'], [$import['import'], $import['confirm3'], $import['confirm4']]) &&
+                                            (
+                                                ($admin_info['admin_id'] == $import['import'] && ($status12 == '0' || $status12 == 'backToEdit')) ||
+                                                ($admin_info['admin_id'] == $import['confirm3'] && $status12 == 'sendToConfirm3') ||
+                                                ($admin_info['admin_id'] == $import['confirm4'] && $status12 == 'sendToConfirm4')) &&
+                                            isset($_GET['filterAdmin'])
                                         ) : ?>
-                                            <input name="import[<?php echo $import['id'] ?>][value6]" step="0.1" type="text" pattern="[0-9]+([,\.][0-9]+)?" value="<?php echo $import['value6'] ?>" autocomplete="off" class="form-control ltr en w-100">
+                                            <input name="import[<?php echo $import['id'] ?>][value6_import]" step="0.1" type="text" pattern="[0-9]+([,\.][0-9]+)?" value="<?php echo $import['value6_import'] ?>" autocomplete="off" class="form-control ltr en w-100">
+
+
                                         <?php // بعد از ثبت نهایی
                                         else : ?>
+                                            <?php echo $import['value6_import'] ?><br>
+                                            <?php echo $import['value6_arzyab'] ?><br>
                                             <?php echo $import['value6'] ?>
                                         <?php endif; ?>
                                     </td>
@@ -215,9 +223,14 @@
                                         <?php // وقتی وارد کننده باشه و هنوز مقداری وارد نکرده باشه 
                                         if (
                                             STEP_FORM1 <= 2 &&
-                                            ($status6 == '0' || $status6 == 'backToEdit') &&
-                                            in_array($admin_info['admin_id'], [$import['import']])
+                                            in_array($admin_info['admin_id'], [$import['import'], $import['confirm3'], $import['confirm4']]) &&
+                                            (
+                                                ($admin_info['admin_id'] == $import['import'] && ($status12 == '0' || $status12 == 'backToEdit')) ||
+                                                ($admin_info['admin_id'] == $import['confirm3'] && $status12 == 'sendToConfirm3') ||
+                                                ($admin_info['admin_id'] == $import['confirm4'] && $status12 == 'sendToConfirm4')) &&
+                                            isset($_GET['filterAdmin'])
                                         ) : ?>
+
                                             <input name="import[<?php echo $import['id'] ?>][import_tozihat6]" value="<?php echo $import['import_tozihat6'] ?>" autocomplete="off" class="form-control">
                                             <br><?php echo $import['confirm1_tozihat6'] ?>
                                             <br><?php echo $import['confirm2_tozihat6'] ?>
@@ -241,11 +254,18 @@
                                         <?php // وقتی وارد کننده باشه و هنوز مقداری وارد نکرده باشه
                                         if (
                                             (STEP_FORM1 > 2 && STEP_FORM1 <= 4) &&
-                                            ($status12 == '0' || $status12 == 'backToEdit') &&
-                                            in_array($admin_info['admin_id'], [$import['import']])
+                                            in_array($admin_info['admin_id'], [$import['import'], $import['confirm3'], $import['confirm4']]) &&
+                                            (
+                                                ($admin_info['admin_id'] == $import['import'] && ($status12 == '0' || $status12 == 'backToEdit')) ||
+                                                ($admin_info['admin_id'] == $import['confirm3'] && $status12 == 'sendToConfirm3') ||
+                                                ($admin_info['admin_id'] == $import['confirm4'] && $status12 == 'sendToConfirm4')) &&
+
+                                            isset($_GET['filterAdmin'])
                                         ) : ?>
-                                            <input name="import[<?php echo $import['id'] ?>][value12]" step="0.1" type="text" pattern="[0-9]+([,\.][0-9]+)?" value="<?php echo $import['value12'] ?>" autocomplete="off" class="form-control en ltr w-100">
+                                            <input name="import[<?php echo $import['id'] ?>][value12_import]" step="0.1" type="text" pattern="[0-9]+([,\.][0-9]+)?" value="<?php echo $import['value12_import'] ?>" autocomplete="off" class="form-control en ltr w-100">
                                         <?php else : ?>
+                                            <?php echo $import['value12_import'] ?><br>
+                                            <?php echo $import['value12_arzyab'] ?><br>
                                             <?php echo $import['value12'] ?>
                                         <?php endif; ?>
                                     </td>
@@ -253,8 +273,12 @@
                                         <?php // وقتی وارد کننده باشه و هنوز مقداری وارد نکرده باشه 
                                         if (
                                             STEP_FORM1 > 2 && STEP_FORM1 <= 4 &&
-                                            ($status12 == '0' || $status12 == 'backToEdit') &&
-                                            in_array($admin_info['admin_id'], [$import['import']])
+                                            in_array($admin_info['admin_id'], [$import['import'], $import['confirm3'], $import['confirm4']]) &&
+                                            (
+                                                ($admin_info['admin_id'] == $import['import'] && ($status12 == '0' || $status12 == 'backToEdit')) ||
+                                                ($admin_info['admin_id'] == $import['confirm3'] && $status12 == 'sendToConfirm3') ||
+                                                ($admin_info['admin_id'] == $import['confirm4'] && $status12 == 'sendToConfirm4')) &&
+                                            isset($_GET['filterAdmin'])
                                         ) : ?>
                                             <input name="import[<?php echo $import['id'] ?>][import_tozihat12]" value="<?php echo $import['import_tozihat12'] ?>" autocomplete="off" class="form-control">
                                             <br><?php echo $import['confirm1_tozihat12'] ?>
@@ -278,10 +302,8 @@
                                         <?php if (
                                             ($status == 'sendToConfirm1' && $admin_info['admin_id'] == $import['confirm1'])
                                             || ($status == 'sendToConfirm2' && $admin_info['admin_id'] == $import['confirm2'])
-                                            || ($status == 'sendToConfirm3' && $admin_info['admin_id'] == $import['confirm3'])
-                                            || ($status == 'sendToConfirm4' && $admin_info['admin_id'] == $import['confirm4'])
                                         ) : ?>
-                                            <a class="btn btn-warning btn-white " data-toggle="modal" data-target="#backToEdit" data-season="<?php echo $season ?>" data-import="<?php echo $import['id'] ?>" data-motevali="<?php echo $adminName[$import['motevali_admin_id']]['name'] . ' ' . $adminName[$import['motevali_admin_id']]['family'] ?>" data-confirmnumber="<?php echo str_replace('sendToConfirm', '', $status) ?>" data-ghalamname="<?php echo $ghalamName[$import['ghalam_id']]['ghalam'] ?>">نیاز به اصلاح</a>
+                                            <a class="btn btn-warning btn-white " data-toggle="modal" data-target="#backToEdit" data-season="<?php echo $season ?>" data-import="<?php echo $import['id'] ?>" data-motevali="<?php echo $adminName[$import['motevali_admin_id']]['name'] . ' ' . $adminName[$import['motevali_admin_id']]['family'] ?>" data-confirmnumber="<?php echo str_replace('sendToConfirm', '', $status) ?>" data-ghalamname="<?php echo $ghalamName[$import['ghalam_id']]['ghalam'] ?>" onclick="return confirm(' پس از ارسال به اصلاح، \nامکان تایید برای باقی قلم ها تا زمانی که تمام اقلام کامل شوند، وجود ندارد.\n آیا مطمئن هستید؟')">نیاز به اصلاح</a>
                                         <?php endif; ?>
 
                                     </td>
@@ -322,7 +344,8 @@
 
                         if (
                             $activeImportButton &&
-                            in_array($admin_info['admin_id'], [$import['import']])
+                            in_array($admin_info['admin_id'], [$import['import']]) &&
+                            isset($_GET['filterAdmin'])
                         ) : ?>
 
                             <input type="submit" class="btn btn-info btn-white btn-large btn-large2" name="temporary" value="ذخیره موقت" />
@@ -334,6 +357,8 @@
                         <?php endif; ?>
 
 
+
+
                         <input type="hidden" name="importsIdSendToConfirm" value="<?php echo implode(',', $importsIdSendToConfirm) ?>">
 
 
@@ -343,8 +368,11 @@
                             in_array($admin_info['admin_id'], [$import['confirm1']])
                         ) : ?>
 
-                            <input type="submit" class="btn btn-success btn-white btn-large btn-large2" name="sendToConfirm2" value="تایید">
+                            <?php if (isset($_GET['filterAdmin'])) : ?>
 
+                                <input type="submit" class="btn btn-success btn-white btn-large btn-large2 sendToConfirm" name="sendToConfirm2" value="تایید" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')">
+
+                            <?php endif; ?>
                         <?php endif; ?>
 
 
@@ -353,9 +381,11 @@
                             $activeSendToConfirm2 == 'sendToConfirm2' && $activeImportButton == false &&
                             in_array($admin_info['admin_id'], [$import['confirm2']])
                         ) : ?>
+                            <?php if (isset($_GET['filterAdmin'])) : ?>
 
-                            <input type="submit" class="btn btn-success btn-white btn-large btn-large2" name="sendToConfirm3" value="ارسال به ارزیاب">
+                                <input type="submit" class="btn btn-success btn-white btn-large btn-large2 sendToConfirm" name="sendToConfirm3" value="ارسال به ارزیاب" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')">
 
+                            <?php endif; ?>
                         <?php endif; ?>
 
                         <?php // دکمه های مربوط به تایید کننده سوم
@@ -363,8 +393,11 @@
                             $activeSendToConfirm3 == 'sendToConfirm3' && $activeImportButton == false &&
                             in_array($admin_info['admin_id'], [$import['confirm3']])
                         ) : ?>
-                            <input type="submit" class="btn btn-success btn-white btn-large btn-large2" name="sendToConfirm4" value="ارسال به مدیریت" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')">
+                            <?php if (isset($_GET['filterAdmin'])) : ?>
 
+                                <input type="submit" class="btn btn-success btn-white btn-large btn-large2 sendToConfirm" name="sendToConfirm4" value="ارسال به مدیریت" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')">
+
+                            <?php endif; ?>
                         <?php endif; ?>
 
                         <?php // دکمه های مربوط به تایید کننده چهارم
@@ -373,8 +406,11 @@
                             in_array($admin_info['admin_id'], [$import['confirm4']])
                         ) : ?>
 
-                            <input type="submit" class="btn btn-success btn-white btn-large btn-large2" name="finish" value="تایید نهایی" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')">
+                            <?php if (isset($_GET['filterAdmin'])) : ?>
 
+                                <input type="submit" class="btn btn-success btn-white btn-large btn-large2 sendToConfirm" name="finish" value="تایید نهایی" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')">
+
+                            <?php endif; ?>
                         <?php endif; ?>
                     </form>
                 </div>
@@ -521,8 +557,9 @@
                 },
                 success: function(result) {
                     modal.modal('hide');
-                    $('a[data-import=' + $('input#import').val() + ']').before('نیازمند اصلاح')
-                    $('a[data-import=' + $('input#import').val() + ']').hide()
+                    $('a[data-import=' + $('input#import').val() + ']').before('بازگشت به اصلاح');
+                    $('a[data-import=' + $('input#import').val() + ']').hide();
+                    $('input.sendToConfirm').hide();
                 }
             });
         });

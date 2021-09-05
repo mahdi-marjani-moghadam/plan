@@ -1043,33 +1043,30 @@ class shakhesController
         and (status6 != 'finish' or status12 = 'finish')
         group by status12,motevali_admin_id
          ";
+
         $res2 = $obj->query($query)->getList();
         $importStatusAll = ($res2['export']['recordsCount'] > 0) ?  $res2['export']['list'] : array();
-        
-        
-        $statusA = array_flip(array('finish','sendToConfirm4','sendToConfirm3','sendToConfirm2','sendToConfirm1','backToEdit','0'));
-        
+
+
+        $statusA = array_flip(array('finish', 'sendToConfirm4', 'sendToConfirm3', 'sendToConfirm2', 'sendToConfirm1', 'backToEdit', '0'));
+
         foreach ($importStatusAll as $k => $v) {
             $importStatus[$v['motevali_admin_id']]['motevali_admin_id'] = $v['motevali_admin_id'];
 
 
             for ($i = 1; $i <= 2; $i++) {
                 $j = $i * 6;
-                
-                if(!isset($importStatus[$v['motevali_admin_id']]['status' . $j])){
-                    $importStatus[$v['motevali_admin_id']]['status' . $j] = $v['status' . $j];
-                }
- 
-                if($statusA[$v['status' . $j]] > $statusA[$importStatus[$v['motevali_admin_id']]['status' . $j]])
-                {
-                    $importStatus[$v['motevali_admin_id']]['status' . $j] = $v['status' . $j];
-                }
-                
 
+                if (!isset($importStatus[$v['motevali_admin_id']]['status' . $j])) {
+                    $importStatus[$v['motevali_admin_id']]['status' . $j] = $v['status' . $j];
+                }
+
+                if ($statusA[$v['status' . $j]] > $statusA[$importStatus[$v['motevali_admin_id']]['status' . $j]]) {
+                    $importStatus[$v['motevali_admin_id']]['status' . $j] = $v['status' . $j];
+                }
             }
-
         }
-        
+
         $this->fileName = 'shakhes.khodezhari.php';
         $this->template(compact('shakhes', 'imports', 'ghalamName', 'adminName', 'filterAdminsSelectbox', 'importStatus'));
 
@@ -1083,17 +1080,25 @@ class shakhesController
         $result = array();
         $post = $_POST;
         include_once ROOT_DIR . 'component/shakhes/model/import.model.php';
-        // include_once ROOT_DIR . 'component/shakhes/model/import_status.model.php';
         $importObj = new import();
-        // $importStatusObj = new importStatus();
 
         if (STEP_FORM1 <= 2) {
             $val = 'value6';
+            $valueImport = 'value6_import';
+            $valueArzyab = 'value6_arzyab';
             $tozihat = 'import_tozihat6';
+            $tozihatConfirm3 = 'confirm3_tozihat6';
+            $tozihatConfirm4 = 'confirm4_tozihat6';
+
             $status = 'status6';
         } elseif (STEP_FORM1 > 2 && STEP_FORM1 <= 4) {
             $val = 'value12';
+            $valueImport = 'value12_import';
+            $valueArzyab = 'value12_arzyab';
             $tozihat = 'import_tozihat12';
+            $tozihatConfirm3 = 'confirm3_tozihat12';
+            $tozihatConfirm4 = 'confirm4_tozihat12';
+
             $status = 'status12';
         }
 
@@ -1101,40 +1106,50 @@ class shakhesController
 
 
         /* ارسال فرم */
-        if (isset($post['temporary'])) {
+        if (isset($post['temporary']) || isset($post['sendToConfirm1'])) {
 
-            // همه قلم ها مقدار دهی میشن
+            //اینجا وارد کننده ها میان
+
+
+            // مقادیر ارسال شده از فرم
             foreach ($post['import'] as $id => $item) {
                 $import = $importObj->find($id);
 
-                $import->$val = $item[$val];
-                $import->$tozihat = $item[$tozihat];
-                $import->year = explode('/', convertDate(date('Y')))[0];
+                $import->$valueImport = $item[$valueImport]; // value*_import  
+                $import->$tozihat = $item[$tozihat]; // import_tozihat*
+
+                if (isset($post['sendToConfirm1'])) {
+
+                    if ($import->confirm1 != 0) {
+                        $import->$status = 'sendToConfirm1';
+                    } elseif ($import->confirm2 != 0) {
+                        $import->$status = 'sendToConfirm2';
+                    } elseif ($import->confirm3 != 0) {
+                        $import->$status = 'sendToConfirm3';
+                    } else {
+                        $import->$status = 'sendToConfirm4';
+                    }
+                }
+
                 $import->save();
             }
 
-            // $allMotevali = implode(',', $allMotevali);
 
             $result['msg'] = 'ثبت موقت انجام شد.';
             $result['type'] = 'warning';
             $messageStack->add_session('message', $result['msg'], $result['type']);
-            redirectPage(RELA_DIR . 'admin/?component=shakhes&action=khodezhari', $result['msg']);
-        } elseif (isset($post['sendToConfirm1'])) {
+            redirectPage(RELA_DIR . 'admin/?component=shakhes&action=khodezhari&filterAdmin=' . $post['filterAdmin'], $result['msg']);
+        } elseif (isset($post['sendToConfirm2']) || isset($post['sendToConfirm3'])) {
+
+            //اینجا تایید کننده های ۱ و ۲ میان
+
+            $post['import'] = $importObj->where('id', 'in', $post['importsIdSendToConfirm'])->get()['export']['list'];
 
 
-            // $post['import'] = $importObj->where('id', 'in', $post['importsIdSendToConfirm'])->get()['export']['list'];
+            foreach ($post['import'] as $id => $import) {
 
 
-            // همه قلم ها مقدار دهی میشن
-            foreach ($post['import'] as $id => $item) {
-                $import = $importObj->find($id);
-
-                $import->$val = $post['import'][$id][$val];
-                $import->$tozihat = $post['import'][$id][$tozihat];
-
-                if ($import->confirm1 != 0) {
-                    $import->$status = 'sendToConfirm1';
-                } elseif ($import->confirm2 != 0) {
+                if ($import->confirm2 != 0 && isset($post['sendToConfirm2'])) {
                     $import->$status = 'sendToConfirm2';
                 } elseif ($import->confirm3 != 0) {
                     $import->$status = 'sendToConfirm3';
@@ -1142,49 +1157,6 @@ class shakhesController
                     $import->$status = 'sendToConfirm4';
                 }
 
-                $import->save();
-            }
-
-
-            $result['msg'] = '.ثبت نهایی انجام شد';
-            $result['type'] = 'success';
-            $messageStack->add_session('message', $result['msg'], $result['type']);
-            redirectPage(RELA_DIR . 'admin/?component=shakhes&action=khodezhari&filterAdmin=' . $post['filterAdmin'] . '#topOfTable', $result['msg']);
-        } elseif (isset($post['backToEdit'])) {
-
-            //تغییر ساختار
-            dd(1);
-
-            // include_once ROOT_DIR . "component/admin/model/admin_status.model.php";
-            // $adminStatus = new adminStatus();
-            // $motevali = implode(',', array_unique($post['motevali']));
-            // $adminStatus = $adminStatus->where('admin_id', 'in', $motevali)->get();
-            // foreach ($adminStatus['export']['list'] as $s) {
-            //     $s->$status = 'backToEdit';
-            //     $s->save();
-            // }
-
-            // $result['msg'] = 'نیاز به اصلاح ارسال شد.';
-            // $result['type'] = 'success';
-            // $messageStack->add_session('message', $result['msg'], $result['type']);
-            // redirectPage(RELA_DIR . 'admin/?component=shakhes&action=khodezhari' . '', $result['msg']);
-        } elseif (isset($post['sendToConfirm2'])) {
-
-
-            $post['import'] = $importObj->where('id', 'in', $post['importsIdSendToConfirm'])->get()['export']['list'];
-
-
-            // همه قلم ها مقدار دهی میشن
-            foreach ($post['import'] as $id => $import) {
-
-
-                if ($import->confirm2 != 0) {
-                    $import->$status = 'sendToConfirm2';
-                } elseif ($import->confirm3 != 0) {
-                    $import->$status = 'sendToConfirm3';
-                } else {
-                    $import->$status = 'sendToConfirm4';
-                }
 
                 $import->save();
             }
@@ -1192,54 +1164,39 @@ class shakhesController
 
 
 
-            $result['msg'] = '.تایید اطلاعات صورت گرفت و برای واحد مربوطه ارسال شد';
-            $result['type'] = 'success';
-            $messageStack->add_session('message', $result['msg'], $result['type']);
-            redirectPage(RELA_DIR . 'admin/?component=shakhes&action=khodezhari&filterAdmin=' . $post['filterAdmin'] . '#topOfTable', $result['msg']);
-        } elseif (isset($post['sendToConfirm3'])) {
-
-
-            $post['import'] = $importObj->where('id', 'in', $post['importsIdSendToConfirm'])->get()['export']['list'];
-
-
-            // همه قلم ها مقدار دهی میشن
-            foreach ($post['import'] as $id => $import) {
-
-
-                if ($import->confirm3 != 0) {
-                    $import->$status = 'sendToConfirm3';
-                } else {
-                    $import->$status = 'sendToConfirm4';
-                }
-                $import->save();
-            }
-
-
-            $result['msg'] = '. ارسال2 صورت گرفت';
+            $result['msg'] = '. ارسال به واحد بالا انجام شد';
             $result['type'] = 'success';
             $messageStack->add_session('message', $result['msg'], $result['type']);
             redirectPage(RELA_DIR . 'admin/?component=shakhes&action=khodezhari&filterAdmin=' . $post['filterAdmin'] . '#topOfTable', $result['msg']);
         } elseif (isset($post['sendToConfirm4'])) {
 
-            // همه قلم ها مقدار دهی میشن
-            $post['import'] = $importObj->where('id', 'in', $post['importsIdSendToConfirm'])->get()['export']['list'];
-
-            foreach ($post['import'] as $id => $import) {
+            //اینجا تایید کننده های ۳ میان
+            foreach ($post['import'] as $id => $item) {
+                $import = $importObj->find($id);
+                
+                $import->$valueArzyab = $item[$valueImport];
+                $import->$tozihatConfirm3 = $item[$tozihat];
+                
                 $import->$status = 'sendToConfirm4';
+                
                 $import->save();
             }
 
-            $result['msg'] = '. ارسال3 صورت گرفت';
+            $result['msg'] = '. ارسال به واحد بالا انجام شد';
             $result['type'] = 'success';
             $messageStack->add_session('message', $result['msg'], $result['type']);
             redirectPage(RELA_DIR . 'admin/?component=shakhes&action=khodezhari&filterAdmin=' . $post['filterAdmin'] . '#topOfTable', $result['msg']);
         } elseif (isset($post['finish'])) {
 
 
-            // همه قلم ها مقدار دهی میشن
-            $post['import'] = $importObj->where('id', 'in', $post['importsIdSendToConfirm'])->get()['export']['list'];
+            // اینجا تایید کننده ۴ میاد
 
-            foreach ($post['import'] as $id => $import) {
+            foreach ($post['import'] as $id => $item) {
+                $import = $importObj->find($id);
+
+                $import->$val = $item[$valueImport];
+                $import->$tozihatConfirm4 = $item[$tozihat];
+
                 $import->$status = 'finish';
                 $import->save();
             }
