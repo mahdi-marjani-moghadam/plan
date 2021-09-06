@@ -364,7 +364,7 @@
 
                         <?php // دکمه های مربوط به تایید کننده اول
                         if (
-                            $activeSendToConfirm1 == 'sendToConfirm1'  && $activeImportButton == false &&
+                            $activeSendToConfirm1   && $activeImportButton == false &&
                             in_array($admin_info['admin_id'], [$import['confirm1']])
                         ) : ?>
 
@@ -378,7 +378,7 @@
 
                         <?php // دکمه های مربوط به تایید کننده دوم
                         if (
-                            $activeSendToConfirm2 == 'sendToConfirm2' && $activeImportButton == false &&
+                            $activeSendToConfirm2  && $activeImportButton == false &&
                             in_array($admin_info['admin_id'], [$import['confirm2']])
                         ) : ?>
                             <?php if (isset($_GET['filterAdmin'])) : ?>
@@ -390,7 +390,7 @@
 
                         <?php // دکمه های مربوط به تایید کننده سوم
                         if (
-                            $activeSendToConfirm3 == 'sendToConfirm3' && $activeImportButton == false &&
+                            $activeSendToConfirm3  && $activeImportButton == false &&
                             in_array($admin_info['admin_id'], [$import['confirm3']])
                         ) : ?>
                             <?php if (isset($_GET['filterAdmin'])) : ?>
@@ -402,7 +402,7 @@
 
                         <?php // دکمه های مربوط به تایید کننده چهارم
                         if (
-                            $activeSendToConfirm4 == 'sendToConfirm4' && $activeImportButton == false &&
+                            $activeSendToConfirm4  && $activeImportButton == false &&
                             in_array($admin_info['admin_id'], [$import['confirm4']])
                         ) : ?>
 
