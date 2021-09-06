@@ -179,6 +179,28 @@
                                     $season = 12;
                                 }
 
+                                if ($admin_info['admin_id'] == $import['import']) {
+                                    $value6 = $import['value6_import'];
+                                    $tozihat6 = $import['import_tozihat6'];
+                                    $value12 = $import['value12_import'];
+                                    $tozihat12 = $import['import_tozihat12'];
+                                } else if (in_array($admin_info['admin_id'], [$import['confirm1'], $import['confirm2'], $import['confirm3']])) {
+                                    $value6 = $import['value6_import'];
+                                    $tozihat6 = $import['import_tozihat6'];
+                                    $value12 = $import['value12_import'];
+                                    $tozihat12 = $import['import_tozihat12'];
+                                } else if ($admin_info['admin_id'] == $import['confirm4']) {
+                                    $value6 = $import['value6_arzyab'];
+                                    $tozihat6 = $import['confirm3_tozihat6'];
+                                    $value12 = $import['value12_arzyab'];
+                                    $tozihat12 = $import['confirm3_tozihat12'];
+                                }
+                                else{
+                                    $value6 = $import['value6'];
+                                    $tozihat6 = $import['tozihat6'];
+                                    $value12 = $import['value12'];
+                                    $tozihat12 = $import['tozihat12'];
+                                }
 
                                 // وقتی یکی از تایید کنندگان میاد
                                 if (
@@ -199,6 +221,7 @@
 
 
                                     <td>
+
                                         <?php // وقتی وارد کننده باشه و هنوز مقداری وارد نکرده باشه
                                         if (
                                             STEP_FORM1 <= 2 &&
@@ -209,14 +232,12 @@
                                                 ($admin_info['admin_id'] == $import['confirm4'] && $status12 == 'sendToConfirm4')) &&
                                             isset($_GET['filterAdmin'])
                                         ) : ?>
-                                            <input name="import[<?php echo $import['id'] ?>][value6_import]" step="0.1" type="text" pattern="[0-9]+([,\.][0-9]+)?" value="<?php echo $import['value6_import'] ?>" autocomplete="off" class="form-control ltr en w-100">
+                                            <input name="import[<?php echo $import['id'] ?>][value6_import]" step="0.1" type="text" pattern="[0-9]+([,\.][0-9]+)?" value="<?php echo $value6 ?>" autocomplete="off" class="form-control ltr en w-100">
 
 
                                         <?php // بعد از ثبت نهایی
                                         else : ?>
-                                            <?php echo $import['value6_import'] ?><br>
-                                            <?php echo $import['value6_arzyab'] ?><br>
-                                            <?php echo $import['value6'] ?>
+                                            <?php echo $value6 ?>
                                         <?php endif; ?>
                                     </td>
                                     <td>
@@ -231,7 +252,7 @@
                                             isset($_GET['filterAdmin'])
                                         ) : ?>
 
-                                            <input name="import[<?php echo $import['id'] ?>][import_tozihat6]" value="<?php echo $import['import_tozihat6'] ?>" autocomplete="off" class="form-control">
+                                            <input name="import[<?php echo $import['id'] ?>][import_tozihat6]" value="<?php echo $tozihat6 ?>" autocomplete="off" class="form-control">
                                             <br><?php echo $import['confirm1_tozihat6'] ?>
                                             <br><?php echo $import['confirm2_tozihat6'] ?>
                                             <br><?php echo $import['confirm3_tozihat6'] ?>
@@ -262,11 +283,9 @@
 
                                             isset($_GET['filterAdmin'])
                                         ) : ?>
-                                            <input name="import[<?php echo $import['id'] ?>][value12_import]" step="0.1" type="text" pattern="[0-9]+([,\.][0-9]+)?" value="<?php echo $import['value12_import'] ?>" autocomplete="off" class="form-control en ltr w-100">
+                                            <input name="import[<?php echo $import['id'] ?>][value12_import]" step="0.1" type="text" pattern="[0-9]+([,\.][0-9]+)?" value="<?php echo $value12 ?>" autocomplete="off" class="form-control en ltr w-100">
                                         <?php else : ?>
-                                            <?php echo $import['value12_import'] ?><br>
-                                            <?php echo $import['value12_arzyab'] ?><br>
-                                            <?php echo $import['value12'] ?>
+                                            <?php echo $value12 ?>
                                         <?php endif; ?>
                                     </td>
                                     <td>
@@ -280,7 +299,7 @@
                                                 ($admin_info['admin_id'] == $import['confirm4'] && $status12 == 'sendToConfirm4')) &&
                                             isset($_GET['filterAdmin'])
                                         ) : ?>
-                                            <input name="import[<?php echo $import['id'] ?>][import_tozihat12]" value="<?php echo $import['import_tozihat12'] ?>" autocomplete="off" class="form-control">
+                                            <input name="import[<?php echo $import['id'] ?>][import_tozihat12]" value="<?php echo $tozihat12 ?>" autocomplete="off" class="form-control">
                                             <br><?php echo $import['confirm1_tozihat12'] ?>
                                             <br><?php echo $import['confirm2_tozihat12'] ?>
                                             <br><?php echo $import['confirm3_tozihat12'] ?>
