@@ -1116,6 +1116,7 @@ class shakhesController
                 $import = $importObj->find($id);
 
                 $import->$valueImport = $item[$valueImport]; // value*_import  
+                $import->$valueArzyab = $item[$valueImport]; // value*_import  
                 $import->$tozihat = $item[$tozihat]; // import_tozihat*
 
                 if (isset($post['sendToConfirm1'])) {
