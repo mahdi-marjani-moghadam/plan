@@ -180,22 +180,25 @@
                                 }
 
                                 if ($admin_info['admin_id'] == $import['import']) {
+
                                     $value6 = $import['value6_import'];
                                     $tozihat6 = $import['import_tozihat6'];
                                     $value12 = $import['value12_import'];
                                     $tozihat12 = $import['import_tozihat12'];
                                 } else if (in_array($admin_info['admin_id'], [$import['confirm1'], $import['confirm2'], $import['confirm3']])) {
+
                                     $value6 = $import['value6_import'];
                                     $tozihat6 = $import['import_tozihat6'];
                                     $value12 = $import['value12_import'];
                                     $tozihat12 = $import['import_tozihat12'];
                                 } else if ($admin_info['admin_id'] == $import['confirm4']) {
+
                                     $value6 = $import['value6_arzyab'];
                                     $tozihat6 = $import['confirm3_tozihat6'];
                                     $value12 = $import['value12_arzyab'];
                                     $tozihat12 = $import['confirm3_tozihat12'];
-                                }
-                                else{
+                                } else {
+  
                                     $value6 = $import['value6'];
                                     $tozihat6 = $import['tozihat6'];
                                     $value12 = $import['value12'];
@@ -413,6 +416,7 @@
                             in_array($admin_info['admin_id'], [$import['confirm3']])
                         ) : ?>
                             <?php if (isset($_GET['filterAdmin'])) : ?>
+                                <input type="submit" class="btn btn-info btn-white btn-large btn-large2" name="temporary" value="ذخیره موقت" />
 
                                 <input type="submit" class="btn btn-success btn-white btn-large btn-large2 sendToConfirm" name="sendToConfirm4" value="ارسال به مدیریت" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')">
 
@@ -426,6 +430,8 @@
                         ) : ?>
 
                             <?php if (isset($_GET['filterAdmin'])) : ?>
+                                <input type="submit" class="btn btn-info btn-white btn-large btn-large2" name="temporary" value="ذخیره موقت" />
+
 
                                 <input type="submit" class="btn btn-success btn-white btn-large btn-large2 sendToConfirm" name="finish" value="تایید نهایی" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')">
 
