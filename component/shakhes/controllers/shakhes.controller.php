@@ -184,6 +184,7 @@ class shakhesController
         $ghalamsNext = $this->getGhalam($groups, $year[1], $season);
         $ghalamsPrev = $this->getGhalam($groups, $year[0], $season);
 
+                //   dd($ghalamsNext);
         //           dd($ghalamsNext[102001]['admins'][1102]);
         //           dd($ghalamsPrev[102001]['admins'][1102]);
 
@@ -831,11 +832,20 @@ class shakhesController
 
     public function shakhesDelete($post)
     {
+        global $messageStack;
         include ROOT_DIR . "component/shakhes/model/shakhes.model.php";
 
-        $shakhes = shakhes::find($post['id']);
-
-        dd($shakhes);
+        $shakhes = shakhes::getBy_shakhes_id($post['id'])->first();
+        // dd($shakhes);
+        if(is_object($shakhes)){
+            $shakhes->delete();
+        }
+        
+        // dd($shakhes );  
+        $result['msg'] = 'با موفقیت انجام شد.';
+        $messageStack->add_session('message', $result['msg'], 'success');
+        redirectPage(RELA_DIR . 'admin/page/1/?component=shakhes&action=setting', $result['msg']);
+        
     }
 
     public function settingAdd($post)
