@@ -184,6 +184,7 @@ class shakhesController
         $ghalamsNext = $this->getGhalam($groups, $year[1], $season);
         $ghalamsPrev = $this->getGhalam($groups, $year[0], $season);
 
+        //   dd($ghalamsNext);
         //           dd($ghalamsNext[102001]['admins'][1102]);
         //           dd($ghalamsPrev[102001]['admins'][1102]);
 
@@ -831,11 +832,19 @@ class shakhesController
 
     public function shakhesDelete($post)
     {
+        global $messageStack;
         include ROOT_DIR . "component/shakhes/model/shakhes.model.php";
 
-        $shakhes = shakhes::find($post['id']);
+        $shakhes = shakhes::getBy_shakhes_id($post['id'])->first();
+        // dd($shakhes);
+        if (is_object($shakhes)) {
+            $shakhes->delete();
+        }
 
-        dd($shakhes);
+        // dd($shakhes );  
+        $result['msg'] = 'با موفقیت انجام شد.';
+        $messageStack->add_session('message', $result['msg'], 'success');
+        redirectPage(RELA_DIR . 'admin/page/1/?component=shakhes&action=setting', $result['msg']);
     }
 
     public function settingAdd($post)
@@ -1174,12 +1183,12 @@ class shakhesController
             //اینجا تایید کننده های ۳ میان
             foreach ($post['import'] as $id => $item) {
                 $import = $importObj->find($id);
-                
+
                 $import->$valueArzyab = $item[$valueImport];
                 $import->$tozihatConfirm3 = $item[$tozihat];
-                
+
                 $import->$status = 'sendToConfirm4';
-                
+
                 $import->save();
             }
 
@@ -1188,7 +1197,6 @@ class shakhesController
             $messageStack->add_session('message', $result['msg'], $result['type']);
             redirectPage(RELA_DIR . 'admin/?component=shakhes&action=khodezhari&filterAdmin=' . $post['filterAdmin'] . '#topOfTable', $result['msg']);
         } elseif (isset($post['finish'])) {
-
 
             // اینجا تایید کننده ۴ میاد
 
@@ -1199,14 +1207,63 @@ class shakhesController
                 $import->$tozihatConfirm4 = $item[$tozihat];
 
                 $import->$status = 'finish';
+                if ($import->motevalis == null) $import->motevalis = null;
                 $import->save();
             }
+
+            // متولیز
+            $this->updateMotevalis();
 
             $result['msg'] = '. تایید نهایی';
             $result['type'] = 'success';
             $messageStack->add_session('message', $result['msg'], $result['type']);
             redirectPage(RELA_DIR . 'admin/?component=shakhes&action=khodezhari&filterAdmin=' . $post['filterAdmin'] . '#topOfTable', $result['msg']);
         }
+    }
+    private function updateMotevalis()
+    {
+        include_once ROOT_DIR . 'component/shakhes/model/import.model.php';
+        $importObj = new import();
+        if (STEP_FORM1 <= 2) {
+            $value = 'value6';
+            $status = 'status6';
+        } elseif (STEP_FORM1 > 2 && STEP_FORM1 <= 4) {
+            $value = 'value12';
+            $status = 'status12';
+        }
+
+        // رکورد هایی که متولیز دارند
+        $sql = "select * from sh_import where (motevalis is not null and motevalis <> '') and year = " . KHODEZHARI_YEAR . "";
+        $imports = $importObj->query($sql)->get();
+        
+
+        // وقتی متولیز نداشته باشیم
+        if ($imports['result'] == -1) return true;
+
+
+        foreach ($imports['export']['list'] as $import) {
+            $ghalamId = $import->ghalam_id;
+            $motevalis = explode(',', $import->motevalis);
+            $sum = 0;
+            $child = array();
+            foreach ($motevalis as $v) {
+
+                $sql = "select * from sh_import where motevali_admin_id = " . $v . " and ghalam_id = " . $ghalamId . "  
+                and (motevalis is null or motevalis = '') and year = " . KHODEZHARI_YEAR . ""; 
+                $child = $importObj->query($sql)->get();
+
+                //نباید رکورد بیشتر از یکی باشه
+                if ($child['export']['recordsCount'] > 1 || $child['export']['recordsCount'] == 0) dd('duplicate or not exist import record (motevali:' . $v . ' ghalam:' . $ghalamId . ' year:' . KHODEZHARI_YEAR . ')');
+
+                $sum += $child['export']['list'][0]->$value;
+                
+            }
+
+            $import->$value = $sum;
+            $import->$status = 'finish';
+            $import->save();
+        }
+        // dd($imports);
     }
 
     public function backToEdit()
