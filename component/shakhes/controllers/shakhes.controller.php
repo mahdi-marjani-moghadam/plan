@@ -262,8 +262,6 @@ class shakhesController
 
         if (isset($_GET['qq'])) {
 
-
-
             $admin_id = '';
             $parent_id = trim($_GET['qq'], ',');
             $admin2 = $admin;
@@ -273,8 +271,8 @@ class shakhesController
             foreach ($adminsinfo as $admininfo) {
                 $admin_id    .= $admininfo['admin_id'] . ',';
             }
-            $admin_id = trim($admin_id, ',') . ',' . $parent_id;
-
+            
+            $admin_id =  100 . ',' .trim($admin_id, ',') . ',' . $parent_id ;
             $admin->andWhere('admin.admin_id', 'in', $admin_id);
         }
 
