@@ -292,7 +292,7 @@
                                     <td class="text-center"><?php echo $sh['kalan_no'] ?></td>
                                     <td><?php echo $sh['shakhes'] ?></td>
                                     <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                        <td style="direction: ltr;">
+                                        <td>
                                             <table class="fixed">
                                                 <tr class="green">
                                                     <td colspan="2"> عملکرد سال</td>
@@ -302,16 +302,16 @@
                                                     <td>99</td>
                                                 </tr>
                                                 <tr class="gray">
-                                                    <td><?php echo $reports[$shakhes_id][$head_admin_id]['amalkardPrev']['value_import']  ?></td>
-                                                    <td><?php echo $reports[$shakhes_id][$head_admin_id]['amalkardNext']['value_import'] ?></td>
+                                                    <td style="direction: ltr;"><?php echo $reports[$shakhes_id][$head_admin_id]['amalkardPrev']['value_import']  ?></td>
+                                                    <td style="direction: ltr;"><?php echo $reports[$shakhes_id][$head_admin_id]['amalkardNext']['value_import'] ?></td>
                                                 </tr>
                                                 <tr class="green">
                                                     <td>نرخ رشد</td>
                                                     <td>درصد تحقق</td>
                                                 </tr>
                                                 <tr class="gray">
-                                                    <td><?php echo $reports[$shakhes_id][$head_admin_id]['nerkh']['value_import'] ?> </td>
-                                                    <td><?php echo $reports[$shakhes_id][$head_admin_id]['darsad']['value_import'] ?></td>
+                                                    <td style="direction: ltr;"><?php echo $reports[$shakhes_id][$head_admin_id]['nerkh']['value_import'] ?> </td>
+                                                    <td style="direction: ltr;"><?php echo $reports[$shakhes_id][$head_admin_id]['darsad']['value_import'] ?></td>
                                                 </tr>
 
 
@@ -320,7 +320,7 @@
                                         </td>
                                     <?php endforeach; ?>
                                     <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                        <td  style="direction: ltr;">
+                                        <td >
                                             <table class="fixed">
                                                 <tr class="green">
                                                     <td colspan="2"> عملکرد سال</td>
@@ -330,16 +330,16 @@
                                                     <td>99</td>
                                                 </tr>
                                                 <tr class="gray">
-                                                    <td><?php echo $reports[$shakhes_id][$head_admin_id]['amalkardPrev']['value']  ?></td>
-                                                    <td><?php echo $reports[$shakhes_id][$head_admin_id]['amalkardNext']['value'] ?></td>
+                                                    <td style="direction: ltr;"><?php echo $reports[$shakhes_id][$head_admin_id]['amalkardPrev']['value']  ?></td>
+                                                    <td style="direction: ltr;"><?php echo $reports[$shakhes_id][$head_admin_id]['amalkardNext']['value'] ?></td>
                                                 </tr>
                                                 <tr class="green">
                                                     <td>نرخ رشد</td>
                                                     <td>درصد تحقق</td>
                                                 </tr>
                                                 <tr class="gray">
-                                                    <td><?php echo $reports[$shakhes_id][$head_admin_id]['nerkh']['value'] ?> </td>
-                                                    <td><?php echo $reports[$shakhes_id][$head_admin_id]['darsad']['value'] ?></td>
+                                                    <td style="direction: ltr;"><?php echo $reports[$shakhes_id][$head_admin_id]['nerkh']['value'] ?> </td>
+                                                    <td style="direction: ltr;"><?php echo $reports[$shakhes_id][$head_admin_id]['darsad']['value'] ?></td>
                                                 </tr>
 
 
@@ -433,7 +433,7 @@
                                         $amalkardNextVahed += $amalkardNext;
 
                                         ?>
-                                        <td style="direction: ltr;" width="<?php echo 300 / count($groups) ?>">
+                                        <td width="<?php echo 300 / count($groups) ?>">
                                             <table class="fixed">
 
                                                 <tr class="green">
@@ -442,8 +442,8 @@
                                                 </tr>
                                                 <tr class="gray">
                                                 <tr class="gray">
-                                                    <td><?php echo ($head_admin_info['parent_id'] != 1) ? $amalkardPrev : $amalkardPrevVahed  ?></td>
-                                                    <td><?php echo ($head_admin_info['parent_id'] != 1) ? $amalkardNext : $amalkardNextVahed  ?></td>
+                                                    <td style="direction: ltr;"><?php echo ($head_admin_info['parent_id'] != 1) ? $amalkardPrev : $amalkardPrevVahed  ?></td>
+                                                    <td style="direction: ltr;"><?php echo ($head_admin_info['parent_id'] != 1) ? $amalkardNext : $amalkardNextVahed  ?></td>
                                                 </tr>
                                             </table>
 
@@ -462,7 +462,7 @@
                                         $amalkardPrevVahed += $amalkardPrev;
                                         $amalkardNextVahed += $amalkardNext;
                                         ?>
-                                        <td  style="direction: ltr;" width="<?php echo 300 / count($groups) ?>">
+                                        <td   width="<?php echo 300 / count($groups) ?>">
                                             <table class="fixed">
 
                                                 <tr class="green">
@@ -470,8 +470,8 @@
                                                     <td>99</td>
                                                 </tr>
                                                 <tr class="gray">
-                                                    <td><?php echo ($head_admin_info['parent_id'] != 1) ? $amalkardPrev : $amalkardPrevVahed  ?></td>
-                                                    <td><?php echo ($head_admin_info['parent_id'] != 1) ? $amalkardNext : $amalkardNextVahed  ?></td>
+                                                    <td style="direction: ltr;"><?php echo ($head_admin_info['parent_id'] != 1) ? $amalkardPrev : $amalkardPrevVahed  ?></td>
+                                                    <td style="direction: ltr;"><?php echo ($head_admin_info['parent_id'] != 1) ? $amalkardNext : $amalkardNextVahed  ?></td>
                                                 </tr>
 
                                             </table>
