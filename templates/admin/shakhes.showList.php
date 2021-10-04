@@ -192,37 +192,37 @@
                 <div class='table-cont2' id="table2">
                     <table class="table  table-bordered ">
                         <thead>
-                        <tr style="text-align: center">
-                            <td style="background-color: #5f9846; color:#fff; " rowspan="2">هدف</td>
-                            <td width="300" style="background-color: #45639b; color:#fff; " colspan="<?php echo count($groups) ?>">خوداظهاری</td>
-                            <td style="background-color: #654c97; color:#fff; " colspan="<?php echo count($groups) ?>">نهایی(تائیدشده)</td>
-                        </tr>
-                        <tr style="text-align: center">
-                            <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                <td><?php echo $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
-                            <?php endforeach; ?>
-                            <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                <td><?php echo $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
-                            <?php endforeach; ?>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php foreach ($kalans as $kalan_no => $kalan) : ?>
-                            <tr>
-                                <td><?php echo $kalan_no ?></td>
-
+                            <tr style="text-align: center">
+                                <td style="background-color: #5f9846; color:#fff; " rowspan="2">هدف</td>
+                                <td width="300" style="background-color: #45639b; color:#fff; " colspan="<?php echo count($groups) ?>">خوداظهاری</td>
+                                <td style="background-color: #654c97; color:#fff; " colspan="<?php echo count($groups) ?>">نهایی(تائیدشده)</td>
+                            </tr>
+                            <tr style="text-align: center">
                                 <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                    <td>
-                                        <?php echo $kalan[$head_admin_id]['darsad']['value_import'] ?>
-                                    </td>
+                                    <td><?php echo $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
                                 <?php endforeach; ?>
                                 <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                    <td>
-                                        <?php echo $kalan[$head_admin_id]['darsad']['value'] ?>
-                                    </td>
+                                    <td><?php echo $head_admin_info['name'] . ' ' . $head_admin_info['family'] ?></td>
                                 <?php endforeach; ?>
                             </tr>
-                        <?php endforeach; ?>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($kalans as $kalan_no => $kalan) : ?>
+                                <tr>
+                                    <td><?php echo $kalan_no ?></td>
+
+                                    <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
+                                        <td>
+                                            <?php echo $kalan[$head_admin_id]['darsad']['value_import'] ?>
+                                        </td>
+                                    <?php endforeach; ?>
+                                    <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
+                                        <td>
+                                            <?php echo $kalan[$head_admin_id]['darsad']['value'] ?>
+                                        </td>
+                                    <?php endforeach; ?>
+                                </tr>
+                            <?php endforeach; ?>
 
 
                         </tbody>
@@ -306,7 +306,7 @@
                                                     <td><?php echo $reports[$shakhes_id][$head_admin_id]['amalkardNext']['value_import'] ?></td>
                                                 </tr>
                                                 <tr class="green">
-                                                    <td >نرخ رشد</td>
+                                                    <td>نرخ رشد</td>
                                                     <td>درصد تحقق</td>
                                                 </tr>
                                                 <tr class="gray">
@@ -320,7 +320,7 @@
                                         </td>
                                     <?php endforeach; ?>
                                     <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                        <td>
+                                        <td  style="direction: ltr;">
                                             <table class="fixed">
                                                 <tr class="green">
                                                     <td colspan="2"> عملکرد سال</td>
@@ -334,7 +334,7 @@
                                                     <td><?php echo $reports[$shakhes_id][$head_admin_id]['amalkardNext']['value'] ?></td>
                                                 </tr>
                                                 <tr class="green">
-                                                    <td >نرخ رشد</td>
+                                                    <td>نرخ رشد</td>
                                                     <td>درصد تحقق</td>
                                                 </tr>
                                                 <tr class="gray">
@@ -431,7 +431,7 @@
                                         // dd($head_admin_id);
                                         $amalkardPrevVahed += $amalkardPrev;
                                         $amalkardNextVahed += $amalkardNext;
-                                        
+
                                         ?>
                                         <td style="direction: ltr;" width="<?php echo 300 / count($groups) ?>">
                                             <table class="fixed">
@@ -448,9 +448,9 @@
                                             </table>
 
                                         </td>
-                                        
-                                        <?php 
-                                    if($head_admin_info['parent_id'] == 1) $amalkardPrevVahed = $amalkardNextVahed = 0;
+
+                                    <?php
+                                        if ($head_admin_info['parent_id'] == 1) $amalkardPrevVahed = $amalkardNextVahed = 0;
                                     endforeach; ?>
 
                                     <?php
@@ -462,7 +462,7 @@
                                         $amalkardPrevVahed += $amalkardPrev;
                                         $amalkardNextVahed += $amalkardNext;
                                         ?>
-                                        <td width="<?php echo 300 / count($groups) ?>">
+                                        <td  style="direction: ltr;" width="<?php echo 300 / count($groups) ?>">
                                             <table class="fixed">
 
                                                 <tr class="green">
@@ -476,7 +476,10 @@
 
                                             </table>
                                         </td>
-                                    <?php endforeach; ?>
+
+                                    <?php
+                                        if ($head_admin_info['parent_id'] == 1) $amalkardPrevVahed = $amalkardNextVahed = 0;
+                                    endforeach; ?>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -493,10 +496,23 @@
     .fixed {
         text-align: center;
     }
-    .fixed td{padding: 4px;}
-    /*table.fixed tr:nth-child(2n+1){background: #f4f4f4;}*/
-    table.fixed td:first-child{background: none !important;}
-    table.fixed .gray{ background-color: #f4f4f4 !important;direction: ltr}
-    table.fixed .green td{ background-color: #d3e6d4 !important;color: #000 !important}
 
+    .fixed td {
+        padding: 4px;
+    }
+
+    /*table.fixed tr:nth-child(2n+1){background: #f4f4f4;}*/
+    table.fixed td:first-child {
+        background: none !important;
+    }
+
+    table.fixed .gray {
+        background-color: #f4f4f4 !important;
+        direction: ltr
+    }
+
+    table.fixed .green td {
+        background-color: #d3e6d4 !important;
+        color: #000 !important
+    }
 </style>
