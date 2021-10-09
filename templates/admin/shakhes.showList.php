@@ -213,12 +213,12 @@
 
                                     <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
                                         <td>
-                                            <?php echo $kalan[$head_admin_id]['darsad']['value_import'] ?>
+                                            <?php echo number_format($kalan[$head_admin_id]['darsad']['value_import'],2) ?>
                                         </td>
                                     <?php endforeach; ?>
                                     <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
                                         <td>
-                                            <?php echo $kalan[$head_admin_id]['darsad']['value'] ?>
+                                            <?php echo number_format($kalan[$head_admin_id]['darsad']['value'],2) ?>
                                         </td>
                                     <?php endforeach; ?>
                                 </tr>
