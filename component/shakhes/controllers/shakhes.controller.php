@@ -188,11 +188,13 @@ class shakhesController
         //           dd($ghalamsNext[102001]['admins'][1102]);
         //           dd($ghalamsPrev[102001]['admins'][1102]);
 
+
+
+
         // سوم برای بدست آوردن شاخص ها از جدول ghalam_shakhes , shakhes
         $shakhesNext = $this->getShakhesByGhalam($ghalamsNext);
         $shakhesPrev = $this->getShakhesByGhalam($ghalamsPrev);
 
-        //         dd($shakhesNext);
 
         $reports = $this->getReports($shakhesNext, $ghalamsNext, $ghalamsPrev, $groups);
 
