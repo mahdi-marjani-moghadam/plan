@@ -213,12 +213,12 @@
 
                                     <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
                                         <td>
-                                            <?php echo number_format($kalan[$head_admin_id]['darsad']['value_import'],2) ?>
+                                            <?php echo round($kalan[$head_admin_id]['darsad']['value_import'],2) ?>
                                         </td>
                                     <?php endforeach; ?>
                                     <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
                                         <td>
-                                            <?php echo number_format($kalan[$head_admin_id]['darsad']['value'],2) ?>
+                                            <?php echo round($kalan[$head_admin_id]['darsad']['value'],2) ?>
                                         </td>
                                     <?php endforeach; ?>
                                 </tr>
@@ -302,16 +302,16 @@
                                                     <td>99</td>
                                                 </tr>
                                                 <tr class="gray">
-                                                    <td style="direction: ltr;"><?php echo number_format($reports[$shakhes_id][$head_admin_id]['amalkardPrev']['value_import'],2)  ?></td>
-                                                    <td style="direction: ltr;"><?php echo number_format($reports[$shakhes_id][$head_admin_id]['amalkardNext']['value_import'],2) ?></td>
+                                                    <td style="direction: ltr;"><?php echo round($reports[$shakhes_id][$head_admin_id]['amalkardPrev']['value_import'],2)  ?></td>
+                                                    <td style="direction: ltr;"><?php echo round($reports[$shakhes_id][$head_admin_id]['amalkardNext']['value_import'],2) ?></td>
                                                 </tr>
                                                 <tr class="green">
                                                     <td>نرخ رشد</td>
                                                     <td>درصد تحقق</td>
                                                 </tr>
                                                 <tr class="gray">
-                                                    <td style="direction: ltr;"><?php echo number_format($reports[$shakhes_id][$head_admin_id]['nerkh']['value_import'],2) ?> </td>
-                                                    <td style="direction: ltr;"><?php echo number_format($reports[$shakhes_id][$head_admin_id]['darsad']['value_import'],2) ?></td>
+                                                    <td style="direction: ltr;"><?php echo round($reports[$shakhes_id][$head_admin_id]['nerkh']['value_import'],2) ?> </td>
+                                                    <td style="direction: ltr;"><?php echo round($reports[$shakhes_id][$head_admin_id]['darsad']['value_import'],2) ?></td>
                                                 </tr>
 
 
@@ -330,16 +330,16 @@
                                                     <td>99</td>
                                                 </tr>
                                                 <tr class="gray">
-                                                    <td style="direction: ltr;"><?php echo number_format($reports[$shakhes_id][$head_admin_id]['amalkardPrev']['value'],2)  ?></td>
-                                                    <td style="direction: ltr;"><?php echo number_format($reports[$shakhes_id][$head_admin_id]['amalkardNext']['value'],2) ?></td>
+                                                    <td style="direction: ltr;"><?php echo round($reports[$shakhes_id][$head_admin_id]['amalkardPrev']['value'],2)  ?></td>
+                                                    <td style="direction: ltr;"><?php echo round($reports[$shakhes_id][$head_admin_id]['amalkardNext']['value'],2) ?></td>
                                                 </tr>
                                                 <tr class="green">
                                                     <td>نرخ رشد</td>
                                                     <td>درصد تحقق</td>
                                                 </tr>
                                                 <tr class="gray">
-                                                    <td style="direction: ltr;"><?php echo number_format($reports[$shakhes_id][$head_admin_id]['nerkh']['value'],2) ?> </td>
-                                                    <td style="direction: ltr;"><?php echo number_format($reports[$shakhes_id][$head_admin_id]['darsad']['value'],2) ?></td>
+                                                    <td style="direction: ltr;"><?php echo round($reports[$shakhes_id][$head_admin_id]['nerkh']['value'],2) ?> </td>
+                                                    <td style="direction: ltr;"><?php echo round($reports[$shakhes_id][$head_admin_id]['darsad']['value'],2) ?></td>
                                                 </tr>
 
 
