@@ -273,8 +273,8 @@ class shakhesController
             foreach ($adminsinfo as $admininfo) {
                 $admin_id    .= $admininfo['admin_id'] . ',';
             }
-            
-            $admin_id =  100 . ',' .trim($admin_id, ',') . ',' . $parent_id ;
+
+            $admin_id =  100 . ',' . trim($admin_id, ',') . ',' . $parent_id;
             $admin->andWhere('admin.admin_id', 'in', $admin_id);
         }
 
@@ -375,7 +375,7 @@ class shakhesController
 
     private function getAllShakhesFunctionsKeyByShakhesId($requirement, $shakhes)
     {
-        // dd($requirement);
+        dd(1);
         foreach ($requirement as $shakhes_id => $sh) {
 
             foreach ($sh as $type => $ghalamAdmin) {
@@ -457,31 +457,48 @@ class shakhesController
 
             $function = $shakhes['function'];
 
-            $amalkardNext = $this->calcuteFunction($function, $ghN);
-            // dd($amalkardNext);
-            $amalkardPrev = $this->calcuteFunction($function, $ghP);
+            $amalkardNext = $this->calcuteFunction($function, $ghN); // محاسبه عملکرد ۹۹
+            $amalkardPrev = $this->calcuteFunction($function, $ghP); // محاسبه عملکرد ۹۸
+
             $data[$shakhes_id] = $EupNext = $EupPrev = $EdownNext = $EdownPrev =  array();
-            // dd($admins);
+
             foreach ($admins as $motevali => $admin) {
 
                 // اول واحد ها پر میشن بعد کل واحد 
                 //برای اینکه دچار مشکل نشه وقتی به کل واحد میرسیم ازش با شرط زیر رد میشیم
 
+                // اعلامی = $amalkardNext[$motevali]['value_import'] 
+                // نهایی = $amalkardNext[$motevali]['value'] 
+                // عملکرد =  $amalkardNext
+                // نرخ رشد = ( ($amalkardNext / $amalkardPrev) - 1 ) * 100
+
                 if ($admin['parent_id'] != 1) {
-                    //براي واحد ها
-                    //نهايي
-                    $nerkh[$motevali]['value'] = (($amalkardNext[$motevali]['value'] / $amalkardPrev[$motevali]['value']) - 1) * 100;
-                    $darsad[$motevali]['value'] = ($amalkardNext[$motevali]['value'] / $this->standard($shakhes_id, $motevali)) * 100;
+                    //--------------//
+                    //براي واحد ها 
+                    //--------------//
 
-                    $data[$shakhes_id][$motevali]['amalkardNext']['value'] = $amalkardNext[$motevali]['value'];
-                    $data[$shakhes_id][$motevali]['amalkardPrev']['value'] = $amalkardPrev[$motevali]['value'];
-                    $data[$shakhes_id][$motevali]['nerkh']['value'] = $nerkh[$motevali]['value'];
-                    $data[$shakhes_id][$motevali]['darsad']['value'] = $darsad[$motevali]['value'];
+                    /////////
+                    //نهايي//
+                    /////////
+                    $nerkh[$motevali]['value'] = (($amalkardNext[$motevali]['value'] / $amalkardPrev[$motevali]['value']) - 1) * 100; // نرخ رشد واحدها
+                    $darsad[$motevali]['value'] = ($amalkardNext[$motevali]['value'] / $this->standard($shakhes_id, $motevali)) * 100; // درصد تحقق واحدها
 
-                    $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value'] += $data[$shakhes_id][$motevali]['darsad']['value'] * $this->shakhesVazn($shakhes_id, $motevali);
-                    $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value_import'] += $data[$shakhes_id][$motevali]['darsad']['value_import'] * $this->shakhesVazn($shakhes_id, $motevali);
+                    // برای جدول شاخص
+                    $data[$shakhes_id][$motevali]['amalkardNext']['value'] = $amalkardNext[$motevali]['value']; // عملکرد ۹۹ واحدها
+                    $data[$shakhes_id][$motevali]['amalkardPrev']['value'] = $amalkardPrev[$motevali]['value']; // عملکرد ۹۸ واحدها
+                    $data[$shakhes_id][$motevali]['nerkh']['value'] = $nerkh[$motevali]['value'];  // نرخ رشد واحدها
+                    $data[$shakhes_id][$motevali]['darsad']['value'] = $darsad[$motevali]['value']; // درصد تحقق واحدها
 
-                    // اعلامي
+                    // برای جدول در سطح کلان
+                    $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value'] +=
+                        $data[$shakhes_id][$motevali]['darsad']['value'] * $this->shakhesVazn($shakhes_id, $motevali); // نهایی
+
+                    $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value_import'] +=
+                        $data[$shakhes_id][$motevali]['darsad']['value_import'] * $this->shakhesVazn($shakhes_id, $motevali); // اعلامی
+
+                    ///////////
+                    // اعلامي //
+                    ///////////
                     $nerkh[$motevali]['value_import'] = (($amalkardNext[$motevali]['value_import'] / $amalkardPrev[$motevali]['value_import']) - 1) * 100;
                     $darsad[$motevali]['value_import'] = ($amalkardNext[$motevali]['value_import'] / $this->standard($shakhes_id, $motevali)) * 100;
 
@@ -491,8 +508,9 @@ class shakhesController
                     $data[$shakhes_id][$motevali]['darsad']['value_import'] = $darsad[$motevali]['value_import'];
 
 
-
-                    //براي  کل واحد
+                    //--------------//
+                    // براي  کل واحد
+                    //--------------//
                     // Ez
 
                     for ($i = 1; $i <= 2; $i++) {
@@ -531,6 +549,8 @@ class shakhesController
                         //     echo $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]];
                         //     echo '<br>';
                         // }
+
+                        // برای جدول در سطح کلان
                         $data['kalan'][$shakhes['kalan_no']][$admin['parent_id']]['darsad'][$tmp[$i]] += $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]] * $this->shakhesVazn($shakhes_id, $admin['parent_id']);
                     }
                 } else {
@@ -1235,7 +1255,7 @@ class shakhesController
         // رکورد هایی که متولیز دارند
         $sql = "select * from sh_import where (motevalis is not null and motevalis <> '') and year = " . KHODEZHARI_YEAR . "";
         $imports = $importObj->query($sql)->get();
-        
+
 
         // وقتی متولیز نداشته باشیم
         if ($imports['result'] == -1) return true;
@@ -1249,14 +1269,13 @@ class shakhesController
             foreach ($motevalis as $v) {
 
                 $sql = "select * from sh_import where motevali_admin_id = " . $v . " and ghalam_id = " . $ghalamId . "  
-                and (motevalis is null or motevalis = '') and year = " . KHODEZHARI_YEAR . ""; 
+                and (motevalis is null or motevalis = '') and year = " . KHODEZHARI_YEAR . "";
                 $child = $importObj->query($sql)->get();
 
                 //نباید رکورد بیشتر از یکی باشه
                 if ($child['export']['recordsCount'] > 1 || $child['export']['recordsCount'] == 0) dd('duplicate or not exist import record (motevali:' . $v . ' ghalam:' . $ghalamId . ' year:' . KHODEZHARI_YEAR . ')');
 
                 $sum += $child['export']['list'][0]->$value;
-                
             }
 
             $import->$value = $sum;
