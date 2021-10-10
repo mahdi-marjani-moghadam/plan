@@ -460,6 +460,8 @@ class shakhesController
             $amalkardNext = $this->calcuteFunction($function, $ghN); // محاسبه عملکرد ۹۹
             $amalkardPrev = $this->calcuteFunction($function, $ghP); // محاسبه عملکرد ۹۸
 
+//            dd($amalkardNext);
+
             $data[$shakhes_id] = $EupNext = $EupPrev = $EdownNext = $EdownPrev =  array();
 
             foreach ($admins as $motevali => $admin) {
@@ -484,7 +486,7 @@ class shakhesController
                     ///////////////
                     ///////////////
                     $nerkh[$motevali]['value'] = (($amalkardNext[$motevali]['value'] / $amalkardPrev[$motevali]['value']) - 1) * 100; // نرخ رشد واحدها
-                    $darsad[$motevali]['value'] = ($amalkardNext[$motevali]['value'] / $this->standard($shakhes_id, $motevali)) * 100; // درصد تحقق واحدها
+                    $darsad[$motevali]['value'] = ($nerkh[$motevali]['value'] / $this->standard($shakhes_id, $motevali)) * 100; // درصد تحقق واحدها
 
                     // برای جدول شاخص
                     $data[$shakhes_id][$motevali]['amalkardNext']['value'] = $amalkardNext[$motevali]['value']; // عملکرد ۹۹ واحدها
@@ -505,7 +507,7 @@ class shakhesController
                     ///////////////
                     ///////////////
                     $nerkh[$motevali]['value_import'] = (($amalkardNext[$motevali]['value_import'] / $amalkardPrev[$motevali]['value_import']) - 1) * 100; // نرخ رشد واحدها
-                    $darsad[$motevali]['value_import'] = ($amalkardNext[$motevali]['value_import'] / $this->standard($shakhes_id, $motevali)) * 100; // درصد تحقق واحدها
+                    $darsad[$motevali]['value_import'] = ($nerkh[$motevali]['value_import'] / $this->standard($shakhes_id, $motevali)) * 100; // درصد تحقق واحدها
 
                     // برای جدول شاخص
                     $data[$shakhes_id][$motevali]['amalkardNext']['value_import'] = $amalkardNext[$motevali]['value_import']; // عملکرد ۹۹ واحدها
@@ -551,9 +553,22 @@ class shakhesController
                             (($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]]) - 1) * 100; // نرخ رشد
 
                         $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]] = 
-                            ($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $this->standard($shakhes_id, $admin['parent_id'])) * 100; // درصد تحقق
+                            ($data[$shakhes_id][$admin['parent_id']]['nerkh'][$tmp[$i]] / $this->standard($shakhes_id, $admin['parent_id'])) * 100; // درصد تحقق
 
-                        
+                        // دانشگاه
+                        $data[$shakhes_id][100]['amalkardNext'][$tmp[$i]] =
+                            $EupNext[$tmp[$i]] / (($EdownNext[$tmp[$i]] == 0) ? 1 : $EdownNext[$tmp[$i]]); // عملکرد ۹۹ برای کل واحد
+
+                        $data[$shakhes_id][100]['amalkardPrev'][$tmp[$i]]
+                            = $EupPrev[$tmp[$i]] / (($EdownPrev[$tmp[$i]] == 0) ? 1 : $EdownPrev[$tmp[$i]]); // عملکرد ۹۸ برای کل واحد
+
+                        $data[$shakhes_id][100]['nerkh'][$tmp[$i]] =
+                            (($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]]) - 1) * 100; // نرخ رشد
+
+                        $data[$shakhes_id][100]['darsad'][$tmp[$i]] =
+                            ($data[$shakhes_id][$admin['parent_id']]['nerkh'][$tmp[$i]] / $this->standard($shakhes_id, $admin['parent_id'])) * 100; // درصد تحقق
+
+
 
                         // برای جدول در سطح کلان 
                         $data['kalan'][$shakhes['kalan_no']][$admin['parent_id']]['darsad'][$tmp[$i]] += 
@@ -1121,6 +1136,7 @@ class shakhesController
             $val = 'value6';
             $valueImport = 'value6_import';
             $valueArzyab = 'value6_arzyab';
+
             $tozihat = 'import_tozihat6';
             $tozihatConfirm3 = 'confirm3_tozihat6';
             $tozihatConfirm4 = 'confirm4_tozihat6';
@@ -1130,6 +1146,7 @@ class shakhesController
             $val = 'value12';
             $valueImport = 'value12_import';
             $valueArzyab = 'value12_arzyab';
+
             $tozihat = 'import_tozihat12';
             $tozihatConfirm3 = 'confirm3_tozihat12';
             $tozihatConfirm4 = 'confirm4_tozihat12';
@@ -1150,8 +1167,18 @@ class shakhesController
             foreach ($post['import'] as $id => $item) {
                 $import = $importObj->find($id);
 
-                $import->$valueImport = $item[$valueImport]; // value*_import  
-                $import->$valueArzyab = $item[$valueImport]; // value*_import  
+                if($admin_info['admin_id'] == 1){
+                    $import->$val = $item[$valueImport]; // value*
+                }else if(in_array($admin_info['admin_id'],[2,3,4,5,6])){
+                    $import->$val = $item[$valueImport]; // value*
+                    $import->$valueArzyab = $item[$valueImport]; // value*_import
+                }
+                else{
+                    $import->$val = $item[$valueImport]; // value*
+                    $import->$valueImport = $item[$valueImport]; // value*_import
+                    $import->$valueArzyab = $item[$valueImport]; // value*_import
+                }
+
                 $import->$tozihat = $item[$tozihat]; // import_tozihat*
 
                 if (isset($post['sendToConfirm1'])) {
@@ -1210,6 +1237,7 @@ class shakhesController
             foreach ($post['import'] as $id => $item) {
                 $import = $importObj->find($id);
 
+                $import->$val = $item[$valueImport];
                 $import->$valueArzyab = $item[$valueImport];
                 $import->$tozihatConfirm3 = $item[$tozihat];
 
@@ -1252,10 +1280,12 @@ class shakhesController
         $importObj = new import();
         if (STEP_FORM1 <= 2) {
             $value = 'value6';
+            $valueImport = 'value6_import';
             $status = 'status6';
         } elseif (STEP_FORM1 > 2 && STEP_FORM1 <= 4) {
             $value = 'value12';
             $status = 'status12';
+            $valueImport = 'value12_import';
         }
 
         // رکورد هایی که متولیز دارند
@@ -1270,7 +1300,7 @@ class shakhesController
         foreach ($imports['export']['list'] as $import) {
             $ghalamId = $import->ghalam_id;
             $motevalis = explode(',', $import->motevalis);
-            $sum = 0;
+            $sum = $sumImport = 0;
             $child = array();
             foreach ($motevalis as $v) {
 
@@ -1282,9 +1312,12 @@ class shakhesController
                 if ($child['export']['recordsCount'] > 1 || $child['export']['recordsCount'] == 0) dd('duplicate or not exist import record (motevali:' . $v . ' ghalam:' . $ghalamId . ' year:' . KHODEZHARI_YEAR . ')');
 
                 $sum += $child['export']['list'][0]->$value;
+                $sumImport += $child['export']['list'][0]->$valueImport;
+
             }
 
             $import->$value = $sum;
+            $import->$valueImport = $sumImport;
             $import->$status = 'finish';
             $import->save();
         }

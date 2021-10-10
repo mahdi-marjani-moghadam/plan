@@ -208,16 +208,16 @@
                         </thead>
                         <tbody>
                             <?php foreach ($kalans as $kalan_no => $kalan) : ?>
-                                <tr>
+                                <tr style=" text-align: center">
                                     <td><?php echo $kalan_no ?></td>
 
                                     <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                        <td>
+                                        <td style="direction: ltr;">
                                             <?php echo round($kalan[$head_admin_id]['darsad']['value_import'],2) ?>
                                         </td>
                                     <?php endforeach; ?>
                                     <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                        <td>
+                                        <td style="direction: ltr;">
                                             <?php echo round($kalan[$head_admin_id]['darsad']['value'],2) ?>
                                         </td>
                                     <?php endforeach; ?>

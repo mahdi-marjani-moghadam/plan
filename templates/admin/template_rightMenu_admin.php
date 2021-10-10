@@ -244,6 +244,11 @@
                         <span class="sidebar-text text-16"> گزارش</span>
                     </a>
                 </li>
+                <li>
+                    <a href="<?php echo  RELA_DIR ?>admin/?component=shakhes">
+                        <span class="sidebar-text text-16"> نمودار</span>
+                    </a>
+                </li>
 
 
                 <?php if($admin_info['admin_id'] == 1): ?> 

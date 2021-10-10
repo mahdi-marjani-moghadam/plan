@@ -193,9 +193,9 @@
                                     $tozihat12 = $import['import_tozihat12'];
                                 } else if ($admin_info['admin_id'] == $import['confirm4']) {
 
-                                    $value6 = $import['value6_arzyab'];
+                                    $value6 = $import['value6'];
                                     $tozihat6 = $import['confirm3_tozihat6'];
-                                    $value12 = $import['value12_arzyab'];
+                                    $value12 = $import['value12'];
                                     $tozihat12 = $import['confirm3_tozihat12'];
                                 } else {
   
