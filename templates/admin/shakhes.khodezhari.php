@@ -185,12 +185,19 @@
                                     $tozihat6 = $import['import_tozihat6'];
                                     $value12 = $import['value12_import'];
                                     $tozihat12 = $import['import_tozihat12'];
-                                } else if (in_array($admin_info['admin_id'], [$import['confirm1'], $import['confirm2'], $import['confirm3']])) {
+                                } else if (in_array($admin_info['admin_id'], [$import['confirm1'], $import['confirm2']])) {
 
                                     $value6 = $import['value6_import'];
                                     $tozihat6 = $import['import_tozihat6'];
                                     $value12 = $import['value12_import'];
                                     $tozihat12 = $import['import_tozihat12'];
+                                } else if ($admin_info['admin_id'] == $import['confirm3']) {
+                                
+                                    $value6 = $import['value6_arzyab'];
+                                    $tozihat6 = $import['arzyab_tozihat6'];
+                                    $value12 = $import['value12_arzyab'];
+                                    $tozihat12 = $import['arzyab_tozihat12'];
+
                                 } else if ($admin_info['admin_id'] == $import['confirm4']) {
 
                                     $value6 = $import['value6'];
