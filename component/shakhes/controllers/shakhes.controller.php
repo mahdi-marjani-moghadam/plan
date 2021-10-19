@@ -498,8 +498,7 @@ class shakhesController
                     $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value'] +=
                         $data[$shakhes_id][$motevali]['darsad']['value'] * $this->shakhesVazn($shakhes_id, $motevali); // نهایی
 
-                    $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value_import'] +=
-                        $data[$shakhes_id][$motevali]['darsad']['value_import'] * $this->shakhesVazn($shakhes_id, $motevali); // اعلامی
+                    
 
                     ///////////////
                     ///////////////
@@ -514,6 +513,9 @@ class shakhesController
                     $data[$shakhes_id][$motevali]['amalkardPrev']['value_import'] = $amalkardPrev[$motevali]['value_import']; // عملکرد ۹۸ واحدها
                     $data[$shakhes_id][$motevali]['nerkh']['value_import'] = $nerkh[$motevali]['value_import']; // نرخ رشد واحدها
                     $data[$shakhes_id][$motevali]['darsad']['value_import'] = $darsad[$motevali]['value_import']; // درصد تحقق واحدها
+
+                    $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value_import'] +=
+                        $data[$shakhes_id][$motevali]['darsad']['value_import'] * $this->shakhesVazn($shakhes_id, $motevali); // اعلامی
 
 
                     //--------------//
@@ -882,6 +884,11 @@ class shakhesController
             $shakhes->delete();
         }
 
+        // delete rel ghalam shakhes
+
+        // delete rel kalan shakhes
+
+
         // dd($shakhes );  
         $result['msg'] = 'با موفقیت انجام شد.';
         $messageStack->add_session('message', $result['msg'], 'success');
@@ -893,21 +900,26 @@ class shakhesController
 
         /** اخرین شاخص */
         include_once ROOT_DIR . "component/shakhes/model/shakhes.model.php";
-        $query = 'select max(shakhes_id) from sh_shakhes';
-        $res = $obj->query($query)->getList();
+        $obj = new shakhes;
+        $query = 'select max(shakhes_id) as lastNumber from sh_shakhes';
+        $lastNumber = $obj->query($query)->getList()['export']['list'][0]['lastNumber'];
+        // echo json_encode($obj->query($query));
+        // return $obj->query($query);
 
-        echo json_encode($res);
-        die();
+        $shakhes = new shakhes();
+        $shakhes->shakhes_id = ++$lastNumber;
+        $shakhes->shakhes = $post['shakhes'];
+        $shakhes->save();
+        
+        return $shakhes->id;
+
+        /** add shakhes */
 
 
-        /** shakhes */
+        /** add rel ghalam shakhes */
 
 
-        /** rel ghalam shakhes */
-
-        /** nerkh */
-
-        /** kalan shakhes */
+        /** add kalan shakhes */
 
 
 

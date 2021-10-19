@@ -24,7 +24,7 @@
                             <td><?php echo  $i++ ?></td>
                             <td><?php echo  $sh['shakhes'] ?></td>
                             <td>
-                                <?php 
+                                <?php
                                 switch ($sh['logic']['type']) {
                                     case 'equal':
                                         echo 'تساوی';
@@ -90,7 +90,7 @@
                     <select class="edit-equal">
                         <option class="" value="null">لطفا یکی را انتخاب نمایید ...</option>
                         <?php foreach ($ghalam as $k => $gh) : ?>
-                        <option value="<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
+                            <option value="<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
                         <?php endforeach ?>
                     </select>
                 </div>
@@ -101,7 +101,7 @@
                     <label class=" col-md-12 col-xs-12 col-sm-12">اقلام</label><br>
                     <select class="edit-sum" multiple>
                         <?php foreach ($ghalam as $k => $gh) : ?>
-                        <option value="<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
+                            <option value="<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
                         <?php endforeach ?>
                     </select>
                 </div>
@@ -112,7 +112,7 @@
                     <label class=" col-md-12 col-xs-12 col-sm-12">اقلام (صورت کسر)</label><br>
                     <select class=" edit-divid-up   " multiple>
                         <?php foreach ($ghalam as $k => $gh) : ?>
-                        <option value="<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
+                            <option value="<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
                         <?php endforeach ?>
                     </select>
                     <br>
@@ -121,7 +121,7 @@
                     <label class=" col-md-12 col-xs-12 col-sm-12">اقلام (مخرج کسر)</label><br>
                     <select class=" edit-divid-down   " multiple>
                         <?php foreach ($ghalam as $k => $gh) : ?>
-                        <option value="<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
+                            <option value="<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
                         <?php endforeach ?>
                     </select>
 
@@ -149,17 +149,26 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">ویرایش </h4>
+                <h4 class="modal-title">ساخت شاخص </h4>
             </div>
             <div class="modal-body">
                 <input id="shakhes_id" type="hidden">
-                <div class="col-md-12 col-xs-12 col-sm-12">
-                    <label>نام شاخص</label>
-
+                <div class="">
+                    <label>(لطفا نام شاخص را تغییر دهید) نام شاخص</label>
                 </div>
                 <input id="copy-shakhes" value="" class="form-control ">
                 <br>
-                <label class="col-md-12 col-xs-12 col-sm-12"> فرمول</label>
+
+                <label class=""> هدف کلان</label>
+                <br>
+                <select class="type">
+                    <option class="select-equal" value="equal" data-sh="<?php echo  $k ?>">تساوی</option>
+                    <option class="select-sum" value="sum" data-sh="<?php echo  $k ?>">مجموع</option>
+                    <option class="select-divid" value="divid" data-sh="<?php echo  $k ?>">نسبت</option>
+                </select>
+
+                <label class=""> فرمول</label>
+                <br>
                 <select class="type">
                     <option class="select-equal" value="equal" data-sh="<?php echo  $k ?>">تساوی</option>
                     <option class="select-sum" value="sum" data-sh="<?php echo  $k ?>">مجموع</option>
@@ -171,7 +180,7 @@
                     <label class="copy-equal col-md-12 col-xs-12 col-sm-12">قلم</label><br>
                     <select class="copy-equal">
                         <?php foreach ($ghalam as $k => $gh) : ?>
-                        <option value="<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
+                            <option value="<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
                         <?php endforeach ?>
                     </select>
                 </div>
@@ -182,7 +191,7 @@
                     <label class=" col-md-12 col-xs-12 col-sm-12">اقلام</label><br>
                     <select class="copy-sum" multiple>
                         <?php foreach ($ghalam as $k => $gh) : ?>
-                        <option value="<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
+                            <option value="<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
                         <?php endforeach ?>
                     </select>
                 </div>
@@ -193,7 +202,7 @@
                     <label class=" col-md-12 col-xs-12 col-sm-12">اقلام (صورت کسر)</label><br>
                     <select class=" copy-divid-up   " multiple>
                         <?php foreach ($ghalam as $k => $gh) : ?>
-                        <option value="<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
+                            <option value="<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
                         <?php endforeach ?>
                     </select>
                     <br>
@@ -202,7 +211,7 @@
                     <label class=" col-md-12 col-xs-12 col-sm-12">اقلام (مخرج کسر)</label><br>
                     <select class=" copy-divid-down   " multiple>
                         <?php foreach ($ghalam as $k => $gh) : ?>
-                        <option value="<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
+                            <option value="<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
                         <?php endforeach ?>
                     </select>
 
@@ -216,7 +225,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
 
-                <button type="button" class="btn btn-success copy-submit">ویرایش</button>
+                <button type="button" class="btn btn-success copy-submit">ایجاد</button>
             </div>
         </div>
 
@@ -270,7 +279,7 @@
                         <label class="add-equal col-md-12 col-xs-12 col-sm-12">قلم</label><br>
                         <select class="add-equal col-md-6 col-xs-6 col-sm-6 pull-right">
                             <?php foreach ($ghalam as $k => $gh) : ?>
-                            <option value="$g<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
+                                <option value="$g<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
                             <?php endforeach ?>
                         </select>
                     </div>
@@ -279,7 +288,7 @@
                         <label class="add-sum col-md-12 col-xs-12 col-sm-12">اقلام</label><br>
                         <select class="add-sum col-md-6 col-xs-6 col-sm-6 pull-right" multiple>
                             <?php foreach ($ghalam as $k => $gh) : ?>
-                            <option value="$g<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
+                                <option value="$g<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
                             <?php endforeach ?>
                         </select>
                     </div>
@@ -288,14 +297,14 @@
                         <label class="add-divid col-md-12 col-xs-12 col-sm-12">اقلام (صورت کسر)</label><br>
                         <select class="add-divid add-divid-up col-md-6 col-xs-6 col-sm-6 pull-right" multiple>
                             <?php foreach ($ghalam as $k => $gh) : ?>
-                            <option value="$g<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
+                                <option value="$g<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
                             <?php endforeach ?>
                         </select>
                         <br>
                         <label class="add-divid col-md-12 col-xs-12 col-sm-12">اقلام (مخرج کسر)</label><br>
                         <select class="add-divid add-divid-down col-md-6 col-xs-6 col-sm-6 pull-right" multiple>
                             <?php foreach ($ghalam as $k => $gh) : ?>
-                            <option value="$g<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
+                                <option value="$g<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
                             <?php endforeach ?>
                         </select>
                     </div>
@@ -376,7 +385,7 @@
 
                 var type = shakhes[shakhes_id].logic.type;
 
-                modal.find('.modal-title').text('ویرایش ' + shakhes[shakhes_id].shakhes);
+                // modal.find('.modal-title').text('ویرایش ' + shakhes[shakhes_id].shakhes);
                 modal.find('#copy-shakhes').val(shakhes[shakhes_id].shakhes);
 
                 modal.find('.type').val(type);
@@ -417,29 +426,75 @@
                 //
             }
         });
-        $('#copy .add-submit').click(function(e) {
-
+        $('#copy .copy-submit').click(function(e) {
+            e.preventDefault();
+            // $('#copy #edit-select-box-error').hide();
+            var modal = $('#edit .modal-body');
             var type = $('#copy').find('.type').val();
-            var shakhes = $('#copy input[name="name"]').val();
-            console.log('ssss ');
+            var shakhes = modal.find('#edit-shakhes').val();
+
+            /** انتخاب فرمول */
+            var type = modal.find('.type').select2('val');
+            if (type === 'null') {
+                alert('لطفا فرمول را انتخاب نمایید');
+                return false;
+            }
+
+
+            /** انتخاب اقلام */
+            if (type === 'equal') {
+                var ghalams = modal.find('.edit-equal').select2('val');
+                if (ghalams === 'null') {
+                    alert('لطفا قلم را انتخاب نمایید');
+                    return false;
+                }
+            } else if (type === 'sum') {
+                var ghalams = modal.find('.edit-sum').select2('val').filter(onlyUnique);
+                if (Object.keys(ghalams).length === 0) {
+                    alert('لطفا اقلام را انتخاب نمایید');
+                    return false;
+                }
+
+            } else if (type === 'divid') {
+                var up = modal.find('.edit-divid-up').select2('val').filter(onlyUnique),
+                    down = modal.find('.edit-divid-down').select2('val').filter(onlyUnique);
+
+                if (Object.keys(up).length === 0 || Object.keys(down).length === 0) {
+                    alert('لطفا اقلام را انتخاب نمایید');
+                    return false;
+                }
+
+                var ghalams = {
+                    up: up,
+                    down: down
+                };
+
+            }
+            // console.log('ssss ');
             console.log(type, shakhes);
+
+
+            return false;
 
             if (["equal", "sum", "divid"].includes(type)) {
                 $.ajax({
-                    url: '/?component=shakhes&action=settingAdd',
+                    url: '/admin/?component=shakhes&action=settingAdd',
                     method: 'post',
                     data: {
                         'type': type,
                         'shakhes': shakhes
                     },
                     success: function(data, status, xhr) {
+                        console.log(data);
                         //window.location = '/?component=shakhes&action=setting'
                     },
                     error: function(data, status, xhr) {
+                        console.log(data);
                         alert('مشکلی در سرور بوجود آمده است.');
                     }
                 });
             } else {
+
                 //alert('لطفا یکی از توابع را انتخاب نمایید');
                 $('#copy #copy-select-box-error').show();
             }
@@ -585,7 +640,7 @@
                 error: function(data, status, xhr) {
                     alert('مشکلی در سرور بوجود آمده است.');
                 }
-            });s
+            });
 
         });
         /** end edit */
