@@ -453,6 +453,7 @@ class shakhesController
     public function getReports($sh, $ghN, $ghP, $admins)
     {
 
+
         foreach ($sh as $shakhes_id => $shakhes) {
 
             $function = $shakhes['function'];
@@ -462,7 +463,7 @@ class shakhesController
 
 //            dd($amalkardNext);
 
-            $data[$shakhes_id] = $EupNext = $EupPrev = $EdownNext = $EdownPrev =  array();
+            $data[$shakhes_id] = $EupNext = $EupPrev = $EdownNext = $EdownPrev = $EupNextUni = $EdownNextUni = $EupPrevUni = $EdownPrevUni =  array();
 
             foreach ($admins as $motevali => $admin) {
 
@@ -532,9 +533,15 @@ class shakhesController
                         $EupNext[$tmp[$i]] +=  $amalkardNext[$motevali]['up'][$tmp[$i]]; // جمع صورت عملکرد 
                         if (isset($amalkardNext[$motevali]['down'][$tmp[$i]])) {
                             $EdownNext[$tmp[$i]] +=  $amalkardNext[$motevali]['down'][$tmp[$i]]; // جمع مخرج عملکرد 
+                            // $EdownNextUni[$tmp[$i]] +=  $amalkardNext[$motevali]['down'][$tmp[$i]]; // جمع مخرج عملکرد 
+
                         } else {
                             $EdownNext[$tmp[$i]] += 0; // در صورتی که فرمول نسبت نباشد مخرج صفر میشود
+                            // $EdownNextUni[$tmp[$i]] += 0; // در صورتی که فرمول نسبت نباشد مخرج صفر میشود
                         }
+
+                        $EupNextUni[$tmp[$i]] += $EdownNext[$tmp[$i]];
+                        $EdownNextUni[$tmp[$i]] += $EdownNext[$tmp[$i]];
 
                         //////// ۹۸ ////////
                         $EupPrev[$tmp[$i]] +=  $amalkardPrev[$motevali]['up'][$tmp[$i]]; // جمع صورت عملکرد
@@ -543,7 +550,8 @@ class shakhesController
                         } else {
                             $EdownPrev[$tmp[$i]] += 0; // در صورتی که فرمول نسبت نباشد مخرج صفر میشود
                         }
-
+                        $EupPrevUni[$tmp[$i]] += $EupPrev[$tmp[$i]];
+                        $EdownPrevUni[$tmp[$i]] += $EdownPrev[$tmp[$i]];
                         
                         $data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] =
                             $EupNext[$tmp[$i]] / (($EdownNext[$tmp[$i]] == 0) ? 1 : $EdownNext[$tmp[$i]]); // عملکرد ۹۹ برای کل واحد
@@ -559,10 +567,10 @@ class shakhesController
 
                         // دانشگاه
                         $data[$shakhes_id][100]['amalkardNext'][$tmp[$i]] =
-                            $EupNext[$tmp[$i]] / (($EdownNext[$tmp[$i]] == 0) ? 1 : $EdownNext[$tmp[$i]]); // عملکرد ۹۹ برای کل واحد
+                            $EupNextUni[$tmp[$i]] / (($EdownNextUni[$tmp[$i]] == 0) ? 1 : $EdownNextUni[$tmp[$i]]); // عملکرد ۹۹ برای کل واحد
 
                         $data[$shakhes_id][100]['amalkardPrev'][$tmp[$i]]
-                            = $EupPrev[$tmp[$i]] / (($EdownPrev[$tmp[$i]] == 0) ? 1 : $EdownPrev[$tmp[$i]]); // عملکرد ۹۸ برای کل واحد
+                            = $EupPrevUni[$tmp[$i]] / (($EdownPrevUni[$tmp[$i]] == 0) ? 1 : $EdownPrevUni[$tmp[$i]]); // عملکرد ۹۸ برای کل واحد
 
                         $data[$shakhes_id][100]['nerkh'][$tmp[$i]] =
                             (($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]]) - 1) * 100; // نرخ رشد
