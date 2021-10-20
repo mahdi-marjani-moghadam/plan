@@ -12,6 +12,7 @@
                 <table class="table table-striped table-bordered rtl">
                     <tr>
                         <td></td>
+                        <td>هدف کلان</td>
                         <td>نام شاخص</td>
                         <td>نوع</td>
                         <td>فرمول</td>
@@ -22,6 +23,7 @@
                     foreach ($shakhes as $k => $sh) : ?>
                         <tr>
                             <td><?php echo  $i++ ?></td>
+                            <td><?php echo  $kalans[$sh['kalan_no']]['kalan'] ?></td>
                             <td><?php echo  $sh['shakhes'] ?></td>
                             <td>
                                 <?php
@@ -41,7 +43,7 @@
                             </td>
                             <td dir="ltr"><?php echo  $sh['logic']['function'] ?></td>
                             <td>
-                                <a class="btn btn-warning edit" data-shakhesid="<?php echo  $k ?>" data-toggle="modal" data-target="#edit">ویرایش</a>
+                                <a class="btn btn-warning edit" data-shakhesid="<?php echo  $k ?>" data-kalanno="<?php echo  $sh['kalan_no'] ?>" data-toggle="modal" data-target="#edit">ویرایش</a>
                                 <a href="<?php echo  RELA_DIR ?>admin/?component=shakhes&action=delete&id=<?php echo  $sh['id'] ?>" class="btn btn-danger " onclick="return confirm('آیا مطمئن هستید؟')">حذف</a>
                                 <a class="btn btn-info copy" data-shakhesid="<?php echo  $k ?>" data-toggle="modal" data-target="#copy">کپی و ساخت شاخص جدید</a>
 
@@ -72,17 +74,32 @@
                 <input id="shakhes_id" type="hidden">
                 <div class="col-md-12 col-xs-12 col-sm-12">
                     <label>نام شاخص</label>
-
                 </div>
+
                 <input id="edit-shakhes" value="" class="form-control ">
+
+
                 <br>
-                <label class="col-md-12 col-xs-12 col-sm-12"> فرمول</label>
-                <select class="type">
-                    <option class="" value="null">لطفا یکی را انتخاب نمایید ...</option>
-                    <option class="select-equal" value="equal" data-sh="<?php echo  $k ?>">تساوی</option>
-                    <option class="select-sum" value="sum" data-sh="<?php echo  $k ?>">مجموع</option>
-                    <option class="select-divid" value="divid" data-sh="<?php echo  $k ?>">نسبت</option>
-                </select>
+                <div>
+                    <label class=" col-md-12 col-xs-12 col-sm-12">هدف کلان</label><br>
+                    <select class="edit-kalan">
+                        <option  value="null">لطفا یکی را انتخاب نمایید ...</option>
+                        <?php foreach ($kalans as $key => $k) : ?>
+                            <option value="<?php echo  $k['kalan_no'] ?>"><?php echo  $k['kalan'] ?></option>
+                        <?php endforeach ?>
+                    </select>
+                </div>
+
+                <div>
+
+                    <label class="col-md-12 col-xs-12 col-sm-12"> فرمول</label>
+                    <select class="type">
+                        <option class="" value="null">لطفا یکی را انتخاب نمایید ...</option>
+                        <option class="select-equal" value="equal" data-sh="<?php echo  $k ?>">تساوی</option>
+                        <option class="select-sum" value="sum" data-sh="<?php echo  $k ?>">مجموع</option>
+                        <option class="select-divid" value="divid" data-sh="<?php echo  $k ?>">نسبت</option>
+                    </select>
+                </div>
 
 
                 <div class="edit-equal">
@@ -485,8 +502,8 @@
                         'shakhes': shakhes
                     },
                     success: function(data, status, xhr) {
-                        console.log(data);
-                        //window.location = '/?component=shakhes&action=setting'
+                        // console.log(data);
+                        // window.location = '/?component=shakhes&action=setting'
                     },
                     error: function(data, status, xhr) {
                         console.log(data);
@@ -512,9 +529,13 @@
         $('#edit').on('show.bs.modal', function(event) {
             var a = $(event.relatedTarget);
             var shakhes_id = a.data('shakhesid');
+            var kalanNo = a.data('kalanno');
 
             var modal = $(this);
             modal.find('#shakhes_id').val(shakhes_id);
+
+            modal.find('.edit-kalan').val(kalanNo);
+            modal.find('.edit-kalan').trigger('change');
 
             // مقدار دادن به اسم شاخص
             modal.find('#edit-shakhes').val(shakhes[shakhes_id].shakhes);
@@ -582,6 +603,11 @@
             var modal = $('#edit .modal-body');
             var shakhes_id = modal.find('#shakhes_id').val();
             var shakhes = modal.find('#edit-shakhes').val();
+            var kalanNo = modal.find('.edit-kalan').select2('val');
+            if (kalanNo === 'null') {
+                alert('لطفا هدف کلان را انتخاب نمایید');
+                return false;
+            }
 
             /** انتخاب فرمول */
             var type = modal.find('.type').select2('val');
@@ -631,6 +657,7 @@
                     'type': type,
                     'shakhes_id': shakhes_id,
                     'shakhes': shakhes,
+                    'kalan_no':kalanNo,
                     'ghalams': ghalams
                 },
                 success: function(data, status, xhr) {

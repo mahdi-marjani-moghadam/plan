@@ -461,7 +461,7 @@ class shakhesController
             $amalkardNext = $this->calcuteFunction($function, $ghN); // محاسبه عملکرد ۹۹
             $amalkardPrev = $this->calcuteFunction($function, $ghP); // محاسبه عملکرد ۹۸
 
-//            dd($amalkardNext);
+            //            dd($amalkardNext);
 
             $data[$shakhes_id] = $EupNext = $EupPrev = $EdownNext = $EdownPrev = $EupNextUni = $EdownNextUni = $EupPrevUni = $EdownPrevUni =  array();
 
@@ -499,7 +499,7 @@ class shakhesController
                     $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value'] +=
                         $data[$shakhes_id][$motevali]['darsad']['value'] * $this->shakhesVazn($shakhes_id, $motevali); // نهایی
 
-                    
+
 
                     ///////////////
                     ///////////////
@@ -539,9 +539,9 @@ class shakhesController
                             $EdownNext[$tmp[$i]] += 0; // در صورتی که فرمول نسبت نباشد مخرج صفر میشود
                             // $EdownNextUni[$tmp[$i]] += 0; // در صورتی که فرمول نسبت نباشد مخرج صفر میشود
                         }
+                        $EupNextUni[$tmp[$i]] += $EdownNext[$tmp[$i]]; // Uni
+                        $EdownNextUni[$tmp[$i]] += $EdownNext[$tmp[$i]]; // Uni
 
-                        $EupNextUni[$tmp[$i]] += $EdownNext[$tmp[$i]];
-                        $EdownNextUni[$tmp[$i]] += $EdownNext[$tmp[$i]];
 
                         //////// ۹۸ ////////
                         $EupPrev[$tmp[$i]] +=  $amalkardPrev[$motevali]['up'][$tmp[$i]]; // جمع صورت عملکرد
@@ -550,19 +550,19 @@ class shakhesController
                         } else {
                             $EdownPrev[$tmp[$i]] += 0; // در صورتی که فرمول نسبت نباشد مخرج صفر میشود
                         }
-                        $EupPrevUni[$tmp[$i]] += $EupPrev[$tmp[$i]];
-                        $EdownPrevUni[$tmp[$i]] += $EdownPrev[$tmp[$i]];
-                        
+                        $EupPrevUni[$tmp[$i]] += $EupPrev[$tmp[$i]]; // Uni
+                        $EdownPrevUni[$tmp[$i]] += $EdownPrev[$tmp[$i]]; // Uni
+
                         $data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] =
                             $EupNext[$tmp[$i]] / (($EdownNext[$tmp[$i]] == 0) ? 1 : $EdownNext[$tmp[$i]]); // عملکرد ۹۹ برای کل واحد
-                        
-                        $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]] 
+
+                        $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]]
                             = $EupPrev[$tmp[$i]] / (($EdownPrev[$tmp[$i]] == 0) ? 1 : $EdownPrev[$tmp[$i]]); // عملکرد ۹۸ برای کل واحد
 
-                        $data[$shakhes_id][$admin['parent_id']]['nerkh'][$tmp[$i]] = 
+                        $data[$shakhes_id][$admin['parent_id']]['nerkh'][$tmp[$i]] =
                             (($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]]) - 1) * 100; // نرخ رشد
 
-                        $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]] = 
+                        $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]] =
                             ($data[$shakhes_id][$admin['parent_id']]['nerkh'][$tmp[$i]] / $this->standard($shakhes_id, $admin['parent_id'])) * 100; // درصد تحقق
 
                         // دانشگاه
@@ -581,7 +581,7 @@ class shakhesController
 
 
                         // برای جدول در سطح کلان 
-                        $data['kalan'][$shakhes['kalan_no']][$admin['parent_id']]['darsad'][$tmp[$i]] += 
+                        $data['kalan'][$shakhes['kalan_no']][$admin['parent_id']]['darsad'][$tmp[$i]] +=
                             $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]] * $this->shakhesVazn($shakhes_id, $admin['parent_id']); // درصد تحقق نهایی و اعلامی
                     }
                 } else {
@@ -821,14 +821,17 @@ class shakhesController
         /** لیست شاخص */
         include ROOT_DIR . "component/shakhes/model/shakhes.model.php";
         $obj = new shakhes();
-        $query = 'select sh.shakhes_id, shakhes ,r_g_sh.ghalam_id , type from sh_shakhes sh
-        left join sh_rel_ghalam_shakhes r_g_sh on sh.shakhes_id = r_g_sh.shakhes_id';
+        $query = 'select sh.shakhes_id, shakhes ,r_g_sh.ghalam_id , type ,r_k_s.kalan_no from sh_shakhes sh
+        left join sh_rel_ghalam_shakhes r_g_sh on sh.shakhes_id = r_g_sh.shakhes_id
+        left join sh_rel_kalan_shakhes  r_k_s on r_g_sh.shakhes_id = r_k_s.shakhes_id';
         $res = $obj->query($query)->getList();
         // dd($res);
         if ($res['export']['recordsCount']) {
             foreach ($res['export']['list'] as $sh) {
                 $shakhes[$sh['shakhes_id']]['id'] = $sh['shakhes_id'];
                 $shakhes[$sh['shakhes_id']]['shakhes'] = $sh['shakhes'];
+ 
+                $shakhes[$sh['shakhes_id']]['kalan_no'] = $sh['kalan_no'];
                 switch ($sh['type']) {
                     case 'equal':
                         $shakhes[$sh['shakhes_id']]['logic']['type'] = 'equal';
@@ -873,7 +876,7 @@ class shakhesController
         $obj3 = new eghdam();
         $kalans = $obj3->getAll()->groupBy('kalan_no')->keyBy('kalan_no')->getList()['export']['list'];
 
-
+        // dd($kalans);        
 
         $this->fileName = 'shakhes.setting.showList.php';
         $this->template(compact('shakhes', 'ghalam', 'kalans'));
@@ -892,9 +895,23 @@ class shakhesController
             $shakhes->delete();
         }
 
-        // delete rel ghalam shakhes
+         /** پاک کردن کل اقلام اون شاخص */
+         include_once ROOT_DIR . "component/shakhes/model/rel.ghalam.shakhes.model.php";
+         $relGhalamShakhes = relGhalamShakhes::getBy_shakhes_id($post['shakhes_id'])->get();
+         if ($relGhalamShakhes['export']['recordsCount'] != 0) {
+             foreach ($relGhalamShakhes['export']['list'] as $v) {
+                 $v->delete();
+             }
+         }
 
-        // delete rel kalan shakhes
+         /** پاک کردن کل کلان اون شاخص */
+         include_once ROOT_DIR . "component/shakhes/model/rel.kalan.shakhes.model.php";
+         $relKalanShakhes = relKalanShakhes::getBy_shakhes_id($post['shakhes_id'])->get();
+         if ($relKalanShakhes['export']['recordsCount'] != 0) {
+             foreach ($relKalanShakhes['export']['list'] as $v) {
+                 $v->delete();
+             }
+         }
 
 
         // dd($shakhes );  
@@ -918,13 +935,14 @@ class shakhesController
         $shakhes->shakhes_id = ++$lastNumber;
         $shakhes->shakhes = $post['shakhes'];
         $shakhes->save();
-        
+
         return $shakhes->id;
 
         /** add shakhes */
 
 
         /** add rel ghalam shakhes */
+        
 
 
         /** add kalan shakhes */
@@ -993,8 +1011,24 @@ class shakhesController
             }
         }
 
-        //$result['sh_rel_ghalam_shakhes1'] = $newRelGhalamShakhes->fields;
 
+
+        /** پاک کردن کل کلان اون شاخص */
+        include_once ROOT_DIR . "component/shakhes/model/rel.kalan.shakhes.model.php";
+        $relKalanShakhes = relKalanShakhes::getBy_shakhes_id($post['shakhes_id'])->get();
+        if ($relKalanShakhes['export']['recordsCount'] != 0) {
+            foreach ($relKalanShakhes['export']['list'] as $v) {
+                $v->delete();
+            }
+        }
+
+        /** افزودن کلان */
+        $relKalanShakhes = new relKalanShakhes();
+        $relKalanShakhes->shakhes_id = $post['shakhes_id'];
+        $relKalanShakhes->kalan_no = $post['kalan_no'];
+        $relKalanShakhes->save();
+
+        // dd($relKalanShakhes);
 
         $result['status'] = 1;
         $result['msg'] = 'با موفقیت ویرایش شد.';
@@ -1187,13 +1221,12 @@ class shakhesController
             foreach ($post['import'] as $id => $item) {
                 $import = $importObj->find($id);
 
-                if($admin_info['admin_id'] == 1){
+                if ($admin_info['admin_id'] == 1) {
                     $import->$val = $item[$valueImport]; // value*
-                }else if(in_array($admin_info['admin_id'],[2,3,4,5,6])){
+                } else if (in_array($admin_info['admin_id'], [2, 3, 4, 5, 6])) {
                     $import->$val = $item[$valueImport]; // value*
                     $import->$valueArzyab = $item[$valueImport]; // value*_import
-                }
-                else{
+                } else {
                     $import->$val = $item[$valueImport]; // value*
                     $import->$valueImport = $item[$valueImport]; // value*_import
                     $import->$valueArzyab = $item[$valueImport]; // value*_import
@@ -1333,7 +1366,6 @@ class shakhesController
 
                 $sum += $child['export']['list'][0]->$value;
                 $sumImport += $child['export']['list'][0]->$valueImport;
-
             }
 
             $import->$value = $sum;

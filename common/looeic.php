@@ -448,7 +448,8 @@ class looeic extends DB
         }
         $conn = dbConn::getConnection();
 
-        //    print_r($this->sql);
+        // echo "<pre>";   
+        // print_r($this->sql);
 
 
         $stmt = $conn->prepare($this->sql);
@@ -1025,7 +1026,8 @@ class looeic extends DB
         $sql = "
                     INSERT INTO " . $this->TABLE_NAME . "( " . $sql_key . " ) VALUES ( " . $sql_val . " ) ";
 
-        // dd($sql);
+
+        // print_r($sql);
 
         $stmt = $conn->prepare($sql);
         $stmt->execute();
