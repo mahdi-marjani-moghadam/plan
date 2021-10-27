@@ -470,6 +470,7 @@ class shakhesController
                     $data[$shakhes_id][$motevali]['nerkh']['value_import'] = $nerkh[$motevali]['value_import']; // نرخ رشد واحدها
                     $data[$shakhes_id][$motevali]['darsad']['value_import'] = $darsad[$motevali]['value_import']; // درصد تحقق واحدها
 
+                    // برای جدول در سطح کلان
                     $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value_import'] +=
                         $data[$shakhes_id][$motevali]['darsad']['value_import'] * $this->shakhesVazn($shakhes_id, $motevali); // اعلامی
 
@@ -508,6 +509,8 @@ class shakhesController
                         $EupPrevUni[$tmp[$i]] += $EupPrev[$tmp[$i]]; // Uni
                         $EdownPrevUni[$tmp[$i]] += $EdownPrev[$tmp[$i]]; // Uni
 
+
+
                         $data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] =
                             $EupNext[$tmp[$i]] / (($EdownNext[$tmp[$i]] == 0) ? 1 : $EdownNext[$tmp[$i]]); // عملکرد ۹۹ برای کل واحد
 
@@ -537,7 +540,7 @@ class shakhesController
             for ($i = 1; $i <= 2; $i++) { // محاسبه اعلامی و نهایی در حلقه
 
                 $tmp = array(1 => 'value', 2 => 'value_import'); // متغیر داینامیک نهایی و اعلامی
-                
+
                 // دانشگاه
                 $data[$shakhes_id][100]['amalkardNext'][$tmp[$i]] =
                     $EupNextUni[$tmp[$i]] / (($EdownNextUni[$tmp[$i]] == 0) ? 1 : $EdownNextUni[$tmp[$i]]); // عملکرد ۹۹ برای کل واحد
@@ -553,7 +556,7 @@ class shakhesController
 
             }
             // dd(1);
-            // dd($data);
+            // dd($data[$shakhes_id]);
         }
         return $data;
     }

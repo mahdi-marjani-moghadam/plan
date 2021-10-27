@@ -213,12 +213,12 @@
 
                                     <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
                                         <td style="direction: ltr;">
-                                            <?php echo round($kalan[$head_admin_id]['darsad']['value_import'],2) ?>
+                                            <?php echo round($kalan[$head_admin_id]['darsad']['value_import'], 2) ?>
                                         </td>
                                     <?php endforeach; ?>
                                     <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
                                         <td style="direction: ltr;">
-                                            <?php echo round($kalan[$head_admin_id]['darsad']['value'],2) ?>
+                                            <?php echo round($kalan[$head_admin_id]['darsad']['value'], 2) ?>
                                         </td>
                                     <?php endforeach; ?>
                                 </tr>
@@ -302,16 +302,16 @@
                                                     <td>99</td>
                                                 </tr>
                                                 <tr class="gray">
-                                                    <td style="direction: ltr;"><?php echo round($reports[$shakhes_id][$head_admin_id]['amalkardPrev']['value_import'],2)  ?></td>
-                                                    <td style="direction: ltr;"><?php echo round($reports[$shakhes_id][$head_admin_id]['amalkardNext']['value_import'],2) ?></td>
+                                                    <td style="direction: ltr;"><?php echo round($reports[$shakhes_id][$head_admin_id]['amalkardPrev']['value_import'], 2)  ?></td>
+                                                    <td style="direction: ltr;"><?php echo round($reports[$shakhes_id][$head_admin_id]['amalkardNext']['value_import'], 2) ?></td>
                                                 </tr>
                                                 <tr class="green">
                                                     <td>نرخ رشد</td>
                                                     <td>درصد تحقق</td>
                                                 </tr>
                                                 <tr class="gray">
-                                                    <td style="direction: ltr;"><?php echo round($reports[$shakhes_id][$head_admin_id]['nerkh']['value_import'],2) ?> </td>
-                                                    <td style="direction: ltr;"><?php echo round($reports[$shakhes_id][$head_admin_id]['darsad']['value_import'],2) ?></td>
+                                                    <td style="direction: ltr;"><?php echo round($reports[$shakhes_id][$head_admin_id]['nerkh']['value_import'], 2) ?> </td>
+                                                    <td style="direction: ltr;"><?php echo round($reports[$shakhes_id][$head_admin_id]['darsad']['value_import'], 2) ?></td>
                                                 </tr>
 
 
@@ -330,16 +330,16 @@
                                                     <td>99</td>
                                                 </tr>
                                                 <tr class="gray">
-                                                    <td style="direction: ltr;"><?php echo round($reports[$shakhes_id][$head_admin_id]['amalkardPrev']['value'],2)  ?></td>
-                                                    <td style="direction: ltr;"><?php echo round($reports[$shakhes_id][$head_admin_id]['amalkardNext']['value'],2) ?></td>
+                                                    <td style="direction: ltr;"><?php echo round($reports[$shakhes_id][$head_admin_id]['amalkardPrev']['value'], 2)  ?></td>
+                                                    <td style="direction: ltr;"><?php echo round($reports[$shakhes_id][$head_admin_id]['amalkardNext']['value'], 2) ?></td>
                                                 </tr>
                                                 <tr class="green">
                                                     <td>نرخ رشد</td>
                                                     <td>درصد تحقق</td>
                                                 </tr>
                                                 <tr class="gray">
-                                                    <td style="direction: ltr;"><?php echo round($reports[$shakhes_id][$head_admin_id]['nerkh']['value'],2) ?> </td>
-                                                    <td style="direction: ltr;"><?php echo round($reports[$shakhes_id][$head_admin_id]['darsad']['value'],2) ?></td>
+                                                    <td style="direction: ltr;"><?php echo round($reports[$shakhes_id][$head_admin_id]['nerkh']['value'], 2) ?> </td>
+                                                    <td style="direction: ltr;"><?php echo round($reports[$shakhes_id][$head_admin_id]['darsad']['value'], 2) ?></td>
                                                 </tr>
 
 
@@ -411,7 +411,7 @@
                         </thead>
                         <tbody>
                             <?php
-                            $i = 0;
+                            $i = $amalkardPrevUniElami = $amalkardNextUniElami = 0;
                             foreach ($ghalamsNext as $ghalam_id => $gh) : ?>
                                 <?php $i++; ?>
                                 <tr>
@@ -432,6 +432,9 @@
                                         $amalkardPrevVahed += $amalkardPrev;
                                         $amalkardNextVahed += $amalkardNext;
 
+                                        $amalkardPrevUniElami += $amalkardPrev;
+                                        $amalkardNextUniElami += $amalkardPrev;
+
                                         ?>
                                         <td width="<?php echo 300 / count($groups) ?>">
                                             <table class="fixed">
@@ -442,8 +445,8 @@
                                                 </tr>
                                                 <tr class="gray">
                                                 <tr class="gray">
-                                                    <td style="direction: ltr;"><?php echo ($head_admin_info['parent_id'] != 1) ? $amalkardPrev : $amalkardPrevVahed  ?></td>
-                                                    <td style="direction: ltr;"><?php echo ($head_admin_info['parent_id'] != 1) ? $amalkardNext : $amalkardNextVahed  ?></td>
+                                                    <td style="direction: ltr;"><?php echo ($head_admin_info['parent_id'] != 1) ? $amalkardPrev : (($head_admin_id == 100) ? $amalkardPrevUniElami : $amalkardPrevVahed)  ?></td>
+                                                    <td style="direction: ltr;"><?php echo ($head_admin_info['parent_id'] != 1) ? $amalkardNext : (($head_admin_id == 100) ? $amalkardNextUniElami : $amalkardNextVahed)  ?></td>
                                                 </tr>
                                             </table>
 
@@ -461,6 +464,9 @@
                                         $amalkardNext = $gh['admins'][$head_admin_id]['value'] ?? 0;
                                         $amalkardPrevVahed += $amalkardPrev;
                                         $amalkardNextVahed += $amalkardNext;
+
+                                        $amalkardPrevUniNahayi += $amalkardPrev;
+                                        $amalkardNextUniNahayi += $amalkardPrev;
                                         ?>
                                         <td width="<?php echo 300 / count($groups) ?>">
                                             <table class="fixed">
@@ -470,8 +476,8 @@
                                                     <td>99</td>
                                                 </tr>
                                                 <tr class="gray">
-                                                    <td style="direction: ltr;"><?php echo ($head_admin_info['parent_id'] != 1) ? $amalkardPrev : $amalkardPrevVahed  ?></td>
-                                                    <td style="direction: ltr;"><?php echo ($head_admin_info['parent_id'] != 1) ? $amalkardNext : $amalkardNextVahed  ?></td>
+                                                    <td style="direction: ltr;"><?php echo ($head_admin_info['parent_id'] != 1) ? $amalkardPrev : (($head_admin_id == 100) ? $amalkardPrevUniNahayi : $amalkardPrevVahed)  ?></td>
+                                                    <td style="direction: ltr;"><?php echo ($head_admin_info['parent_id'] != 1) ? $amalkardNext : (($head_admin_id == 100) ? $amalkardNextUniNahayi : $amalkardNextVahed)  ?></td>
                                                 </tr>
 
                                             </table>
@@ -481,7 +487,9 @@
                                         if ($head_admin_info['parent_id'] == 1) $amalkardPrevVahed = $amalkardNextVahed = 0;
                                     endforeach; ?>
                                 </tr>
-                            <?php endforeach; ?>
+                            <?php
+                                $amalkardPrevUniElami = $amalkardNextUniElami = $amalkardPrevUniNahayi = $amalkardNextUniNahayi = 0;
+                            endforeach; ?>
                         </tbody>
                     </table>
                 </div>
