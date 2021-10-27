@@ -281,7 +281,7 @@ class shakhesController
 
         $groups = $admin->getList()['export']['list'];
         // dd($admin);
-        // dd($groups);
+        // dd($admin->get());
 
         return $groups;
     }
