@@ -555,9 +555,14 @@ class shakhesController
                     ($data[$shakhes_id][100]['nerkh'][$tmp[$i]] / $this->standard($shakhes_id, 100)) * 100; // درصد تحقق
 
             }
+        
+        
+            $EupNextUni = $EupPrevUni = $EdownNextUni = $EdownPrevUni = 0;
             // dd(1);
-            // dd($data[$shakhes_id]);
+            // dd($data[$shakhes_id][100]);
+        
         }
+        
         return $data;
     }
     private function calcuteFunction($func, $gh)

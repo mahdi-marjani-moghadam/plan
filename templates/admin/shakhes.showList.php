@@ -436,7 +436,7 @@
                                         $amalkardNextUniElami += $amalkardPrev;
 
                                         ?>
-                                        <td width="<?php echo 300 / count($groups) ?>">
+                                        <td width="<?php echo 300 / count($groups) ?>" <?php echo ($head_admin_id == 100)?'style="background-color:#ebebeb"':''?>>
                                             <table class="fixed">
 
                                                 <tr class="green">
@@ -468,7 +468,7 @@
                                         $amalkardPrevUniNahayi += $amalkardPrev;
                                         $amalkardNextUniNahayi += $amalkardPrev;
                                         ?>
-                                        <td width="<?php echo 300 / count($groups) ?>">
+                                        <td width="<?php echo 300 / count($groups) ?>" <?php echo ($head_admin_id == 100)?'style="background-color:#ebebeb"':''?>>
                                             <table class="fixed">
 
                                                 <tr class="green">
