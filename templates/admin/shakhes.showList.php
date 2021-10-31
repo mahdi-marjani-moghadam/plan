@@ -292,7 +292,7 @@
                                     <td class="text-center"><?php echo $sh['kalan_no'] ?></td>
                                     <td><?php echo $sh['shakhes'] ?></td>
                                     <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                        <td>
+                                        <td <?php echo ($head_admin_info['parent_id'] == 1 && $head_admin_id != 100)?'style="background-color:#ccc"':''?> <?php echo ($head_admin_id == 100)?'style="background-color:#999"':''?>>
                                             <table class="fixed">
                                                 <tr class="green">
                                                     <td colspan="2"> عملکرد سال</td>
@@ -320,7 +320,7 @@
                                         </td>
                                     <?php endforeach; ?>
                                     <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                        <td>
+                                        <td <?php echo ($head_admin_info['parent_id'] == 1 && $head_admin_id != 100)?'style="background-color:#ccc"':''?> <?php echo ($head_admin_id == 100)?'style="background-color:#999"':''?>>
                                             <table class="fixed">
                                                 <tr class="green">
                                                     <td colspan="2"> عملکرد سال</td>
