@@ -468,8 +468,8 @@
                                         $amalkardPrevVahed += $amalkardPrev;
                                         $amalkardNextVahed += $amalkardNext;
 
-                                        $amalkardPrevUniNahayi += $amalkardPrev;
-                                        $amalkardNextUniNahayi += $amalkardNext;
+                                        $amalkardPrevUniNahayi = $ghalamsPrev[$ghalam_id]['admins'][100]['value_import'] ?? 0;
+                                        $amalkardNextUniNahayi = $gh['admins'][100]['value_import'] ?? 0;
                                         ?>
                                         <td width="<?php echo 300 / count($groups) ?>" <?php echo ($head_admin_info['parent_id'] == 1 && $head_admin_id != 100)?'style="background-color:#ebebeb"':''?> <?php echo ($head_admin_id == 100)?'style="background-color:#ccc"':''?>>
                                             <table class="fixed">
