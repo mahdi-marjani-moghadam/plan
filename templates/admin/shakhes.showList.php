@@ -212,12 +212,12 @@
                                     <td><?php echo $kalan_no ?></td>
 
                                     <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                        <td style="direction: ltr;">
+                                        <td dir="ltr" <?php echo ($head_admin_info['parent_id'] == 1 && $head_admin_id != 100)?'style="background-color:#ebebeb"':''?> <?php echo ($head_admin_id == 100)?'style="background-color:#ccc"':''?>>
                                             <?php echo round($kalan[$head_admin_id]['darsad']['value_import'], 2) ?>
                                         </td>
                                     <?php endforeach; ?>
                                     <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                        <td style="direction: ltr;">
+                                        <td  dir="ltr" <?php echo ($head_admin_info['parent_id'] == 1 && $head_admin_id != 100)?'style="background-color:#ebebeb"':''?> <?php echo ($head_admin_id == 100)?'style="background-color:#ccc"':''?>>
                                             <?php echo round($kalan[$head_admin_id]['darsad']['value'], 2) ?>
                                         </td>
                                     <?php endforeach; ?>
