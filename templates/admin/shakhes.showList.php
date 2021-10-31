@@ -468,7 +468,7 @@
                                         $amalkardPrevUniNahayi += $amalkardPrev;
                                         $amalkardNextUniNahayi += $amalkardNext;
                                         ?>
-                                        <td width="<?php echo 300 / count($groups) ?>" <?php echo ($head_admin_id == 100)?'style="background-color:#ebebeb"':''?>>
+                                        <td width="<?php echo 300 / count($groups) ?>" <?php echo ($head_admin_info['parent_id'] == 1 && $head_admin_id != 100)?'style="background-color:#ebebeb"':''?> <?php echo ($head_admin_id == 100)?'style="background-color:#ccc"':''?>>
                                             <table class="fixed">
 
                                                 <tr class="green">
