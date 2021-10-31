@@ -311,6 +311,7 @@ class shakhesController
         sh_import.motevali_admin_id,
         sh_import.import,
         sh_import.ghalam_id,
+        sh_import.motevalis,
         sh_import.value' . $season . '_import as value_import,
         sh_import.value' . $season . ' as value
         ');
@@ -330,6 +331,11 @@ class shakhesController
 
             $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['value_import'] = $item['value_import'];
             $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['value'] = $item['value'];
+            if($item['motevalis'] == ''){
+                // echo ($item['motevalis']).'---------------------';
+                $ghalam[$item['ghalam_id']]['admins'][100]['value_import'] += $item['value_import'];
+                $ghalam[$item['ghalam_id']]['admins'][100]['value'] += $item['value'];
+            }
         }
 
         // dd($ghalam);
