@@ -421,7 +421,7 @@ class shakhesController
             $amalkardNext = $this->calcuteFunction($function, $ghN); // محاسبه عملکرد ۹۹
             $amalkardPrev = $this->calcuteFunction($function, $ghP); // محاسبه عملکرد ۹۸
 
-            //            dd($amalkardNext);
+//                        dd($ghP);
 
             $data[$shakhes_id] = $EupNext = $EupPrev = $EdownNext = $EdownPrev = $EupNextUni = $EdownNextUni = $EupPrevUni = $EdownPrevUni =  array();
 
@@ -466,6 +466,11 @@ class shakhesController
                     //   اعلامي   //
                     ///////////////
                     ///////////////
+//                    if($motevali == 2131){
+//
+//                        echo $motevali;
+//                        dd($amalkardPrev[$motevali]);
+//                    }
                     $nerkh[$motevali]['value_import'] = (($amalkardNext[$motevali]['value_import'] / $amalkardPrev[$motevali]['value_import']) - 1) * 100; // نرخ رشد واحدها
                     $darsad[$motevali]['value_import'] = ($nerkh[$motevali]['value_import'] / $this->standard($shakhes_id, $motevali)) * 100; // درصد تحقق واحدها
 
@@ -476,7 +481,7 @@ class shakhesController
                     $data[$shakhes_id][$motevali]['darsad']['value_import'] = $darsad[$motevali]['value_import']; // درصد تحقق واحدها
 
                     // برای جدول در سطح کلان
-                    $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value_import'] +=
+                    $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value_import'] =
                         $data[$shakhes_id][$motevali]['darsad']['value_import'] * $this->shakhesVazn($shakhes_id, $motevali); // اعلامی
 
 
@@ -525,14 +530,21 @@ class shakhesController
                         $data[$shakhes_id][$admin['parent_id']]['nerkh'][$tmp[$i]] =
                             (($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]]) - 1) * 100; // نرخ رشد
 
+
                         $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]] =
                             ($data[$shakhes_id][$admin['parent_id']]['nerkh'][$tmp[$i]] / $this->standard($shakhes_id, $admin['parent_id'])) * 100; // درصد تحقق
 
-                        
-
-                        // برای جدول در سطح کلان 
-                        $data['kalan'][$shakhes['kalan_no']][$admin['parent_id']]['darsad'][$tmp[$i]] +=
+                        // برای جدول در سطح کلان
+                        $data['kalan'][$shakhes['kalan_no']][$admin['parent_id']]['darsad'][$tmp[$i]] =
                             $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]] * $this->shakhesVazn($shakhes_id, $admin['parent_id']); // درصد تحقق نهایی و اعلامی
+
+
+//                        if($tmp[$i] == 'value_import'){
+//                            echo 'M'.$motevali.'-'.$admin['parent_id'].'<br>';
+//                            echo $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]].'*'.($this->shakhesVazn($shakhes_id, $admin['parent_id'])).'='.
+//                                $data['kalan'][$shakhes['kalan_no']][$admin['parent_id']]['darsad'][$tmp[$i]].'<br>';
+//
+//                        }
                     }
                 } else {
                     //ترتیب این خط خیلی مهمه برای محاسبه کل واحد باید اینجا ریست بشه
@@ -559,6 +571,14 @@ class shakhesController
                 $data[$shakhes_id][100]['darsad'][$tmp[$i]] =
                     ($data[$shakhes_id][100]['nerkh'][$tmp[$i]] / $this->standard($shakhes_id, 100)) * 100; // درصد تحقق
 
+//                dd($shakhes_id);
+//                dd($this->shakhesVazn($shakhes_id, $admin['parent_id']));
+//                dd( $data[$shakhes_id][100]['darsad'][$tmp[$i]]);
+                // برای جدول در سطح کلان
+                $data['kalan'][$shakhes['kalan_no']][100]['darsad'][$tmp[$i]] =
+                    $data[$shakhes_id][100]['darsad'][$tmp[$i]] * $this->shakhesVazn($shakhes_id, 100); // درصد تحقق نهایی و اعلامی
+
+
             }
 
 
@@ -576,6 +596,7 @@ class shakhesController
         // $func = '101109/101109';
         // $func = '101109';
 
+//echo($func);
         $f = explode('/', $func);
         $functionUp = explode('+', $f[0]);
         $v = $d = array();
