@@ -331,7 +331,7 @@ class shakhesController
 
             $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['value_import'] = $item['value_import'];
             $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['value'] = $item['value'];
-            if($item['motevalis'] == ''){
+            if ($item['motevalis'] == '') {
                 // echo ($item['motevalis']).'---------------------';
                 $ghalam[$item['ghalam_id']]['admins'][100]['value_import'] += $item['value_import'];
                 $ghalam[$item['ghalam_id']]['admins'][100]['value'] += $item['value'];
@@ -413,8 +413,7 @@ class shakhesController
 
     public function getReports($sh, $ghN, $ghP, $admins)
     {
-
-
+        
         foreach ($sh as $shakhes_id => $shakhes) {
 
             $function = $shakhes['function'];
@@ -529,7 +528,7 @@ class shakhesController
                         $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]] =
                             ($data[$shakhes_id][$admin['parent_id']]['nerkh'][$tmp[$i]] / $this->standard($shakhes_id, $admin['parent_id'])) * 100; // درصد تحقق
 
-
+                        
 
                         // برای جدول در سطح کلان 
                         $data['kalan'][$shakhes['kalan_no']][$admin['parent_id']]['darsad'][$tmp[$i]] +=
@@ -561,14 +560,14 @@ class shakhesController
                     ($data[$shakhes_id][100]['nerkh'][$tmp[$i]] / $this->standard($shakhes_id, 100)) * 100; // درصد تحقق
 
             }
-        
-        
+
+
             $EupNextUni = $EupPrevUni = $EdownNextUni = $EdownPrevUni = 0;
             // dd(1);
             // dd($data[$shakhes_id][100]);
-        
+
         }
-        
+
         return $data;
     }
     private function calcuteFunction($func, $gh)
