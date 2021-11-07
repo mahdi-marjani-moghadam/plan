@@ -263,16 +263,16 @@
                                         ) : ?>
 
                                             <input name="import[<?php echo $import['id'] ?>][import_tozihat6]" value="<?php echo $tozihat6 ?>" autocomplete="off" class="form-control">
-                                            <br><?php echo $import['confirm1_tozihat6'] ?>
-                                            <br><?php echo $import['confirm2_tozihat6'] ?>
-                                            <br><?php echo $import['confirm3_tozihat6'] ?>
-                                            <?php echo $import['confirm4_tozihat6'] ?>
+                                            <?php echo ($import['confirm1_tozihat6'] != '')? '<br>'.$import['confirm1_tozihat6'] : ''; ?>
+                                            <?php echo ($import['confirm2_tozihat6'] != '')? '<br>'.$import['confirm2_tozihat6'] : ''; ?>
+                                            <?php echo ($import['confirm3_tozihat6'] != '')? '<br>'.$import['confirm3_tozihat6'] : ''; ?>
+                                            <?php echo ($import['confirm4_tozihat6'] != '')? '<br>'.$import['confirm4_tozihat6'] : ''; ?>
                                         <?php else : ?>
                                             <?php echo $import['import_tozihat6'] ?>
-                                            <br><?php echo $import['confirm1_tozihat6'] ?>
-                                            <br><?php echo $import['confirm2_tozihat6'] ?>
-                                            <br><?php echo $import['confirm3_tozihat6'] ?>
-                                            <br><?php echo $import['confirm4_tozihat6'] ?>
+                                            <?php echo ($import['confirm1_tozihat6'] != '')? '<br>'.$import['confirm1_tozihat6'] : ''; ?>
+                                            <?php echo ($import['confirm2_tozihat6'] != '')? '<br>'.$import['confirm2_tozihat6'] : ''; ?>
+                                            <?php echo ($import['confirm3_tozihat6'] != '')? '<br>'.$import['confirm3_tozihat6'] : ''; ?>
+                                            <?php echo ($import['confirm4_tozihat6'] != '')? '<br>'.$import['confirm4_tozihat6'] : ''; ?>
                                         <?php endif; ?>
                                     </td>
 
@@ -310,16 +310,18 @@
                                             isset($_GET['filterAdmin'])
                                         ) : ?>
                                             <input name="import[<?php echo $import['id'] ?>][import_tozihat12]" value="<?php echo $tozihat12 ?>" autocomplete="off" class="form-control">
-                                            <br><?php echo $import['confirm1_tozihat12'] ?>
-                                            <br><?php echo $import['confirm2_tozihat12'] ?>
-                                            <br><?php echo $import['confirm3_tozihat12'] ?>
-                                            <br><?php echo $import['confirm4_tozihat12'] ?>
+                                            <?php echo ($import['confirm1_tozihat12'] != '')? '<br>'.$import['confirm1_tozihat12'] : ''; ?>
+                                            <?php echo ($import['confirm2_tozihat12'] != '')? '<br>'.$import['confirm2_tozihat12'] : ''; ?>
+                                            <?php echo ($import['confirm3_tozihat12'] != '')? '<br>'.$import['confirm3_tozihat12'] : ''; ?>
+                                            <?php echo ($import['confirm4_tozihat12'] != '')? '<br>'.$import['confirm4_tozihat12'] : ''; ?>
+                                            
                                         <?php else : ?>
                                             <?php echo $import['import_tozihat12'] ?>
-                                            <br><?php echo $import['confirm1_tozihat12'] ?>
-                                            <br><?php echo $import['confirm2_tozihat12'] ?>
-                                            <br><?php echo $import['confirm3_tozihat12'] ?>
-                                            <br><?php echo $import['confirm4_tozihat12'] ?>
+                                            <?php echo ($import['confirm1_tozihat12'] != '')? '<br>'.$import['confirm1_tozihat12'] : ''; ?>
+                                            <?php echo ($import['confirm2_tozihat12'] != '')? '<br>'.$import['confirm2_tozihat12'] : ''; ?>
+                                            <?php echo ($import['confirm3_tozihat12'] != '')? '<br>'.$import['confirm3_tozihat12'] : ''; ?>
+                                            <?php echo ($import['confirm4_tozihat12'] != '')? '<br>'.$import['confirm4_tozihat12'] : ''; ?>
+                                            
                                         <?php endif; ?>
                                     </td>
 
