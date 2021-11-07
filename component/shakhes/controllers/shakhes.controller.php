@@ -350,6 +350,7 @@ class shakhesController
         $relGhalamShakhes->select(' 
         sh_shakhes.shakhes, 
         sh_shakhes.shakhes_id, 
+        sh_shakhes.afzayande, 
         sh_rel_kalan_shakhes.kalan_no,
         sh_rel_ghalam_shakhes.ghalam_id,
         sh_rel_ghalam_shakhes.type
@@ -359,11 +360,12 @@ class shakhesController
         $relGhalamShakhes->leftJoin('sh_rel_kalan_shakhes', 'sh_rel_kalan_shakhes.shakhes_id', '=', 'sh_rel_ghalam_shakhes.shakhes_id');
         $relGhalamShakhes->where('sh_rel_ghalam_shakhes.ghalam_id', 'in', implode(',', array_unique(array_keys($ghalams))));
         $rels = $relGhalamShakhes->getList()['export']['list'];
-        // dd($rels);
+//         dd($rels);
         foreach ($rels as $rel) {
             // dd($ghalams);
             $shakhes[$rel['shakhes_id']]['shakhes'] = $rel['shakhes'];
             $shakhes[$rel['shakhes_id']]['shakhes_id'] = $rel['shakhes_id'];
+            $shakhes[$rel['shakhes_id']]['afzayande'] = $rel['afzayande'];
             $shakhes[$rel['shakhes_id']]['kalan_no'] = $rel['kalan_no'];
             $shakhes[$rel['shakhes_id']]['function'] = $this->shakhesFunction($rel['shakhes_id']);
             // $functionsRequirement[$rel['shakhes_id']][$rel['type']][$rel['ghalam_id']]['admins'] = $ghalams[$rel['ghalam_id']];
@@ -446,8 +448,14 @@ class shakhesController
                     //    نهايي  //
                     ///////////////
                     ///////////////
-                    $nerkh[$motevali]['value'] = (($amalkardNext[$motevali]['value'] / $amalkardPrev[$motevali]['value']) - 1) * 100; // نرخ رشد واحدها
-                    $darsad[$motevali]['value'] = ($nerkh[$motevali]['value'] / $this->standard($shakhes_id, $motevali)) * 100; // درصد تحقق واحدها
+                    if($shakhes['afzayande'] == 1) {
+                        $nerkh[$motevali]['value'] = (($amalkardNext[$motevali]['value'] / $amalkardPrev[$motevali]['value']) - 1) * 100; // نرخ رشد واحدها
+                    }
+                    else{
+                        $nerkh[$motevali]['value'] = (1 - ($amalkardNext[$motevali]['value'] / $amalkardPrev[$motevali]['value'])) * 100; // نرخ رشد واحدها
+                    }
+                    // درصد تحقق واحدها
+                    $darsad[$motevali]['value'] = ($nerkh[$motevali]['value'] / $this->standard($shakhes_id, $motevali)) * 100;
 
                     // برای جدول شاخص
                     $data[$shakhes_id][$motevali]['amalkardNext']['value'] = $amalkardNext[$motevali]['value']; // عملکرد ۹۹ واحدها
@@ -471,7 +479,13 @@ class shakhesController
 //                        echo $motevali;
 //                        dd($amalkardPrev[$motevali]);
 //                    }
-                    $nerkh[$motevali]['value_import'] = (($amalkardNext[$motevali]['value_import'] / $amalkardPrev[$motevali]['value_import']) - 1) * 100; // نرخ رشد واحدها
+
+                    if($shakhes['afzayande'] == 1) {
+                        $nerkh[$motevali]['value_import'] = (($amalkardNext[$motevali]['value_import'] / $amalkardPrev[$motevali]['value_import']) - 1) * 100; // نرخ رشد واحدها
+
+                    }else{
+                        $nerkh[$motevali]['value_import'] = (1 - ($amalkardNext[$motevali]['value_import'] / $amalkardPrev[$motevali]['value_import'])) * 100; // نرخ رشد واحدها
+                    }
                     $darsad[$motevali]['value_import'] = ($nerkh[$motevali]['value_import'] / $this->standard($shakhes_id, $motevali)) * 100; // درصد تحقق واحدها
 
                     // برای جدول شاخص
@@ -481,7 +495,7 @@ class shakhesController
                     $data[$shakhes_id][$motevali]['darsad']['value_import'] = $darsad[$motevali]['value_import']; // درصد تحقق واحدها
 
                     // برای جدول در سطح کلان
-                    $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value_import'] =
+                    $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value_import'] +=
                         $data[$shakhes_id][$motevali]['darsad']['value_import'] * $this->shakhesVazn($shakhes_id, $motevali); // اعلامی
 
 
@@ -527,16 +541,17 @@ class shakhesController
                         $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]]
                             = $EupPrev[$tmp[$i]] / (($EdownPrev[$tmp[$i]] == 0) ? 1 : $EdownPrev[$tmp[$i]]); // عملکرد ۹۸ برای کل واحد
 
-                        $data[$shakhes_id][$admin['parent_id']]['nerkh'][$tmp[$i]] =
-                            (($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]]) - 1) * 100; // نرخ رشد
-
+                        if($shakhes['afzayande'] == 1) {
+                            $data[$shakhes_id][$admin['parent_id']]['nerkh'][$tmp[$i]] =
+                                (($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]]) - 1) * 100; // نرخ رشد
+                        }else{
+                            $data[$shakhes_id][$admin['parent_id']]['nerkh'][$tmp[$i]] =
+                                ( 1 - ($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]])) * 100; // نرخ رشد
+                        }
 
                         $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]] =
                             ($data[$shakhes_id][$admin['parent_id']]['nerkh'][$tmp[$i]] / $this->standard($shakhes_id, $admin['parent_id'])) * 100; // درصد تحقق
 
-                        // برای جدول در سطح کلان
-                        $data['kalan'][$shakhes['kalan_no']][$admin['parent_id']]['darsad'][$tmp[$i]] =
-                            $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]] * $this->shakhesVazn($shakhes_id, $admin['parent_id']); // درصد تحقق نهایی و اعلامی
 
 
 //                        if($tmp[$i] == 'value_import'){
@@ -547,6 +562,16 @@ class shakhesController
 //                        }
                     }
                 } else {
+
+                    // برای جدول در سطح کلان
+                    //برای کل واحد
+                    $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value_import'] +=
+                        $data[$shakhes_id][$motevali]['darsad']['value_import'] * $this->shakhesVazn($shakhes_id, $motevali); // درصد تحقق نهایی و اعلامی
+                    $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value'] +=
+                        $data[$shakhes_id][$motevali]['darsad']['value'] * $this->shakhesVazn($shakhes_id, $motevali); // درصد تحقق نهایی و اعلامی
+
+
+
                     //ترتیب این خط خیلی مهمه برای محاسبه کل واحد باید اینجا ریست بشه
                     //برای حل مشکل کل واحد الهیات اینجا گذاشته شده
                     $EupNext = $EupPrev = $EdownNext = $EdownPrev = array();
@@ -565,9 +590,14 @@ class shakhesController
                 $data[$shakhes_id][100]['amalkardPrev'][$tmp[$i]]
                     = $EupPrevUni[$tmp[$i]] / (($EdownPrevUni[$tmp[$i]] == 0) ? 1 : $EdownPrevUni[$tmp[$i]]); // عملکرد ۹۸ برای کل واحد
 
-                $data[$shakhes_id][100]['nerkh'][$tmp[$i]] =
-                    (($data[$shakhes_id][100]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][100]['amalkardPrev'][$tmp[$i]]) - 1) * 100; // نرخ رشد
-
+                if($shakhes['afzayande'] == 1) {
+                    $data[$shakhes_id][100]['nerkh'][$tmp[$i]] =
+                        (($data[$shakhes_id][100]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][100]['amalkardPrev'][$tmp[$i]]) - 1) * 100; // نرخ رشد
+                }
+                else{
+                    $data[$shakhes_id][100]['nerkh'][$tmp[$i]] =
+                        ( 1 - ($data[$shakhes_id][100]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][100]['amalkardPrev'][$tmp[$i]])) * 100; // نرخ رشد
+                }
                 $data[$shakhes_id][100]['darsad'][$tmp[$i]] =
                     ($data[$shakhes_id][100]['nerkh'][$tmp[$i]] / $this->standard($shakhes_id, 100)) * 100; // درصد تحقق
 
@@ -575,7 +605,7 @@ class shakhesController
 //                dd($this->shakhesVazn($shakhes_id, $admin['parent_id']));
 //                dd( $data[$shakhes_id][100]['darsad'][$tmp[$i]]);
                 // برای جدول در سطح کلان
-                $data['kalan'][$shakhes['kalan_no']][100]['darsad'][$tmp[$i]] =
+                $data['kalan'][$shakhes['kalan_no']][100]['darsad'][$tmp[$i]] +=
                     $data[$shakhes_id][100]['darsad'][$tmp[$i]] * $this->shakhesVazn($shakhes_id, 100); // درصد تحقق نهایی و اعلامی
 
 
