@@ -135,8 +135,6 @@
                                     <td colspan="1" bgcolor=#8DD4FF>یکساله</td>
                                     <td colspan="1" bgcolor=#8DD4FF>توضیحات</td>
 
-                                    <td></td>
-
                                 </tr>
                             </thead>
                             <div class="col-md-12 col-sm-12 col-sx-12">
@@ -192,12 +190,11 @@
                                     $value12 = $import['value12_import'];
                                     $tozihat12 = $import['import_tozihat12'];
                                 } else if ($admin_info['admin_id'] == $import['confirm3']) {
-                                
+
                                     $value6 = $import['value6_arzyab'];
                                     $tozihat6 = $import['arzyab_tozihat6'];
                                     $value12 = $import['value12_arzyab'];
                                     $tozihat12 = $import['arzyab_tozihat12'];
-
                                 } else if ($admin_info['admin_id'] == $import['confirm4']) {
 
                                     $value6 = $import['value6'];
@@ -205,7 +202,7 @@
                                     $value12 = $import['value12'];
                                     $tozihat12 = $import['confirm3_tozihat12'];
                                 } else {
-  
+
                                     $value6 = $import['value6'];
                                     $tozihat6 = $import['tozihat6'];
                                     $value12 = $import['value12'];
@@ -263,16 +260,16 @@
                                         ) : ?>
 
                                             <input name="import[<?php echo $import['id'] ?>][import_tozihat6]" value="<?php echo $tozihat6 ?>" autocomplete="off" class="form-control">
-                                            <?php echo ($import['confirm1_tozihat6'] != '')? '<br>'.$import['confirm1_tozihat6'] : ''; ?>
-                                            <?php echo ($import['confirm2_tozihat6'] != '')? '<br>'.$import['confirm2_tozihat6'] : ''; ?>
-                                            <?php echo ($import['confirm3_tozihat6'] != '')? '<br>'.$import['confirm3_tozihat6'] : ''; ?>
-                                            <?php echo ($import['confirm4_tozihat6'] != '')? '<br>'.$import['confirm4_tozihat6'] : ''; ?>
+                                            <?php echo ($import['confirm1_tozihat6'] != '') ? '<br>' . $import['confirm1_tozihat6'] : ''; ?>
+                                            <?php echo ($import['confirm2_tozihat6'] != '') ? '<br>' . $import['confirm2_tozihat6'] : ''; ?>
+                                            <?php echo ($import['confirm3_tozihat6'] != '') ? '<br>' . $import['confirm3_tozihat6'] : ''; ?>
+                                            <?php echo ($import['confirm4_tozihat6'] != '') ? '<br>' . $import['confirm4_tozihat6'] : ''; ?>
                                         <?php else : ?>
                                             <?php echo $import['import_tozihat6'] ?>
-                                            <?php echo ($import['confirm1_tozihat6'] != '')? '<br>'.$import['confirm1_tozihat6'] : ''; ?>
-                                            <?php echo ($import['confirm2_tozihat6'] != '')? '<br>'.$import['confirm2_tozihat6'] : ''; ?>
-                                            <?php echo ($import['confirm3_tozihat6'] != '')? '<br>'.$import['confirm3_tozihat6'] : ''; ?>
-                                            <?php echo ($import['confirm4_tozihat6'] != '')? '<br>'.$import['confirm4_tozihat6'] : ''; ?>
+                                            <?php echo ($import['confirm1_tozihat6'] != '') ? '<br>' . $import['confirm1_tozihat6'] : ''; ?>
+                                            <?php echo ($import['confirm2_tozihat6'] != '') ? '<br>' . $import['confirm2_tozihat6'] : ''; ?>
+                                            <?php echo ($import['confirm3_tozihat6'] != '') ? '<br>' . $import['confirm3_tozihat6'] : ''; ?>
+                                            <?php echo ($import['confirm4_tozihat6'] != '') ? '<br>' . $import['confirm4_tozihat6'] : ''; ?>
                                         <?php endif; ?>
                                     </td>
 
@@ -310,34 +307,34 @@
                                             isset($_GET['filterAdmin'])
                                         ) : ?>
                                             <input name="import[<?php echo $import['id'] ?>][import_tozihat12]" value="<?php echo $tozihat12 ?>" autocomplete="off" class="form-control">
-                                            <?php echo ($import['confirm1_tozihat12'] != '')? '<br>'.$import['confirm1_tozihat12'] : ''; ?>
-                                            <?php echo ($import['confirm2_tozihat12'] != '')? '<br>'.$import['confirm2_tozihat12'] : ''; ?>
-                                            <?php echo ($import['confirm3_tozihat12'] != '')? '<br>'.$import['confirm3_tozihat12'] : ''; ?>
-                                            <?php echo ($import['confirm4_tozihat12'] != '')? '<br>'.$import['confirm4_tozihat12'] : ''; ?>
-                                            
+                                            <?php echo ($import['confirm1_tozihat12'] != '') ? '<br>' . $import['confirm1_tozihat12'] : ''; ?>
+                                            <?php echo ($import['confirm2_tozihat12'] != '') ? '<br>' . $import['confirm2_tozihat12'] : ''; ?>
+                                            <?php echo ($import['confirm3_tozihat12'] != '') ? '<br>' . $import['confirm3_tozihat12'] : ''; ?>
+                                            <?php echo ($import['confirm4_tozihat12'] != '') ? '<br>' . $import['confirm4_tozihat12'] : ''; ?>
+
                                         <?php else : ?>
                                             <?php echo $import['import_tozihat12'] ?>
-                                            <?php echo ($import['confirm1_tozihat12'] != '')? '<br>'.$import['confirm1_tozihat12'] : ''; ?>
-                                            <?php echo ($import['confirm2_tozihat12'] != '')? '<br>'.$import['confirm2_tozihat12'] : ''; ?>
-                                            <?php echo ($import['confirm3_tozihat12'] != '')? '<br>'.$import['confirm3_tozihat12'] : ''; ?>
-                                            <?php echo ($import['confirm4_tozihat12'] != '')? '<br>'.$import['confirm4_tozihat12'] : ''; ?>
-                                            
+                                            <?php echo ($import['confirm1_tozihat12'] != '') ? '<br>' . $import['confirm1_tozihat12'] : ''; ?>
+                                            <?php echo ($import['confirm2_tozihat12'] != '') ? '<br>' . $import['confirm2_tozihat12'] : ''; ?>
+                                            <?php echo ($import['confirm3_tozihat12'] != '') ? '<br>' . $import['confirm3_tozihat12'] : ''; ?>
+                                            <?php echo ($import['confirm4_tozihat12'] != '') ? '<br>' . $import['confirm4_tozihat12'] : ''; ?>
+
                                         <?php endif; ?>
                                     </td>
 
 
 
 
+                                    <?php if (
+                                        ($status == 'sendToConfirm1' && $admin_info['admin_id'] == $import['confirm1'])
+                                        || ($status == 'sendToConfirm2' && $admin_info['admin_id'] == $import['confirm2'])
+                                    ) : ?>
+                                        <td>
 
-                                    <td>
-                                        <?php if (
-                                            ($status == 'sendToConfirm1' && $admin_info['admin_id'] == $import['confirm1'])
-                                            || ($status == 'sendToConfirm2' && $admin_info['admin_id'] == $import['confirm2'])
-                                        ) : ?>
                                             <a class="btn btn-warning btn-white " data-toggle="modal" data-target="#backToEdit" data-season="<?php echo $season ?>" data-import="<?php echo $import['id'] ?>" data-motevali="<?php echo $adminName[$import['motevali_admin_id']]['name'] . ' ' . $adminName[$import['motevali_admin_id']]['family'] ?>" data-confirmnumber="<?php echo str_replace('sendToConfirm', '', $status) ?>" data-ghalamname="<?php echo $ghalamName[$import['ghalam_id']]['ghalam'] ?>" onclick="return confirm(' پس از ارسال به اصلاح، \nامکان تایید برای باقی قلم ها تا زمانی که تمام اقلام کامل شوند، وجود ندارد.\n آیا مطمئن هستید؟')">نیاز به اصلاح</a>
-                                        <?php endif; ?>
 
-                                    </td>
+                                        </td>
+                                    <?php endif; ?>
                                 </tr>
 
                             <?php
