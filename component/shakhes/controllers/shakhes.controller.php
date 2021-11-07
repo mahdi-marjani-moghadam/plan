@@ -581,10 +581,8 @@ class shakhesController
 
             }
 
-
+            //برای محاسبه دانشگاه
             $EupNextUni = $EupPrevUni = $EdownNextUni = $EdownPrevUni = 0;
-            // dd(1);
-            // dd($data[$shakhes_id][100]);
 
         }
 
