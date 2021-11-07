@@ -1141,6 +1141,9 @@ class shakhesController
         $adminName = ($admins['export']['recordsCount'] > 0) ?  $admins['export']['list'] : array();
 
 
+        $groups = array_column($imports,'motevali_admin_id');
+        // dd($groups);
+
 
         // 7
         //وضعیت قلم های ارسالی
@@ -1195,8 +1198,9 @@ class shakhesController
             }
         }
 
+        
         $this->fileName = 'shakhes.khodezhari.php';
-        $this->template(compact('shakhes', 'imports', 'ghalamName', 'adminName', 'filterAdminsSelectbox', 'importStatus'));
+        $this->template(compact('shakhes', 'imports', 'ghalamName', 'adminName', 'filterAdminsSelectbox', 'importStatus','groups'));
 
         die();
     }

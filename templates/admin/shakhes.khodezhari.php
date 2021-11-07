@@ -41,6 +41,121 @@
             <h3 class="panel-title rtl "> فرم خود اظهاری</h3>
         </div>
 
+
+        <div>
+
+
+            <style type="text/css">
+                .panel-group .panel {
+                    border-radius: 0;
+                    box-shadow: none;
+                    border-color: #EEEEEE;
+                }
+
+                .panel-group .panel-default>.panel-heading {
+                    padding: 0;
+                    border-radius: 0;
+                    color: #212121;
+                    background-color: #FAFAFA;
+                    border-color: #EEEEEE;
+                }
+
+                .panel-group .panel-title {
+                    font-size: 14px;
+                }
+
+                .panel-group .panel-title>a {
+                    display: block;
+                    padding: 15px;
+                    text-decoration: none;
+                }
+
+                .panel-group .more-less {
+                    float: right;
+                    color: #212121;
+                }
+
+                .panel-default>.panel-heading+.panel-collapse>.panel-body {
+                    border-top-color: #EEEEEE;
+                }
+            </style>
+            <script>
+                function toggleIcon(e) {
+                    $(e.target)
+                        .prev('.panel-heading')
+                        .find(".more-less")
+                        .toggleClass('glyphicon-plus glyphicon-minus');
+                }
+                $('.panel-group').on('hidden.bs.collapse', toggleIcon);
+                $('.panel-group').on('shown.bs.collapse', toggleIcon);
+            </script>
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs " role="tablist">
+                <?php foreach ($groups as $head_admin_id) :
+                    if (
+                        $adminName[$head_admin_id]['parent_id'] == 1
+                        // || $adminName[$head_admin_id]['status' . $season]  != 7
+                    ) {
+                        continue;
+                    } ?>
+                    <li role="presentation" class="pull-right"><a href="#home<?= $head_admin_id ?>" aria-controls="home<?= $head_admin_id ?>" role="tab" data-toggle="tab">
+                            <?php echo  $adminName[$head_admin_id]['name'] . ' ' . $adminName[$head_admin_id]['family'] ?>
+                        </a></li>
+                <?php endforeach; ?>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content" id="tahlil-kalan">
+
+                <?php foreach ($groups as $head_admin_id) :
+
+                    if (
+                        $adminName[$head_admin_id]['parent_id'] == 1
+                        // || $adminName[$head_admin_id]['status' . $season]  != 7
+                    ) {
+                        continue;
+                    } ?>
+                    <?/* if ($vKGroup['group_status'] == 6):*/ ?>
+
+                    <div role="tabpanel" class="tab-pane fade" id="home<?= $head_admin_id ?>">
+                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                            <?php foreach ($reports as $kalan_no => $kalan_value) : ?>
+                                <?php if (isset($kalanTahlilArray[$head_admin_id][$kalan_no])) : ?>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="headingOne<?= $head_admin_id . $kalan_no ?>">
+                                            <h4 class="panel-title">
+                                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne<?= $head_admin_id . $kalan_no ?>" aria-expanded="true" aria-controls="collapseOne<?= $head_admin_id . $kalan_no ?>">
+                                                    <?php if ($kalanTahlilArray[$head_admin_id][$kalan_no] != '') : ?>
+                                                        <i class="more-less glyphicon glyphicon-plus"></i>
+                                                    <?php endif; ?>
+                                                    <span class="yesPrint" style="display: "><?php echo  $adminName[$head_admin_id]['name'] . ' ' . $adminName[$head_admin_id]['family'] ?> | </span>
+                                                    <?php echo  ' ' . $kalan_value['kalan_name'] ?>
+                                                </a>
+                                            </h4>
+                                        </div>
+
+                                        <div id="collapseOne<?= $head_admin_id . $kalan_no ?>" class="panel-collapse collapse " style="padding: 15px" role="tabpanel" aria-labelledby="headingOne<?= $head_admin_id . $kalan_no ?>">
+
+                                            <?php echo  nl2br($kalanTahlilArray[$head_admin_id][$kalan_no]) ?>
+                                        </div>
+
+                                    </div>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </div><!-- panel-group -->
+                    </div>
+                    <?/* endif; */ ?>
+
+                <?php endforeach; ?>
+
+            </div>
+
+        </div>
+
+
+
+
+
         <div class="panel-body">
             <div id="container">
                 <div class='table-cont1'>
@@ -120,6 +235,15 @@
 
                         </div>
                     </div>
+
+
+
+
+
+
+
+
+
                     <form action="/admin/?component=shakhes&action=khodezhari" method="POST">
                         <input name="filterAdmin" value="<?php echo $_GET['filterAdmin'] ?>" type="hidden">
                         <table id="example" class="companyTable table table-striped table-bordered rtl" cellspacing="0" width="100%">
