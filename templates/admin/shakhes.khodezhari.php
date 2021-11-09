@@ -384,134 +384,179 @@
 
                         </table>
 
-                     
+
 
                         <div id="panel-1" class="panel panel-default border-green">
-        <div>
+                            <div>
 
 
-            <style type="text/css">
-                .panel-group .panel {
-                    border-radius: 0;
-                    box-shadow: none;
-                    border-color: #EEEEEE;
-                }
+                                <style type="text/css">
+                                    .panel-group .panel {
+                                        border-radius: 0;
+                                        box-shadow: none;
+                                        border-color: #EEEEEE;
+                                    }
 
-                .panel-group .panel-default>.panel-heading {
-                    padding: 0;
-                    border-radius: 0;
-                    color: #212121;
-                    background-color: #FAFAFA;
-                    border-color: #EEEEEE;
-                }
+                                    .panel-group .panel-default>.panel-heading {
+                                        padding: 0;
+                                        border-radius: 0;
+                                        color: #212121;
+                                        background-color: #FAFAFA;
+                                        border-color: #EEEEEE;
+                                    }
 
-                .panel-group .panel-title {
-                    font-size: 14px;
-                }
+                                    .panel-group .panel-title {
+                                        font-size: 14px;
+                                    }
 
-                .panel-group .panel-title>a {
-                    display: block;
-                    padding: 15px;
-                    text-decoration: none;
-                }
+                                    .panel-group .panel-title>a {
+                                        display: block;
+                                        padding: 15px;
+                                        text-decoration: none;
+                                    }
 
-                .panel-group .more-less {
-                    float: right;
-                    color: #212121;
-                }
+                                    .panel-group .more-less {
+                                        float: right;
+                                        color: #212121;
+                                    }
 
-                .panel-default>.panel-heading+.panel-collapse>.panel-body {
-                    border-top-color: #EEEEEE;
-                }
-            </style>
-            <script>
-                function toggleIcon(e) {
-                    $(e.target)
-                        .prev('.panel-heading')
-                        .find(".more-less")
-                        .toggleClass('glyphicon-plus glyphicon-minus');
-                }
-                $('.panel-group').on('hidden.bs.collapse', toggleIcon);
-                $('.panel-group').on('shown.bs.collapse', toggleIcon);
-            </script>
-            <!-- Nav tabs -->
-            <ul class="nav nav-tabs " role="tablist">
-                <?php foreach ($groups as $head_admin_id) :
-                    if (
-                        $adminName[$head_admin_id]['parent_id'] == 1
-                        // || $adminName[$head_admin_id]['status' . $season]  != 7
-                    ) {
-                        continue;
-                    } ?>
-                    <li role="presentation" class="pull-right"><a href="#home<?= $head_admin_id ?>" aria-controls="home<?= $head_admin_id ?>" role="tab" data-toggle="tab">
-                            <?php echo  $adminName[$head_admin_id]['name'] . ' ' . $adminName[$head_admin_id]['family'] ?>
-                        </a></li>
-                <?php endforeach; ?>
-            </ul>
+                                    .panel-default>.panel-heading+.panel-collapse>.panel-body {
+                                        border-top-color: #EEEEEE;
+                                    }
+                                </style>
+                                <script>
+                                    function toggleIcon(e) {
+                                        $(e.target)
+                                            .prev('.panel-heading')
+                                            .find(".more-less")
+                                            .toggleClass('glyphicon-plus glyphicon-minus');
+                                    }
+                                    $('.panel-group').on('hidden.bs.collapse', toggleIcon);
+                                    $('.panel-group').on('shown.bs.collapse', toggleIcon);
+                                </script>
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs " role="tablist">
+                                    <?php foreach ($groups as $head_admin_id) :
+                                        if (
+                                            $adminName[$head_admin_id]['parent_id'] == 1
+                                            // || $adminName[$head_admin_id]['status' . $season]  != 7
+                                        ) {
+                                            continue;
+                                        } ?>
+                                        <li role="presentation" class="pull-right"><a href="#home<?= $head_admin_id ?>" aria-controls="home<?= $head_admin_id ?>" role="tab" data-toggle="tab">
+                                                <?php echo  $adminName[$head_admin_id]['name'] . ' ' . $adminName[$head_admin_id]['family'] ?>
+                                            </a></li>
+                                    <?php endforeach; ?>
+                                </ul>
 
-            <!-- Tab panes -->
-            <div class="tab-content" id="tahlil-kalan">
+                                <!-- Tab panes -->
+                                <div class="tab-content" id="tahlil-kalan">
 
-                <?php foreach ($groups as $head_admin_id) :
+                                    <?php foreach ($groups as $head_admin_id) :
 
-                    if (
-                        $adminName[$head_admin_id]['parent_id'] == 1
-                        // || $adminName[$head_admin_id]['status' . $season]  != 7
-                    ) {
-                        continue;
-                    } ?>
-                    <?/* if ($vKGroup['group_status'] == 6):*/ ?>
+                                        if (
+                                            $adminName[$head_admin_id]['parent_id'] == 1
+                                            // || $adminName[$head_admin_id]['status' . $season]  != 7
+                                        ) {
+                                            continue;
+                                        } ?>
+                                        <?/* if ($vKGroup['group_status'] == 6):*/ ?>
 
-                    <div role="tabpanel" class="tab-pane fade" id="home<?= $head_admin_id ?>">
-                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                            <?php foreach ($kalans as $kalan_no => $kalan_value) : ?>
+                                        <div role="tabpanel" class="tab-pane fade" id="home<?= $head_admin_id ?>">
+                                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                                <?php foreach ($kalans as $kalan_no => $kalan_value) : ?>
 
-                                <?php //if (isset($kalanTahlilArray[$head_admin_id][$kalan_no])) : 
-                                ?>
-                                <div class="panel panel-default">
-                                    <div class="panel-heading" role="tab" id="headingOne<?= $head_admin_id . $kalan_no ?>">
-                                        <h4 class="panel-title">
-                                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne<?= $head_admin_id . $kalan_no ?>" aria-expanded="true" aria-controls="collapseOne<?= $head_admin_id . $kalan_no ?>">
-                                                <?php if ($kalanTahlilArray[$head_admin_id][$kalan_no] != '') : ?>
-                                                    <i class="more-less glyphicon glyphicon-plus"></i>
-                                                <?php endif; ?>
+                                                    <?php //if (isset($kalanTahlilArray[$head_admin_id][$kalan_no])) : 
+                                                    ?>
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading" role="tab" id="headingOne<?= $head_admin_id . $kalan_no ?>">
+                                                            <h4 class="panel-title">
+                                                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne<?= $head_admin_id . $kalan_no ?>" aria-expanded="true" aria-controls="collapseOne<?= $head_admin_id . $kalan_no ?>">
+                                                                    <?php if ($kalanTahlilArray[$head_admin_id][$kalan_no] != '') : ?>
+                                                                        <i class="more-less glyphicon glyphicon-plus"></i>
+                                                                    <?php endif; ?>
 
-                                                <?php echo  ' ' . $kalan_value['kalan'] ?>
+                                                                    <?php echo  ' ' . $kalan_value['kalan'] ?>
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+
+                                                        <div id="collapseOne<?= $head_admin_id . $kalan_no ?>" class="panel-collapse collapse " style="padding: 15px" role="tabpanel" aria-labelledby="headingOne<?= $head_admin_id . $kalan_no ?>">
 
 
-                                            </a>
-                                        </h4>
-                                    </div>
+                                                          
 
-                                    <div id="collapseOne<?= $head_admin_id . $kalan_no ?>" class="panel-collapse collapse " style="padding: 15px" role="tabpanel" aria-labelledby="headingOne<?= $head_admin_id . $kalan_no ?>">
-                                        <textarea name="" id="" cols="30" rows="2"></textarea>
-                                        <?php echo  nl2br($kalanTahlilArray[$head_admin_id][$kalan_no]) ?>
-                                    </div>
+                                                            <?php //   مربوط به تایید کننده سوم
+                                                            if (
+                                                                $activeSendToConfirm3  && $activeImportButton == false &&
+                                                                in_array($admin_info['admin_id'], [$import['confirm3']])
+                                                            ) : ?>
+                                                                <textarea class="sh_kalan_tahlil" data-manager-or-arzyab='arzyab' data-kalan-no='<?php echo $kalan_no ?>' data-admin-id='<?php echo $head_admin_id ?>' data-season='<?php echo $season ?>' cols="30" rows="2"></textarea>
+                                                            <?php endif ?>
+
+                                                            <?php //   مربوط به تایید کننده چهارم
+                                                            if (
+                                                                $activeSendToConfirm4  && $activeImportButton == false &&
+                                                                in_array($admin_info['admin_id'], [$import['confirm4']])
+                                                            ) : ?>
+                                                                <textarea class="sh_kalan_tahlil" data-manager-or-arzyab='manager' data-kalan-no='<?php echo $kalan_no ?>' data-admin-id='<?php echo $head_admin_id ?>' data-season='<?php echo $season ?>' cols="30" rows="2"></textarea>
+                                                            <?php endif ?>
+
+                                                            <?php echo  nl2br($kalanTahlilArray[$head_admin_id][$kalan_no]) ?>
+                                                        </div>
+
+                                                    </div>
+                                                    <?php //endif; 
+                                                    ?>
+                                                <?php endforeach; ?>
+                                            </div><!-- panel-group -->
+                                        </div>
+                                        <?/* endif; */ ?>
+
+                                    <?php endforeach; ?>
 
                                 </div>
-                                <?php //endif; 
-                                ?>
-                            <?php endforeach; ?>
-                        </div><!-- panel-group -->
-                    </div>
-                    <?/* endif; */ ?>
 
-                <?php endforeach; ?>
+                            </div>
 
-            </div>
 
-        </div>
-    </div>
-                     
-                     
-                     
-                     
-                     
-                     
-                     
-                     
-                     
-                     <?php // دکمه های مربوط به وارد کننده 
+                            <script>
+                                $('.sh_kalan_tahlil').on('blur', function(event) {
+                                    var kalanNo = $(this).data('kalan-no');
+                                    var adminId = $(this).data('admin-id');
+                                    var season = $(this).data('season');
+                                    var managerOrArzyab = $(this).data('manager-or-arzyab');
+                                    var tahlil = $(this).val();
+
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "/admin/?component=shakhes&action=khodezhari&func=shKalanTahlil",
+                                        data: {
+                                            kalanNo: kalanNo,
+                                            adminId: adminId,
+                                            tahlil: tahlil,
+                                            season: season,
+                                            managerOrArzyab: managerOrArzyab
+                                        },
+                                        success: function(result) {
+                                            $('a[data-import=' + $('input#import').val() + ']').before('بازگشت به اصلاح');
+                                            $('a[data-import=' + $('input#import').val() + ']').hide();
+                                        }
+                                    });
+                                    console.log(kalanNo, adminId, tahlil);
+                                });
+                            </script>
+                        </div>
+
+
+
+
+
+
+
+
+
+                        <?php // دکمه های مربوط به وارد کننده 
 
                         if (
                             $activeImportButton &&
@@ -602,7 +647,7 @@
     </div>
 
 
-    
+
 </div>
 <div class="modal fade" id="backToEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

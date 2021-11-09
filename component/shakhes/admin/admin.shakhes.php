@@ -42,6 +42,9 @@ switch ($_GET['action']) {
         if ($_GET['func'] == 'backToEdit') {
             $controller->backToEdit();
         }
+        if ($_GET['func'] == 'shKalanTahlil') {
+            $controller->shKalanTahlilStore();
+        }
         if ($_POST) {
             $controller->khodezhariOnSubmit();
         } else {
