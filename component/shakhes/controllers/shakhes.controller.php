@@ -1074,11 +1074,14 @@ class shakhesController
         // include_once ROOT_DIR . "component/shakhes/model/import_status.model.php";
         include_once ROOT_DIR . "component/admin/model/admin_status.model.php";
         include_once ROOT_DIR . "component/admin/model/admin.model.php";
+        include_once ROOT_DIR . "component/kalan/model/kalan.model.php";
+        include_once ROOT_DIR.'component/shakhes/model/shakhes_kalan_tahlil.model.php';
         $obj = new shakhes();
         $ghalam = new ghalam();
         // $importStatus = new importStatus(); 
         $admin = new admin();
-
+        $kalan = new kalan();
+        $kalanTahlil = new sh_kalan_tahlil();
 
 
         // 1
@@ -1132,6 +1135,7 @@ class shakhesController
         $ghalams = $ghalam->getAll()->keyBy('ghalam_id')->getList();
         $ghalamName = ($ghalams['export']['recordsCount'] > 0) ?  $ghalams['export']['list'] : array();
         // dd($ghalams);
+        
 
 
 
@@ -1141,8 +1145,32 @@ class shakhesController
         $adminName = ($admins['export']['recordsCount'] > 0) ?  $admins['export']['list'] : array();
 
 
-        $groups = array_column($imports,'motevali_admin_id');
-        // dd($groups);
+        // 7
+        // برای کلان تحلیل
+        $groups = array_unique(array_column($imports,'motevali_admin_id'));
+        $kalanObj = $kalan->keyBy('kalan_no')->getList();
+        $kalans = ($kalanObj['export']['recordsCount'] > 0) ?  $kalanObj['export']['list'] : array();
+        
+         /** kalan_tahlil */
+         $groupString =  implode(', ', array_map(function ($entry) {
+            return $entry['admin_id'];
+        }, $groups));
+
+        $season = (STEP_FORM1 >= 3)?12:6;
+        $managerOrArzyab = ($admin_info['admin_id'] == 1)?'manager':(( $admin_info['parent_id'] == 0)?'arzyab':'');
+        // dd($season);
+
+        $kalanTahlilObj = $kalanTahlil->getAll()
+            ->select('kalan_tahlil_'.$managerOrArzyab.$season,'admin_id','kalan_no')
+            ->where('admin_id','in',$groupString)
+            ->where('year','=',KHODEZHARI_YEAR)
+            ->getList()['export']['list'];
+
+        $kalanTahlilArray = array();
+        foreach ($kalanTahlilObj as $v){
+            $kalanTahlilArray[$v['admin_id']][$v['kalan_no']] = $v['kalan_tahlil_manager'.$season];
+        }        
+        // dd($kalanTahlilArray);
 
 
         // 7
@@ -1158,7 +1186,7 @@ class shakhesController
         // $importStatus = $importStatus->query($query)->keyBy('motevali')->getList();
         // $adminStatus = ($importStatus['export']['recordsCount'] > 0) ?  $importStatus['export']['list'] : array();
 
-        // 7
+        // 8
         // وضعیت متولی
         $query = "select 
         i.motevali_admin_id,i.status6, i.status12
@@ -1200,7 +1228,18 @@ class shakhesController
 
         
         $this->fileName = 'shakhes.khodezhari.php';
-        $this->template(compact('shakhes', 'imports', 'ghalamName', 'adminName', 'filterAdminsSelectbox', 'importStatus','groups'));
+        $this->template(compact(
+            'shakhes', 
+            'imports', 
+            'ghalamName', 
+            'adminName', 
+            'filterAdminsSelectbox', 
+            'importStatus',
+            'groups',
+            'kalans',
+            'kalanTahlilArray',
+            'season'
+        ));
 
         die();
     }
