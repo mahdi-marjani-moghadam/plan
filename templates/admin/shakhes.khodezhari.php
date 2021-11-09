@@ -527,6 +527,9 @@
                                     var season = $(this).data('season');
                                     var managerOrArzyab = $(this).data('manager-or-arzyab');
                                     var tahlil = $(this).val();
+                                    var element = $(this);
+
+                                    $('.kalan-tahlil-success').remove();
 
                                     $.ajax({
                                         type: "POST",
@@ -539,11 +542,12 @@
                                             managerOrArzyab: managerOrArzyab
                                         },
                                         success: function(result) {
-                                            $('a[data-import=' + $('input#import').val() + ']').before('بازگشت به اصلاح');
-                                            $('a[data-import=' + $('input#import').val() + ']').hide();
+                                            element.after('<div class="kalan-tahlil-success">ذخیره شد</div>');
+                                            
                                         }
                                     });
-                                    console.log(kalanNo, adminId, tahlil);
+                                    
+                                    // console.log(kalanNo, adminId, tahlil);
                                 });
                             </script>
                         </div>

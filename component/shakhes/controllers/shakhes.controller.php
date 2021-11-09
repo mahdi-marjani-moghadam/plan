@@ -1462,6 +1462,14 @@ class shakhesController
             $kalanTahlilObj->year = KHODEZHARI_YEAR;
             // dd($kalanTahlilObj);
             $kalanTahlilObj->save();
+        }else{
+            $kalanTahlilObj = $kalanTahlil['export']['list'][0];
+            $kalanTahlilObj->kalan_no = $post['kalanNo'];
+            $kalanTahlilObj->admin_id = $post['adminId'];
+            $kalanTahlilObj->$tahlil = $post['tahlil'];
+            $kalanTahlilObj->year = KHODEZHARI_YEAR;
+            $kalanTahlilObj->save();
+
         }
 
         return 1;
