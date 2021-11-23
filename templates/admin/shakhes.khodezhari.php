@@ -491,6 +491,9 @@
                                                                 $activeSendToConfirm3  && $activeImportButton == false &&
                                                                 in_array($admin_info['admin_id'], [$import['confirm3']])
                                                             ) : ?>
+                                                            <?php foreach($kalanTahlilArray as $adminId => $kalanTahlil):?>
+                                                            <?php echo '<br>'.$kalanTahlil ?>
+                                                            <?php endforeach ?>
                                                                 <textarea class="sh_kalan_tahlil" data-manager-or-arzyab='arzyab' data-kalan-no='<?php echo $kalan_no ?>' data-admin-id='<?php echo $head_admin_id ?>' data-season='<?php echo $season ?>' cols="30" rows="2"></textarea>
                                                             <?php endif ?>
 

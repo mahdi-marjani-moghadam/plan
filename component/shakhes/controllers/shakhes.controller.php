@@ -1149,23 +1149,23 @@ class shakhesController
         $kalans = ($kalanObj['export']['recordsCount'] > 0) ?  $kalanObj['export']['list'] : array();
 
         /** kalan_tahlil */
-        $groupString =  implode(', ', array_map(function ($entry) {
-            return $entry['admin_id'];
-        }, $groups));
+        $groupString =  implode(', ',$groups);
 
         $season = (STEP_FORM1 >= 3) ? 12 : 6;
         $managerOrArzyab = ($admin_info['admin_id'] == 1) ? 'manager' : (($admin_info['parent_id'] == 0) ? 'arzyab' : '');
         // dd($season);
 
-        $kalanTahlilObj = $kalanTahlil->getAll()
-            ->select('kalan_tahlil_' . $managerOrArzyab . $season, 'admin_id', 'kalan_no')
-            ->where('admin_id', 'in', $groupString)
-            ->where('year', '=', KHODEZHARI_YEAR)
-            ->getList()['export']['list'];
+        $kalanTahlilObj = $kalanTahlil->getAll();
+        $kalanTahlilObj = $kalanTahlil->select('tahlil_' . $managerOrArzyab . $season, 'admin_id', 'kalan_no');
+        $kalanTahlilObj = $kalanTahlil->where('admin_id', 'in', $groupString);
+        $kalanTahlilObj = $kalanTahlil->where('year', '=', KHODEZHARI_YEAR);
+            
+            // dd($groupString);
+        $kalanTahlilObj = $kalanTahlil->getList()['export']['list'];
 
         $kalanTahlilArray = array();
         foreach ($kalanTahlilObj as $v) {
-            $kalanTahlilArray[$v['admin_id']][$v['kalan_no']] = $v['kalan_tahlil_manager' . $season];
+            $kalanTahlilArray[$v['admin_id']][$v['kalan_no']] = $v['tahlil_manager' . $season];
         }
         // dd($kalanTahlilArray);
 
@@ -1443,18 +1443,18 @@ class shakhesController
     {
         include_once ROOT_DIR . 'component/shakhes/model/shakhes_kalan_tahlil.model.php';
         $kalanTahlilObj = new sh_kalan_tahlil();
-        
+
         $post = $_POST;
-        
+
         $kalanTahlilObj->where('kalan_no', '=', $post['kalanNo']);
         $kalanTahlilObj->where('admin_id', '=', $post['adminId']);
-        
+
         $kalanTahlil = $kalanTahlilObj->get();
 
-        $tahlil = 'tahlil_'.$post['managerOrArzyab'].$post['season'];
+        $tahlil = 'tahlil_' . $post['managerOrArzyab'] . $post['season'];
 
-        
-        if($kalanTahlil['export']['recordsCount'] == 0){
+
+        if ($kalanTahlil['export']['recordsCount'] == 0) {
             $kalanTahlilObj = new sh_kalan_tahlil();
             $kalanTahlilObj->kalan_no = $post['kalanNo'];
             $kalanTahlilObj->admin_id = $post['adminId'];
@@ -1462,14 +1462,13 @@ class shakhesController
             $kalanTahlilObj->year = KHODEZHARI_YEAR;
             // dd($kalanTahlilObj);
             $kalanTahlilObj->save();
-        }else{
+        } else {
             $kalanTahlilObj = $kalanTahlil['export']['list'][0];
             $kalanTahlilObj->kalan_no = $post['kalanNo'];
             $kalanTahlilObj->admin_id = $post['adminId'];
             $kalanTahlilObj->$tahlil = $post['tahlil'];
             $kalanTahlilObj->year = KHODEZHARI_YEAR;
             $kalanTahlilObj->save();
-
         }
 
         return 1;
