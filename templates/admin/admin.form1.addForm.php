@@ -28,7 +28,7 @@
             "paging": false,
             "processing": true,
             "serverSide": true,
-            "ajax": "<?= RELA_DIR ?>admin/?component=form&action=search&id=<?= $_GET['id'] ?>&status=<?= $list['status' . STEP_FORM1] ?>",
+            "ajax": "<?php echo RELA_DIR ?>admin/?component=form&action=search&id=<?php echo $_GET['id'] ?>&status=<?php echo $list['status' . STEP_FORM1] ?>",
             "ordering": false,
         });
 
@@ -201,26 +201,26 @@
 
             <!-- separator -->
             <div class="table-responsive table-responsive-datatables">
-                <? if($msg != ''): ?>
-                <?= $msg; ?>
-                <? endif;?>
+                <?php if($msg != ''): ?>
+                <?php echo $msg; ?>
+                <?php endif;?>
                 <style>
                     td {
                         white-space: nowrap;
                     }
                 </style>
                 <form action="" method="post" enctype="multipart/form-data">
-                    <? if($admin_info['status'.STEP_FORM1] == 2):?>
+                    <?php if($admin_info['status'.STEP_FORM1] == 2):?>
                     <div class="alert alert-success">
                         <strong>شما در حال حاضر«منتظر نظر مافوق»هستید. در صورت (نیازمند اصلاح) دکمه های "ویرایش/ذخیره" و "ارسال به مافوق" مجددا فعال می گردند. </strong>
                     </div>
-                    <? endif;?>
+                    <?php endif;?>
 
-                    <? if($admin_info['status'.STEP_FORM1] == 4):?>
+                    <?php if($admin_info['status'.STEP_FORM1] == 4):?>
                     <div class="alert alert-success">
                         <strong>اطلاعات وارد شده ثبت نهایی گردید. </strong>
                     </div>
-                    <? endif;?>
+                    <?php endif;?>
 
                     <table style="font-size: larger">
                         <td style="color: #c7284a"> توجه: </td>
@@ -286,17 +286,17 @@
                         </div>
                     </div>
 
-                    <? if($admin_info['status'.STEP_FORM1] == 0 || ($admin_info['status'.STEP_FORM1] == 1 ) && $admin_info['start_date'] <= date('Y-m-d') and $admin_info['finish_date'] >= date('Y-m-d') ): ?>
+                    <?php if($admin_info['status'.STEP_FORM1] == 0 || ($admin_info['status'.STEP_FORM1] == 1 ) && $admin_info['start_date'] <= date('Y-m-d') and $admin_info['finish_date'] >= date('Y-m-d') ): ?>
                     <input type="submit" class="btn btn-info btn-white btn-large " style="font-size: 20px" name="submit" value="ویرایش/ ذخیره" />
-                    <? endif;?>
+                    <?php endif;?>
 
-                    <? if ($admin_info['group_admin'] == 0 && $admin_info['status'.STEP_FORM1] == 1 && $admin_info['start_date'] <= date('Y-m-d') and $admin_info['finish_date'] >= date('Y-m-d')): ?>
+                    <?php if ($admin_info['group_admin'] == 0 && $admin_info['status'.STEP_FORM1] == 1 && $admin_info['start_date'] <= date('Y-m-d') and $admin_info['finish_date'] >= date('Y-m-d')): ?>
                     <input type="submit" class="btn btn-success btn-white btn-large" style="font-size: 20px" name="submit1" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد. آیا مطمئن هستید؟')" value="ارسال به مافوق" />
-                    <? endif;?>
+                    <?php endif;?>
 
-                    <? if( /*$admin_info['status'.STEP_FORM1] == 3 ||*/ ($admin_info['group_admin'] == 1 && $admin_info['status'.STEP_FORM1] == 1) && $admin_info['start_date'] <= date('Y-m-d') and $admin_info['finish_date'] >= date('Y-m-d') ): ?>
+                    <?php if( /*$admin_info['status'.STEP_FORM1] == 3 ||*/ ($admin_info['group_admin'] == 1 && $admin_info['status'.STEP_FORM1] == 1) && $admin_info['start_date'] <= date('Y-m-d') and $admin_info['finish_date'] >= date('Y-m-d') ): ?>
                     <input type="submit" class="btn btn-success btn-white btn-large " style="font-size: 25px" name="submit2" onclick="return confirm(' پس از ثبت نهایی، امکان ویرایش اطلاعات وجود ندارد.آیا مطمئن هستید؟')" value="ثبت نهایی" />
-                    <? endif;?>
+                    <?php endif;?>
 
                 </form>
             </div>

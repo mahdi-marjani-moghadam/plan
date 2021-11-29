@@ -567,7 +567,7 @@ class adminFormController
                     $plan_id = $list['fid'];
                     if (STEP_FORM1 == 1 and $list['start_date'] <= date('Y-m-d') and $list['finish_date'] >= date('Y-m-d')) {
                         $st .= "<input data-season='1-{$list['fid']}' class='form-control ltr ' pattern='^([0-9]|[1-9][0-9]|100)$' title='.درصد پیشرفت وارد شده مجاز نمی باشد' autocomplete='off'  name='menu[$plan_id][1]' type='text'  value='{$list['admin_percent1']}' style='width: 150px'>";
-                        /*                        $st .= "<input  name='menu[$plan_id][1]' type='file'   >";*/
+                                               $st .= "<input  name='menu[$plan_id][1]' type='file'   >";
                     } else {
                         $st .= 'اعلامی: <br>' . "<div class='elami' data-season='1-{$list['fid']}'>" . $list['admin_percent1'] . '</div><br> نهایی: ' . " <div class='nahayi' data-season='1-{$list['fid']}'>" . substr($list['O1'], 0, 4) . "</div>";
                     }
@@ -677,7 +677,7 @@ class adminFormController
                     $st = '';
                     if (STEP_FORM1 == 3 and $list['start_date'] <= date('Y-m-d') and $list['finish_date'] >= date('Y-m-d')) {
                         $st .= "<input data-season='3-{$list['fid']}' class='form-control ltr percent-input'  title='.درصد پیشرفت وارد شده نباید از درصد نهایی دوره قبل کوچکتر باشد'  autocomplete='off'  name='menu[$plan_id][3]' type='text'  value='{$list['admin_percent3']}' style='width: 150px'>";
-                        /*                        $st .= "<input  name='menu[$plan_id][3]' type='file'   >";*/
+                                               $st .= "<input  name='menu[$plan_id][3]' type='file'   >";
                     } else {
                         $st .= 'اعلامی: <br>' . "<div class='elami' data-season='3-{$list['fid']}'>" . $list['admin_percent3'] . '</div><br> نهایی: ' . " <div  class='nahayi' data-season='3-{$list['fid']}'>" . substr($list['O3'], 0, 4) . "</div>";
                     }
