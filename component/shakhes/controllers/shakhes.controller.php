@@ -1,5 +1,5 @@
 <?php
-
+// namespace component\shakhes\controllers;
 
 class shakhesController
 {
@@ -219,7 +219,7 @@ class shakhesController
         die();
     }
 
-    private function child()
+    public function child()
     {
         global $admin_info;
 
@@ -286,7 +286,7 @@ class shakhesController
         return $groups;
     }
 
-    private function showAdmin()
+    public function showAdmin()
     {
         include_once ROOT_DIR . 'component/admin/model/admin.model.php';
         $objAdmin = new admin();

@@ -1,13 +1,28 @@
 <?php
-include_once(ROOT_DIR. "component/chart/controllers/chart.controller.php");
+
+// =======================================================
+// ===================== arzyabi charts ==================
+// =======================================================
+
+if ($_GET['menu'] == 'arzyabi') {
+    include_once ROOT_DIR . 'component/chart/admin/arzyabi.chart.php';
+}
+
+
+
+// =======================================================
+// ===================== payesh charts ===================
+// =======================================================
+
+include_once(ROOT_DIR . "component/chart/controllers/chart.controller.php");
 
 
 global $admin_info;
-
 $controller = new chartController();
 
-if($admin_info['parent_id'] != 0  ){
-    if($admin_info['group_admin'] != 1){
+if ($admin_info['parent_id'] != 0) {
+    
+    if ($admin_info['group_admin'] != 1) {
         switch ($_GET['action']) {
             case '1':
                 $controller->groupChart1();
@@ -16,8 +31,10 @@ if($admin_info['parent_id'] != 0  ){
                 $controller->groupChart2();
                 break;
         }
-    }else{
-        switch ($_GET['action']){
+        
+    } else {
+        
+        switch ($_GET['action']) {
             case '1':
                 $controller->vahedChart1();
                 break;
@@ -32,9 +49,9 @@ if($admin_info['parent_id'] != 0  ){
                 break;
         }
     }
-
-}else{
-    switch ($_GET['action']){
+} else {
+    
+    switch ($_GET['action']) {
         case 'g1':
             $controller->groupChart1();
             break;
@@ -64,10 +81,8 @@ if($admin_info['parent_id'] != 0  ){
         case '3':
             $controller->managerChart3();
             break;
-
-
-
+        default:
+            dd('Err Url broken!');
+            break;
     }
 }
-
-?>

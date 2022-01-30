@@ -244,9 +244,56 @@
                         <span class="sidebar-text text-16"> گزارش</span>
                     </a>
                 </li>
+
                 <li>
-                    <a href="<?php echo  RELA_DIR ?>admin/?component=shakhes">
-                        <span class="sidebar-text text-16"> نمودار</span>
+                    <a href="">
+                        <span class="sidebar-text text-16"> نمودار گروهها</span>
+
+                        <ul class="sidebar-child animated fadeInRight">
+                            <li>
+                                <a href="<?php echo  RELA_DIR ?>admin/?component=chart&menu=arzyabi&action=g1">
+                                    <span class="sidebar-text text-16">مقایسه در سطح هدف</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="">
+                        <span class="sidebar-text text-16"> نمودار دانشکده و ستاد</span>
+
+                        <ul class="sidebar-child animated fadeInRight">
+                            <li>
+                                <a href="<?php echo  RELA_DIR ?>admin/?component=chart&menu=arzyabi&action=ds2">
+                                    <span class="sidebar-text text-16">مقایسه در سطح هدف</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?php echo  RELA_DIR ?>admin/?component=chart&menu=arzyabi&action=ds3">
+                                    <span class="sidebar-text text-16">مقایسه  اهداف</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="">
+                        <span class="sidebar-text text-16"> نمودار دانشگاه</span>
+
+                        <ul class="sidebar-child animated fadeInRight">
+                            <li>
+                                <a href="<?php echo  RELA_DIR ?>admin/?component=chart&menu=arzyabi&action=u1">
+                                    <span class="sidebar-text text-16">مقایسه در سطح هدف</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?php echo  RELA_DIR ?>admin/?component=chart&menu=arzyabi&action=u2">
+                                    <span class="sidebar-text text-16">مقایسه  اهداف</span>
+                                </a>
+                            </li>
+                        </ul>
                     </a>
                 </li>
 

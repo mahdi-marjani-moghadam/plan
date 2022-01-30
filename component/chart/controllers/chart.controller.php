@@ -46,6 +46,7 @@ class chartController
     }
 
     public function categoryName($season,$result){
+        
         if($season >= 1) {
             if(in_array($result,[1,3])){
                 $i = (in_array($result,[2]))?0:0;
@@ -336,11 +337,12 @@ class chartController
         $charts = array();
         foreach ($report['kalans'] as $kalan_no => $kalan){
             // dd($kalan['admins']);
+            
             if(!isset($kalan['admins'][$parent])){continue;}
             // dd($report['kalans']);
             $tempCat = $temp2 = array();
-            
             $temp2 = $this->categoryName($season,$result);
+            
 
                     foreach ($kalan['admins'] as $admins){
                         foreach ($admins['groups'] as $group_id => $group){
@@ -403,7 +405,7 @@ class chartController
 
         $list['showAdmin'] = $this->showAdmin();
 
-     
+        
         $this->fileName = 'report.groupandvahed.php';
         $this->template(compact('charts','list'));
         die();
@@ -788,7 +790,7 @@ class chartController
         $charts[0]['categories'] = json_encode($tempCat,JSON_UNESCAPED_UNICODE );
 
         $list['showAdmin'] = $this->showAdmin();
-
+        
         $this->fileName = 'report.groupandvahed.php';
         $this->template(compact('charts','list'));
         die();
