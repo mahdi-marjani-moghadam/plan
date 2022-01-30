@@ -83,6 +83,10 @@ class arzyabiChartController
         $temp2 = $this->categoryName($season, $result);
 
 
+        $kalanName = $this->allKalan();
+        
+
+
         foreach ($report['kalan'] as $kalan_no =>  $kalan) {
 
             if (!isset($kalan[$parent])) {
@@ -90,8 +94,8 @@ class arzyabiChartController
             }
 
 
-            // $tempCat[] =  $kalan['kalan_name'];
-            $tempCat[] =  $kalan_no;
+            $tempCat[] =  $kalanName[$kalan_no];
+            
             if ($season >= 2) {
                 if (in_array($result, [1, 3])) {
                     $i = (in_array($result, [3])) ? 1 : 2;
@@ -364,6 +368,18 @@ class arzyabiChartController
     }
 
 
+    private  function allKalan()
+    {
+        include_once ROOT_DIR . 'component/kalan/model/kalan.model.php';
+        $obj = new kalan();
+        $kalans = $obj->select('kalan,kalan_no')->keyBy('kalan_no')->getList()['export']['list'];
+
+        foreach($kalans as $kalan_no => $kalan){
+            $temp[$kalan_no] = $kalan['kalan'];
+        }
+        return $temp;
+        
+    }
 
 
 
