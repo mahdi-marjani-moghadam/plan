@@ -265,12 +265,12 @@
 
                         <ul class="sidebar-child animated fadeInRight">
                             <li>
-                                <a href="<?php echo  RELA_DIR ?>admin/?component=chart&menu=arzyabi&action=ds2">
+                                <a href="<?php echo  RELA_DIR ?>admin/?component=chart&menu=arzyabi&action=v2">
                                     <span class="sidebar-text text-16">مقایسه در سطح هدف</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="<?php echo  RELA_DIR ?>admin/?component=chart&menu=arzyabi&action=ds3">
+                                <a href="<?php echo  RELA_DIR ?>admin/?component=chart&menu=arzyabi&action=v3">
                                     <span class="sidebar-text text-16">مقایسه  اهداف</span>
                                 </a>
                             </li>

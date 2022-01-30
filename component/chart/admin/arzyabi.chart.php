@@ -2,9 +2,6 @@
 
 include_once ROOT_DIR . "component/chart/controllers/arzyabiChart.controller.php";
 
-// use component\chart\controllers\arzyabiChartController;
-
-
 
 switch ($_GET['action']) {
 
@@ -16,11 +13,11 @@ switch ($_GET['action']) {
 
 
         // واحد ها
-    case 'ds2':
+    case 'v2':
         $controller = new arzyabiChartController();
         $controller->daneshkadeChart2();
         break;
-    case 'ds3':
+    case 'v3':
         $controller = new arzyabiChartController();
         $controller->daneshkadeChart3();
         break;
