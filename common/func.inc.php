@@ -1114,11 +1114,13 @@ function get_group_info_date($p_id)
     return $return;
 }
 
-function dd($data)
+function dd($data, $die = true)
 {
     echo '<pre>';
     print_r($data);
-    die();
+    if ($die)
+        die();
+    echo '</pre>';
 }
 
 function print_r_debug($data)

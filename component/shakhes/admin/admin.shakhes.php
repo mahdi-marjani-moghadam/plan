@@ -102,5 +102,11 @@ switch ($_GET['action']) {
 
 
     default:
-        $controller->showList();
+    
+        if(isset($_GET['updateShakhesReport'])){
+            $controller->shakhesReportStore();
+            redirectPage('/admin/?component=shakhes','با موفقیت به روز رسانی شد.');
+        }else{
+            $controller->showList();
+        }
 }

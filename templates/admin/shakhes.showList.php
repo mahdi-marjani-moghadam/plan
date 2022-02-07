@@ -154,6 +154,9 @@
 
                 }
             </script>
+
+
+            
         </div>
 
         <div class="col-md-10 col-sm-12 col-sx-12">
@@ -164,6 +167,7 @@
             endif;
             ?>
 
+            
         </div>
     </div>
 
@@ -212,13 +216,13 @@
                                     <td><?php echo $kalan_no ?></td>
 
                                     <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                        <td dir="ltr" <?php echo ($head_admin_info['parent_id'] == 1 && $head_admin_id != 100)?'style="background-color:#ebebeb"':''?> <?php echo ($head_admin_id == 100)?'style="background-color:#ccc"':''?>>
-                                            <?php echo floor($kalan[$head_admin_id]['darsad']['value_import']*100)/100 ?>
+                                        <td dir="ltr" <?php echo ($head_admin_info['parent_id'] == 1 && $head_admin_id != 100) ? 'style="background-color:#ebebeb"' : '' ?> <?php echo ($head_admin_id == 100) ? 'style="background-color:#ccc"' : '' ?>>
+                                            <?php echo floor($kalan[$head_admin_id]['darsad']['value_import'] * 100) / 100 ?>
                                         </td>
                                     <?php endforeach; ?>
                                     <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                        <td  dir="ltr" <?php echo ($head_admin_info['parent_id'] == 1 && $head_admin_id != 100)?'style="background-color:#ebebeb"':''?> <?php echo ($head_admin_id == 100)?'style="background-color:#ccc"':''?>>
-                                            <?php echo floor($kalan[$head_admin_id]['darsad']['value']*100)/100 ?>
+                                        <td dir="ltr" <?php echo ($head_admin_info['parent_id'] == 1 && $head_admin_id != 100) ? 'style="background-color:#ebebeb"' : '' ?> <?php echo ($head_admin_id == 100) ? 'style="background-color:#ccc"' : '' ?>>
+                                            <?php echo floor($kalan[$head_admin_id]['darsad']['value'] * 100) / 100 ?>
                                         </td>
                                     <?php endforeach; ?>
                                 </tr>
@@ -229,10 +233,33 @@
                     </table>
                 </div>
             </div>
+            
+
+
+
+            <?php
+            $msg = $messageStack->output('messageShakhesReportStore');
+            if ($msg != '') :
+                echo $msg;
+            endif;
+            ?>
+            
+            <form action="/admin/" method="GET">
+                <input type="hidden" name="component" value="shakhes">
+                <input type="hidden" name="updateShakhesReport" value="">
+                <select name="y" >
+                    <option value="1398-1399">1398-1399</option>
+                    <option value="1399-1400">1399-1400</option>
+                    <option value="1400-1401">1400-1401</option>
+                </select>
+                
+                <button class="btn btn-info">به روز رسانی جدول گزارش</button>
+            </form>
         </div>
     </div>
 
 
+    
 
 
 
@@ -292,7 +319,7 @@
                                     <td class="text-center"><?php echo $sh['kalan_no'] ?></td>
                                     <td><?php echo $sh['shakhes'] ?></td>
                                     <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                        <td <?php echo ($head_admin_info['parent_id'] == 1 && $head_admin_id != 100)?'style="background-color:#ccc"':''?> <?php echo ($head_admin_id == 100)?'style="background-color:#999"':''?>>
+                                        <td <?php echo ($head_admin_info['parent_id'] == 1 && $head_admin_id != 100) ? 'style="background-color:#ccc"' : '' ?> <?php echo ($head_admin_id == 100) ? 'style="background-color:#999"' : '' ?>>
                                             <table class="fixed">
                                                 <tr class="green">
                                                     <td colspan="2"> عملکرد سال</td>
@@ -302,16 +329,16 @@
                                                     <td>99</td>
                                                 </tr>
                                                 <tr class="gray">
-                                                    <td style="direction: ltr;"><?php echo floor($reports[$shakhes_id][$head_admin_id]['amalkardPrev']['value_import']*100)/100  ?></td>
-                                                    <td style="direction: ltr;"><?php echo floor($reports[$shakhes_id][$head_admin_id]['amalkardNext']['value_import']*100)/100 ?></td>
+                                                    <td style="direction: ltr;"><?php echo floor($reports[$shakhes_id][$head_admin_id]['amalkardPrev']['value_import'] * 100) / 100  ?></td>
+                                                    <td style="direction: ltr;"><?php echo floor($reports[$shakhes_id][$head_admin_id]['amalkardNext']['value_import'] * 100) / 100 ?></td>
                                                 </tr>
                                                 <tr class="green">
                                                     <td>نرخ رشد</td>
                                                     <td>درصد تحقق</td>
                                                 </tr>
                                                 <tr class="gray">
-                                                    <td style="direction: ltr;"><?php echo floor($reports[$shakhes_id][$head_admin_id]['nerkh']['value_import']*100)/100 ?> </td>
-                                                    <td style="direction: ltr;"><?php echo floor($reports[$shakhes_id][$head_admin_id]['darsad']['value_import']*100)/100 ?></td>
+                                                    <td style="direction: ltr;"><?php echo floor($reports[$shakhes_id][$head_admin_id]['nerkh']['value_import'] * 100) / 100 ?> </td>
+                                                    <td style="direction: ltr;"><?php echo floor($reports[$shakhes_id][$head_admin_id]['darsad']['value_import'] * 100) / 100 ?></td>
                                                 </tr>
 
 
@@ -320,7 +347,7 @@
                                         </td>
                                     <?php endforeach; ?>
                                     <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
-                                        <td <?php echo ($head_admin_info['parent_id'] == 1 && $head_admin_id != 100)?'style="background-color:#ccc"':''?> <?php echo ($head_admin_id == 100)?'style="background-color:#999"':''?>>
+                                        <td <?php echo ($head_admin_info['parent_id'] == 1 && $head_admin_id != 100) ? 'style="background-color:#ccc"' : '' ?> <?php echo ($head_admin_id == 100) ? 'style="background-color:#999"' : '' ?>>
                                             <table class="fixed">
                                                 <tr class="green">
                                                     <td colspan="2"> عملکرد سال</td>
@@ -330,16 +357,16 @@
                                                     <td>99</td>
                                                 </tr>
                                                 <tr class="gray">
-                                                    <td style="direction: ltr;"><?php echo floor($reports[$shakhes_id][$head_admin_id]['amalkardPrev']['value']*100)/100  ?></td>
-                                                    <td style="direction: ltr;"><?php echo floor($reports[$shakhes_id][$head_admin_id]['amalkardNext']['value']*100)/100 ?></td>
+                                                    <td style="direction: ltr;"><?php echo floor($reports[$shakhes_id][$head_admin_id]['amalkardPrev']['value'] * 100) / 100  ?></td>
+                                                    <td style="direction: ltr;"><?php echo floor($reports[$shakhes_id][$head_admin_id]['amalkardNext']['value'] * 100) / 100 ?></td>
                                                 </tr>
                                                 <tr class="green">
                                                     <td>نرخ رشد</td>
                                                     <td>درصد تحقق</td>
                                                 </tr>
                                                 <tr class="gray">
-                                                    <td style="direction: ltr;"><?php echo floor($reports[$shakhes_id][$head_admin_id]['nerkh']['value']*100)/100 ?> </td>
-                                                    <td style="direction: ltr;"><?php echo floor($reports[$shakhes_id][$head_admin_id]['darsad']['value']*100)/100 ?></td>
+                                                    <td style="direction: ltr;"><?php echo floor($reports[$shakhes_id][$head_admin_id]['nerkh']['value'] * 100) / 100 ?> </td>
+                                                    <td style="direction: ltr;"><?php echo floor($reports[$shakhes_id][$head_admin_id]['darsad']['value'] * 100) / 100 ?></td>
                                                 </tr>
 
 
@@ -427,7 +454,7 @@
                                         <?php
                                         $amalkardPrev = $ghalamsPrev[$ghalam_id]['admins'][$head_admin_id]['value_import'] ?? 0;
                                         $amalkardNext = $gh['admins'][$head_admin_id]['value_import'] ?? 0;
-                                        
+
                                         $amalkardPrevUniElami = $ghalamsPrev[$ghalam_id]['admins'][100]['value_import'] ?? 0;
                                         $amalkardNextUniElami = $gh['admins'][100]['value_import'] ?? 0;
                                         // echo $head_admin_info['parent_id'].'<br>';
@@ -439,7 +466,7 @@
                                         // $amalkardNextUniElami += $amalkardNext;
 
                                         ?>
-                                        <td width="<?php echo 300 / count($groups) ?>"<?php echo ($head_admin_info['parent_id'] == 1 && $head_admin_id != 100)?'style="background-color:#ebebeb"':''?> <?php echo ($head_admin_id == 100)?'style="background-color:#ccc"':''?>>
+                                        <td width="<?php echo 300 / count($groups) ?>" <?php echo ($head_admin_info['parent_id'] == 1 && $head_admin_id != 100) ? 'style="background-color:#ebebeb"' : '' ?> <?php echo ($head_admin_id == 100) ? 'style="background-color:#ccc"' : '' ?>>
                                             <table class="fixed">
 
                                                 <tr class="green">
@@ -471,7 +498,7 @@
                                         $amalkardPrevUniNahayi = $ghalamsPrev[$ghalam_id]['admins'][100]['value'] ?? 0;
                                         $amalkardNextUniNahayi = $gh['admins'][100]['value'] ?? 0;
                                         ?>
-                                        <td width="<?php echo 300 / count($groups) ?>" <?php echo ($head_admin_info['parent_id'] == 1 && $head_admin_id != 100)?'style="background-color:#ebebeb"':''?> <?php echo ($head_admin_id == 100)?'style="background-color:#ccc"':''?>>
+                                        <td width="<?php echo 300 / count($groups) ?>" <?php echo ($head_admin_info['parent_id'] == 1 && $head_admin_id != 100) ? 'style="background-color:#ebebeb"' : '' ?> <?php echo ($head_admin_id == 100) ? 'style="background-color:#ccc"' : '' ?>>
                                             <table class="fixed">
 
                                                 <tr class="green">

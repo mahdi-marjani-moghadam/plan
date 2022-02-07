@@ -239,10 +239,16 @@ class looeic extends DB
 
         $conn = dbConn::getConnection();
 
-        $stmt = $conn->prepare($this->sql);
+        try{
+            $stmt = $conn->prepare($this->sql);
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $stmt->execute();
 
-        $stmt->setFetchMode(PDO::FETCH_ASSOC);
-        $stmt->execute();
+        }catch(PDOException $e){
+            dd('Error query:',false);
+            dd($this->sql);
+        }
+
         if (!$stmt) {
             $result['result'] = -1;
             $result['Number'] = 1;
@@ -1027,12 +1033,17 @@ class looeic extends DB
                     INSERT INTO " . $this->TABLE_NAME . "( " . $sql_key . " ) VALUES ( " . $sql_val . " ) ";
 
 
-        // print_r($sql);
 
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
+        try{
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            
+        } catch(PDOException $e){
+            dd('Error query: ',false);
+            dd($sql);
+        }
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
-
+        
         if (!$stmt) {
             $result['result'] = -1;
             $result['Number'] = 1;

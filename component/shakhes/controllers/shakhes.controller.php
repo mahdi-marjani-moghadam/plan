@@ -303,7 +303,7 @@ class shakhesController
 
     public function getGhalam($admins, $year = '1399', $season = 6)
     {
-
+        
         include_once ROOT_DIR . 'component/shakhes/model/import.model.php';
         $import = new import();
         $import->select('
@@ -344,7 +344,6 @@ class shakhesController
 
     public function getShakhesByGhalam($ghalams)
     {
-        //         dd($ghalams);
         include_once ROOT_DIR . 'component/shakhes/model/rel.ghalam.shakhes.model.php';
         $relGhalamShakhes = new relGhalamShakhes();
         $relGhalamShakhes->select(' 
@@ -361,6 +360,8 @@ class shakhesController
         $relGhalamShakhes->where('sh_rel_ghalam_shakhes.ghalam_id', 'in', implode(',', array_unique(array_keys($ghalams))));
         $rels = $relGhalamShakhes->getList()['export']['list'];
         //         dd($rels);
+        // dd('rels',false);
+        // dd($rels??'!',false);
         foreach ($rels as $rel) {
             // dd($ghalams);
             $shakhes[$rel['shakhes_id']]['shakhes'] = $rel['shakhes'];
@@ -371,7 +372,8 @@ class shakhesController
             // $functionsRequirement[$rel['shakhes_id']][$rel['type']][$rel['ghalam_id']]['admins'] = $ghalams[$rel['ghalam_id']];
         }
 
-        //         dd($shakhes);
+        // dd('shakhes',false);
+        // dd($shakhes??'!',false);
 
         // $shakhes = $this->getAllShakhesFunctionsKeyByShakhesId($functionsRequirement, $shakhes);
         // dd($shakhes);
@@ -681,6 +683,80 @@ class shakhesController
         $resp = $relShakhesAdmin->where('shakhes_id', '=', $shakhes)->andWhere('admin_id', '=', $admin)->first();
 
         return $resp->shakhes_vazn;
+    }
+    public function shakhesReportStore()
+    {
+        global $messageStack;
+        include_once ROOT_DIR . 'component/shakhes/model/report.model.php';
+        
+
+        $groups = $this->child();
+        if (isset($_GET['y'])) {
+            $year = explode('-', handleData($_GET['y']));
+        }else{
+            $year[1] = explode('/', convertDate(date('Y-m-d')))[0];
+            $year[0] = $year[1] - 1;
+        }
+            
+        foreach([6,12] as $season){
+            $_GET['s'] = $season;
+            // dd('-----------------------------------------------',false);
+            // dd($season,false);
+            
+            $ghalamsNext = $this->getGhalam($groups, $year[1], $season);
+            $ghalamsPrev = $this->getGhalam($groups, $year[0], $season);
+            // dd($ghalamsNext,false);
+            // dd($ghalamsPrev,false);
+            
+            
+            $shakhesNext = $this->getShakhesByGhalam($ghalamsNext);
+            // dd($shakhesNext,false);
+            
+            $reports = $this->getReports($shakhesNext, $ghalamsNext, $ghalamsPrev, $groups);
+
+            foreach ($reports['kalan'] as $kalan_no => $kalan) {
+                foreach ($groups as $admin_id => $head_admin_info) {
+
+                    ${'value' . $season} = floor($kalan[$admin_id]['darsad']['value_import'] * 100) / 100;
+                    ${'value_import' . $season} = floor($kalan[$admin_id]['darsad']['value'] * 100) / 100;
+
+                    $data = [
+                        'kalan_no'=>$kalan_no,
+                        'admin_id'=>$admin_id,
+                        'value6'=>$value6,
+                        'value_import6'=>$value_import6,
+                        'value12'=>$value12,
+                        'value_import12'=>$value_import12,
+                        'year'=>$year[1]
+                    ];
+
+                    $shakhesReportObj = new shakhesReport;
+                    $shakhesReportObj->where('kalan_no','=',$kalan_no);
+                    $shakhesReportObj->where('admin_id','=',$admin_id);
+                    $shakhesReportObj->where('year','=',$year[1]);
+                    $shakhesReport = $shakhesReportObj->first();
+
+                    if(is_object($shakhesReport)){
+                        
+                        $shakhesReport->setFields($data);
+                    }else{
+                        $shakhesReport = new shakhesReport();
+                        $shakhesReport->setFields($data);
+                    }
+                    $shakhesReport->save();
+                    
+                    // dd($shakhesReport,false);
+                }
+            }
+        }
+
+        $shakhesReportObj = new shakhesReport();
+        $shakhesReport = $shakhesReportObj->all();
+        
+        $messageStack->add_session('messageShakhesReportStore', "با موفقیت سال $year[0]-$year[1] به روز رسانی شد", 'success');
+
+
+        return $shakhesReport;
     }
 
 
@@ -1149,7 +1225,7 @@ class shakhesController
         $kalans = ($kalanObj['export']['recordsCount'] > 0) ?  $kalanObj['export']['list'] : array();
 
         /** kalan_tahlil */
-        $groupString =  implode(', ',$groups);
+        $groupString =  implode(', ', $groups);
 
         $season = (STEP_FORM1 >= 3) ? 12 : 6;
         $managerOrArzyab = ($admin_info['admin_id'] == 1) ? 'manager' : (($admin_info['parent_id'] == 0) ? 'arzyab' : '');
@@ -1159,8 +1235,8 @@ class shakhesController
         $kalanTahlilObj = $kalanTahlil->select('tahlil_' . $managerOrArzyab . $season, 'admin_id', 'kalan_no');
         $kalanTahlilObj = $kalanTahlil->where('admin_id', 'in', $groupString);
         $kalanTahlilObj = $kalanTahlil->where('year', '=', KHODEZHARI_YEAR);
-            
-            // dd($groupString);
+
+        // dd($groupString);
         $kalanTahlilObj = $kalanTahlil->getList()['export']['list'];
 
         $kalanTahlilArray = array();
@@ -1446,7 +1522,6 @@ class shakhesController
 
         $post = $_POST;
 
-        $kalanTahlilObj->where('kalan_no', '=', $post['kalanNo']);
         $kalanTahlilObj->where('admin_id', '=', $post['adminId']);
 
         $kalanTahlil = $kalanTahlilObj->get();
