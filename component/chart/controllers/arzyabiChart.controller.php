@@ -64,12 +64,6 @@ class arzyabiChartController
 
         $parent = $admin_info['parent_id'];
 
-        if ($admin_info['parent_id'] == 0) {
-            if (isset($_GET['qq'])) {
-                $parent = $this->getParentIdByAdminId(trim($_GET['qq'], ','));
-            }
-        }
-
         $season = $this->_season;
         $result = $this->_result;
 
@@ -84,7 +78,7 @@ class arzyabiChartController
 
 
         $kalanName = $this->allKalan();
-        
+
 
 
         foreach ($report['kalan'] as $kalan_no =>  $kalan) {
@@ -95,7 +89,7 @@ class arzyabiChartController
 
 
             $tempCat[] =  $kalanName[$kalan_no];
-            
+
             if ($season >= 2) {
                 if (in_array($result, [1, 3])) {
                     $i = (in_array($result, [3])) ? 1 : 2;
@@ -139,10 +133,84 @@ class arzyabiChartController
     public function daneshkadeChart3()
     {
 
+        global $admin_info;
+
+        $parent = $admin_info['parent_id'];
+
+        $season = $this->_season;
+        $result = $this->_result;
+
+        $report = $this->report();
+        $charts = array();
 
 
-        $this->fileName = 'arzyabi/chart/group.php';
-        $this->template();
+        $kalanName = $this->allKalan();
+        $adminName = $this->allAdmin();
+
+
+        foreach ($report['kalan'] as $kalan_no => $kalan) {
+          
+
+            
+
+            if (!isset($kalan[$parent])) {
+                continue;
+            }
+            
+            $tempCat = $temp2 = array();
+
+            $temp2 = $this->categoryName($season, $result);
+
+
+            foreach ($kalan as $admin_id => $admins) {
+                // dd($admins);
+                // foreach ($admins['groups'] as $group_id => $group) {
+                
+                    if (!isset($kalan[$parent])) {
+                        continue;
+                    }
+
+                    $tempCat[] =  $adminName[$admin_id];
+
+                    if ($season >= 2) {
+                        if (in_array($result, [1, 3])) {
+                            $i = (in_array($result, [3])) ? 1 : 2;
+                            $temp2[$i]['data'][] = (float) substr($admins['darsad']['value'], 0, 5);
+                        }
+                        if (in_array($result, [1, 2])) {
+                            $i = (in_array($result, [2])) ? 1 : 3;
+                            $temp2[$i]['data'][] = (float) substr($admins['darsad']['value_import'], 0, 5);
+                        }
+                    }
+                    if ($season >= 4) {
+                        if (in_array($result, [1, 3])) {
+                            $i = (in_array($result, [3])) ? 3 : 6;
+                            $temp2[$i]['data'][] = (float) substr($admins['darsad']['value'], 0, 5);
+                        }
+                        if (in_array($result, [1, 2])) {
+                            $i = (in_array($result, [2])) ? 3 : 7;
+                            $temp2[$i]['data'][] = (float)substr($admins['darsad']['value_import'], 0, 5);
+                        }
+                    }
+                // }
+            }
+
+
+            $charts[$kalan_no]['name'] = $kalanName[$kalan_no];
+            $charts[$kalan_no]['series'] = json_encode($temp2, JSON_UNESCAPED_UNICODE);
+            $charts[$kalan_no]['categories'] = json_encode($tempCat, JSON_UNESCAPED_UNICODE);
+        } //next kalan
+
+
+         // dd($charts);
+         $list['showAdmin'] = $this->showAdmin();
+
+
+        $this->fileName = 'arzyabi/chart/daneshkade3.php';
+        $this->template(compact(
+            'list',
+            'charts'
+        ));
     }
 
 
@@ -374,11 +442,21 @@ class arzyabiChartController
         $obj = new kalan();
         $kalans = $obj->select('kalan,kalan_no')->keyBy('kalan_no')->getList()['export']['list'];
 
-        foreach($kalans as $kalan_no => $kalan){
+        foreach ($kalans as $kalan_no => $kalan) {
             $temp[$kalan_no] = $kalan['kalan'];
         }
         return $temp;
-        
+    }
+    private  function allAdmin()
+    {
+        include_once ROOT_DIR . 'component/admin/model/admin.model.php';
+        $obj = new admin();
+        $admins = $obj->select('name,family,admin_id')->keyBy('admin_id')->getList()['export']['list'];
+
+        foreach ($admins as $admin_id => $admin) {
+            $temp[$admin_id] = $admin['name'] . ' ' .$admin['family'];
+        }
+        return $temp;
     }
 
 
