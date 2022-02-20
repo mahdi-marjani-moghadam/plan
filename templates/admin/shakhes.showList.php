@@ -67,7 +67,7 @@
     .table-cont1,
     .table-cont2,
     .table-cont3 {
-        /* max-height: 400px; */
+        max-height: 500px;
         overflow: auto;
     }
 </style>
@@ -193,7 +193,7 @@
         </div>
         <div class="panel-body">
             <div id="container">
-                <div class='table-cont2' id="table2">
+                <div class='table-cont1' id="table2">
                     <table class="table  table-bordered ">
                         <thead>
                             <tr style="text-align: center">
