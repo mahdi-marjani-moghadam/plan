@@ -461,7 +461,7 @@ class shakhesController
                     // برای جدول شاخص
                     $data[$shakhes_id][$motevali]['amalkardNext']['value'] = $amalkardNext[$motevali]['value']; // عملکرد ۹۹ واحدها
                     $data[$shakhes_id][$motevali]['amalkardPrev']['value'] = $amalkardPrev[$motevali]['value']; // عملکرد ۹۸ واحدها
-                    $data[$shakhes_id][$motevali]['nerkh']['value'] = $nerkh[$motevali]['value'];  // نرخ رشد واحدها
+                    $data[$shakhes_id][$motevali]['nerkh']['value'] = $nerkh[$motevali]['value']/100;  // نرخ رشد واحدها
                     $data[$shakhes_id][$motevali]['darsad']['value'] = $darsad[$motevali]['value']; // درصد تحقق واحدها
 
                     // برای جدول در سطح کلان
@@ -492,7 +492,7 @@ class shakhesController
                     // برای جدول شاخص
                     $data[$shakhes_id][$motevali]['amalkardNext']['value_import'] = $amalkardNext[$motevali]['value_import']; // عملکرد ۹۹ واحدها
                     $data[$shakhes_id][$motevali]['amalkardPrev']['value_import'] = $amalkardPrev[$motevali]['value_import']; // عملکرد ۹۸ واحدها
-                    $data[$shakhes_id][$motevali]['nerkh']['value_import'] = $nerkh[$motevali]['value_import']; // نرخ رشد واحدها
+                    $data[$shakhes_id][$motevali]['nerkh']['value_import'] = $nerkh[$motevali]['value_import']/100; // نرخ رشد واحدها
                     $data[$shakhes_id][$motevali]['darsad']['value_import'] = $darsad[$motevali]['value_import']; // درصد تحقق واحدها
 
                     // برای جدول در سطح کلان
@@ -544,10 +544,10 @@ class shakhesController
 
                         if ($shakhes['afzayande'] == 1) {
                             $data[$shakhes_id][$admin['parent_id']]['nerkh'][$tmp[$i]] =
-                                (($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]]) - 1) * 100; // نرخ رشد
+                                (($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]]) - 1) ; // نرخ رشد
                         } else {
                             $data[$shakhes_id][$admin['parent_id']]['nerkh'][$tmp[$i]] =
-                                (1 - ($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]])) * 100; // نرخ رشد
+                                (1 - ($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]])) ; // نرخ رشد
                         }
 
                         $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]] =
