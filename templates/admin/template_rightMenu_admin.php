@@ -219,22 +219,22 @@
                         <span class="sidebar-text text-16"> خوداظهاری</span></a>
                     <!--<ul class="sidebar-child animated fadeInRight">
                             <li>
-                                <a href="<?php /*= RELA_DIR */?>admin/?component=shakhes&action=shora">
+                                <a href="<?php /*= RELA_DIR */ ?>admin/?component=shakhes&action=shora">
                                     <span class="sidebar-text text-16">فرم عضویت در شوراهای برون دانشگاهی</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="<?php /*= RELA_DIR */?>admin/?component=shakhes&action=jalasat">
+                                <a href="<?php /*= RELA_DIR */ ?>admin/?component=shakhes&action=jalasat">
                                     <span class="sidebar-text text-16">فرم جلسات توجیهی تحصیلات تکمیلی</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="<?php /*= RELA_DIR */?>admin/?component=shakhes&action=daneshamukhte">
+                                <a href="<?php /*= RELA_DIR */ ?>admin/?component=shakhes&action=daneshamukhte">
                                     <span class="sidebar-text text-16">فرم همکاری دانش آموختگان و دانشجویان </span>
                                 </a>
                             </li>
                             <li>
-                                <a href="<?php /*= RELA_DIR */?>admin/?component=shakhes&action=ruydad">
+                                <a href="<?php /*= RELA_DIR */ ?>admin/?component=shakhes&action=ruydad">
                                     <span class="sidebar-text text-16">فرم رویدادهای برگزار شده</span>
                                 </a>
                             </li>
@@ -271,7 +271,7 @@
                             </li>
                             <li>
                                 <a href="<?php echo  RELA_DIR ?>admin/?component=chart&menu=arzyabi&action=v3">
-                                    <span class="sidebar-text text-16">مقایسه  اهداف</span>
+                                    <span class="sidebar-text text-16">مقایسه اهداف</span>
                                 </a>
                             </li>
                         </ul>
@@ -290,7 +290,7 @@
                             </li>
                             <li>
                                 <a href="<?php echo  RELA_DIR ?>admin/?component=chart&menu=arzyabi&action=u2">
-                                    <span class="sidebar-text text-16">مقایسه  اهداف</span>
+                                    <span class="sidebar-text text-16">مقایسه اهداف</span>
                                 </a>
                             </li>
                         </ul>
@@ -298,21 +298,49 @@
                 </li>
 
 
-                <?php if($admin_info['admin_id'] == 1): ?> 
-                <li>
-                    <a href="<?php echo  RELA_DIR ?>admin/?component=shakhes&action=setting">
-                        <span class="sidebar-text text-16"> تنظیمات شاخص</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="<?php echo  RELA_DIR ?>admin/page/1/?component=shakhes&action=adminSetting">
-                        <span class="sidebar-text text-16"> تنظیمات ادمین</span>
-                    </a>
-                </li>
+                <?php if ($admin_info['admin_id'] == 1) : ?>
+                    <li>
+                        <a href="<?php echo  RELA_DIR ?>admin/?component=shakhes&action=setting">
+                            <span class="sidebar-text text-16"> تنظیمات شاخص</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?php echo  RELA_DIR ?>admin/page/1/?component=shakhes&action=adminSetting">
+                            <span class="sidebar-text text-16"> تنظیمات ادمین</span>
+                        </a>
+                    </li>
                 <?php endif; ?>
             </ul>
         </li>
 
+
+
+        <li>
+            <a class="Download">
+                <div style="font-size: .9em; display:flex; gap:1em; justify-content:center">
+                    <i class="sidebar-icon fa fa-chart-pie"></i>
+                    <i class="sidebar-icon fa fa-list-alt"></i>
+                </div>
+                
+                <span class="sidebar-text">تلفیق پایش و ارزیابی</span>
+            </a>
+            <ul class="sidebar-child animated fadeInRight">
+
+                <li>
+                    <a href="<?php echo  RELA_DIR ?>admin/?component=talfigh&m=list">
+                        <span class="sidebar-text text-16"> گزارش تلفیق</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="<?php echo  RELA_DIR ?>admin/?component=talfigh&m=chart">
+                        <span class="sidebar-text text-16"> نمودار تلفیق</span>
+                    </a>
+                </li>
+
+
+            </ul>
+        </li>
 
         <li>
             <a class="Download">
@@ -347,19 +375,8 @@
             </a>
         </li>
 
-        <!--<li>
-            <a href="#">
-                <i class="sidebar-icon fa fa-user"></i>
-                <span class="sidebar-text">شیوه نامه</span>
-            </a>
-            <ul class="sidebar-child animated fadeInRight">
-                <li>
-                    <a href="">
-                        <span class="sidebar-text text-16">راهنمای سامانه</span>
-                    </a>
-                </li><!--/child-item-->
 
-        
+
 
         <li>
             <a href="<?php print RELA_DIR; ?>admin/?component=admin">

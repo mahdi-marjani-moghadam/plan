@@ -5,6 +5,13 @@
             direction: rtl
         }
     }
+    .head{
+        background-color: #fff;
+    }
+    thead{
+        position: relative;
+        z-index: 9  ;
+    }
 </style>
 <link rel="stylesheet" href="<?php echo RELA_DIR; ?>templates/<?php echo CURRENT_SKIN; ?>/assets/css/buttons.dataTables.min.css">
 <script>
@@ -33,19 +40,30 @@
             var tableCont1 = document.querySelector('.table-cont1');
             var tableCont2 = document.querySelector('.table-cont2');
             var tableCont3 = document.querySelector('.table-cont3');
-            /**
-             * scroll handle
-             * @param {event} e -- scroll event
-             */
+
             function scrollHandle(e) {
                 var scrollTop = this.scrollTop;
-                //console.log(scrollTop);
                 this.querySelector('thead').style.transform = 'translateY(' + scrollTop + 'px)';
+
+                var scrollLeft = this.scrollLeft;
+                var allTd = this.querySelectorAll('.head');
+                allTd.forEach(function(userItem) {
+                    userItem.style.transform = 'translateX(' + scrollLeft + 'px)';
+                });
+                
+
+
+
             }
 
             tableCont1.addEventListener('scroll', scrollHandle)
             tableCont2.addEventListener('scroll', scrollHandle)
             tableCont3.addEventListener('scroll', scrollHandle)
+
+
+
+
+
         }
 
         /** change admin event */
@@ -320,8 +338,8 @@
                         <tbody>
                             <?php foreach ($shakhesNext as $shakhes_id => $sh) : ?>
                                 <tr>
-                                    <td class="text-center"><?php echo $sh['kalan_no'] ?></td>
-                                    <td><?php echo $sh['shakhes'] ?></td>
+                                    <td class="text-center head"><?php echo $sh['kalan_no'] ?></td>
+                                    <td class="head"><?php echo $sh['shakhes'] ?></td>
                                     <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
                                         <td <?php echo ($head_admin_info['parent_id'] == 1 && $head_admin_id != 100) ? 'style="background-color:#ccc"' : '' ?> <?php echo ($head_admin_id == 100) ? 'style="background-color:#999"' : '' ?>>
                                             <table class="fixed">
@@ -446,9 +464,9 @@
                             foreach ($ghalamsNext as $ghalam_id => $gh) : ?>
                                 <?php $i++; ?>
                                 <tr>
-                                    <td><?php echo $i ?></td>
-                                    <td width="50" class="text-center"><?php echo $shakhes_id ?></td>
-                                    <td width="50"><?php echo $gh['ghalam'] ?>
+                                    <td class="head"><?php echo $i ?></td>
+                                    <td width="50" class="text-center head"><?php echo $shakhes_id ?></td>
+                                    <td class="head" width="50"><?php echo $gh['ghalam'] ?>
                                         <?php echo $gh['ghalam_id'] ?>
 
                                     </td>

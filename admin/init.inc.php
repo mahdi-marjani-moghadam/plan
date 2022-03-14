@@ -16,7 +16,10 @@ $db->exec('SET names UTF8');
 $sql = "SELECT * FROM web_config";
 
 /*** fetch into an PDOStatement object ***/
-$stmt = $db->query($sql);
+$stmt = $db->prepare($sql);
+
+// echo "<pre>";
+// print_r($stmt);
 
 /*** echo number of columns ***/
 $obj = $stmt->fetchAll(PDO::FETCH_OBJ);
