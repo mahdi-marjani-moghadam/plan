@@ -417,7 +417,7 @@ class shakhesController
 
     public function getReports($sh, $ghN, $ghP, $admins)
     {
-
+        $data = array();
         foreach ($sh as $shakhes_id => $shakhes) {
 
             $function = $shakhes['function'];
@@ -426,9 +426,11 @@ class shakhesController
             $amalkardPrev = $this->calcuteFunction($function, $ghP); // محاسبه عملکرد ۹۸
 
             //                        dd($ghP);
-
+            
             $data[$shakhes_id] = $EupNext = $EupPrev = $EdownNext = $EdownPrev = $EupNextUni = $EdownNextUni = $EupPrevUni = $EdownPrevUni =  array();
 
+            // dd($admins);
+            
             foreach ($admins as $motevali => $admin) {
 
                 
@@ -459,13 +461,14 @@ class shakhesController
                     //                    }
 
                     if ($shakhes['afzayande'] == 1) {
-                        $nerkh[$motevali]['value_import'] = (($amalkardNext[$motevali]['value_import'] / $amalkardPrev[$motevali]['value_import']) - 1) ; // نرخ رشد واحدها
-
+                        $nerkh[$motevali]['value_import'] = ((($amalkardNext[$motevali]['value_import']??1) / ($amalkardPrev[$motevali]['value_import']??1)) - 1) ; // نرخ رشد واحدها
+                        
                     } else {
-                        $nerkh[$motevali]['value_import'] =  (1 - ($amalkardNext[$motevali]['value_import'] / $amalkardPrev[$motevali]['value_import'])) ; // نرخ رشد واحدها
+                        $nerkh[$motevali]['value_import'] =  (1 - (($amalkardNext[$motevali]['value_import']??1) / ($amalkardPrev[$motevali]['value_import']??1))) ; // نرخ رشد واحدها
                     }
-                    $darsad[$motevali]['value_import'] = ($nerkh[$motevali]['value_import'] / $this->standard($shakhes_id, $motevali)) * 100; // درصد تحقق واحدها
-
+                    
+                    $darsad[$motevali]['value_import'] = (($nerkh[$motevali]['value_import'] ?? 1) / ($this->standard($shakhes_id, $motevali)?? 1)) * 100; // درصد تحقق واحدها
+                    
                     // برای جدول شاخص
                     $data[$shakhes_id][$motevali]['amalkardNext']['value_import'] = $amalkardNext[$motevali]['value_import']; // عملکرد ۹۹ واحدها
                     $data[$shakhes_id][$motevali]['amalkardPrev']['value_import'] = $amalkardPrev[$motevali]['value_import']; // عملکرد ۹۸ واحدها
@@ -474,10 +477,9 @@ class shakhesController
 
                     // برای جدول در سطح کلان
                     $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value_import'] +=
-                        $data[$shakhes_id][$motevali]['darsad']['value_import'] * $this->shakhesVazn($shakhes_id, $motevali); // اعلامی
-
-
-
+                        $data[$shakhes_id][$motevali]['darsad']['value_import'] * ($this->shakhesVazn($shakhes_id, $motevali) ?? 0); // اعلامی
+                    
+                        
                     ///////////////
                     ///////////////
                     //    نهايي  //
@@ -603,6 +605,7 @@ class shakhesController
                     $data[$shakhes_id][100]['nerkh'][$tmp[$i]] =
                         (1 - ($data[$shakhes_id][100]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][100]['amalkardPrev'][$tmp[$i]])) ; // نرخ رشد
                 }
+                
                 $data[$shakhes_id][100]['darsad'][$tmp[$i]] =
                     ($data[$shakhes_id][100]['nerkh'][$tmp[$i]] / $this->standard($shakhes_id, 100)) * 100; // درصد تحقق
 
@@ -627,6 +630,7 @@ class shakhesController
         // $func = '101109+101109/101109+101109';
         // $func = '101109/101109';
         // $func = '101109';
+        // $func = '101109+101109/2';
 
         //echo($func);
         $f = explode('/', $func);
@@ -961,6 +965,12 @@ class shakhesController
                         $shakhes[$sh['shakhes_id']]['logic']['function'] = $shakhes[$sh['shakhes_id']]['logic']['up'] . '/' . $shakhes[$sh['shakhes_id']]['logic']['down'];
                         $shakhes[$sh['shakhes_id']]['logic']['ghalams']['down'][] = $sh['ghalam_id'];
                         break;
+
+                    case 'average':
+                        $shakhes[$sh['shakhes_id']]['logic']['type'] = 'average';
+                        $shakhes[$sh['shakhes_id']]['logic']['function'] = $shakhes[$sh['shakhes_id']]['logic']['function'] . '+$g' . $sh['ghalam_id'];
+                        $shakhes[$sh['shakhes_id']]['logic']['ghalams'][]  = $sh['ghalam_id'];
+                        break;
                 }
             }
         }
@@ -1109,6 +1119,14 @@ class shakhesController
                 $newRelGhalamShakhes->shakhes_id = $post['shakhes_id'];
                 $newRelGhalamShakhes->ghalam_id = $ghalam_id;
                 $newRelGhalamShakhes->type = 'down';
+                $newRelGhalamShakhes->save();
+            }
+        } elseif ($post['type'] == 'average') {
+            foreach ($post['ghalams'] as $ghalam_id) {
+                $newRelGhalamShakhes = new relGhalamShakhes();
+                $newRelGhalamShakhes->shakhes_id = $post['shakhes_id'];
+                $newRelGhalamShakhes->ghalam_id = $ghalam_id;
+                $newRelGhalamShakhes->type = $post['type'];
                 $newRelGhalamShakhes->save();
             }
         }

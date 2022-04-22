@@ -11,7 +11,7 @@
                 <br>
                 <table class="table table-striped table-bordered rtl">
                     <tr>
-                        <td></td>
+                        <td>شماره شاخص</td>
                         <td>هدف کلان</td>
                         <td>نام شاخص</td>
                         <td>نوع</td>
@@ -22,9 +22,9 @@
                     $i = 1;
                     foreach ($shakhes as $k => $sh) : ?>
                         <tr>
-                            <td><?php echo  $i++ ?></td>
+                            <td><?php echo  $k ?></td>
                             <td><?php echo  $kalans[$sh['kalan_no']]['kalan'] ?></td>
-                            <td><?php echo  $sh['shakhes'] ?></td>
+                            <td><?php echo   $sh['shakhes'] ?></td>
                             <td>
                                 <?php
                                 switch ($sh['logic']['type']) {
@@ -36,6 +36,9 @@
                                         break;
                                     case 'divid':
                                         echo 'نسبت';
+                                        break;
+                                    case 'average':
+                                        echo 'میانگین';
                                         break;
                                 }
 
@@ -98,6 +101,7 @@
                         <option class="select-equal" value="equal" data-sh="<?php echo  $k ?>">تساوی</option>
                         <option class="select-sum" value="sum" data-sh="<?php echo  $k ?>">مجموع</option>
                         <option class="select-divid" value="divid" data-sh="<?php echo  $k ?>">نسبت</option>
+                        <option class="select-average" value="average" data-sh="<?php echo  $k ?>">میانگین</option>
                     </select>
                 </div>
 
@@ -145,6 +149,14 @@
                 </div>
 
 
+                <div class="row edit-average">
+                    <label class=" col-md-12 col-xs-12 col-sm-12">اقلام</label><br>
+                    <select class="edit-average" multiple>
+                        <?php foreach ($ghalam as $k => $gh) : ?>
+                            <option value="<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
+                        <?php endforeach ?>
+                    </select>
+                </div>
 
 
 
@@ -182,6 +194,7 @@
                     <option class="select-equal" value="equal" data-sh="<?php echo  $k ?>">تساوی</option>
                     <option class="select-sum" value="sum" data-sh="<?php echo  $k ?>">مجموع</option>
                     <option class="select-divid" value="divid" data-sh="<?php echo  $k ?>">نسبت</option>
+                    <option class="select-average" value="average" data-sh="<?php echo  $k ?>">میانگین</option>
                 </select>
 
                 <label class=""> فرمول</label>
@@ -190,6 +203,7 @@
                     <option class="select-equal" value="equal" data-sh="<?php echo  $k ?>">تساوی</option>
                     <option class="select-sum" value="sum" data-sh="<?php echo  $k ?>">مجموع</option>
                     <option class="select-divid" value="divid" data-sh="<?php echo  $k ?>">نسبت</option>
+                    <option class="select-average" value="average" data-sh="<?php echo  $k ?>">میانگین</option>
                 </select>
 
 
@@ -235,7 +249,14 @@
                 </div>
 
 
-
+                <div class="row copy-average">
+                    <label class=" col-md-12 col-xs-12 col-sm-12">اقلام</label><br>
+                    <select class="copy-average" multiple>
+                        <?php foreach ($ghalam as $k => $gh) : ?>
+                            <option value="<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
+                        <?php endforeach ?>
+                    </select>
+                </div>
 
 
             </div>
@@ -287,6 +308,7 @@
                         <option value="equal" class="select-equal">تساوی</option>
                         <option value="sum" class="select-sum">مجموع</option>
                         <option value="divid" class="select-divid">نسبت</option>
+                        <option value="average" class="select-average">میانگین</option>
                     </select>
                     <div id="add-select-box-error" class="alert alert-danger col-md-6 col-xs-6 col-sm-6" style="padding: 6px 15px; display: none">لطفا یکی را انتخاب نمایید</div>
                     <br>
@@ -327,6 +349,16 @@
                     </div>
 
 
+                    <div class="row">
+                        <label class="add-average col-md-12 col-xs-12 col-sm-12">اقلام</label><br>
+                        <select class="add-average col-md-6 col-xs-6 col-sm-6 pull-right" multiple>
+                            <?php foreach ($ghalam as $k => $gh) : ?>
+                                <option value="$g<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
+                            <?php endforeach ?>
+                        </select>
+                    </div>
+
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
@@ -345,9 +377,9 @@
 
 
         /** add form*/
-        $("#add .add-equal, #add .add-sum, #add .add-divid").hide();
+        $("#add .add-equal, #add .add-sum, #add .add-divid, #add .add-average").hide();
         $('#add-select-box').change(function(e) {
-            $("#add .add-equal, #add .add-sum, #add .add-divid").hide();
+            $("#add .add-equal, #add .add-sum, #add .add-divid, #add .add-average").hide();
             $('.add-' + $(this).val()).show();
         });
 
@@ -357,7 +389,7 @@
 
             var type = $('#add-select-box').val();
 
-            if (["equal", "sum", "divid"].includes(type)) {
+            if (["equal", "sum", "divid","average"].includes(type)) {
                 $.ajax({
                     url: '/?component=shakhes&action=settingAdd',
                     method: 'post',
@@ -421,11 +453,15 @@
 
                     modal.find('.copy-divid-down').val(shakhes[shakhes_id].logic.ghalams.down);
                     modal.find('.copy-divid-down').trigger('change');
+                } else if($type === 'average'){
+                    modal.find('.copy-average').val(shakhes[shakhes_id].logic.ghalams);
+                    modal.find('.copy-average').trigger('change');
                 }
 
             } else {
                 modal.find('.copy-sum').hide();
                 modal.find('.copy-divid').hide();
+                modal.find('.copy-average').hide();
             }
 
         });
@@ -435,11 +471,11 @@
             var shakhesId = $(this).parents('.modal').attr('id').replace('copy', '');
             // console.log(type, shakhesId);
 
-            $(this).parents('.modal').find('.copy-equal ,.copy-sum , .copy-divid ').hide();
+            $(this).parents('.modal').find('.copy-equal ,.copy-sum , .copy-divid ,.copy-average ').hide();
             $(this).parents('.modal').find('.copy-' + type).show();
 
 
-            if (["equal", "sum", "divid"].includes(type)) {
+            if (["equal", "sum", "divid","average"].includes(type)) {
                 //
             }
         });
@@ -486,6 +522,13 @@
                     down: down
                 };
 
+            }else if (type === 'average') {
+                var ghalams = modal.find('.edit-average').select2('val').filter(onlyUnique);
+                if (Object.keys(ghalams).length === 0) {
+                    alert('لطفا اقلام را انتخاب نمایید');
+                    return false;
+                }
+
             }
             // console.log('ssss ');
             console.log(type, shakhes);
@@ -493,7 +536,7 @@
 
             return false;
 
-            if (["equal", "sum", "divid"].includes(type)) {
+            if (["equal", "sum", "divid","average"].includes(type)) {
                 $.ajax({
                     url: '/admin/?component=shakhes&action=settingAdd',
                     method: 'post',
@@ -564,11 +607,15 @@
 
                     modal.find('.edit-divid-down').val(shakhes[shakhes_id].logic.ghalams.down);
                     modal.find('.edit-divid-down').trigger('change');
+                } else if (type === 'average') {
+                    modal.find('.edit-average').val(shakhes[shakhes_id].logic.ghalams);
+                    modal.find('.edit-average').trigger('change');
                 }
 
             } else {
                 modal.find('.edit-sum').hide();
                 modal.find('.edit-divid').hide();
+                modal.find('.edit-average').hide();
                 modal.find('.type').val('null');
                 modal.find('.type').trigger('change');
             }
@@ -584,11 +631,11 @@
             var shakhesId = $(this).parents('.modal').attr('id').replace('edit', '');
             // console.log(type, shakhesId);
 
-            $(this).parents('.modal').find('.edit-equal ,.edit-sum , .edit-divid ').hide();
+            $(this).parents('.modal').find('.edit-equal ,.edit-sum , .edit-divid , .edit-average').hide();
             $(this).parents('.modal').find('.edit-' + type).show();
 
 
-            if (["equal", "sum", "divid"].includes(type)) {
+            if (["equal", "sum", "divid", "average"].includes(type)) {
                 //
             }
         });
@@ -644,6 +691,13 @@
                     up: up,
                     down: down
                 };
+
+            } else if (type === 'average') {
+                var ghalams = modal.find('.edit-average').select2('val').filter(onlyUnique);
+                if (Object.keys(ghalams).length === 0) {
+                    alert('لطفا اقلام را انتخاب نمایید');
+                    return false;
+                }
 
             }
 
