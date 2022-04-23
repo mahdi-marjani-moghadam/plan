@@ -392,13 +392,19 @@ class shakhesController
         $resp = $relGhalamShakhes->where('shakhes_id', '=', $skakhesId)->getList()['export']['list'];
         // dd($resp);   
         $func = '';
+        $count =0;
         foreach ($resp as  $sh) {
             $type = $sh['type'];
             if ($type == 'equal') {
                 $func = $sh['ghalam_id'];
             } else if ($type == 'sum') {
                 $func = $func . '+' . $sh['ghalam_id'];
-            } else {
+            } else if ($type == 'average') {
+                $funcT = $func . '+' . $sh['ghalam_id']; 
+                $count++;
+                $func = $funcT /$count;
+            } 
+            else {
 
                 if ($type == 'up') {
                     $up = $up . '+' . $sh['ghalam_id'];
@@ -408,9 +414,11 @@ class shakhesController
                 $func = trim($up, '+') . '/' . trim($down, '+');
 
                 // dd('ss');
-            }
+            } 
             // dd($sh);
         }
+
+        
 
         return trim($func, '+');
     }
@@ -647,6 +655,8 @@ class shakhesController
             }
         }
         // dd($v);
+
+
 
         if (isset($f[1])) {
             $functionDown = explode('+', $f[1]);
