@@ -231,7 +231,7 @@
                         <tbody>
                             <?php foreach ($kalans as $kalan_no => $kalan) : ?>
                                 <tr style=" text-align: center">
-                                    <td><?php echo $kalan_no ?></td>
+                                    <td class="head"><?php echo $kalan_no ?></td>
 
                                     <?php foreach ($groups as $head_admin_id => $head_admin_info) : ?>
                                         <td dir="ltr" <?php echo ($head_admin_info['parent_id'] == 1 && $head_admin_id != 100) ? 'style="background-color:#ebebeb"' : '' ?> <?php echo ($head_admin_id == 100) ? 'style="background-color:#ccc"' : '' ?>>
