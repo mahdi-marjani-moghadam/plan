@@ -75,24 +75,31 @@
                 // console.log(2222);
             // });
             // $(".percent-input").on('keyup', function(e) {
-                console.log($(this));
+            //     console.log($(this));
                 var inputVal = parseInt($(this).val());
                 var dataVal = $(this).data('season');
                 var result = dataVal.split('-');
 
                 console.log('11111');
+                // console.log(result)
                 
                 if (inputVal > 100) {
                     this.setCustomValidity('مقدار وارد شده نباید از 100 بیشتر باشد.');
-                } else if (result[0] == 3) {
+                }
+                else if (result[0] === '3') {
+
                     var aDatanahayi = parseInt($("div.nahayi[data-season='" + (result[0] - 1) + "-" + result[1] + "']").text());
+                    console.log(inputVal , aDatanahayi)
+
                     if (inputVal < aDatanahayi) {
                         this.setCustomValidity('مقدار وارد شده نباید از درصد نهایی دوره قبل کمتر باشد.');
                     } else {
                         this.setCustomValidity('');
                     }
-                } else if (result[0] == 2 || result[0] == 4) {
+                }
+                else if (result[0] === '2' || result[0] === '4') {
                     var aDataelami = parseInt($("div.elami[data-season='" + (result[0] - 1) + "-" + result[1] + "']").text());
+
                     if (inputVal < aDataelami) {
                         this.setCustomValidity('مقدار وارد شده نباید از درصد اعلامی دوره قبل کمتر باشد.');
                     } else {
@@ -109,13 +116,69 @@
 
             });
 
-
+            var submit = true;
             $('form').submit(function(b) {
+                // b.preventDefault()
+
+
                 console.log('submit');
-                $(".percent-input").each(function(eww) {
-                    console.log('clear');
-                    this.setCustomValidity('');
+                $(".percent-input").each(function(i,el)  {
+                    var inputVal = parseInt($(this).val());
+                    var dataVal = $(this).data('season');
+                    var result = dataVal.split('-');
+
+
+                    // this.setCustomValidity('مقدار وارد شده نباید از 100 بیشتر باشد.');
+
+                    // console.log()
+                    // console.log(result[0])
+                    // console.log(inputVal , parseInt($("div.elami[data-season='" + (result[0] - 1) + "-" + result[1] + "']").text()))
+                    // console.log($(this))
+                    // console.log($(this))
+                    // console.log('=========================== ')
+                    // this.setCustomValidity('مقدار وارد شده نباید از 100 بیشتر باشد.');
+
+                    if (inputVal > 100) {
+                        this.setCustomValidity('مقدار وارد شده نباید از 100 بیشتر باشد.');
+                    }
+                    else if (result[0] === '3') {
+                        var aDatanahayi = parseInt($("div.nahayi[data-season='" + (result[0] - 1) + "-" + result[1] + "']").text());
+
+                        if (inputVal < aDatanahayi ) {
+                            this.setCustomValidity('مقدار وارد شده نباید از درصد نهایی دوره قبل کمتر باشد.');
+                        } else {
+                            this.setCustomValidity('');
+                        }
+                    } else if (result[0] === '2' || result[0] === '4') {
+                        var aDataelami = parseInt($("div.elami[data-season='" + (result[0] - 1) + "-" + result[1] + "']").text());
+                        console.log(inputVal < aDataelami  )
+                        if (inputVal < aDataelami  ) {
+                            this.setCustomValidity('مقدار وارد شده نباید از درصد اعلامی دوره قبل کمتر باشد.');
+                        } else {
+                            this.setCustomValidity('');
+                        }
+                    }
+                    else {
+                        // this.setCustomValidity('');
+                    }
+
+                    // if(inputVal !== 0){
+                    //     this.setCustomValidity('');
+                    // }
+
+
                 });
+
+
+                // this.submit();
+                // $('form').unbind('submit').submit();
+                // setTimeout(() => {
+                //     console.log('Submited')
+                //
+                //     // return true;
+                //     // $('.btn')
+                // },1000)
+
             });
 
             /*$(".btn-info").on('click',function (e) {

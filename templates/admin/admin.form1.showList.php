@@ -553,7 +553,11 @@
         max-height: 600px;
         overflow: auto;
     }
+     a[target="_blank"]{
+        z-index: 9999999;
+    position: relative;
 
+}
     .word-wrap {
         position: relative;
         width: 260px;

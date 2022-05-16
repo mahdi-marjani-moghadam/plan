@@ -16,7 +16,8 @@ $db->exec('SET names UTF8');
 $sql = "SELECT * FROM web_config";
 
 /*** fetch into an PDOStatement object ***/
-$stmt = $db->prepare($sql);
+//$stmt = $db->prepare($sql);
+$stmt = $db->query($sql);
 
 // echo "<pre>";
 // print_r($stmt);
