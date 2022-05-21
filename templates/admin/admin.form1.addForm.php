@@ -153,7 +153,7 @@
                         var aDataelami = parseInt($("div.elami[data-season='" + (result[0] - 1) + "-" + result[1] + "']").text());
                         console.log(inputVal < aDataelami  )
                         if (inputVal < aDataelami  ) {
-                            this.setCustomValidity('مقدار وارد شده نباید از درصد اعلامی دوره قبل کمتر باشد.');
+                            this.setCustomValidity('مقدار وارد شده نباید از درصد اعلامی دوره قبل کمتر باشد .');
                         } else {
                             this.setCustomValidity('');
                         }
