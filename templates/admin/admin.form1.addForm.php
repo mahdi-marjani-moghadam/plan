@@ -80,8 +80,8 @@
                 var dataVal = $(this).data('season');
                 var result = dataVal.split('-');
 
-                console.log('11111');
-                // console.log(result)
+                // console.log('11111');
+                // console.log(this);
                 
                 if (inputVal > 100) {
                     this.setCustomValidity('مقدار وارد شده نباید از 100 بیشتر باشد.');
@@ -89,7 +89,7 @@
                 else if (result[0] === '3') {
 
                     var aDatanahayi = parseInt($("div.nahayi[data-season='" + (result[0] - 1) + "-" + result[1] + "']").text());
-                    console.log(inputVal , aDatanahayi)
+                    // console.log(inputVal , aDatanahayi)
 
                     if (inputVal < aDatanahayi) {
                         this.setCustomValidity('مقدار وارد شده نباید از درصد نهایی دوره قبل کمتر باشد.');
@@ -122,6 +122,7 @@
 
 
                 console.log('submit');
+
                 $(".percent-input").each(function(i,el)  {
                     var inputVal = parseInt($(this).val());
                     var dataVal = $(this).data('season');
@@ -140,20 +141,31 @@
 
                     if (inputVal > 100) {
                         this.setCustomValidity('مقدار وارد شده نباید از 100 بیشتر باشد.');
+                        b.preventDefault()
+
                     }
                     else if (result[0] === '3') {
                         var aDatanahayi = parseInt($("div.nahayi[data-season='" + (result[0] - 1) + "-" + result[1] + "']").text());
 
                         if (inputVal < aDatanahayi ) {
                             this.setCustomValidity('مقدار وارد شده نباید از درصد نهایی دوره قبل کمتر باشد.');
+                            b.preventDefault()
+
                         } else {
                             this.setCustomValidity('');
                         }
                     } else if (result[0] === '2' || result[0] === '4') {
+                        
                         var aDataelami = parseInt($("div.elami[data-season='" + (result[0] - 1) + "-" + result[1] + "']").text());
-                        console.log(inputVal < aDataelami  )
+                        // console.log(inputVal,aDataelami);
+                        // console.log(inputVal < aDataelami  )
+                        
                         if (inputVal < aDataelami  ) {
+                            // console.log(this);
+
                             this.setCustomValidity('مقدار وارد شده نباید از درصد اعلامی دوره قبل کمتر باشد .');
+                            b.preventDefault()
+
                         } else {
                             this.setCustomValidity('');
                         }
@@ -166,18 +178,18 @@
                     //     this.setCustomValidity('');
                     // }
 
-
+                    this.reportValidity();
                 });
 
 
                 // this.submit();
                 // $('form').unbind('submit').submit();
-                // setTimeout(() => {
-                //     console.log('Submited')
+                setTimeout(() => {
+                    console.log('Submited')
                 //
-                //     // return true;
+                    return true;
                 //     // $('.btn')
-                // },1000)
+                },1000)
 
             });
 
