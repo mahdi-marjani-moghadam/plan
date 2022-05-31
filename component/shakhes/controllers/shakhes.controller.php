@@ -153,7 +153,6 @@ class shakhesController
         // اول بدست آوردن بچه ها از جدول admin , import_status
         $groups = $this->child();
 
-
         /** season */
         $rules = array('6', '12');
         if (in_array($_GET['s'], $rules)) {
@@ -236,8 +235,8 @@ class shakhesController
         $admin->select('DISTINCT admin.admin_id, admin.name, admin.family, admin.group_admin, admin.parent_id, admin.groups, admin.flag');
         $admin->keyBy('admin_id');
         $admin->leftJoin('sh_import', 'admin.admin_id', '=', 'sh_import.motevali_admin_id');
-        $admin->orderBy('`groups`,`flag`', 'asc');
-
+        $admin->orderBy('`parent_id`,`groups`,`flag`', 'asc');
+        
 
         $admin->whereOpen('admin.parent_id', '<>', '0'); // <> 1
 
@@ -279,7 +278,14 @@ class shakhesController
         }
 
 
+        // dd($admin->get());
+
         $groups = $admin->getList()['export']['list'];
+        // dd($groups);
+        // foreach ($groups as $adminId => $adminInfo){
+
+        // }
+
         // dd($admin);
         // dd($admin->get());
 

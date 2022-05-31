@@ -132,6 +132,7 @@ class reportsController
     }
     function getKalanList($child = '')
     {
+        
         global $admin_info;
 
 
@@ -223,6 +224,7 @@ class reportsController
             $rowsObj = $rowsObj->Where('group_list.admin_id', 'in', $child['childStr']);
         }
         //$rowsObj = $rowsObj->orderBy('kalan_no,amaliati_no,eghdam_id,faaliat_id,admin_id,group_id' , 'desc');
+        $rowsObj = $rowsObj->orderBy('kalan_no' , 'asc');
         //$rowsObj = $rowsObj->andWhere('kalan_no' ,'=',1);
         //$rowsObj = $rowsObj->limit(0 ,100);
         // print_r_debug($rowsObj);
