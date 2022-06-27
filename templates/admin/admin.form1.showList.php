@@ -560,16 +560,16 @@
 }
     .word-wrap {
         position: relative;
-        width: 260px;
+        /* width: 260px; */
         /* adjust to desired wrapping */
-        padding: 0px !important;
-        white-space: pre-wrap;
+        padding: 0px 0 15px !important;
+        white-space: inherit;
         /* css-3 */
-        white-space: -moz-pre-wrap;
+        /* white-space: -moz-pre-wrap; */
         /* Mozilla, since 1999 */
-        white-space: -pre-wrap;
+        /* white-space: -pre-wrap; */
         /* Opera 4-6 */
-        white-space: -o-pre-wrap;
+        /* white-space: -o-pre-wrap; */
         /* Opera 7 */
         word-wrap: break-word;
         /* Internet Explorer 5.5+ */
