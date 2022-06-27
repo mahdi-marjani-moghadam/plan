@@ -661,7 +661,7 @@ class adminFormController
                         $st .= $list['admin_tozihat2'];
                     }
                 } else {
-                    $st = $list['admin_tozihat2'];
+                    $st = readMore($list['admin_tozihat2']);
                 }
                 return $st;
             }

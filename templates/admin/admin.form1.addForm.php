@@ -381,3 +381,46 @@
 </div>
 
 <!--/content-body -->
+
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">تحلیل</h4>
+            </div>
+            <div class="modal-body">
+                <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('body').on('click','.readMore',function(e) {
+            e.preventDefault();
+            $('myModal').modal('hide');
+
+            var text = $(this).data("text");
+            //alert(text);
+            $('#myModal .modal-body').html("<p>" + nl2br(text) + "</p>");
+            $('#myModal').modal('show');
+        })
+    });
+
+    function nl2br(str, replaceMode, isXhtml) {
+
+        var breakTag = (isXhtml) ? '<br />' : '<br>';
+        var replaceStr = (replaceMode) ? '$1' + breakTag : '$1' + breakTag + '$2';
+        return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, replaceStr);
+    }
+</script>
