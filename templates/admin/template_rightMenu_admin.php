@@ -23,14 +23,16 @@
                 </li>
                 <!--/sidebar-item-->
 
+
                 <li>
                     <a href="<?php print RELA_DIR; ?>admin/?component=form&q=,null,">
                         <span class="sidebar-text"> وضعیت پیشرفت</span>
                     </a>
                 </li>
+
                 <!--/sidebar-item-->
                 <?php
-                if ($admin_info['admin1'] != 0 || $admin_info['admin2'] != 0 || $admin_info['admin3'] != 0) :
+                if (($admin_info['admin1'] != 0 || $admin_info['admin2'] != 0 || $admin_info['admin3'] != 0) && $admin_info['admin_id'] != 100) :
                 ?>
                     <li>
                         <a href="<?php print RELA_DIR; ?>admin/?component=form&action=myForm">
@@ -214,10 +216,11 @@
                 <span class="sidebar-text">ارزیابی</span>
             </a>
             <ul class="sidebar-child animated fadeInRight">
-                <li>
-                    <a href="<?php echo  RELA_DIR ?>admin/?component=shakhes&action=khodezhari">
-                        <span class="sidebar-text text-16"> خوداظهاری</span></a>
-                    <!--<ul class="sidebar-child animated fadeInRight">
+                <?php if ($admin_info['admin_id'] != 100) : ?>
+                    <li>
+                        <a href="<?php echo  RELA_DIR ?>admin/?component=shakhes&action=khodezhari">
+                            <span class="sidebar-text text-16"> خوداظهاری</span></a>
+                        <!--<ul class="sidebar-child animated fadeInRight">
                             <li>
                                 <a href="<?php /*= RELA_DIR */ ?>admin/?component=shakhes&action=shora">
                                     <span class="sidebar-text text-16">فرم عضویت در شوراهای برون دانشگاهی</span>
@@ -239,6 +242,8 @@
                                 </a>
                             </li>
                         </ul>-->
+                    </li>
+                <?php endif ?>
                 <li>
                     <a href="<?php echo  RELA_DIR ?>admin/?component=shakhes">
                         <span class="sidebar-text text-16"> گزارش</span>
@@ -321,7 +326,7 @@
                     <i class="sidebar-icon fa fa-chart-pie"></i>
                     <i class="sidebar-icon fa fa-list-alt"></i>
                 </div>
-                
+
                 <span class="sidebar-text">تلفیق پایش و ارزیابی</span>
             </a>
             <ul class="sidebar-child animated fadeInRight">
