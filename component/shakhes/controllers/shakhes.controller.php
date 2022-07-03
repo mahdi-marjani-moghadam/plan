@@ -944,7 +944,8 @@ class shakhesController
         $obj = new shakhes();
         $query = 'select sh.shakhes_id, shakhes ,r_g_sh.ghalam_id , type ,r_k_s.kalan_no from sh_shakhes sh
         left join sh_rel_ghalam_shakhes r_g_sh on sh.shakhes_id = r_g_sh.shakhes_id
-        left join sh_rel_kalan_shakhes  r_k_s on r_g_sh.shakhes_id = r_k_s.shakhes_id';
+        left join sh_rel_kalan_shakhes  r_k_s on r_g_sh.shakhes_id = r_k_s.shakhes_id
+        order by sh.shakhes_id desc';
         $res = $obj->query($query)->getList();
         // dd($res);
         if ($res['export']['recordsCount']) {
@@ -1063,7 +1064,7 @@ class shakhesController
         $shakhes->shakhes = $post['shakhes'];
         $shakhes->save();
 
-        return $shakhes->id;
+        // return $shakhes;
 
         /** add shakhes */
 
@@ -1077,6 +1078,7 @@ class shakhesController
 
 
         $result['status'] = 1;
+        $result['data'] = $shakhes;
         $result['msg'] = 'با موفقیت ساخته شد.';
         return $result;
     }
@@ -1097,6 +1099,42 @@ class shakhesController
         $shakhesObj->save();
         //$result['sh_shakhes2'] = $shakhesObj->fields;
 
+        $this->_changeShakhes($post);
+
+        // dd($relKalanShakhes);
+
+        $result['status'] = 1;
+        $result['msg'] = 'با موفقیت ویرایش شد.';
+        return $result;
+    }
+
+    public function settingCopy($post)
+    {
+        /** اخرین شاخص */
+        include_once ROOT_DIR . "component/shakhes/model/shakhes.model.php";
+        $obj = new shakhes;
+        $query = 'select max(shakhes_id) as lastNumber from sh_shakhes';
+        $lastNumber = $obj->query($query)->getList()['export']['list'][0]['lastNumber'];
+       
+
+        $shakhes = new shakhes();
+        $shakhes->shakhes_id = ++$lastNumber;
+        $shakhes->shakhes = $post['shakhes'];
+        $shakhes->save();
+
+        $post['shakhes_id'] = $shakhes->shakhes_id;
+
+        $this->_changeShakhes($post);
+
+
+        $result['status'] = 1;
+        $result['data'] = $shakhes;
+        $result['msg'] = 'با موفقیت کپی شد.';
+        return $result;
+    }
+
+    private function _changeShakhes($post)
+    {
         /** پاک کردن کل اقلام اون شاخص */
         include_once ROOT_DIR . "component/shakhes/model/rel.ghalam.shakhes.model.php";
         $relGhalamShakhes = relGhalamShakhes::getBy_shakhes_id($post['shakhes_id'])->get();
@@ -1163,13 +1201,8 @@ class shakhesController
         $relKalanShakhes->kalan_no = $post['kalan_no'];
         $relKalanShakhes->save();
 
-        // dd($relKalanShakhes);
-
-        $result['status'] = 1;
-        $result['msg'] = 'با موفقیت ویرایش شد.';
-        return $result;
+        return true;
     }
-
 
     public function khodezhari()
     {

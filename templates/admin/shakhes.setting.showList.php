@@ -48,7 +48,7 @@
                             <td>
                                 <a class="btn btn-warning edit" data-shakhesid="<?php echo  $k ?>" data-kalanno="<?php echo  $sh['kalan_no'] ?>" data-toggle="modal" data-target="#edit">ویرایش</a>
                                 <a href="<?php echo  RELA_DIR ?>admin/?component=shakhes&action=delete&id=<?php echo  $sh['id'] ?>" class="btn btn-danger " onclick="return confirm('آیا مطمئن هستید؟')">حذف</a>
-                                <a class="btn btn-info copy" data-shakhesid="<?php echo  $k ?>" data-toggle="modal" data-target="#copy">کپی و ساخت شاخص جدید</a>
+                                <a class="btn btn-info copy" data-shakhesid="<?php echo  $k ?>" data-kalanno="<?php echo  $sh['kalan_no'] ?>" data-toggle="modal" data-target="#copy">کپی و ساخت شاخص جدید</a>
 
 
 
@@ -86,7 +86,7 @@
                 <div>
                     <label class=" col-md-12 col-xs-12 col-sm-12">هدف کلان</label><br>
                     <select class="edit-kalan">
-                        <option  value="null">لطفا یکی را انتخاب نمایید ...</option>
+                        <option value="null">لطفا یکی را انتخاب نمایید ...</option>
                         <?php foreach ($kalans as $key => $k) : ?>
                             <option value="<?php echo  $k['kalan_no'] ?>"><?php echo  $k['kalan'] ?></option>
                         <?php endforeach ?>
@@ -188,18 +188,22 @@
                 <input id="copy-shakhes" value="" class="form-control ">
                 <br>
 
-                <label class=""> هدف کلان</label>
-                <br>
-                <select class="type">
-                    <option class="select-equal" value="equal" data-sh="<?php echo  $k ?>">تساوی</option>
-                    <option class="select-sum" value="sum" data-sh="<?php echo  $k ?>">مجموع</option>
-                    <option class="select-divid" value="divid" data-sh="<?php echo  $k ?>">نسبت</option>
-                    <option class="select-average" value="average" data-sh="<?php echo  $k ?>">میانگین</option>
-                </select>
+
+                <div>
+                    <label class=""> هدف کلان</label>
+                    <select class="copy-kalan">
+                        <option value="null">لطفا یکی را انتخاب نمایید ...</option>
+                        <?php foreach ($kalans as $key => $k) : ?>
+                            <option value="<?php echo  $k['kalan_no'] ?>"><?php echo  $k['kalan'] ?></option>
+                        <?php endforeach ?>
+                    </select>
+
+                </div>
+
 
                 <label class=""> فرمول</label>
                 <br>
-                <select class="type">
+                <select class="copy-type">
                     <option class="select-equal" value="equal" data-sh="<?php echo  $k ?>">تساوی</option>
                     <option class="select-sum" value="sum" data-sh="<?php echo  $k ?>">مجموع</option>
                     <option class="select-divid" value="divid" data-sh="<?php echo  $k ?>">نسبت</option>
@@ -287,78 +291,9 @@
                         <input id="add-shakhes" class="form-control ">
                     </div>
 
-                    <div class="col-md-12 col-xs-12 col-sm-12">
-                        <label> هدف کلان</label>
-                        <div class="row">
-                            <select class="add-kalan col-md-12 col-xs-12 col-sm-12 ">
-                                <?php foreach ($kalans as $k => $kalan) : ?>
-                                    <option value="$g<?php echo  $kalan['kalan_no'] ?>"><?php echo  $kalan['kalan'] ?></option>
-                                <?php endforeach ?>
-                            </select>
-                        </div>
 
-                    </div>
-
-
-
-                    <label class="col-md-12 col-xs-12 col-sm-12"> فرمول</label>
-                    <br>
-                    <select id="add-select-box" class="col-md-6 col-xs-6 col-sm-6 pull-right">
-                        <option>نوع عملیات را انتخاب کنید</option>
-                        <option value="equal" class="select-equal">تساوی</option>
-                        <option value="sum" class="select-sum">مجموع</option>
-                        <option value="divid" class="select-divid">نسبت</option>
-                        <option value="average" class="select-average">میانگین</option>
-                    </select>
-                    <div id="add-select-box-error" class="alert alert-danger col-md-6 col-xs-6 col-sm-6" style="padding: 6px 15px; display: none">لطفا یکی را انتخاب نمایید</div>
                     <br>
                     <br>
-
-                    <div class="row">
-                        <label class="add-equal col-md-12 col-xs-12 col-sm-12">قلم</label><br>
-                        <select class="add-equal col-md-6 col-xs-6 col-sm-6 pull-right">
-                            <?php foreach ($ghalam as $k => $gh) : ?>
-                                <option value="$g<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
-                            <?php endforeach ?>
-                        </select>
-                    </div>
-
-                    <div class="row">
-                        <label class="add-sum col-md-12 col-xs-12 col-sm-12">اقلام</label><br>
-                        <select class="add-sum col-md-6 col-xs-6 col-sm-6 pull-right" multiple>
-                            <?php foreach ($ghalam as $k => $gh) : ?>
-                                <option value="$g<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
-                            <?php endforeach ?>
-                        </select>
-                    </div>
-
-                    <div class="row">
-                        <label class="add-divid col-md-12 col-xs-12 col-sm-12">اقلام (صورت کسر)</label><br>
-                        <select class="add-divid add-divid-up col-md-6 col-xs-6 col-sm-6 pull-right" multiple>
-                            <?php foreach ($ghalam as $k => $gh) : ?>
-                                <option value="$g<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
-                            <?php endforeach ?>
-                        </select>
-                        <br>
-                        <label class="add-divid col-md-12 col-xs-12 col-sm-12">اقلام (مخرج کسر)</label><br>
-                        <select class="add-divid add-divid-down col-md-6 col-xs-6 col-sm-6 pull-right" multiple>
-                            <?php foreach ($ghalam as $k => $gh) : ?>
-                                <option value="$g<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
-                            <?php endforeach ?>
-                        </select>
-                    </div>
-
-
-                    <div class="row">
-                        <label class="add-average col-md-12 col-xs-12 col-sm-12">اقلام</label><br>
-                        <select class="add-average col-md-6 col-xs-6 col-sm-6 pull-right" multiple>
-                            <?php foreach ($ghalam as $k => $gh) : ?>
-                                <option value="$g<?php echo  $gh['ghalam_id'] ?>"><?php echo  $gh['ghalam'] ?></option>
-                            <?php endforeach ?>
-                        </select>
-                    </div>
-
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
@@ -377,41 +312,41 @@
 
 
         /** add form*/
-        $("#add .add-equal, #add .add-sum, #add .add-divid, #add .add-average").hide();
-        $('#add-select-box').change(function(e) {
-            $("#add .add-equal, #add .add-sum, #add .add-divid, #add .add-average").hide();
-            $('.add-' + $(this).val()).show();
-        });
+        // $("#add .add-equal, #add .add-sum, #add .add-divid, #add .add-average").hide();
+        // $('#add-select-box').change(function(e) {
+        //     $("#add .add-equal, #add .add-sum, #add .add-divid, #add .add-average").hide();
+        //     $('.add-' + $(this).val()).show();
+        // });
 
         $('#add .add-submit').click(function(e) {
             e.preventDefault();
+            var modal = $('#add .modal-body');
             $('#add #add-select-box-error').hide();
-
-            var type = $('#add-select-box').val();
-
-            if (["equal", "sum", "divid","average"].includes(type)) {
-                $.ajax({
-                    url: '/?component=shakhes&action=settingAdd',
-                    method: 'post',
-                    data: {
-                        'type': type
-                    },
-                    success: function(data, status, xhr) {
-                        //window.location = '/?component=shakhes&action=setting'
-                    },
-                    error: function(data, status, xhr) {
-                        alert('مشکلی در سرور بوجود آمده است.');
-                    }
-                });
-            } else {
-                //alert('لطفا یکی از توابع را انتخاب نمایید');
-                $('#add #add-select-box-error').show();
-            }
+            // var type = $('#add-select-box').val();
+            var shakhes = modal.find('#add-shakhes').val();
+            // if (["equal", "sum", "divid","average"].includes(type)) {
+            $.ajax({
+                url: '/admin/?component=shakhes&action=settingAdd',
+                method: 'post',
+                data: {
+                    'shakhes': shakhes
+                },
+                success: function(data, status, xhr) {
+                    window.location = '/admin?component=shakhes&action=setting'
+                },
+                error: function(data, status, xhr) {
+                    alert('مشکلی در سرور بوجود آمده است.');
+                }
+            });
+            // } else {
+            //     //alert('لطفا یکی از توابع را انتخاب نمایید');
+            //     $('#add #add-select-box-error').show();
+            // }
         });
 
-        $('#add-select-box').change(function() {
-            $('#add #add-select-box-error').hide();
-        });
+        // $('#add-select-box').change(function() {
+        //     $('#add #add-select-box-error').hide();
+        // });
         /** end add form */
 
 
@@ -425,9 +360,15 @@
         $('#copy').on('show.bs.modal', function(event) {
             var a = $(event.relatedTarget);
             var shakhes_id = a.data('shakhesid');
+            var kalanNo = a.data('kalanno');
 
             var modal = $(this);
             modal.find('#shakhes_id').val(shakhes_id);
+            modal.find('.copy-kalan').val(kalanNo);
+            modal.find('.copy-kalan').trigger('change');
+
+            // modal.find('.copy-type').val(shakhes[shakhes_id].logic.type);
+            // modal.find('.copy-type').trigger('change');
 
             // before has a type 
             if (typeof shakhes[shakhes_id].logic !== 'undefined') {
@@ -437,8 +378,8 @@
                 // modal.find('.modal-title').text('ویرایش ' + shakhes[shakhes_id].shakhes);
                 modal.find('#copy-shakhes').val(shakhes[shakhes_id].shakhes);
 
-                modal.find('.type').val(type);
-                modal.find('.type').trigger('change');
+                modal.find('.copy-type').val(type);
+                modal.find('.copy-type').trigger('change');
 
 
                 if (type === 'equal') {
@@ -453,7 +394,7 @@
 
                     modal.find('.copy-divid-down').val(shakhes[shakhes_id].logic.ghalams.down);
                     modal.find('.copy-divid-down').trigger('change');
-                } else if($type === 'average'){
+                } else if ($type === 'average') {
                     modal.find('.copy-average').val(shakhes[shakhes_id].logic.ghalams);
                     modal.find('.copy-average').trigger('change');
                 }
@@ -465,7 +406,7 @@
             }
 
         });
-        $('#copy .type').change(function() {
+        $('#copy .copy-type').change(function() {
 
             var type = $(this).val();
             var shakhesId = $(this).parents('.modal').attr('id').replace('copy', '');
@@ -475,19 +416,21 @@
             $(this).parents('.modal').find('.copy-' + type).show();
 
 
-            if (["equal", "sum", "divid","average"].includes(type)) {
+            if (["equal", "sum", "divid", "average"].includes(type)) {
                 //
             }
         });
         $('#copy .copy-submit').click(function(e) {
             e.preventDefault();
-            // $('#copy #edit-select-box-error').hide();
-            var modal = $('#edit .modal-body');
-            var type = $('#copy').find('.type').val();
-            var shakhes = modal.find('#edit-shakhes').val();
+            // $('#copy #copy-select-box-error').hide();
+            var modal = $('#copy .modal-body');
+            var shakhes_id = modal.find('#shakhes_id').val();
+            var shakhes = modal.find('#copy-shakhes').val();
+            var kalanNo = modal.find('.copy-kalan').select2('val');
+
 
             /** انتخاب فرمول */
-            var type = modal.find('.type').select2('val');
+            var type = modal.find('.copy-type').select2('val');
             if (type === 'null') {
                 alert('لطفا فرمول را انتخاب نمایید');
                 return false;
@@ -496,21 +439,21 @@
 
             /** انتخاب اقلام */
             if (type === 'equal') {
-                var ghalams = modal.find('.edit-equal').select2('val');
+                var ghalams = modal.find('.copy-equal').select2('val');
                 if (ghalams === 'null') {
                     alert('لطفا قلم را انتخاب نمایید');
                     return false;
                 }
             } else if (type === 'sum') {
-                var ghalams = modal.find('.edit-sum').select2('val').filter(onlyUnique);
+                var ghalams = modal.find('.copy-sum').select2('val').filter(onlyUnique);
                 if (Object.keys(ghalams).length === 0) {
                     alert('لطفا اقلام را انتخاب نمایید');
                     return false;
                 }
 
             } else if (type === 'divid') {
-                var up = modal.find('.edit-divid-up').select2('val').filter(onlyUnique),
-                    down = modal.find('.edit-divid-down').select2('val').filter(onlyUnique);
+                var up = modal.find('.copy-divid-up').select2('val').filter(onlyUnique),
+                    down = modal.find('.copy-divid-down').select2('val').filter(onlyUnique);
 
                 if (Object.keys(up).length === 0 || Object.keys(down).length === 0) {
                     alert('لطفا اقلام را انتخاب نمایید');
@@ -522,8 +465,8 @@
                     down: down
                 };
 
-            }else if (type === 'average') {
-                var ghalams = modal.find('.edit-average').select2('val').filter(onlyUnique);
+            } else if (type === 'average') {
+                var ghalams = modal.find('.copy-average').select2('val').filter(onlyUnique);
                 if (Object.keys(ghalams).length === 0) {
                     alert('لطفا اقلام را انتخاب نمایید');
                     return false;
@@ -531,28 +474,37 @@
 
             }
             // console.log('ssss ');
-            console.log(type, shakhes);
+            // console.log(type, shakhes);
 
 
-            return false;
 
-            if (["equal", "sum", "divid","average"].includes(type)) {
+            if (["equal", "sum", "divid", "average"].includes(type)) {
+
+              
+                
+
                 $.ajax({
-                    url: '/admin/?component=shakhes&action=settingAdd',
+                    url: '/admin/?component=shakhes&action=settingCopy',
                     method: 'post',
                     data: {
                         'type': type,
-                        'shakhes': shakhes
+                        'shakhes': shakhes,
+                        'kalan_no': kalanNo,
+                        'ghalams': ghalams
+                    },
+                    done: function(){
+                        console.log(111111);
                     },
                     success: function(data, status, xhr) {
                         // console.log(data);
-                        // window.location = '/?component=shakhes&action=setting'
+                        window.location = '/admin/?component=shakhes&action=setting'
                     },
                     error: function(data, status, xhr) {
-                        console.log(data);
                         alert('مشکلی در سرور بوجود آمده است.');
                     }
                 });
+
+              
             } else {
 
                 //alert('لطفا یکی از توابع را انتخاب نمایید');
@@ -711,7 +663,7 @@
                     'type': type,
                     'shakhes_id': shakhes_id,
                     'shakhes': shakhes,
-                    'kalan_no':kalanNo,
+                    'kalan_no': kalanNo,
                     'ghalams': ghalams
                 },
                 success: function(data, status, xhr) {

@@ -16,6 +16,10 @@ switch ($_GET['action']) {
         $result = $controller->settingEdit($_POST);
         echo json_encode($result);
         break;
+    case 'settingCopy':
+        $result = $controller->settingCopy($_POST);
+        echo json_encode($result);
+        break;
     case 'setting':
         $controller->shakhesSetting();
         break;
