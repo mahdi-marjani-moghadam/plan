@@ -12,15 +12,15 @@
 session_start();
 define("DB_TYPE","mysql");
 // define("DB_HOST","172.18.205.250");
-define("DB_HOST","127.0.0.1");
+define("DB_HOST","localhost");
 define("DB_USER","root");
-define("DB_PASSWORD","root");
+define("DB_PASSWORD","12345678");
 define("DB_DATABASE","plan");
 define("ROOT_DIR",dirname(__FILE__) ."/");
 
 define("SUB_FOLDER","");
 
-define("RELA_DIR","https://".$_SERVER['HTTP_HOST']."/");
+define("RELA_DIR","http://".$_SERVER['HTTP_HOST']."/");
 
 define("PRODUCT_IMAGE",RELA_DIR . "templates/images/product/product_image/");
 define("PRODUCT_IMAGE_ROOT",ROOT_DIR . "templates/images/product/product_image/");

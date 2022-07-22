@@ -452,6 +452,9 @@ class adminFormController
         $this->template($list);
         die();
     }
+
+
+    //http://plan.local.ir/admin/?component=form&action=myForm
     public function search($fields)
     {
         global $admin_info;
@@ -567,7 +570,7 @@ class adminFormController
                     $plan_id = $list['fid'];
                     if (STEP_FORM1 == 1 and $list['start_date'] <= date('Y-m-d') and $list['finish_date'] >= date('Y-m-d')) {
                         $st .= "<input data-season='1-{$list['fid']}' class='form-control ltr ' pattern='^([0-9]|[1-9][0-9]|100)$' title='.درصد پیشرفت وارد شده مجاز نمی باشد' autocomplete='off'  name='menu[$plan_id][1]' type='text'  value='{$list['admin_percent1']}' style='width: 150px'>";
-                                               $st .= "<input  name='menu[$plan_id][1]' type='file'   >";
+                        $st .= "<input  name='menu[$plan_id][1]' type='file'   >";
                     } else {
                         $st .= 'اعلامی: <br>' . "<div class='elami' data-season='1-{$list['fid']}'>" . $list['admin_percent1'] . '</div><br> نهایی: ' . " <div class='nahayi' data-season='1-{$list['fid']}'>" . substr($list['O1'], 0, 4) . "</div>";
                     }
@@ -601,10 +604,10 @@ class adminFormController
                     if (STEP_FORM1 == 1 and $list['start_date'] <= date('Y-m-d') and $list['finish_date'] >= date('Y-m-d')) {
                         $st = "<textarea name='admin_tozihat[$plan_id][1]'  type='text' class='form-control' rows='3'>{$list['admin_tozihat1']}</textarea>";
                     } else {
-                        $st .= $list['admin_tozihat1'];
+                        $st .= readMore($list['admin_tozihat1']);
                     }
                 } else {
-                    $st = $list['admin_tozihat1'];
+                    $st = readMore($list['admin_tozihat1']);
                 }
                 return $st;
             }
@@ -633,7 +636,7 @@ class adminFormController
                     if ($list['admin_file2']) {
                         $st .= "<br>" . "<a  class='btn btn-success btn-xs' data-season='2' href='" . RELA_DIR . "statics/files/{$admin_info['admin_id']}/season2/{$list['eghdam_id']}/{$list['admin_file2']}" . "'>دانلود فایل</a>";
                         if (STEP_FORM1 == 2) {
-                            $st .= "<a class='btn btn-danger text-white btn-xs'  onclick=\" return confirm('آیا میخواهید فایل را حذف نمایید؟');\"     href='" . RELA_DIR . "admin/?component=form&action=deleteFile&s=2&e={$list['eghdam_id']}&f={$list['faaliat_id']}' style='color: red;'>حذف فایل</a>";
+                            $st .= "<a class='btn btn-danger text-white btn-xs'  onclick=\" return confirm('آیا میخواهید فایل را حذف نمایید؟');\"     href='" . RELA_DIR . "admin/?component=form&action=deleteFile&s=2&e={$list['eghdam_id']}&f={$list['faaliat_id']}' style='color: #ff0000;'>حذف فایل</a>";
                         }
                     }
                 } else {
@@ -658,7 +661,7 @@ class adminFormController
                     if (STEP_FORM1 == 2 and $list['start_date'] <= date('Y-m-d') and $list['finish_date'] >= date('Y-m-d')) {
                         $st = "<textarea name='admin_tozihat[$plan_id][2]'  type='text' class='form-control' rows='3'>{$list['admin_tozihat2']}</textarea>";
                     } else {
-                        $st .= $list['admin_tozihat2'];
+                        $st .=  readMore($list['admin_tozihat2']);
                     }
                 } else {
                     $st = readMore($list['admin_tozihat2']);
@@ -677,7 +680,7 @@ class adminFormController
                     $st = '';
                     if (STEP_FORM1 == 3 and $list['start_date'] <= date('Y-m-d') and $list['finish_date'] >= date('Y-m-d')) {
                         $st .= "<input data-season='3-{$list['fid']}' class='form-control ltr percent-input'  title='.درصد پیشرفت وارد شده نباید از درصد نهایی دوره قبل کوچکتر باشد'  autocomplete='off'  name='menu[$plan_id][3]' type='text'  value='{$list['admin_percent3']}' style='width: 150px'>";
-                                               $st .= "<input  name='menu[$plan_id][3]' type='file'   >";
+                        //$st .= "<input  name='menu[$plan_id][3]' type='file'   >";
                     } else {
                         $st .= 'اعلامی: <br>' . "<div class='elami' data-season='3-{$list['fid']}'>" . $list['admin_percent3'] . '</div><br> نهایی: ' . " <div  class='nahayi' data-season='3-{$list['fid']}'>" . substr($list['O3'], 0, 4) . "</div>";
                     }
@@ -707,10 +710,10 @@ class adminFormController
                     if (STEP_FORM1 == 3 and $list['start_date'] <= date('Y-m-d') and $list['finish_date'] >= date('Y-m-d')) {
                         $st = "<textarea name='admin_tozihat[$plan_id][3]'  type='text' class='form-control' rows='3'>{$list['admin_tozihat3']}</textarea>";
                     } else {
-                        $st .= $list['admin_tozihat3'];
+                        $st .= readMore($list['admin_tozihat3']);
                     }
                 } else {
-                    $st = $list['admin_tozihat3'];
+                    $st = readMore($list['admin_tozihat3']);
                 }
                 return $st;
             }
@@ -762,10 +765,10 @@ class adminFormController
                     if (STEP_FORM1 == 4 and $list['start_date'] <= date('Y-m-d') and $list['finish_date'] >= date('Y-m-d')) {
                         $st = "<textarea name='admin_tozihat[$plan_id][4]'  type='text' class='form-control' rows='3'>{$list['admin_tozihat4']}</textarea>";
                     } else {
-                        $st .= $list['admin_tozihat4'];
+                        $st .= readMore($list['admin_tozihat4']);
                     }
                 } else {
-                    $st = $list['admin_tozihat4'];
+                    $st = readMore($list['admin_tozihat4']);
                 }
 
                 return $st;
