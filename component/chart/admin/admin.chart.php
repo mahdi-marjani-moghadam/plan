@@ -63,6 +63,7 @@ if ($admin_info['parent_id'] != 0) {
             $controller->vahedChart1();
             break;
         case 'v2':
+            
             $controller->vahedChart2();
             break;
         case 'v3':
