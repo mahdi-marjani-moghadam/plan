@@ -27,12 +27,11 @@ class shakhesController
         $this->options['shora'] = $this->options('sh_shora');
 
 
-
         /* permissions */
         include_once ROOT_DIR . 'component/shakhes/model/forms_permission.model.php';
         $formsPermission = new formsPermission;
         $permissions = $formsPermission->getAll()->getList()['export']['list'];
-        foreach ($permissions as  $item) {
+        foreach ($permissions as $item) {
             $this->permissions[$item['admin_id']]['admin_id'] = $item['admin_id'];
             $this->permissions[$item['admin_id']]['import_admin'] = $item['import_admin'];
             $this->permissions[$item['admin_id']]['confirm1'] = $item['confirm1'];
@@ -43,6 +42,7 @@ class shakhesController
         $this->time = $this->checkAdminStatus($admin_info['admin_id']);
         // dd($this->time);
     }
+
     public function template($list = array(), $msg = '')
     {
         global $messageStack, $admin_info;
@@ -107,43 +107,12 @@ class shakhesController
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
-        اول باید اهداف اون ادمینی که اومده تو رو ببینیم
-        بعد شاخص این ادمینی که اومده بیرون میکشیم
-        یه قسمت داشته باشیم که ادمین های کسی که اومده پیدا بشه
-        ا ۶ تا جدول به ازا اهداف داشته باشیم
-        اونایی که group_admin اونها ۱ باشه میتونن همه رو ببینن
+     * اول باید اهداف اون ادمینی که اومده تو رو ببینیم
+     * بعد شاخص این ادمینی که اومده بیرون میکشیم
+     * یه قسمت داشته باشیم که ادمین های کسی که اومده پیدا بشه
+     * ا ۶ تا جدول به ازا اهداف داشته باشیم
+     * اونایی که group_admin اونها ۱ باشه میتونن همه رو ببینن
      */
 
     public function showList()
@@ -186,8 +155,6 @@ class shakhesController
         //   dd($ghalamsNext);
         //           dd($ghalamsNext[102001]['admins'][1102]);
         //           dd($ghalamsPrev[102001]['admins'][1102]);
-
-
 
 
         // سوم برای بدست آوردن شاخص ها از جدول ghalam_shakhes , shakhes
@@ -236,7 +203,7 @@ class shakhesController
         $admin->keyBy('admin_id');
         $admin->leftJoin('sh_import', 'admin.admin_id', '=', 'sh_import.motevali_admin_id');
         $admin->orderBy('`parent_id`,`groups`,`flag`', 'asc');
-        
+
 
         $admin->whereOpen('admin.parent_id', '<>', '0'); // <> 1
 
@@ -270,10 +237,10 @@ class shakhesController
                 ->where('parent_id', 'in', $parent_id)
                 ->getList()['export']['list'];
             foreach ($adminsinfo as $admininfo) {
-                $admin_id    .= $admininfo['admin_id'] . ',';
+                $admin_id .= $admininfo['admin_id'] . ',';
             }
 
-            $admin_id =  100 . ',' . trim($admin_id, ',') . ',' . $parent_id;
+            $admin_id = 100 . ',' . trim($admin_id, ',') . ',' . $parent_id;
             $admin->andWhere('admin.admin_id', 'in', $admin_id);
         }
 
@@ -309,7 +276,7 @@ class shakhesController
 
     public function getGhalam($admins, $year = '1399', $season = 6)
     {
-        
+
         include_once ROOT_DIR . 'component/shakhes/model/import.model.php';
         $import = new import();
         $import->select('
@@ -398,19 +365,18 @@ class shakhesController
         $resp = $relGhalamShakhes->where('shakhes_id', '=', $skakhesId)->getList()['export']['list'];
         // dd($resp);   
         $func = '';
-        $count =0;
-        foreach ($resp as  $sh) {
+        $count = 0;
+        foreach ($resp as $sh) {
             $type = $sh['type'];
             if ($type == 'equal') {
                 $func = $sh['ghalam_id'];
             } else if ($type == 'sum') {
                 $func = $func . '+' . $sh['ghalam_id'];
             } else if ($type == 'average') {
-                $funcT = $func . '+' . $sh['ghalam_id']; 
+                $funcT = $func . '+' . $sh['ghalam_id'];
                 $count++;
-                $func = $funcT /$count;
-            } 
-            else {
+                $func = $funcT / $count;
+            } else {
 
                 if ($type == 'up') {
                     $up = $up . '+' . $sh['ghalam_id'];
@@ -420,11 +386,10 @@ class shakhesController
                 $func = trim($up, '+') . '/' . trim($down, '+');
 
                 // dd('ss');
-            } 
+            }
             // dd($sh);
         }
 
-        
 
         return trim($func, '+');
     }
@@ -440,14 +405,13 @@ class shakhesController
             $amalkardPrev = $this->calcuteFunction($function, $ghP); // محاسبه عملکرد ۹۸
 
             //                        dd($ghP);
-            
-            $data[$shakhes_id] = $EupNext = $EupPrev = $EdownNext = $EdownPrev = $EupNextUni = $EdownNextUni = $EupPrevUni = $EdownPrevUni =  array();
+
+            $data[$shakhes_id] = $EupNext = $EupPrev = $EdownNext = $EdownPrev = $EupNextUni = $EdownNextUni = $EupPrevUni = $EdownPrevUni = array();
 
             // dd($admins);
-            
+
             foreach ($admins as $motevali => $admin) {
 
-                
 
                 // اول واحد ها پر میشن بعد کل واحد 
                 //برای اینکه دچار مشکل نشه وقتی به کل واحد میرسیم ازش با شرط زیر رد میشیم
@@ -473,35 +437,42 @@ class shakhesController
                     //                        dd($amalkardPrev[$motevali]);
                     //                    }
 
-                    if ($shakhes['afzayande'] == 1) {
-                        $nerkh[$motevali]['value_import'] = ((($amalkardNext[$motevali]['value_import']??1) / ($amalkardPrev[$motevali]['value_import']??1)) - 1) ; // نرخ رشد واحدها
-                        
-                    } else {
-                        $nerkh[$motevali]['value_import'] =  (1 - (($amalkardNext[$motevali]['value_import']??1) / ($amalkardPrev[$motevali]['value_import']??1))) ; // نرخ رشد واحدها
-                    }
-                    
-                    $darsad[$motevali]['value_import'] = (($nerkh[$motevali]['value_import'] ?? 1) / ($this->standard($shakhes_id, $motevali)?? 1)) * 100; // درصد تحقق واحدها
-                    
+                    //if (isset($amalkardNext[$motevali]['value_import']) & is_numeric($amalkardNext[$motevali]['value_import'])) {
+
+
+                        if ($shakhes['afzayande'] == 1) {
+                            $nerkh[$motevali]['value_import'] = ((($amalkardNext[$motevali]['value_import'] ?? 1) / ($amalkardPrev[$motevali]['value_import'] ?? 1)) - 1); // نرخ رشد واحدها
+
+                        } else {
+                            $nerkh[$motevali]['value_import'] = (1 - (($amalkardNext[$motevali]['value_import'] ?? 1) / ($amalkardPrev[$motevali]['value_import'] ?? 1))); // نرخ رشد واحدها
+                        }
+
+                        $darsad[$motevali]['value_import'] = (($nerkh[$motevali]['value_import'] ?? 1) / ($this->standard($shakhes_id, $motevali) ?? 1)) * 100; // درصد تحقق واحدها
+//                    } else {
+//                        $nerkh[$motevali]['value_import'] = null;
+//                        $darsad[$motevali]['value_import'] = null;
+//                    }
                     // برای جدول شاخص
                     $data[$shakhes_id][$motevali]['amalkardNext']['value_import'] = $amalkardNext[$motevali]['value_import']; // عملکرد ۹۹ واحدها
                     $data[$shakhes_id][$motevali]['amalkardPrev']['value_import'] = $amalkardPrev[$motevali]['value_import']; // عملکرد ۹۸ واحدها
-                    $data[$shakhes_id][$motevali]['nerkh']['value_import'] = $nerkh[$motevali]['value_import'] ; // نرخ رشد واحدها
-                    $data[$shakhes_id][$motevali]['darsad']['value_import'] = $darsad[$motevali]['value_import']; // درصد تحقق واحدها
+/*                    $data[$shakhes_id][$motevali]['nerkh']['value_import'] = ($nerkh[$motevali]['value_import'] != null) ? $nerkh[$motevali]['value_import'] * 100 : null; // نرخ رشد واحدها*/
+                    $data[$shakhes_id][$motevali]['nerkh']['value_import'] = $nerkh[$motevali]['value_import'] * 100; // نرخ رشد واحدها
+                    $data[$shakhes_id][$motevali]['darsad']['value_import'] = $darsad[$motevali]['value_import'] * 100; // درصد تحقق واحدها
 
                     // برای جدول در سطح کلان
                     $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value_import'] +=
                         $data[$shakhes_id][$motevali]['darsad']['value_import'] * ($this->shakhesVazn($shakhes_id, $motevali) ?? 0); // اعلامی
-                    
-                        
+
+
                     ///////////////
                     ///////////////
                     //    نهايي  //
                     ///////////////
                     ///////////////
                     if ($shakhes['afzayande'] == 1) {
-                        $nerkh[$motevali]['value'] = (($amalkardNext[$motevali]['value'] / $amalkardPrev[$motevali]['value']) - 1) ; // نرخ رشد واحدها
+                        $nerkh[$motevali]['value'] = (($amalkardNext[$motevali]['value'] / $amalkardPrev[$motevali]['value']) - 1); // نرخ رشد واحدها
                     } else {
-                        $nerkh[$motevali]['value'] = -1 * ( ($amalkardNext[$motevali]['value'] / $amalkardPrev[$motevali]['value'])); // نرخ رشد واحدها
+                        $nerkh[$motevali]['value'] = -1 * (($amalkardNext[$motevali]['value'] / $amalkardPrev[$motevali]['value'])); // نرخ رشد واحدها
                     }
                     // درصد تحقق واحدها
                     $darsad[$motevali]['value'] = ($nerkh[$motevali]['value'] / $this->standard($shakhes_id, $motevali)) * 100;
@@ -509,16 +480,13 @@ class shakhesController
                     // برای جدول شاخص
                     $data[$shakhes_id][$motevali]['amalkardNext']['value'] = $amalkardNext[$motevali]['value']; // عملکرد ۹۹ واحدها
                     $data[$shakhes_id][$motevali]['amalkardPrev']['value'] = $amalkardPrev[$motevali]['value']; // عملکرد ۹۸ واحدها
-                    $data[$shakhes_id][$motevali]['nerkh']['value'] = $nerkh[$motevali]['value'] ;  // نرخ رشد واحدها
+                    $data[$shakhes_id][$motevali]['nerkh']['value'] = $nerkh[$motevali]['value'] * 100;  // نرخ رشد واحدها
                     $data[$shakhes_id][$motevali]['darsad']['value'] = $darsad[$motevali]['value']; // درصد تحقق واحدها
 
                     // برای جدول در سطح کلان
                     $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value'] +=
                         $data[$shakhes_id][$motevali]['darsad']['value'] * $this->shakhesVazn($shakhes_id, $motevali); // نهایی
 
-
-
-                    
 
                     //--------------//
                     // براي  کل واحد
@@ -531,9 +499,9 @@ class shakhesController
                         $tmp = array(1 => 'value', 2 => 'value_import'); // متغیر داینامیک نهایی و اعلامی
 
                         //////// ۹۹ ////////
-                        $EupNext[$tmp[$i]] +=  $amalkardNext[$motevali]['up'][$tmp[$i]]; // جمع صورت عملکرد 
+                        $EupNext[$tmp[$i]] += $amalkardNext[$motevali]['up'][$tmp[$i]]; // جمع صورت عملکرد
                         if (isset($amalkardNext[$motevali]['down'][$tmp[$i]])) {
-                            $EdownNext[$tmp[$i]] +=  $amalkardNext[$motevali]['down'][$tmp[$i]]; // جمع مخرج عملکرد 
+                            $EdownNext[$tmp[$i]] += $amalkardNext[$motevali]['down'][$tmp[$i]]; // جمع مخرج عملکرد
                             // $EdownNextUni[$tmp[$i]] +=  $amalkardNext[$motevali]['down'][$tmp[$i]]; // جمع مخرج عملکرد 
 
                         } else {
@@ -545,15 +513,14 @@ class shakhesController
 
 
                         //////// ۹۸ ////////
-                        $EupPrev[$tmp[$i]] +=  $amalkardPrev[$motevali]['up'][$tmp[$i]]; // جمع صورت عملکرد
+                        $EupPrev[$tmp[$i]] += $amalkardPrev[$motevali]['up'][$tmp[$i]]; // جمع صورت عملکرد
                         if (isset($amalkardPrev[$motevali]['down'][$tmp[$i]])) {
-                            $EdownPrev[$tmp[$i]] +=  $amalkardPrev[$motevali]['down'][$tmp[$i]]; // جمع مخرج عملکرد 
+                            $EdownPrev[$tmp[$i]] += $amalkardPrev[$motevali]['down'][$tmp[$i]]; // جمع مخرج عملکرد
                         } else {
                             $EdownPrev[$tmp[$i]] += 0; // در صورتی که فرمول نسبت نباشد مخرج صفر میشود
                         }
                         $EupPrevUni[$tmp[$i]] += $EupPrev[$tmp[$i]]; // Uni
                         $EdownPrevUni[$tmp[$i]] += $EdownPrev[$tmp[$i]]; // Uni
-
 
 
                         $data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] =
@@ -564,15 +531,14 @@ class shakhesController
 
                         if ($shakhes['afzayande'] == 1) {
                             $data[$shakhes_id][$admin['parent_id']]['nerkh'][$tmp[$i]] =
-                                (($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]]) - 1) ; // نرخ رشد
+                                (($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]]) - 1); // نرخ رشد
                         } else {
                             $data[$shakhes_id][$admin['parent_id']]['nerkh'][$tmp[$i]] =
-                                (1 - ($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]])) ; // نرخ رشد
+                                (1 - ($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]])); // نرخ رشد
                         }
 
                         $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]] =
                             ($data[$shakhes_id][$admin['parent_id']]['nerkh'][$tmp[$i]] / $this->standard($shakhes_id, $admin['parent_id'])) * 100; // درصد تحقق
-
 
 
                         //                        if($tmp[$i] == 'value_import'){
@@ -590,7 +556,6 @@ class shakhesController
                         $data[$shakhes_id][$motevali]['darsad']['value_import'] * $this->shakhesVazn($shakhes_id, $motevali); // درصد تحقق نهایی و اعلامی
                     $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value'] +=
                         $data[$shakhes_id][$motevali]['darsad']['value'] * $this->shakhesVazn($shakhes_id, $motevali); // درصد تحقق نهایی و اعلامی
-
 
 
                     //ترتیب این خط خیلی مهمه برای محاسبه کل واحد باید اینجا ریست بشه
@@ -613,12 +578,12 @@ class shakhesController
 
                 if ($shakhes['afzayande'] == 1) {
                     $data[$shakhes_id][100]['nerkh'][$tmp[$i]] =
-                        (($data[$shakhes_id][100]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][100]['amalkardPrev'][$tmp[$i]]) - 1) ; // نرخ رشد
+                        (($data[$shakhes_id][100]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][100]['amalkardPrev'][$tmp[$i]]) - 1); // نرخ رشد
                 } else {
                     $data[$shakhes_id][100]['nerkh'][$tmp[$i]] =
-                        (1 - ($data[$shakhes_id][100]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][100]['amalkardPrev'][$tmp[$i]])) ; // نرخ رشد
+                        (1 - ($data[$shakhes_id][100]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][100]['amalkardPrev'][$tmp[$i]])); // نرخ رشد
                 }
-                
+
                 $data[$shakhes_id][100]['darsad'][$tmp[$i]] =
                     ($data[$shakhes_id][100]['nerkh'][$tmp[$i]] / $this->standard($shakhes_id, 100)) * 100; // درصد تحقق
 
@@ -638,6 +603,7 @@ class shakhesController
 
         return $data;
     }
+
     private function calcuteFunction($func, $gh)
     {
         // $func = '101109+101109/101109+101109';
@@ -660,7 +626,6 @@ class shakhesController
             }
         }
         // dd($v);
-
 
 
         if (isset($f[1])) {
@@ -692,6 +657,7 @@ class shakhesController
         // dd($v);
         return $v;
     }
+
     private function standard($shakhes, $admin)
     {
         include_once ROOT_DIR . 'component/shakhes/model/rel.shakhes.admin.model.php';
@@ -700,6 +666,7 @@ class shakhesController
 
         return $resp->shakhes_standard;
     }
+
     private function shakhesVazn($shakhes, $admin)
     {
         include_once ROOT_DIR . 'component/shakhes/model/rel.shakhes.admin.model.php';
@@ -708,34 +675,35 @@ class shakhesController
 
         return $resp->shakhes_vazn;
     }
+
     public function shakhesReportStore()
     {
         global $messageStack;
         include_once ROOT_DIR . 'component/shakhes/model/report.model.php';
-        
+
 
         $groups = $this->child();
         if (isset($_GET['y'])) {
             $year = explode('-', handleData($_GET['y']));
-        }else{
+        } else {
             $year[1] = explode('/', convertDate(date('Y-m-d')))[0];
             $year[0] = $year[1] - 1;
         }
-            
-        foreach([6,12] as $season){
+
+        foreach ([6, 12] as $season) {
             $_GET['s'] = $season;
             // dd('-----------------------------------------------',false);
             // dd($season,false);
-            
+
             $ghalamsNext = $this->getGhalam($groups, $year[1], $season);
             $ghalamsPrev = $this->getGhalam($groups, $year[0], $season);
             // dd($ghalamsNext,false);
             // dd($ghalamsPrev,false);
-            
-            
+
+
             $shakhesNext = $this->getShakhesByGhalam($ghalamsNext);
             // dd($shakhesNext,false);
-            
+
             $reports = $this->getReports($shakhesNext, $ghalamsNext, $ghalamsPrev, $groups);
 
             foreach ($reports['kalan'] as $kalan_no => $kalan) {
@@ -745,30 +713,30 @@ class shakhesController
                     ${'value_import' . $season} = floor($kalan[$admin_id]['darsad']['value'] * 100) / 100;
 
                     $data = [
-                        'kalan_no'=>$kalan_no,
-                        'admin_id'=>$admin_id,
-                        'value6'=>$value6,
-                        'value_import6'=>$value_import6,
-                        'value12'=>$value12,
-                        'value_import12'=>$value_import12,
-                        'year'=>$year[1]
+                        'kalan_no' => $kalan_no,
+                        'admin_id' => $admin_id,
+                        'value6' => $value6,
+                        'value_import6' => $value_import6,
+                        'value12' => $value12,
+                        'value_import12' => $value_import12,
+                        'year' => $year[1]
                     ];
 
                     $shakhesReportObj = new shakhesReport;
-                    $shakhesReportObj->where('kalan_no','=',$kalan_no);
-                    $shakhesReportObj->where('admin_id','=',$admin_id);
-                    $shakhesReportObj->where('year','=',$year[1]);
+                    $shakhesReportObj->where('kalan_no', '=', $kalan_no);
+                    $shakhesReportObj->where('admin_id', '=', $admin_id);
+                    $shakhesReportObj->where('year', '=', $year[1]);
                     $shakhesReport = $shakhesReportObj->first();
 
-                    if(is_object($shakhesReport)){
-                        
+                    if (is_object($shakhesReport)) {
+
                         $shakhesReport->setFields($data);
-                    }else{
+                    } else {
                         $shakhesReport = new shakhesReport();
                         $shakhesReport->setFields($data);
                     }
                     $shakhesReport->save();
-                    
+
                     // dd($shakhesReport,false);
                 }
             }
@@ -776,27 +744,12 @@ class shakhesController
 
         $shakhesReportObj = new shakhesReport();
         $shakhesReport = $shakhesReportObj->all();
-        
+
         $messageStack->add_session('messageShakhesReportStore', "با موفقیت سال $year[0]-$year[1] به روز رسانی شد", 'success');
 
 
         return $shakhesReport;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     public function adminSetting()
@@ -832,12 +785,12 @@ class shakhesController
         $res = $obj->getByFilter($filter);
         $pagination = $this->pagination($res, $PAGE_SIZE)['export']['list'];
 
-        $import = ($res['export']['recordsCount'] > 0) ?  $res['export']['list'] : array();
+        $import = ($res['export']['recordsCount'] > 0) ? $res['export']['list'] : array();
 
         $ghalamStr = implode(',', array_column($import, 'ghalam_id'));
         // dd($ghalamStr);
         $ghalams = $ghalam->where('ghalam_id', 'in', $ghalamStr)->keyBy('ghalam_id')->getList();
-        $ghalamName = ($ghalams['export']['recordsCount'] > 0) ?  $ghalams['export']['list'] : array();
+        $ghalamName = ($ghalams['export']['recordsCount'] > 0) ? $ghalams['export']['list'] : array();
 
         include_once ROOT_DIR . "component/admin/model/admin.model.php";
         // پیدا کردن ستون های واحد
@@ -854,11 +807,11 @@ class shakhesController
         }
 
 
-
         $this->fileName = 'shakhes.adminSetting.php';
         $this->template(compact('import', 'admins', 'ghalamName', 'pagination', 'msg', 'page'));
         die();
     }
+
     public function adminSettingOnSubmmit()
     {
         global $messageStack;
@@ -892,6 +845,7 @@ class shakhesController
         $messageStack->add_session('message', $result['msg'], 'success');
         redirectPage(RELA_DIR . 'admin/page/1/?component=shakhes&action=adminSetting', $result['msg']);
     }
+
     private function pagination($res = array(), $PAGE_SIZE = 10)
     {
         $pageCount = ceil($res['export']['recordsCount'] / $PAGE_SIZE);
@@ -931,9 +885,10 @@ class shakhesController
         $result['export']['list'] = $pagination;
         return $result;
     }
+
     /**
-      تنظیمات شاخص
-      نمایش لیست شاخص ها
+     * تنظیمات شاخص
+     * نمایش لیست شاخص ها
      */
     public function shakhesSetting()
     {
@@ -958,13 +913,13 @@ class shakhesController
                     case 'equal':
                         $shakhes[$sh['shakhes_id']]['logic']['type'] = 'equal';
                         $shakhes[$sh['shakhes_id']]['logic']['function'] = '$g' . $sh['ghalam_id'];
-                        $shakhes[$sh['shakhes_id']]['logic']['ghalams'][]  = $sh['ghalam_id'];
+                        $shakhes[$sh['shakhes_id']]['logic']['ghalams'][] = $sh['ghalam_id'];
                         break;
 
                     case 'sum':
                         $shakhes[$sh['shakhes_id']]['logic']['type'] = 'sum';
                         $shakhes[$sh['shakhes_id']]['logic']['function'] = $shakhes[$sh['shakhes_id']]['logic']['function'] . '+$g' . $sh['ghalam_id'];
-                        $shakhes[$sh['shakhes_id']]['logic']['ghalams'][]  = $sh['ghalam_id'];
+                        $shakhes[$sh['shakhes_id']]['logic']['ghalams'][] = $sh['ghalam_id'];
                         break;
 
                     case 'up':
@@ -985,7 +940,7 @@ class shakhesController
                     case 'average':
                         $shakhes[$sh['shakhes_id']]['logic']['type'] = 'average';
                         $shakhes[$sh['shakhes_id']]['logic']['function'] = $shakhes[$sh['shakhes_id']]['logic']['function'] . '+$g' . $sh['ghalam_id'];
-                        $shakhes[$sh['shakhes_id']]['logic']['ghalams'][]  = $sh['ghalam_id'];
+                        $shakhes[$sh['shakhes_id']]['logic']['ghalams'][] = $sh['ghalam_id'];
                         break;
                 }
             }
@@ -998,7 +953,7 @@ class shakhesController
         left join sh_rel_ghalam_shakhes r_g_s on g.ghalam_id = r_g_s.ghalam_id
         left join sh_rel_kalan_shakhes r_k_s on r_g_s.shakhes_id = r_k_s.shakhes_id ';
         $res2 = $obj2->query($query)->getList();
-        $ghalam = ($res2['export']['recordsCount'] > 0) ?  $res2['export']['list'] : array();
+        $ghalam = ($res2['export']['recordsCount'] > 0) ? $res2['export']['list'] : array();
 
         include_once ROOT_DIR . 'component/eghdam/model/eghdam.model.php';
         $obj3 = new eghdam();
@@ -1072,9 +1027,7 @@ class shakhesController
         /** add rel ghalam shakhes */
 
 
-
         /** add kalan shakhes */
-
 
 
         $result['status'] = 1;
@@ -1115,7 +1068,7 @@ class shakhesController
         $obj = new shakhes;
         $query = 'select max(shakhes_id) as lastNumber from sh_shakhes';
         $lastNumber = $obj->query($query)->getList()['export']['list'][0]['lastNumber'];
-       
+
 
         $shakhes = new shakhes();
         $shakhes->shakhes_id = ++$lastNumber;
@@ -1149,7 +1102,7 @@ class shakhesController
             $newRelGhalamShakhes = new relGhalamShakhes();
             $newRelGhalamShakhes->shakhes_id = $post['shakhes_id'];
             $newRelGhalamShakhes->ghalam_id = $post['ghalams'];
-            $newRelGhalamShakhes->type =  $post['type'];
+            $newRelGhalamShakhes->type = $post['type'];
             $newRelGhalamShakhes->save();
         } elseif ($post['type'] == 'sum') {
             foreach ($post['ghalams'] as $ghalam_id) {
@@ -1183,7 +1136,6 @@ class shakhesController
                 $newRelGhalamShakhes->save();
             }
         }
-
 
 
         /** پاک کردن کل کلان اون شاخص */
@@ -1233,23 +1185,19 @@ class shakhesController
         $shakhes = $obj->getAll()->getList()['export'];
 
 
-
         // 2
         // مقادیر داخل باکس فیلتر
         $filterAdminsSelectbox = $admin->getAll()->keyBy('admin_id')->select('admin_id,name,family')->where('parent_id', '=', 1)->getList();
-        $filterAdminsSelectbox = ($filterAdminsSelectbox['export']['recordsCount'] > 0) ?  $filterAdminsSelectbox['export']['list'] : array();
-
+        $filterAdminsSelectbox = ($filterAdminsSelectbox['export']['recordsCount'] > 0) ? $filterAdminsSelectbox['export']['list'] : array();
 
 
         // 3
         //فیلتر کردن بر اساس filterAdmin
         if (isset($_GET['filterAdmin']) && is_numeric($_GET['filterAdmin'])) {
             $temp = $admin->where('parent_id', '=', $_GET['filterAdmin'])->getList();
-            $temp = ($temp['export']['recordsCount'] > 0) ?  $temp['export']['list'] : array();
+            $temp = ($temp['export']['recordsCount'] > 0) ? $temp['export']['list'] : array();
             $filter['admins'] = 'and motevali_admin_id in (' . implode(',', array_column($temp, 'admin_id')) . ')';
         }
-
-
 
 
         // 4
@@ -1267,36 +1215,32 @@ class shakhesController
         and year = " . KHODEZHARI_YEAR . "
         order by i.ghalam_id ";
         $res = $obj->query($query)->getList();
-        $imports = ($res['export']['recordsCount'] > 0) ?  $res['export']['list'] : array();
+        $imports = ($res['export']['recordsCount'] > 0) ? $res['export']['list'] : array();
 
         // dd($imports);
-
-
 
 
         // 5
         // کل قلم ها
         $ghalams = $ghalam->getAll()->keyBy('ghalam_id')->getList();
-        $ghalamName = ($ghalams['export']['recordsCount'] > 0) ?  $ghalams['export']['list'] : array();
+        $ghalamName = ($ghalams['export']['recordsCount'] > 0) ? $ghalams['export']['list'] : array();
         // dd($ghalams);
-
-
 
 
         // 6
         //ادمین ها
         $admins = $admin->getAll()->keyBy('admin_id')->select('admin_id,name,family,parent_id')->getList();
-        $adminName = ($admins['export']['recordsCount'] > 0) ?  $admins['export']['list'] : array();
+        $adminName = ($admins['export']['recordsCount'] > 0) ? $admins['export']['list'] : array();
 
 
         // 7
         // برای کلان تحلیل
         $groups = array_unique(array_column($imports, 'motevali_admin_id'));
         $kalanObj = $kalan->keyBy('kalan_no')->getList();
-        $kalans = ($kalanObj['export']['recordsCount'] > 0) ?  $kalanObj['export']['list'] : array();
+        $kalans = ($kalanObj['export']['recordsCount'] > 0) ? $kalanObj['export']['list'] : array();
 
         /** kalan_tahlil */
-        $groupString =  implode(', ', $groups);
+        $groupString = implode(', ', $groups);
 
         $season = (STEP_FORM1 >= 3) ? 12 : 6;
         $managerOrArzyab = ($admin_info['admin_id'] == 1) ? 'manager' : (($admin_info['parent_id'] == 0) ? 'arzyab' : '');
@@ -1348,7 +1292,7 @@ class shakhesController
          ";
 
         $res2 = $obj->query($query)->getList();
-        $importStatusAll = ($res2['export']['recordsCount'] > 0) ?  $res2['export']['list'] : array();
+        $importStatusAll = ($res2['export']['recordsCount'] > 0) ? $res2['export']['list'] : array();
 
 
         $statusA = array_flip(array('finish', 'sendToConfirm4', 'sendToConfirm3', 'sendToConfirm2', 'sendToConfirm1', 'backToEdit', '0'));
@@ -1420,8 +1364,6 @@ class shakhesController
         }
 
 
-
-
         /* ارسال فرم */
         if (isset($post['temporary']) || isset($post['sendToConfirm1'])) {
 
@@ -1489,8 +1431,6 @@ class shakhesController
             }
 
 
-
-
             $result['msg'] = '. ارسال به واحد بالا انجام شد';
             $result['type'] = 'success';
             $messageStack->add_session('message', $result['msg'], $result['type']);
@@ -1538,6 +1478,7 @@ class shakhesController
             redirectPage(RELA_DIR . 'admin/?component=shakhes&action=khodezhari&filterAdmin=' . $post['filterAdmin'] . '#topOfTable', $result['msg']);
         }
     }
+
     private function updateMotevalis()
     {
         include_once ROOT_DIR . 'component/shakhes/model/import.model.php';
@@ -1586,6 +1527,7 @@ class shakhesController
         }
         // dd($imports);
     }
+
     public function shKalanTahlilStore()
     {
         include_once ROOT_DIR . 'component/shakhes/model/shakhes_kalan_tahlil.model.php';
@@ -1626,7 +1568,7 @@ class shakhesController
         include_once ROOT_DIR . 'component/shakhes/model/import.model.php';
         $importObj = new import();
         $import = $importObj::find($_POST['importid']);
-        $field  = $_POST['tozihatFieldName'];
+        $field = $_POST['tozihatFieldName'];
         $status = 'status' . $_POST['season'];
         $import->$field = $_POST['tozihat'];
         $import->$status = 'backToEdit';
@@ -1635,7 +1577,6 @@ class shakhesController
         echo true;
         die();
     }
-
 
 
     public function jalasat()
@@ -1687,7 +1628,6 @@ class shakhesController
         $this->template(compact('jalasat', 'msg', 'data', 'importAdmins'));
         die();
     }
-
 
 
     public function jalasatOnSubmit()
@@ -1756,13 +1696,13 @@ class shakhesController
 
             if (isset($post['edit']) && isset($post['edit'])) {
 
-                $editObj = $jalasatObj::find((int) $post['edit']);
+                $editObj = $jalasatObj::find((int)$post['edit']);
 
                 if (!is_object($editObj) && $editObj['result'] == -1) {
                     $messageStack->add_session('message', $editObj['msg'], 'error');
                     redirectPage(RELA_DIR . 'admin/?component=shakhes&action=jalasat', $editObj['msg']);
                 }
-                if ($editObj->status != 0  && $editObj->status != 1) {
+                if ($editObj->status != 0 && $editObj->status != 1) {
                     $result['msg'] = 'شما نمی توانید این شورا را ویرایش کنید.';
                     $messageStack->add_session('message', $result['msg'], 'error');
                     redirectPage(RELA_DIR . 'admin/?component=shakhes&action=jalasat', $result['msg']);
@@ -1790,11 +1730,9 @@ class shakhesController
         }
 
 
-
         $messageStack->add_session('message', $result['msg'], $result['type']);
         redirectPage(RELA_DIR . 'admin/?component=shakhes&action=jalasat', $result['msg']);
     }
-
 
 
     public function daneshamukhte()
@@ -1805,8 +1743,6 @@ class shakhesController
 
         $this->selectBoxAdmins('daneshamukhte');
         $importAdmins = $this->importAdmins('daneshamukhte');
-
-
 
 
         include_once ROOT_DIR . 'component/shakhes/model/daneshamukhte.model.php';
@@ -1841,7 +1777,6 @@ class shakhesController
         }
 
 
-
         $this->fileName = 'shakhes.daneshamukhte.php';
         $this->template(compact('daneshamukhte', 'msg', 'data', 'importAdmins'));
         die();
@@ -1864,7 +1799,6 @@ class shakhesController
             $messageStack->add_session('message', $msg, $result['type']);
             redirectPage(RELA_DIR . 'admin/?component=shakhes&action=daneshamukhte', $msg);
         }
-
 
 
         /* ارسال فرم */
@@ -1914,13 +1848,13 @@ class shakhesController
 
             if (isset($post['edit']) && isset($post['edit'])) {
 
-                $editObj = $daneshamukhteObj::find((int) $post['edit']);
+                $editObj = $daneshamukhteObj::find((int)$post['edit']);
 
                 if (!is_object($editObj) && $editObj['result'] == -1) {
                     $messageStack->add_session('message', $editObj['msg'], 'error');
                     redirectPage(RELA_DIR . 'admin/?component=shakhes&action=daneshamukhte', $editObj['msg']);
                 }
-                if ($editObj->status != 0  && $editObj->status != 1) {
+                if ($editObj->status != 0 && $editObj->status != 1) {
                     $result['msg'] = 'شما نمی توانید این مورد را ویرایش کنید.';
                     $messageStack->add_session('message', $result['msg'], 'error');
                     redirectPage(RELA_DIR . 'admin/?component=shakhes&action=daneshamukhte', $result['msg']);
@@ -1952,12 +1886,9 @@ class shakhesController
         }
 
 
-
         $messageStack->add_session('message', $result['msg'], $result['type']);
         redirectPage(RELA_DIR . 'admin/?component=shakhes&action=daneshamukhte', $result['msg']);
     }
-
-
 
 
     public function ruydad()
@@ -2089,13 +2020,13 @@ class shakhesController
 
             if (isset($post['edit']) && isset($post['edit'])) {
 
-                $editObj = $ruydadObj::find((int) $post['edit']);
+                $editObj = $ruydadObj::find((int)$post['edit']);
 
                 if (!is_object($editObj) && $editObj['result'] == -1) {
                     $messageStack->add_session('message', $editObj['msg'], 'error');
                     redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $editObj['msg']);
                 }
-                if ($editObj->status != 0  && $editObj->status != 1) {
+                if ($editObj->status != 0 && $editObj->status != 1) {
                     $result['msg'] = 'شما نمی توانید این رویداد را ویرایش کنید.';
                     $messageStack->add_session('message', $result['msg'], 'error');
                     redirectPage(RELA_DIR . 'admin/?component=shakhes&action=ruydad', $result['msg']);
@@ -2133,8 +2064,6 @@ class shakhesController
     }
 
 
-
-
     public function shora()
     {
         global $messageStack, $dataStack, $admin_info;
@@ -2152,7 +2081,6 @@ class shakhesController
         $shoraObj->where('.sh_shora.admin_id', 'in', $importAdmins['admins'])->orWhere('sh_shora.import_admin', 'in', $importAdmins['admins']);
         $shoraObj->orderBy('id', 'desc');
         $shora = $shoraObj->getList()['export'];
-
 
 
         if (isset($_GET['id'])) {
@@ -2203,9 +2131,6 @@ class shakhesController
         }
 
 
-
-
-
         /* ارسال فرم */
         if (isset($post['temporary']) || isset($post['edit'])) {
             /* اگه فرم درست پر نشه ارور بده */
@@ -2247,13 +2172,13 @@ class shakhesController
 
             if (isset($post['edit']) && isset($post['edit'])) {
 
-                $editObj = $shoraObj::find((int) $post['edit']);
+                $editObj = $shoraObj::find((int)$post['edit']);
 
                 if (!is_object($editObj) && $editObj['result'] == -1) {
                     $messageStack->add_session('message', $editObj['msg'], 'error');
                     redirectPage(RELA_DIR . 'admin/?component=shakhes&action=shora', $editObj['msg']);
                 }
-                if ($editObj->status != 0  && $editObj->status != 1) {
+                if ($editObj->status != 0 && $editObj->status != 1) {
                     $result['msg'] = 'شما نمی توانید این شورا را ویرایش کنید.';
                     $messageStack->add_session('message', $result['msg'], 'error');
                     redirectPage(RELA_DIR . 'admin/?component=shakhes&action=shora', $result['msg']);
@@ -2283,12 +2208,9 @@ class shakhesController
         }
 
 
-
         $messageStack->add_session('message', $result['msg'], $result['type']);
         redirectPage(RELA_DIR . 'admin/?component=shakhes&action=shora', $result['msg']);
     }
-
-
 
 
     private function onSubmitZirGhalam($class, $post)
@@ -2332,7 +2254,7 @@ class shakhesController
 
     public function onDelete($className)
     {
-        global  $messageStack;
+        global $messageStack;
         $id = $_GET['id'];
         include_once ROOT_DIR . 'component/shakhes/model/' . $className . '.model.php';
         $Obj = $className::find($id);
@@ -2513,7 +2435,7 @@ class shakhesController
         return $result;
     }
 
-    private  function selectBoxAdmins($table)
+    private function selectBoxAdmins($table)
     {
         global $admin_info;
         /* ادمین هایی که توی لیست میشه انتخاب کرد */
@@ -2530,8 +2452,6 @@ class shakhesController
     }
 
 
-
-
     private function shakhesReport($shakhes, $ghalams)
     {
         // dd($ghalams);
@@ -2546,7 +2466,6 @@ class shakhesController
         // oo = E (value_import * ghalam_vazn)
 
     }
-
 
 
     private function nerkhRoshd($amalkard, $prevAmalkard)
