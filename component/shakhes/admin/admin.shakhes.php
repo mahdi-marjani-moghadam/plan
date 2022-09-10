@@ -111,6 +111,6 @@ switch ($_GET['action']) {
             $controller->shakhesReportStore();
             redirectPage('/admin/?component=shakhes','با موفقیت به روز رسانی شد.');
         }else{
-            $controller->showList();
+            $controller->showList('shakhes.showList.php');
         }
 }

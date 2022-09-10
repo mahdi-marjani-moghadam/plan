@@ -113,9 +113,10 @@ class shakhesController
      * یه قسمت داشته باشیم که ادمین های کسی که اومده پیدا بشه
      * ا ۶ تا جدول به ازا اهداف داشته باشیم
      * اونایی که group_admin اونها ۱ باشه میتونن همه رو ببینن
+     * @param $str
      */
 
-    public function showList()
+    public function showList($str)
     {
         global $admin_info;
 
@@ -151,15 +152,15 @@ class shakhesController
         //دوم بدست آوردن قلم ها از جدول import
         $ghalamsNext = $this->getGhalam($groups, $year[1], $season);
         $ghalamsPrev = $this->getGhalam($groups, $year[0], $season);
-
-        //   dd($ghalamsNext);
-        //           dd($ghalamsNext[102001]['admins'][1102]);
+//        dd($groups);
+//           dd($ghalamsNext);
+        //            dd($ghalamsNext[102001]['admins'][1102]);
         //           dd($ghalamsPrev[102001]['admins'][1102]);
 
 
         // سوم برای بدست آوردن شاخص ها از جدول ghalam_shakhes , shakhes
-        $shakhesNext = $this->getShakhesByGhalam($ghalamsNext);
-        $shakhesPrev = $this->getShakhesByGhalam($ghalamsPrev);
+        $shakhesNext = $this->getShakhesByGhalam($ghalamsNext,$groups);
+        $shakhesPrev = $this->getShakhesByGhalam($ghalamsPrev,$groups);
 
 
         $reports = $this->getReports($shakhesNext, $ghalamsNext, $ghalamsPrev, $groups);
@@ -168,7 +169,7 @@ class shakhesController
         unset($reports['kalan']);
 
 
-        $this->fileName = 'shakhes.showList.php';
+        $this->fileName = '' . $str . '';
         $this->template(compact(
             'shakhesNext',
             'shakhesPrev',
@@ -277,6 +278,7 @@ class shakhesController
     public function getGhalam($admins, $year = '1399', $season = 6)
     {
 
+
         include_once ROOT_DIR . 'component/shakhes/model/import.model.php';
         $import = new import();
         $import->select('
@@ -292,6 +294,7 @@ class shakhesController
         $import->leftJoin('sh_ghalam', 'sh_ghalam.ghalam_id', '=', 'sh_import.ghalam_id');
         $import->where('sh_import.motevali_admin_id', 'in', array_column($admins, 'admin_id'));
         $import->andWhere('year', '=', $year);
+
         $imports = $import->getList()['export']['list'];
         // dd($imports);
         $ghalam = array();
@@ -315,7 +318,7 @@ class shakhesController
         return $ghalam;
     }
 
-    public function getShakhesByGhalam($ghalams)
+    public function getShakhesByGhalam($ghalams,$groups)
     {
         include_once ROOT_DIR . 'component/shakhes/model/rel.ghalam.shakhes.model.php';
         $relGhalamShakhes = new relGhalamShakhes();
@@ -330,7 +333,9 @@ class shakhesController
         // $relGhalamShakhes->keyBy('sh_shakhes.id');
         $relGhalamShakhes->leftJoin('sh_shakhes', 'sh_shakhes.shakhes_id', '=', 'sh_rel_ghalam_shakhes.shakhes_id');
         $relGhalamShakhes->leftJoin('sh_rel_kalan_shakhes', 'sh_rel_kalan_shakhes.shakhes_id', '=', 'sh_rel_ghalam_shakhes.shakhes_id');
+        $relGhalamShakhes->leftJoin('sh_rel_shakhes_admin','sh_rel_shakhes_admin.shakhes_id','=', 'sh_rel_ghalam_shakhes.shakhes_id');
         $relGhalamShakhes->where('sh_rel_ghalam_shakhes.ghalam_id', 'in', implode(',', array_unique(array_keys($ghalams))));
+        $relGhalamShakhes->where('sh_rel_shakhes_admin.admin_id','in', implode(',', array_unique(array_keys($groups))));
         $rels = $relGhalamShakhes->getList()['export']['list'];
         //         dd($rels);
         // dd('rels',false);
@@ -408,7 +413,7 @@ class shakhesController
 
             $data[$shakhes_id] = $EupNext = $EupPrev = $EdownNext = $EdownPrev = $EupNextUni = $EdownNextUni = $EupPrevUni = $EdownPrevUni = array();
 
-            // dd($admins);
+//             dd($motevali);
 
             foreach ($admins as $motevali => $admin) {
 
@@ -437,7 +442,7 @@ class shakhesController
                     //                        dd($amalkardPrev[$motevali]);
                     //                    }
 
-                    //if (isset($amalkardNext[$motevali]['value_import']) & is_numeric($amalkardNext[$motevali]['value_import'])) {
+                    if (isset($amalkardNext[$motevali]['value_import']) & is_numeric($amalkardNext[$motevali]['value_import'])) {
 
 
                         if ($shakhes['afzayande'] == 1) {
@@ -448,16 +453,15 @@ class shakhesController
                         }
 
                         $darsad[$motevali]['value_import'] = (($nerkh[$motevali]['value_import'] ?? 1) / ($this->standard($shakhes_id, $motevali) ?? 1)) * 100; // درصد تحقق واحدها
-//                    } else {
-//                        $nerkh[$motevali]['value_import'] = null;
-//                        $darsad[$motevali]['value_import'] = null;
-//                    }
+                    } else {
+                        $nerkh[$motevali]['value_import'] = null;
+                        $darsad[$motevali]['value_import'] = null;
+                    }
                     // برای جدول شاخص
                     $data[$shakhes_id][$motevali]['amalkardNext']['value_import'] = $amalkardNext[$motevali]['value_import']; // عملکرد ۹۹ واحدها
                     $data[$shakhes_id][$motevali]['amalkardPrev']['value_import'] = $amalkardPrev[$motevali]['value_import']; // عملکرد ۹۸ واحدها
-/*                    $data[$shakhes_id][$motevali]['nerkh']['value_import'] = ($nerkh[$motevali]['value_import'] != null) ? $nerkh[$motevali]['value_import'] * 100 : null; // نرخ رشد واحدها*/
-                    $data[$shakhes_id][$motevali]['nerkh']['value_import'] = $nerkh[$motevali]['value_import'] * 100; // نرخ رشد واحدها
-                    $data[$shakhes_id][$motevali]['darsad']['value_import'] = $darsad[$motevali]['value_import'] * 100; // درصد تحقق واحدها
+                    $data[$shakhes_id][$motevali]['nerkh']['value_import'] = ($nerkh[$motevali]['value_import'] != null) ? $nerkh[$motevali]['value_import'] * 100 : null; // نرخ رشد واحدها*/
+                    $data[$shakhes_id][$motevali]['darsad']['value_import'] = ($darsad[$motevali]['value_import'] != null) ? $darsad[$motevali]['value_import'] * 100 : null; // درصد تحقق واحدها
 
                     // برای جدول در سطح کلان
                     $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value_import'] +=
@@ -469,19 +473,24 @@ class shakhesController
                     //    نهايي  //
                     ///////////////
                     ///////////////
-                    if ($shakhes['afzayande'] == 1) {
-                        $nerkh[$motevali]['value'] = (($amalkardNext[$motevali]['value'] / $amalkardPrev[$motevali]['value']) - 1); // نرخ رشد واحدها
-                    } else {
-                        $nerkh[$motevali]['value'] = -1 * (($amalkardNext[$motevali]['value'] / $amalkardPrev[$motevali]['value'])); // نرخ رشد واحدها
-                    }
-                    // درصد تحقق واحدها
-                    $darsad[$motevali]['value'] = ($nerkh[$motevali]['value'] / $this->standard($shakhes_id, $motevali)) * 100;
+                    if (isset($amalkardNext[$motevali]['value']) & is_numeric($amalkardNext[$motevali]['value'])) {
 
+                        if ($shakhes['afzayande'] == 1) {
+                            $nerkh[$motevali]['value'] = (($amalkardNext[$motevali]['value'] / $amalkardPrev[$motevali]['value']) - 1); // نرخ رشد واحدها
+                        } else {
+                            $nerkh[$motevali]['value'] = -1 * (($amalkardNext[$motevali]['value'] / $amalkardPrev[$motevali]['value'])); // نرخ رشد واحدها
+                        }
+                        // درصد تحقق واحدها
+                        $darsad[$motevali]['value'] = ($nerkh[$motevali]['value'] / $this->standard($shakhes_id, $motevali)) * 100;
+                    } else {
+                        $nerkh[$motevali]['value'] = null;
+                        $darsad[$motevali]['value'] = null;
+                    }
                     // برای جدول شاخص
                     $data[$shakhes_id][$motevali]['amalkardNext']['value'] = $amalkardNext[$motevali]['value']; // عملکرد ۹۹ واحدها
                     $data[$shakhes_id][$motevali]['amalkardPrev']['value'] = $amalkardPrev[$motevali]['value']; // عملکرد ۹۸ واحدها
-                    $data[$shakhes_id][$motevali]['nerkh']['value'] = $nerkh[$motevali]['value'] * 100;  // نرخ رشد واحدها
-                    $data[$shakhes_id][$motevali]['darsad']['value'] = $darsad[$motevali]['value']; // درصد تحقق واحدها
+                    $data[$shakhes_id][$motevali]['nerkh']['value'] = ($nerkh[$motevali]['value'] != null) ? $nerkh[$motevali]['value'] * 100 : null;  // نرخ رشد واحدها
+                    $data[$shakhes_id][$motevali]['darsad']['value'] = ($darsad[$motevali]['value'] != null) ? $darsad[$motevali]['value'] : null; // درصد تحقق واحدها
 
                     // برای جدول در سطح کلان
                     $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value'] +=

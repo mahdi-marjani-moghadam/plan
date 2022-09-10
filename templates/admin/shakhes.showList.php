@@ -359,8 +359,8 @@
                                                     <td>درصد تحقق</td>
                                                 </tr>
                                                 <tr class="gray">
-                                                    <td style="direction: ltr;"><?php echo floor($reports[$shakhes_id][$head_admin_id]['nerkh']['value_import'] * 100) / 100 ?> </td>
-                                                    <td style="direction: ltr;"><?php echo floor($reports[$shakhes_id][$head_admin_id]['darsad']['value_import'] * 100) / 100 ?></td>
+                                                    <td style="direction: ltr;"><?php echo ($reports[$shakhes_id][$head_admin_id]['nerkh']['value_import'] != null)?floor($reports[$shakhes_id][$head_admin_id]['nerkh']['value_import'] * 100) / 100 : 'ناموجود'; ?> </td>
+                                                    <td style="direction: ltr;"><?php echo ($reports[$shakhes_id][$head_admin_id]['darsad']['value_import'] != null)?floor($reports[$shakhes_id][$head_admin_id]['darsad']['value_import'] * 100) / 100 : 'ناموجود'; ?></td>
                                                 </tr>
 
 
