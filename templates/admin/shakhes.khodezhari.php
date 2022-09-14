@@ -86,8 +86,11 @@
                                             <span class="btn-warning p-1">ارسال به تایید کننده دوم</span>
                                         <?php endif; ?>
                                         <?php if ($admin['status6'] == 'sendToConfirm3') : ?>
-                                            <span class="btn-warning2 p-1">ارسال به تایید کننده سوم</span>
-                                        <?php endif; ?>
+                                        <span class="btn-warning2 p-1">ارسال به تایید کننده سوم</span>
+                                    <?php endif; ?>
+                                    <?php if ($admin['status6'] == 'sendToConfirm4') : ?>
+                                        <span class="btn-warning2 p-1">ارسال به تایید کننده چهارم</span>
+                                    <?php endif; ?>
                                         <?php if ($admin['status6'] == 'finish') : ?>
                                             <span class="btn-success p-1">اتمام</span>
                                         <?php endif; ?>
@@ -108,6 +111,9 @@
                                         <?php endif; ?>
                                         <?php if ($admin['status12'] == 'sendToConfirm3') : ?>
                                             <span class="btn-warning p-1">ارسال به تایید کننده سوم</span>
+                                        <?php endif; ?>
+                                        <?php if ($admin['status12'] == 'sendToConfirm4') : ?>
+                                            <span class="btn-warning p-1">ارسال به تایید کننده چهارم</span>
                                         <?php endif; ?>
                                         <?php if ($admin['status12'] == 'finish') : ?>
                                             <span class="btn-success p-1">اتمام</span>
@@ -318,6 +324,7 @@
                                             isset($_GET['filterAdmin'])
                                         ) : ?>
                                             <input name="import[<?php echo $import['id'] ?>][import_tozihat12]" value="<?php echo $tozihat12 ?>" autocomplete="off" class="form-control">
+                                            <?php echo ($import['import_tozihat12'] != '') ? '<br>' . $import['import_tozihat12'] : ''; ?>
                                             <?php echo ($import['confirm1_tozihat12'] != '') ? '<br>' . $import['confirm1_tozihat12'] : ''; ?>
                                             <?php echo ($import['confirm2_tozihat12'] != '') ? '<br>' . $import['confirm2_tozihat12'] : ''; ?>
                                             <?php echo ($import['confirm3_tozihat12'] != '') ? '<br>' . $import['confirm3_tozihat12'] : ''; ?>
@@ -486,10 +493,13 @@
                                                                 $activeSendToConfirm3  && $activeImportButton == false &&
                                                                 in_array($admin_info['admin_id'], [$import['confirm3']])
                                                             ) : ?>
-                                                            <?php foreach($kalanTahlilArray as $adminId => $kalanTahlil):?>
-                                                            <?php echo '<br>'.$kalanTahlil ?>
-                                                            <?php endforeach ?>
-                                                                <textarea class="sh_kalan_tahlil" data-manager-or-arzyab='arzyab' data-kalan-no='<?php echo $kalan_no ?>' data-admin-id='<?php echo $head_admin_id ?>' data-season='<?php echo $season ?>' cols="30" rows="2"></textarea>
+                                                                <?php foreach($kalanTahlilArray as $adminId => $kalanTahlil):?>
+                                                                <?php echo '<br>' . 'مدیر:'.$kalanTahlil[$kalan_no] ?>
+                                                                <?php endforeach ?>
+                                                                <textarea class="sh_kalan_tahlil" data-manager-or-arzyab='arzyab' data-kalan-no='<?php echo $kalan_no ?>' data-admin-id='<?php echo $head_admin_id ?>' data-season='<?php echo $season ?>' cols="30" rows="2"><?php echo  nl2br($kalanTahlilArrayArzyab[$head_admin_id][$kalan_no]) ?></textarea>
+
+                                                                <?php echo 'ارزیاب : '.  nl2br($kalanTahlilArrayArzyab[$head_admin_id][$kalan_no]) ?>
+
                                                             <?php endif ?>
 
                                                             <?php //   مربوط به تایید کننده چهارم
@@ -497,14 +507,18 @@
                                                                 $activeSendToConfirm4  && $activeImportButton == false &&
                                                                 in_array($admin_info['admin_id'], [$import['confirm4']])
                                                             ) : ?>
-                                                                <textarea class="sh_kalan_tahlil" data-manager-or-arzyab='manager' data-kalan-no='<?php echo $kalan_no ?>' data-admin-id='<?php echo $head_admin_id ?>' data-season='<?php echo $season ?>' cols="30" rows="2"></textarea>
+                                                                <textarea class="sh_kalan_tahlil" data-manager-or-arzyab='manager' data-kalan-no='<?php echo $kalan_no ?>' data-admin-id='<?php echo $head_admin_id ?>' data-season='<?php echo $season ?>' cols="30" rows="2"><?php echo  nl2br($kalanTahlilArrayArzyab[$head_admin_id][$kalan_no]) ?></textarea>
+                                                                <?php echo 'ارزیاب'.  nl2br($kalanTahlilArrayArzyab[$head_admin_id][$kalan_no]) ?>
+
                                                             <?php endif ?>
 
-                                                            <?php echo  nl2br($kalanTahlilArray[$head_admin_id][$kalan_no]) ?>
+                                                            <?php echo 'مدیر'.  nl2br($kalanTahlilArray[$head_admin_id][$kalan_no]) ?>
+
+
                                                         </div>
 
                                                     </div>
-                                                    <?php //endif; 
+                                                    <?php //endif;
                                                     ?>
                                                 <?php endforeach; ?>
                                             </div><!-- panel-group -->

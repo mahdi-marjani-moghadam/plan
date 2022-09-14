@@ -1256,16 +1256,17 @@ class shakhesController
         // dd($season);
 
         $kalanTahlilObj = $kalanTahlil->getAll();
-        $kalanTahlilObj = $kalanTahlil->select('tahlil_' . $managerOrArzyab . $season, 'admin_id', 'kalan_no');
+        $kalanTahlilObj = $kalanTahlil->select('tahlil_manager' . $season,'tahlil_arzyab' . $season, 'admin_id', 'kalan_no');
         $kalanTahlilObj = $kalanTahlil->where('admin_id', 'in', $groupString);
         $kalanTahlilObj = $kalanTahlil->where('year', '=', KHODEZHARI_YEAR);
 
-        // dd($groupString);
         $kalanTahlilObj = $kalanTahlil->getList()['export']['list'];
+//        dd($season);
 
-        $kalanTahlilArray = array();
+        $kalanTahlilArray = $kalanTahlilArrayArzyab = array();
         foreach ($kalanTahlilObj as $v) {
             $kalanTahlilArray[$v['admin_id']][$v['kalan_no']] = $v['tahlil_manager' . $season];
+            $kalanTahlilArrayArzyab[$v['admin_id']][$v['kalan_no']] = $v['tahlil_arzyab' . $season];
         }
         // dd($kalanTahlilArray);
 
@@ -1335,6 +1336,7 @@ class shakhesController
             'groups',
             'kalans',
             'kalanTahlilArray',
+            'kalanTahlilArrayArzyab',
             'season'
         ));
 
@@ -1545,6 +1547,7 @@ class shakhesController
         $post = $_POST;
 
         $kalanTahlilObj->where('admin_id', '=', $post['adminId']);
+        $kalanTahlilObj->where('kalan_no', '=', $post['kalanNo']);
 
         $kalanTahlil = $kalanTahlilObj->get();
 
