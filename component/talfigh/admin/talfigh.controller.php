@@ -67,7 +67,7 @@ class talfighController
         $this->fileName = 'talfigh.chart.php';
         $shakhes = array();
         $this->template(compact(
-            'charts',
+            'charts' ,
         ));
     }
 
@@ -80,6 +80,9 @@ class talfighController
             'shakhes',
         ));
     }
+         /*   //رسم نمودار گیج
+          https://stackoverflow.com/questions/70113117/how-to-update-google-gauge-chart-using-ajax-call//*/
+
 
 
     private  function allKalan()
