@@ -81,7 +81,7 @@
                 </select>
             </div>
         <?php endif; ?>
-        
+
     </div>
 
     <div class="clearfix"><br></div>
@@ -96,7 +96,7 @@
         <?php
 
         foreach ($charts as $k => $chart) : ?>
-        
+
             <div class="col-md-12">
                 <div id="panel-<?php echo $k ?>" class="panel panel-default border-green ">
                     <div class="panel-heading bg-green">
@@ -207,6 +207,102 @@
             </div>
 
         <?php endforeach; ?>
+        <div class="col-md-12">
+            <div id="panel-ss" class="panel panel-default border-green ">
+                <div class="panel-body">
+                    <?php foreach ($kalan as $v) : ?>
+                        <div class="col-md-3 ">
+
+                            <?php $d  = 50 * 180 / 100; ?>
+                            <h3 style="text-align:center"><?php echo $v ?></h3>
+                            <div class="col-md-6 "  >
+
+                                <div class="gauge" style="margin:2em; width: 150px; --rotation:<?php echo $d ?>deg; --color:#5cb85c; --background:#e9ecef;">
+                                    <div class="percentage"></div>
+                                    <div class="mask"></div>
+                                    <span class="value">46% ارزیابی</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="gauge" style="margin:2em; width: 150px; --rotation:<?php echo $d ?>deg; --color:#5CE35C; --background:#e9ecef;">
+                                    <div class="percentage"></div>
+                                    <div class="mask"></div>
+                                    <span class="value">46% پایش</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    <?php endforeach ?>
+                    <style>
+                        .gauge {
+                            position: relative;
+                            border-radius: 50%/100% 100% 0 0;
+                            background-color: var(--color, #a22);
+                            overflow: hidden;
+                        }
+
+                        .gauge:before {
+                            content: "";
+                            display: block;
+                            padding-top: 50%;
+                            /* ratio of 2:1*/
+                        }
+
+                        .gauge .chart {
+                            overflow: hidden;
+                        }
+
+                        .gauge .mask {
+                            position: absolute;
+                            left: 20%;
+                            right: 20%;
+                            bottom: 0;
+                            top: 40%;
+                            background-color: #fff;
+                            border-radius: 50%/100% 100% 0 0;
+                        }
+
+                        .gauge .percentage {
+                            position: absolute;
+                            top: -1px;
+                            left: -1px;
+                            bottom: 0;
+                            right: -1px;
+                            background-color: var(--background, #aaa);
+                            transform: rotate(var(--rotation));
+                            transform-origin: bottom center;
+                            transition-duration: 600;
+                        }
+
+                        .gauge:hover {
+                            --rotation: 100deg;
+                        }
+
+                        .gauge .value {
+                            position: absolute;
+                            bottom: 0%;
+                            left: 0;
+                            width: 100%;
+                            text-align: center;
+                        }
+
+                        .gauge .min {
+                            position: absolute;
+                            bottom: 0;
+                            left: 5%;
+                        }
+
+                        .gauge .max {
+                            position: absolute;
+                            bottom: 0;
+                            right: 5%;
+                        }
+                    </style>
+                </div>
+            </div>
+        </div>
+
 
 
 

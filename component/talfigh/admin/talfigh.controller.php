@@ -68,6 +68,7 @@ class talfighController
         $shakhes = array();
         $this->template(compact(
             'charts' ,
+            'kalan'
         ));
     }
 
