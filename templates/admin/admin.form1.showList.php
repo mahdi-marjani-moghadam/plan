@@ -2072,6 +2072,17 @@
                                                                                     <span>مدیر</span>:
                                                                                     <?php if ($vFGroup['group_status'] < 7 && $vFGroup['group_status'] > 4) : ?>
                                                                                         <textarea name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][tahlil_manager1]"><?php echo $vFGroup['tahlil_manager1'] ?></textarea>
+                                                                                        <select name="docstatus1_manager[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][docstatus1_manager]"  multiple="multiple">
+                                                                                            <option value="1">عدم ارسال مستندات</option>
+                                                                                            <option value="2">عدم رعایت بازه زمانی همه مستندات </option>
+                                                                                            <option value="3">عدم رعایت بازه زمانی بخشی از مستندات </option>
+                                                                                            <option value="4">فاقد رسمیت و اعتبار کافی همه مستندات </option>
+                                                                                            <option value="5">فاقد رسمیت و اعتبار کافی بخشی از مستندات </option>
+                                                                                            <option value="6">عدم ارتباط موضوعی/انطباق محتوایی  همه مستندات </option>
+                                                                                            <option value="7">عدم ارتباط موضوعی/انطباق محتوایی  بخشی از مستندات </option>
+                                                                                            <option value="8">عدم جامعیت کافی مستندات </option>
+                                                                                            <option value="9">پذیرش مشروط درصد اعلامی و نیازمند ارسال مستندات کافی در دوره‌های آتی </option>
+                                                                                        </select>
                                                                                     <?php else : ?>
                                                                                         <?php echo readMore($vFGroup['tahlil_manager1']) ?>
                                                                                     <?php endif; ?>
@@ -2079,7 +2090,27 @@
                                                                                     <span>ارزیاب</span>:
                                                                                     <?php if ($vFGroup['group_status'] < 5 && $list['editable'] == 1) : ?>
                                                                                         <textarea name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][tahlil1]"><?php echo $vFGroup['tahlil1'] ?></textarea><br>
-                                                                                    <?php else : ?>
+                                                                                        <select name="docstatus1[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][docstatus1]"  multiple="multiple">
+                                                                                            <option value="1">عدم ارسال مستندات</option>
+                                                                                            <option value="8">عدم جامعیت کافی مستندات </option>
+                                                                                            <optgroup label="بازه زمانی">
+                                                                                                <option value="2">عدم رعایت بازه زمانی همه مستندات </option>
+                                                                                                <option value="3">عدم رعایت بازه زمانی بخشی از مستندات </option>
+                                                                                            </optgroup>
+                                                                                            <optgroup label="میزان رسمیت">
+                                                                                                <option value="4">فاقد رسمیت و اعتبار کافی همه مستندات </option>
+                                                                                                <option value="5">فاقد رسمیت و اعتبار کافی بخشی از مستندات </option>
+                                                                                            </optgroup>
+                                                                                            <optgroup label="میزان ارتباط">
+                                                                                                <option value="6">عدم ارتباط موضوعی/انطباق محتوایی  همه مستندات </option>
+                                                                                                <option value="7">عدم ارتباط موضوعی/انطباق محتوایی  بخشی از مستندات </option>
+                                                                                            </optgroup>
+                                                                                            <optgroup label="پذیرش مشروط">
+                                                                                            <option value="9">پذیرش مشروط درصد اعلامی و نیازمند ارسال مستندات کافی در دوره‌های آتی </option>
+                                                                                            </optgroup>
+                                                                                        </select>
+
+                                                                                <?php else : ?>
                                                                                         <?php echo readMore($vFGroup['tahlil1']) ?>
                                                                                     <?php endif; ?>
 
@@ -2161,6 +2192,17 @@
                                                                                 <span>مدیر</span>:
                                                                                 <?php if ($vFGroup['group_status'] < 7 && $vFGroup['group_status'] > 4) : ?>
                                                                                     <textarea name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][tahlil_manager2]"><?php echo $vFGroup['tahlil_manager2'] ?></textarea>
+                                                                                    <select name="docstatus2_manager"  multiple="multiple">
+                                                                                        <option value="1">مستندی ارسال نشده است.</option>
+                                                                                        <option value="2">عدم رعایت بازه زمانی همه مستندات </option>
+                                                                                        <option value="3">عدم رعایت بازه زمانی بخشی از مستندات </option>
+                                                                                        <option value="4">فاقد رسمیت و اعتبار کافی همه مستندات </option>
+                                                                                        <option value="5">فاقد رسمیت و اعتبار کافی بخشی از مستندات </option>
+                                                                                        <option value="6">عدم ارتباط موضوعی/انطباق محتوایی  همه مستندات </option>
+                                                                                        <option value="7">عدم ارتباط موضوعی/انطباق محتوایی  بخشی از مستندات </option>
+                                                                                        <option value="8">عدم جامعیت کافی مستندات </option>
+                                                                                        <option value="9">پذیرش مشروط درصد اعلامی و نیازمند ارسال مستندات کافی در دوره‌های آتی </option>
+                                                                                    </select>
                                                                                 <?php else : ?>
                                                                                     <?php echo readMore($vFGroup['tahlil_manager2']) ?>
                                                                                 <?php endif; ?>
@@ -2169,6 +2211,17 @@
                                                                                 <span>ارزیاب</span>:
                                                                                 <?php if ($vFGroup['group_status'] < 5 && $list['editable'] == 1) : ?>
                                                                                     <textarea name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][tahlil2]"><?php echo $vFGroup['tahlil2'] ?></textarea><br>
+                                                                                    <select name="docstatus2"  multiple="multiple">
+                                                                                        <option value="1">مستندی ارسال نشده است.</option>
+                                                                                        <option value="2">عدم رعایت بازه زمانی همه مستندات </option>
+                                                                                        <option value="3">عدم رعایت بازه زمانی بخشی از مستندات </option>
+                                                                                        <option value="4">فاقد رسمیت و اعتبار کافی همه مستندات </option>
+                                                                                        <option value="5">فاقد رسمیت و اعتبار کافی بخشی از مستندات </option>
+                                                                                        <option value="6">عدم ارتباط موضوعی/انطباق محتوایی  همه مستندات </option>
+                                                                                        <option value="7">عدم ارتباط موضوعی/انطباق محتوایی  بخشی از مستندات </option>
+                                                                                        <option value="8">عدم جامعیت کافی مستندات </option>
+                                                                                        <option value="9">پذیرش مشروط درصد اعلامی و نیازمند ارسال مستندات کافی در دوره‌های آتی </option>
+                                                                                    </select>
                                                                                 <?php else : ?>
                                                                                     <?php echo readMore($vFGroup['tahlil2']) ?>
                                                                                 <?php endif; ?>
@@ -2253,6 +2306,17 @@
                                                                                 <span>مدیر</span>:
                                                                                 <?php if ($vFGroup['group_status'] < 7 && $vFGroup['group_status'] > 4) : ?>
                                                                                     <textarea name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][tahlil_manager3]"><?php echo $vFGroup['tahlil_manager3'] ?></textarea>
+                                                                                    <select name="docstatus3_manager"  multiple="multiple">
+                                                                                        <option value="1">مستندی ارسال نشده است.</option>
+                                                                                        <option value="2">عدم رعایت بازه زمانی همه مستندات </option>
+                                                                                        <option value="3">عدم رعایت بازه زمانی بخشی از مستندات </option>
+                                                                                        <option value="4">فاقد رسمیت و اعتبار کافی همه مستندات </option>
+                                                                                        <option value="5">فاقد رسمیت و اعتبار کافی بخشی از مستندات </option>
+                                                                                        <option value="6">عدم ارتباط موضوعی/انطباق محتوایی  همه مستندات </option>
+                                                                                        <option value="7">عدم ارتباط موضوعی/انطباق محتوایی  بخشی از مستندات </option>
+                                                                                        <option value="8">عدم جامعیت کافی مستندات </option>
+                                                                                        <option value="9">پذیرش مشروط درصد اعلامی و نیازمند ارسال مستندات کافی در دوره‌های آتی </option>
+                                                                                    </select>
                                                                                 <?php else : ?>
                                                                                     <?php echo readMore($vFGroup['tahlil_manager3']) ?>
                                                                                 <?php endif; ?>
@@ -2261,6 +2325,17 @@
                                                                                 <span>ارزیاب</span>:
                                                                                 <?php if ($vFGroup['group_status'] < 5 && $list['editable'] == 1) : ?>
                                                                                     <textarea name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][tahlil3]"><?php echo $vFGroup['tahlil3'] ?></textarea><br>
+                                                                                    <select name="docstatus3"  multiple="multiple">
+                                                                                        <option value="1">مستندی ارسال نشده است.</option>
+                                                                                        <option value="2">عدم رعایت بازه زمانی همه مستندات </option>
+                                                                                        <option value="3">عدم رعایت بازه زمانی بخشی از مستندات </option>
+                                                                                        <option value="4">فاقد رسمیت و اعتبار کافی همه مستندات </option>
+                                                                                        <option value="5">فاقد رسمیت و اعتبار کافی بخشی از مستندات </option>
+                                                                                        <option value="6">عدم ارتباط موضوعی/انطباق محتوایی  همه مستندات </option>
+                                                                                        <option value="7">عدم ارتباط موضوعی/انطباق محتوایی  بخشی از مستندات </option>
+                                                                                        <option value="8">عدم جامعیت کافی مستندات </option>
+                                                                                        <option value="9">پذیرش مشروط درصد اعلامی و نیازمند ارسال مستندات کافی در دوره‌های آتی </option>
+                                                                                    </select>
                                                                                 <?php else : ?>
                                                                                     <?php echo readMore($vFGroup['tahlil3']) ?>
                                                                                 <?php endif; ?>
@@ -2346,6 +2421,17 @@
                                                                                 <span>مدیر</span>:
                                                                                 <?php if ($vFGroup['group_status'] < 7 && $vFGroup['group_status'] > 4) : ?>
                                                                                     <textarea name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][tahlil_manager4]"><?php echo $vFGroup['tahlil_manager4'] ?></textarea>
+                                                                                    <select name="docstatus4_manager"  multiple="multiple">
+                                                                                        <option value="1">مستندی ارسال نشده است.</option>
+                                                                                        <option value="2">عدم رعایت بازه زمانی همه مستندات </option>
+                                                                                        <option value="3">عدم رعایت بازه زمانی بخشی از مستندات </option>
+                                                                                        <option value="4">فاقد رسمیت و اعتبار کافی همه مستندات </option>
+                                                                                        <option value="5">فاقد رسمیت و اعتبار کافی بخشی از مستندات </option>
+                                                                                        <option value="6">عدم ارتباط موضوعی/انطباق محتوایی  همه مستندات </option>
+                                                                                        <option value="7">عدم ارتباط موضوعی/انطباق محتوایی  بخشی از مستندات </option>
+                                                                                        <option value="8">عدم جامعیت کافی مستندات </option>
+                                                                                        <option value="9">پذیرش مشروط درصد اعلامی و نیازمند ارسال مستندات کافی در دوره‌های آتی </option>
+                                                                                    </select>
                                                                                 <?php else : ?>
                                                                                     <?php echo readMore($vFGroup['tahlil_manager4']) ?>
                                                                                 <?php endif; ?>
@@ -2354,6 +2440,17 @@
                                                                                 <span>ارزیاب</span>:
                                                                                 <?php if ($vFGroup['group_status'] < 5 && $list['editable'] == 1) : ?>
                                                                                     <textarea name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][tahlil4]"><?php echo $vFGroup['tahlil4'] ?></textarea>
+                                                                                    <select name="docstatus4"  multiple="multiple">
+                                                                                        <option value="1">مستندی ارسال نشده است.</option>
+                                                                                        <option value="2">عدم رعایت بازه زمانی همه مستندات </option>
+                                                                                        <option value="3">عدم رعایت بازه زمانی بخشی از مستندات </option>
+                                                                                        <option value="4">فاقد رسمیت و اعتبار کافی همه مستندات </option>
+                                                                                        <option value="5">فاقد رسمیت و اعتبار کافی بخشی از مستندات </option>
+                                                                                        <option value="6">عدم ارتباط موضوعی/انطباق محتوایی  همه مستندات </option>
+                                                                                        <option value="7">عدم ارتباط موضوعی/انطباق محتوایی  بخشی از مستندات </option>
+                                                                                        <option value="8">عدم جامعیت کافی مستندات </option>
+                                                                                        <option value="9">پذیرش مشروط درصد اعلامی و نیازمند ارسال مستندات کافی در دوره‌های آتی </option>
+                                                                                    </select>
                                                                                 <?php else : ?>
                                                                                     <?php echo readMore($vFGroup['tahlil4']) ?>
                                                                                 <?php endif; ?>
