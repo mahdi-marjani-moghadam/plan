@@ -139,7 +139,17 @@ class adminFormController
             $list['editable'] = 0;
         }
 
-
+        $list['docstatus'] = [
+            '1' => '*عدم ارسال مستندات',
+            '2' => '*عدم جامعیت کافی مستندات',
+            '3' => '*عدم رعایت بازه زمانی همه مستندات',
+            '4' => '*عدم رعایت بازه زمانی بخشی از مستندات',
+            '5' => '*فاقد رسمیت و اعتبار کافی همه مستندات',
+            '6' => '*فاقد رسمیت و اعتبار کافی بخشی از مستندات',
+            '7' => '*عدم ارتباط موضوعی/انطباق محتوایی  همه مستندات',
+            '8' => '*عدم ارتباط موضوعی/انطباق محتوایی  بخشی از مستندات',
+            '9' => '*پذیرش مشروط درصد اعلامی و نیازمند ارسال مستندات کافی در دوره‌های آتی'
+        ];
 
 
 
@@ -161,7 +171,8 @@ class adminFormController
     {
 
         global $admin_info, $messageStack;
-
+/*       dd(implode(',',$fields['a'][1][1]['docstatus2']));*/
+/*       dd(implode(',',$fields['export']['list'][1]['docstatus2']));*/
 
         $q = ($fields['q'] != ',null,') ? trim($fields['q'], ',') : '';
         if ($q == '') {
@@ -234,6 +245,7 @@ class adminFormController
                 $res = eghdam_vazn::getBy_admin_id_and_eghdam_id($admin_id, $eghdam_id)->get();
 
                 if ($res['export']['recordsCount'] == 0) {
+                    //print_r_debug($admin_id);
                     //print_r_debug($admin_id);
                 }
 
@@ -309,6 +321,7 @@ class adminFormController
                 if ($admin_info['admin_id'] == 1) {
                     $res['export']['list'][0]->max_manager1 = $v2['max_manager1'];
                     $res['export']['list'][0]->tahlil_manager1 = $v2['tahlil_manager1'];
+                    $res['export']['list'][0]->docstatus1_manager = implode(',',$v2['docstatus1_manager']);
                 } else {
                     $res['export']['list'][0]->manager1_1 = $v2['1_1'];
                     $res['export']['list'][0]->manager1_2 = $v2['1_2'];
@@ -317,15 +330,18 @@ class adminFormController
                     $max = (($max > $v2['1_3']) ? $max : $v2['1_3']);
                     $res['export']['list'][0]->max1 = $max;
                     $res['export']['list'][0]->tahlil1 = $v2['tahlil1'];
+                    $res['export']['list'][0]->docstatus1 = implode(',',$v2['docstatus1']);
+                    $res['export']['list'][0]->docstatus1_manager = implode(',',$v2['docstatus1']);
                     //if($res['export']['list'][0]->max_manager1 == 0.00 || $res['export']['list'][0]->max_manager1 == ''){
                     //$res['export']['list'][0]->max_manager1 = $max;
-                    //$res['export']['list'][0]->tahlil_manager1 = $v2['tahlil1'];
+                    $res['export']['list'][0]->tahlil_manager1 = $v2['tahlil1'];
                     //}
                 }
 
                 if ($admin_info['admin_id'] == 1) {
                     $res['export']['list'][0]->max_manager2 = $v2['max_manager2'];
                     $res['export']['list'][0]->tahlil_manager2 = $v2['tahlil_manager2'];
+                    $res['export']['list'][0]->docstatus2_manager = implode(',',$v2['docstatus2_manager']);
                 } else {
                     $res['export']['list'][0]->manager2_1 = $v2['2_1'];
                     $res['export']['list'][0]->manager2_2 = $v2['2_2'];
@@ -334,15 +350,18 @@ class adminFormController
                     $max = (($max > $v2['2_3']) ? $max : $v2['2_3']);
                     $res['export']['list'][0]->max2 = $max;
                     $res['export']['list'][0]->tahlil2 = $v2['tahlil2'];
+                    $res['export']['list'][0]->docstatus2 = implode(',',$v2['docstatus2']);
+                    $res['export']['list'][0]->docstatus2_manager = implode(',',$v2['docstatus2']);
                     //if($res['export']['list'][0]->max_manager2 == 0.00 || $res['export']['list'][0]->max_manager2 == ''){
                     //$res['export']['list'][0]->max_manager2 = $max;
-                    //$res['export']['list'][0]->tahlil_manager2 = $v2['tahlil2'];
+                    $res['export']['list'][0]->tahlil_manager2 = $v2['tahlil2'];
                     //}
                 }
 
                 if ($admin_info['admin_id'] == 1) {
                     $res['export']['list'][0]->max_manager3 = $v2['max_manager3'];
                     $res['export']['list'][0]->tahlil_manager3 = $v2['tahlil_manager3'];
+                    $res['export']['list'][0]->docstatus3_manager =implode(',',$v2['docstatus3_manager']);
                 } else {
                     $res['export']['list'][0]->manager3_1 = $v2['3_1'];
                     $res['export']['list'][0]->manager3_2 = $v2['3_2'];
@@ -351,15 +370,18 @@ class adminFormController
                     $max = (($max > $v2['3_3']) ? $max : $v2['3_3']);
                     $res['export']['list'][0]->max3 = $max;
                     $res['export']['list'][0]->tahlil3 = $v2['tahlil3'];
+                    $res['export']['list'][0]->docstatus3 = implode(',',$v2['docstatus3']);
+                    $res['export']['list'][0]->docstatus3_manager = implode(',',$v2['docstatus3']);
                     //if($res['export']['list'][0]->max_manager3 == 0.00 || $res['export']['list'][0]->max_manager3 == ''){
                     //$res['export']['list'][0]->max_manager3 = $max;
-                    //$res['export']['list'][0]->tahlil_manager3 = $v2['tahlil3'];
+                    $res['export']['list'][0]->tahlil_manager3 = $v2['tahlil3'];
                     //}
                 }
 
                 if ($admin_info['admin_id'] == 1) {
                     $res['export']['list'][0]->max_manager4 = $v2['max_manager4'];
                     $res['export']['list'][0]->tahlil_manager4 = $v2['tahlil_manager4'];
+                    $res['export']['list'][0]->docstatus4_manager = implode(',',$v2['docstatus4_manager']);
                 } else {
                     $res['export']['list'][0]->manager4_1 = $v2['4_1'];
                     $res['export']['list'][0]->manager4_2 = $v2['4_2'];
@@ -368,9 +390,11 @@ class adminFormController
                     $max = (($max > $v2['4_3']) ? $max : $v2['4_3']);
                     $res['export']['list'][0]->max4 = $max;
                     $res['export']['list'][0]->tahlil4 = $v2['tahlil4'];
+                    $res['export']['list'][0]->docstatus4 = implode(',',$v2['docstatus4']);
+                    $res['export']['list'][0]->docstatus4_manager = implode(',',$v2['docstatus4']);
                     //if($res['export']['list'][0]->max_manager4 == 0.00 || $res['export']['list'][0]->max_manager4 == ''){
                     //$res['export']['list'][0]->max_manager4 = $max;
-                    //$res['export']['list'][0]->tahlil_manager4 = $v2['tahlil4'];
+                    $res['export']['list'][0]->tahlil_manager4 = $v2['tahlil4'];
                     //}
                 }
                 $res['export']['list'][0]->save();

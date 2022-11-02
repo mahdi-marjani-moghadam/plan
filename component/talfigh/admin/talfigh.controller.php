@@ -59,16 +59,21 @@ class talfighController
         $charts[0]['name'] = 'نمودار تلفیق پایش و ارزیابی';
         $charts[0]['categories'] = json_encode($kalan,JSON_UNESCAPED_UNICODE );
         $charts[0]['series'] = json_encode([
-            ['name'=>'پایش','color'=>'url(#highcharts-default-pattern-1)','data'=>[10,10,10,10,10,10,10]],
-            ['name'=>'ارزیابی','color'=>'url(#highcharts-default-pattern-5)','data'=>[40,40,40,40,40,40,40]],
-            ['name'=>'تلفیق','color'=>'url(#highcharts-default-pattern-2)','data'=>[60,60,60,60,60,60,60]]
+            ['name'=>'پایش','color'=>'url(#highcharts-default-pattern-1)','data'=>[40,40,40,50,90,100,80]],
+            ['name'=>'ارزیابی','color'=>'url(#highcharts-default-pattern-5)','data'=>[10,15,10,20,50,80,60]],
+            ['name'=>'تلفیق','color'=>'url(#highcharts-default-pattern-2)','data'=>[30,30,30,40,30,95,30]]
         ],JSON_UNESCAPED_UNICODE );
 
+
+        include_once ROOT_DIR.'component/chart/controllers/chart.controller.php';
+        $chartController = new chartController();
+        $reportChartTalfigh = $chartController->reportChartTalfigh(4,$_GET['qq']);
+
         $this->fileName = 'talfigh.chart.php';
-        $shakhes = array();
         $this->template(compact(
             'charts' ,
-            'kalan'
+            'kalan',
+            'reportChartTalfigh'
         ));
     }
 
@@ -78,7 +83,7 @@ class talfighController
         $this->fileName = 'talfigh.list.php';
         $shakhes = array();
         $this->template(compact(
-            'shakhes',
+            'shakhes'
         ));
     }
          /*   //رسم نمودار گیج

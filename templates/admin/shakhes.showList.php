@@ -347,8 +347,8 @@
                                                     <td colspan="2"> عملکرد سال</td>
                                                 </tr>
                                                 <tr class="green">
-                                                    <td>98</td>
-                                                    <td>99</td>
+                                                    <td>پايه</td>
+                                                    <td>آخر</td>
                                                 </tr>
                                                 <tr class="gray">
                                                     <td style="direction: ltr;"><?php echo floor($reports[$shakhes_id][$head_admin_id]['amalkardPrev']['value_import'] * 100) / 100  ?></td>
@@ -375,8 +375,8 @@
                                                     <td colspan="2"> عملکرد سال</td>
                                                 </tr>
                                                 <tr class="green">
-                                                    <td>98</td>
-                                                    <td>99</td>
+                                                    <td>پايه</td>
+                                                    <td>آخر</td>
                                                 </tr>
                                                 <tr class="gray">
                                                     <td style="direction: ltr;"><?php echo floor($reports[$shakhes_id][$head_admin_id]['amalkardPrev']['value'] * 100) / 100  ?></td>
@@ -490,10 +490,12 @@
                                         ?>
                                         <td width="<?php echo 300 / count($groups) ?>" <?php echo ($head_admin_info['parent_id'] == 1 && $head_admin_id != 100) ? 'style="background-color:#ebebeb"' : '' ?> <?php echo ($head_admin_id == 100) ? 'style="background-color:#ccc"' : '' ?>>
                                             <table class="fixed">
-
                                                 <tr class="green">
-                                                    <td>98</td>
-                                                    <td>99</td>
+                                                    <td colspan="2"> عملکرد سال</td>
+                                                </tr>
+                                                <tr class="green">
+                                                    <td>پايه</td>
+                                                    <td>آخر</td>
                                                 </tr>
                                                 <tr class="gray">
                                                 <tr class="gray">
@@ -522,10 +524,12 @@
                                         ?>
                                         <td width="<?php echo 300 / count($groups) ?>" <?php echo ($head_admin_info['parent_id'] == 1 && $head_admin_id != 100) ? 'style="background-color:#ebebeb"' : '' ?> <?php echo ($head_admin_id == 100) ? 'style="background-color:#ccc"' : '' ?>>
                                             <table class="fixed">
-
                                                 <tr class="green">
-                                                    <td>98</td>
-                                                    <td>99</td>
+                                                    <td colspan="2"> عملکرد سال</td>
+                                                </tr>
+                                                <tr class="green">
+                                                    <td> پايه</td>
+                                                    <td> آخر</td>
                                                 </tr>
                                                 <tr class="gray">
                                                     <td style="direction: ltr;"><?php echo ($head_admin_info['parent_id'] != 1) ? $amalkardPrev : (($head_admin_id == 100) ? $amalkardPrevUniNahayi : $amalkardPrevVahed)  ?></td>

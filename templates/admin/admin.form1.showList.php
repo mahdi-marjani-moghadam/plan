@@ -375,6 +375,9 @@
             allowClear: true
         });
 
+
+
+
         /** show-columns */
         $('.show-columns').click(function(e) {
 
@@ -1093,6 +1096,7 @@
                                                         <?php endif; ?>
 
                                                         <td>
+
                                                             <?php if ($admin_info['parent_id'] == 0) : ?>
                                                                 <?php if ($admin_info['admin_id'] != 1) : ?>
                                                                     <div> ارزیاب:
@@ -2068,59 +2072,107 @@
                                                                         <?php if ($admin_info['parent_id'] == 0) : ?>
                                                                             <?php if ($admin_info['admin_id'] == 1) : ?>
                                                                                 <span>ارزیاب</span>: <?php if ($vFGroup['tahlil1'] != '') : ?> <br>
-                                                                                    <?php echo readMore($vFGroup['tahlil1']) ?><?php endif; ?>
+                                                                                    <?php echo readMore($vFGroup['tahlil1']) ?><br>
+                                                                                    <span>نواقص مستندات</span>:
+                                                                                    <?php
+                                                                                    foreach (explode(',',$vFGroup['docstatus1']) as $docstatusnumber){
+                                                                                        echo $list['docstatus'][$docstatusnumber].'<br>';
+                                                                                    }
+                                                                                    ?>
+                                                                                <?php endif; ?>
                                                                                     <span>مدیر</span>:
                                                                                     <?php if ($vFGroup['group_status'] < 7 && $vFGroup['group_status'] > 4) : ?>
-                                                                                        <textarea name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][tahlil_manager1]"><?php echo $vFGroup['tahlil_manager1'] ?></textarea>
-                                                                                        <select name="docstatus1_manager[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][docstatus1_manager]"  multiple="multiple">
-                                                                                            <option value="1">عدم ارسال مستندات</option>
-                                                                                            <option value="2">عدم رعایت بازه زمانی همه مستندات </option>
-                                                                                            <option value="3">عدم رعایت بازه زمانی بخشی از مستندات </option>
-                                                                                            <option value="4">فاقد رسمیت و اعتبار کافی همه مستندات </option>
-                                                                                            <option value="5">فاقد رسمیت و اعتبار کافی بخشی از مستندات </option>
-                                                                                            <option value="6">عدم ارتباط موضوعی/انطباق محتوایی  همه مستندات </option>
-                                                                                            <option value="7">عدم ارتباط موضوعی/انطباق محتوایی  بخشی از مستندات </option>
-                                                                                            <option value="8">عدم جامعیت کافی مستندات </option>
-                                                                                            <option value="9">پذیرش مشروط درصد اعلامی و نیازمند ارسال مستندات کافی در دوره‌های آتی </option>
+                                                                                        <textarea name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][tahlil_manager1]"><?php echo $vFGroup['tahlil_manager1'] ?></textarea><br>
+                                                                                        <span>نواقص مستندات</span>:
+                                                                                        <select name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][docstatus1_manager][]" multiple>
+                                                                                            <optgroup label="وضعیت کلی">
+                                                                                                <option <?php echo (is_numeric(strpos($vFGroup['docstatus1_manager'],'1')))?'selected':''  ?> value="1">عدم ارسال مستندات</option>
+                                                                                                <option <?php echo (is_numeric(strpos($vFGroup['docstatus1_manager'],'2')))?'selected':''  ?> value="2">عدم جامعیت کافی مستندات</option>
+                                                                                            </optgroup>
+                                                                                            <optgroup label="بازه زمانی">
+                                                                                                <option <?php echo (is_numeric(strpos($vFGroup['docstatus1_manager'],'3')))?'selected':''  ?> value="3">عدم رعایت بازه زمانی همه مستندات </option>
+                                                                                                <option <?php echo (is_numeric(strpos($vFGroup['docstatus1_manager'],'4')))?'selected':''  ?> value="4">عدم رعایت بازه زمانی بخشی از مستندات </option>
+                                                                                            </optgroup>
+                                                                                            <optgroup label="میزان رسمیت">
+                                                                                                <option <?php echo(is_numeric(strpos($vFGroup['docstatus1_manager'],'5')))?'selected':'' ?> value="5"> فاقد رسمیت و اعتبار کافی همه مستندات </option>
+                                                                                                <option <?php echo(is_numeric(strpos($vFGroup['docstatus1_manager'],'6')))?'selected':'' ?> value="6">فاقد رسمیت و اعتبار کافی بخشی از مستندات </option>
+                                                                                            </optgroup>
+                                                                                            <optgroup label="میزان ارتباط">
+                                                                                                <option <?php echo(is_numeric(strpos($vFGroup['docstatus1_manager'],'7')))?'selected':'' ?> value="7">عدم ارتباط موضوعی/انطباق محتوایی  همه مستندات </option>
+                                                                                                <option <?php echo(is_numeric(strpos($vFGroup['docstatus1_manager'],'8')))?'selected':'' ?> value="8">عدم ارتباط موضوعی/انطباق محتوایی  بخشی از مستندات </option>
+                                                                                            </optgroup>
+                                                                                            <optgroup label="پذیرش مشروط">
+                                                                                                <option <?php echo(is_numeric(strpos($vFGroup['docstatus1_manager'],'9')))?'selected':'' ?> value="9">پذیرش مشروط درصد اعلامی و نیازمند ارسال مستندات کافی در دوره‌های آتی </option>
+                                                                                            </optgroup>
                                                                                         </select>
-                                                                                    <?php else : ?>
-                                                                                        <?php echo readMore($vFGroup['tahlil_manager1']) ?>
+
+                                                                                <?php else : ?>
+                                                                                        <?php echo readMore($vFGroup['tahlil_manager1']) ?><br>
+                                                                                        <span>نواقص مستندات</span>:
+                                                                                        <?php
+                                                                                            foreach (explode(',',$vFGroup['docstatus1_manager']) as $docstatusnumber){
+                                                                                                echo $list['docstatus'][$docstatusnumber].'<br>';
+                                                                                            }
+                                                                                        ?>
+
                                                                                     <?php endif; ?>
                                                                                 <?php else : ?>
                                                                                     <span>ارزیاب</span>:
                                                                                     <?php if ($vFGroup['group_status'] < 5 && $list['editable'] == 1) : ?>
                                                                                         <textarea name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][tahlil1]"><?php echo $vFGroup['tahlil1'] ?></textarea><br>
-                                                                                        <select name="docstatus1[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][docstatus1]"  multiple="multiple">
-                                                                                            <option value="1">عدم ارسال مستندات</option>
-                                                                                            <option value="8">عدم جامعیت کافی مستندات </option>
+                                                                                        <span>نواقص مستندات</span>:
+                                                                                        <select name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][docstatus1][]" multiple>
+                                                                                            <optgroup label="وضعیت کلی">
+                                                                                                <option <?php echo(is_numeric(strpos($vFGroup['docstatus1'],'1')))?'selected':'' ?> value="1">عدم ارسال مستندات</option>
+                                                                                                <option <?php echo(is_numeric(strpos($vFGroup['docstatus1'],'2')))?'selected':'' ?> value="2">عدم جامعیت کافی مستندات </option>
+                                                                                            </optgroup>
                                                                                             <optgroup label="بازه زمانی">
-                                                                                                <option value="2">عدم رعایت بازه زمانی همه مستندات </option>
-                                                                                                <option value="3">عدم رعایت بازه زمانی بخشی از مستندات </option>
+                                                                                                <option <?php echo(is_numeric(strpos($vFGroup['docstatus1'],'3')))?'selected':'' ?> value="3">عدم رعایت بازه زمانی همه مستندات </option>
+                                                                                                <option <?php echo(is_numeric(strpos($vFGroup['docstatus1'],'4')))?'selected':'' ?> value="4">عدم رعایت بازه زمانی بخشی از مستندات </option>
                                                                                             </optgroup>
                                                                                             <optgroup label="میزان رسمیت">
-                                                                                                <option value="4">فاقد رسمیت و اعتبار کافی همه مستندات </option>
-                                                                                                <option value="5">فاقد رسمیت و اعتبار کافی بخشی از مستندات </option>
+                                                                                                <option <?php echo(is_numeric(strpos($vFGroup['docstatus1'],'5')))?'selected':'' ?> value="5">فاقد رسمیت و اعتبار کافی همه مستندات </option>
+                                                                                                <option <?php echo(is_numeric(strpos($vFGroup['docstatus1'],'6')))?'selected':'' ?> value="6">فاقد رسمیت و اعتبار کافی بخشی از مستندات </option>
                                                                                             </optgroup>
                                                                                             <optgroup label="میزان ارتباط">
-                                                                                                <option value="6">عدم ارتباط موضوعی/انطباق محتوایی  همه مستندات </option>
-                                                                                                <option value="7">عدم ارتباط موضوعی/انطباق محتوایی  بخشی از مستندات </option>
+                                                                                                <option <?php echo(is_numeric(strpos($vFGroup['docstatus1'],'7')))?'selected':'' ?> value="7">عدم ارتباط موضوعی/انطباق محتوایی  همه مستندات </option>
+                                                                                                <option <?php echo(is_numeric(strpos($vFGroup['docstatus1'],'8')))?'selected':'' ?> value="8">عدم ارتباط موضوعی/انطباق محتوایی  بخشی از مستندات </option>
                                                                                             </optgroup>
                                                                                             <optgroup label="پذیرش مشروط">
-                                                                                            <option value="9">پذیرش مشروط درصد اعلامی و نیازمند ارسال مستندات کافی در دوره‌های آتی </option>
+                                                                                                <option <?php echo(is_numeric(strpos($vFGroup['docstatus1'],'9')))?'selected':'' ?> value="9">پذیرش مشروط درصد اعلامی و نیازمند ارسال مستندات کافی در دوره‌های آتی </option>
                                                                                             </optgroup>
                                                                                         </select>
 
                                                                                 <?php else : ?>
-                                                                                        <?php echo readMore($vFGroup['tahlil1']) ?>
-                                                                                    <?php endif; ?>
+                                                                                        <?php echo readMore($vFGroup['tahlil1']) ?><br>
+                                                                                         <span>نواقص مستندات</span>:
+                                                                                        <?php
+                                                                                            foreach (explode(',',$vFGroup['docstatus1']) as $docstatusnumber){
+                                                                                                echo $list['docstatus'][$docstatusnumber].'<br>';
+                                                                                            }
+                                                                                    ?>
+                                                                                <?php endif; ?>
 
                                                                                     <span>مدیر</span>: <?php if ($vFGroup['tahlil_manager1'] != '') : ?> <br>
-                                                                                        <?php echo readMore($vFGroup['tahlil_manager1']) ?><?php endif; ?>
+                                                                                        <?php echo readMore($vFGroup['tahlil_manager1']) ?><br>
+                                                                                        <span>نواقص مستندات</span>:
+                                                                                        <?php
+                                                                                        foreach (explode(',',$vFGroup['docstatus1_manager']) as $docstatusnumber){
+                                                                                            echo $list['docstatus'][$docstatusnumber].'<br>';
+                                                                                        }
+                                                                                        ?>
+                                                                                    <?php endif; ?>
                                                                                     <?php endif; ?>
                                                                                 <?php else : ?>
                                                                                     <?php if ($vFGroup['group_status1'] == 7) : ?>
                                                                                         <?php if ($vFGroup['tahlil_manager1'] != '') : ?>
-                                                                                            <?php echo readMore($vFGroup['tahlil_manager1']) ?>
+                                                                                            <?php echo readMore($vFGroup['tahlil_manager1']) ?><br>
+                                                                                            <span>نواقص مستندات</span>:
+                                                                                            <?php
+                                                                                            foreach (explode(',',$vFGroup['docstatus1_manager']) as $docstatusnumber){
+                                                                                                echo $list['docstatus'][$docstatusnumber].'<br>';
+                                                                                            }
+                                                                                            ?>
                                                                                         <?php endif; ?>
                                                                                     <?php endif; ?>
                                                                                 <?php endif; ?>
@@ -2186,54 +2238,107 @@
                                                                         <?php if ($admin_info['parent_id'] == 0) : ?>
                                                                             <?php if ($admin_info['admin_id'] == 1) : ?>
                                                                                 <span>ارزیاب</span>: <?php if ($vFGroup['tahlil2'] != '') : ?> <br>
-                                                                                    <?php echo readMore($vFGroup['tahlil2']) ?>
+                                                                                    <?php echo readMore($vFGroup['tahlil2']) ?><br>
+                                                                                    <span>نواقص مستندات</span>:
+                                                                                    <?php
+                                                                                    foreach (explode(',',$vFGroup['docstatus2']) as $docstatusnumber){
+                                                                                        echo $list['docstatus'][$docstatusnumber].'<br>';
+                                                                                    }
+                                                                                    ?>
                                                                                 <?php endif; ?>
 
                                                                                 <span>مدیر</span>:
                                                                                 <?php if ($vFGroup['group_status'] < 7 && $vFGroup['group_status'] > 4) : ?>
-                                                                                    <textarea name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][tahlil_manager2]"><?php echo $vFGroup['tahlil_manager2'] ?></textarea>
-                                                                                    <select name="docstatus2_manager"  multiple="multiple">
-                                                                                        <option value="1">مستندی ارسال نشده است.</option>
-                                                                                        <option value="2">عدم رعایت بازه زمانی همه مستندات </option>
-                                                                                        <option value="3">عدم رعایت بازه زمانی بخشی از مستندات </option>
-                                                                                        <option value="4">فاقد رسمیت و اعتبار کافی همه مستندات </option>
-                                                                                        <option value="5">فاقد رسمیت و اعتبار کافی بخشی از مستندات </option>
-                                                                                        <option value="6">عدم ارتباط موضوعی/انطباق محتوایی  همه مستندات </option>
-                                                                                        <option value="7">عدم ارتباط موضوعی/انطباق محتوایی  بخشی از مستندات </option>
-                                                                                        <option value="8">عدم جامعیت کافی مستندات </option>
-                                                                                        <option value="9">پذیرش مشروط درصد اعلامی و نیازمند ارسال مستندات کافی در دوره‌های آتی </option>
+                                                                                    <textarea name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][tahlil_manager2]"><?php echo $vFGroup['tahlil_manager2'] ?></textarea><br>
+                                                                                    <span>نواقص مستندات</span>:
+                                                                                    <select name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][docstatus2_manager][]" multiple>
+                                                                                        <optgroup label="وضعیت کلی">
+                                                                                            <option <?php echo (is_numeric(strpos($vFGroup['docstatus2_manager'],'1')))?'selected':''  ?> value="1">عدم ارسال مستندات</option>
+                                                                                            <option <?php echo (is_numeric(strpos($vFGroup['docstatus2_manager'],'2')))?'selected':''  ?> value="2">عدم جامعیت کافی مستندات</option>
+                                                                                        </optgroup>
+                                                                                        <optgroup label="بازه زمانی">
+                                                                                            <option <?php echo (is_numeric(strpos($vFGroup['docstatus2_manager'],'3')))?'selected':''  ?> value="3">عدم رعایت بازه زمانی همه مستندات </option>
+                                                                                            <option <?php echo (is_numeric(strpos($vFGroup['docstatus2_manager'],'4')))?'selected':''  ?> value="4">عدم رعایت بازه زمانی بخشی از مستندات </option>
+                                                                                        </optgroup>
+                                                                                        <optgroup label="میزان رسمیت">
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus2_manager'],'5')))?'selected':'' ?> value="5"> فاقد رسمیت و اعتبار کافی همه مستندات </option>
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus2_manager'],'6')))?'selected':'' ?> value="6">فاقد رسمیت و اعتبار کافی بخشی از مستندات </option>
+                                                                                        </optgroup>
+                                                                                        <optgroup label="میزان ارتباط">
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus2_manager'],'7')))?'selected':'' ?> value="7">عدم ارتباط موضوعی/انطباق محتوایی  همه مستندات </option>
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus2_manager'],'8')))?'selected':'' ?> value="8">عدم ارتباط موضوعی/انطباق محتوایی  بخشی از مستندات </option>
+                                                                                        </optgroup>
+                                                                                        <optgroup label="پذیرش مشروط">
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus2_manager'],'9')))?'selected':'' ?> value="9">پذیرش مشروط درصد اعلامی و نیازمند ارسال مستندات کافی در دوره‌های آتی </option>
+                                                                                        </optgroup>
                                                                                     </select>
                                                                                 <?php else : ?>
-                                                                                    <?php echo readMore($vFGroup['tahlil_manager2']) ?>
+                                                                                    <?php echo readMore($vFGroup['tahlil_manager2']) ?><br>
+                                                                                    <span>نواقص مستندات</span>:
+                                                                                    <?php
+                                                                                    foreach (explode(',',$vFGroup['docstatus2_manager']) as $docstatusnumber){
+                                                                                        echo $list['docstatus'][$docstatusnumber].'<br>';
+                                                                                    }
+                                                                                    ?>
                                                                                 <?php endif; ?>
 
                                                                             <?php else : ?>
                                                                                 <span>ارزیاب</span>:
                                                                                 <?php if ($vFGroup['group_status'] < 5 && $list['editable'] == 1) : ?>
                                                                                     <textarea name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][tahlil2]"><?php echo $vFGroup['tahlil2'] ?></textarea><br>
-                                                                                    <select name="docstatus2"  multiple="multiple">
-                                                                                        <option value="1">مستندی ارسال نشده است.</option>
-                                                                                        <option value="2">عدم رعایت بازه زمانی همه مستندات </option>
-                                                                                        <option value="3">عدم رعایت بازه زمانی بخشی از مستندات </option>
-                                                                                        <option value="4">فاقد رسمیت و اعتبار کافی همه مستندات </option>
-                                                                                        <option value="5">فاقد رسمیت و اعتبار کافی بخشی از مستندات </option>
-                                                                                        <option value="6">عدم ارتباط موضوعی/انطباق محتوایی  همه مستندات </option>
-                                                                                        <option value="7">عدم ارتباط موضوعی/انطباق محتوایی  بخشی از مستندات </option>
-                                                                                        <option value="8">عدم جامعیت کافی مستندات </option>
-                                                                                        <option value="9">پذیرش مشروط درصد اعلامی و نیازمند ارسال مستندات کافی در دوره‌های آتی </option>
+                                                                                    <span>نواقص مستندات</span>:
+                                                                                    <select name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][docstatus2][]" multiple>
+                                                                                        <optgroup label="وضعیت کلی">
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus2'],'1')))?'selected':'' ?> value="1">عدم ارسال مستندات</option>
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus2'],'2')))?'selected':'' ?> value="2">عدم جامعیت کافی مستندات </option>
+                                                                                        </optgroup>
+                                                                                        <optgroup label="بازه زمانی">
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus2'],'3')))?'selected':'' ?> value="3">عدم رعایت بازه زمانی همه مستندات </option>
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus2'],'4')))?'selected':'' ?> value="4">عدم رعایت بازه زمانی بخشی از مستندات </option>
+                                                                                        </optgroup>
+                                                                                        <optgroup label="میزان رسمیت">
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus2'],'5')))?'selected':'' ?> value="5">فاقد رسمیت و اعتبار کافی همه مستندات </option>
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus2'],'6')))?'selected':'' ?> value="6">فاقد رسمیت و اعتبار کافی بخشی از مستندات </option>
+                                                                                        </optgroup>
+                                                                                        <optgroup label="میزان ارتباط">
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus2'],'7')))?'selected':'' ?> value="7">عدم ارتباط موضوعی/انطباق محتوایی  همه مستندات </option>
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus2'],'8')))?'selected':'' ?> value="8">عدم ارتباط موضوعی/انطباق محتوایی  بخشی از مستندات </option>
+                                                                                        </optgroup>
+                                                                                        <optgroup label="پذیرش مشروط">
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus2'],'9')))?'selected':'' ?> value="9">پذیرش مشروط درصد اعلامی و نیازمند ارسال مستندات کافی در دوره‌های آتی </option>
+                                                                                        </optgroup>
                                                                                     </select>
                                                                                 <?php else : ?>
-                                                                                    <?php echo readMore($vFGroup['tahlil2']) ?>
+                                                                                    <?php echo readMore($vFGroup['tahlil2']) ?><br>
+                                                                                    <span>نواقص مستندات</span>:
+                                                                                    <?php
+                                                                                    foreach (explode(',',$vFGroup['docstatus2']) as $docstatusnumber){
+                                                                                        echo $list['docstatus'][$docstatusnumber].'<br>';
+                                                                                    }
+                                                                                    ?>
                                                                                 <?php endif; ?>
 
                                                                                 <span>مدیر</span>: <?php if ($vFGroup['tahlil_manager2'] != '') : ?> <br>
-                                                                                    <?php echo readMore($vFGroup['tahlil_manager2']) ?>
+                                                                                    <?php echo readMore($vFGroup['tahlil_manager2']) ?><br>
+                                                                                    <span>نواقص مستندات</span>:
+                                                                                    <?php
+                                                                                    foreach (explode(',',$vFGroup['docstatus2_manager']) as $docstatusnumber){
+                                                                                        echo $list['docstatus'][$docstatusnumber].'<br>';
+                                                                                    }
+                                                                                    ?>
                                                                                 <?php endif; ?>
                                                                             <?php endif; ?>
                                                                         <?php else : ?>
                                                                             <?php if ($vFGroup['group_status2'] == 7) : ?>
                                                                                 <?php if ($vFGroup['tahlil_manager2'] != '') : ?>
-                                                                                    <?php echo readMore($vFGroup['tahlil_manager2']) ?><?php endif; ?>
+                                                                                    <?php echo readMore($vFGroup['tahlil_manager2']) ?><br>
+                                                                                    <span>نواقص مستندات</span>:
+                                                                                    <?php
+                                                                                    foreach (explode(',',$vFGroup['docstatus2_manager']) as $docstatusnumber){
+                                                                                        echo $list['docstatus'][$docstatusnumber].'<br>';
+                                                                                    }
+                                                                                    ?>
+                                                                                <?php endif; ?>
                                                                                 <?php endif; ?>
                                                                             <?php endif; ?>
                                                                     </td>
@@ -2301,53 +2406,106 @@
                                                                         <?php if ($admin_info['parent_id'] == 0) : ?>
                                                                             <?php if ($admin_info['admin_id'] == 1) : ?>
                                                                                 <span>ارزیاب</span>: <?php if ($vFGroup['tahlil3'] != '') : ?> <br>
-                                                                                    <?php echo readMore($vFGroup['tahlil3']) ?>
+                                                                                    <?php echo readMore($vFGroup['tahlil3']) ?><br>
+                                                                                    <span>نواقص مستندات</span>:
+                                                                                    <?php
+                                                                                    foreach (explode(',',$vFGroup['docstatus3']) as $docstatusnumber){
+                                                                                        echo $list['docstatus'][$docstatusnumber].'<br>';
+                                                                                    }
+                                                                                    ?>
                                                                                 <?php endif; ?>
                                                                                 <span>مدیر</span>:
                                                                                 <?php if ($vFGroup['group_status'] < 7 && $vFGroup['group_status'] > 4) : ?>
-                                                                                    <textarea name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][tahlil_manager3]"><?php echo $vFGroup['tahlil_manager3'] ?></textarea>
-                                                                                    <select name="docstatus3_manager"  multiple="multiple">
-                                                                                        <option value="1">مستندی ارسال نشده است.</option>
-                                                                                        <option value="2">عدم رعایت بازه زمانی همه مستندات </option>
-                                                                                        <option value="3">عدم رعایت بازه زمانی بخشی از مستندات </option>
-                                                                                        <option value="4">فاقد رسمیت و اعتبار کافی همه مستندات </option>
-                                                                                        <option value="5">فاقد رسمیت و اعتبار کافی بخشی از مستندات </option>
-                                                                                        <option value="6">عدم ارتباط موضوعی/انطباق محتوایی  همه مستندات </option>
-                                                                                        <option value="7">عدم ارتباط موضوعی/انطباق محتوایی  بخشی از مستندات </option>
-                                                                                        <option value="8">عدم جامعیت کافی مستندات </option>
-                                                                                        <option value="9">پذیرش مشروط درصد اعلامی و نیازمند ارسال مستندات کافی در دوره‌های آتی </option>
+                                                                                    <textarea name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][tahlil_manager3]"><?php echo $vFGroup['tahlil_manager3'] ?></textarea><br>
+                                                                                    <span>نواقص مستندات</span>:
+                                                                                    <select name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][docstatus3_manager][]" multiple>
+                                                                                        <optgroup label="وضعیت کلی">
+                                                                                            <option <?php echo (is_numeric(strpos($vFGroup['docstatus3_manager'],'1')))?'selected':''  ?> value="1">عدم ارسال مستندات</option>
+                                                                                            <option <?php echo (is_numeric(strpos($vFGroup['docstatus3_manager'],'2')))?'selected':''  ?> value="2">عدم جامعیت کافی مستندات</option>
+                                                                                        </optgroup>
+                                                                                        <optgroup label="بازه زمانی">
+                                                                                            <option <?php echo (is_numeric(strpos($vFGroup['docstatus3_manager'],'3')))?'selected':''  ?> value="3">عدم رعایت بازه زمانی همه مستندات </option>
+                                                                                            <option <?php echo (is_numeric(strpos($vFGroup['docstatus3_manager'],'4')))?'selected':''  ?> value="4">عدم رعایت بازه زمانی بخشی از مستندات </option>
+                                                                                        </optgroup>
+                                                                                        <optgroup label="میزان رسمیت">
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus3_manager'],'5')))?'selected':'' ?> value="5"> فاقد رسمیت و اعتبار کافی همه مستندات </option>
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus3_manager'],'6')))?'selected':'' ?> value="6">فاقد رسمیت و اعتبار کافی بخشی از مستندات </option>
+                                                                                        </optgroup>
+                                                                                        <optgroup label="میزان ارتباط">
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus3_manager'],'7')))?'selected':'' ?> value="7">عدم ارتباط موضوعی/انطباق محتوایی  همه مستندات </option>
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus3_manager'],'8')))?'selected':'' ?> value="8">عدم ارتباط موضوعی/انطباق محتوایی  بخشی از مستندات </option>
+                                                                                        </optgroup>
+                                                                                        <optgroup label="پذیرش مشروط">
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus3_manager'],'9')))?'selected':'' ?> value="9">پذیرش مشروط درصد اعلامی و نیازمند ارسال مستندات کافی در دوره‌های آتی </option>
+                                                                                        </optgroup>
                                                                                     </select>
                                                                                 <?php else : ?>
-                                                                                    <?php echo readMore($vFGroup['tahlil_manager3']) ?>
+                                                                                    <?php echo readMore($vFGroup['tahlil_manager3']) ?><br>
+                                                                                    <span>نواقص مستندات</span>:
+                                                                                    <?php
+                                                                                    foreach (explode(',',$vFGroup['docstatus3_manager']) as $docstatusnumber){
+                                                                                        echo $list['docstatus'][$docstatusnumber].'<br>';
+                                                                                    }
+                                                                                    ?>
                                                                                 <?php endif; ?>
 
                                                                             <?php else : ?>
                                                                                 <span>ارزیاب</span>:
                                                                                 <?php if ($vFGroup['group_status'] < 5 && $list['editable'] == 1) : ?>
                                                                                     <textarea name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][tahlil3]"><?php echo $vFGroup['tahlil3'] ?></textarea><br>
-                                                                                    <select name="docstatus3"  multiple="multiple">
-                                                                                        <option value="1">مستندی ارسال نشده است.</option>
-                                                                                        <option value="2">عدم رعایت بازه زمانی همه مستندات </option>
-                                                                                        <option value="3">عدم رعایت بازه زمانی بخشی از مستندات </option>
-                                                                                        <option value="4">فاقد رسمیت و اعتبار کافی همه مستندات </option>
-                                                                                        <option value="5">فاقد رسمیت و اعتبار کافی بخشی از مستندات </option>
-                                                                                        <option value="6">عدم ارتباط موضوعی/انطباق محتوایی  همه مستندات </option>
-                                                                                        <option value="7">عدم ارتباط موضوعی/انطباق محتوایی  بخشی از مستندات </option>
-                                                                                        <option value="8">عدم جامعیت کافی مستندات </option>
-                                                                                        <option value="9">پذیرش مشروط درصد اعلامی و نیازمند ارسال مستندات کافی در دوره‌های آتی </option>
+                                                                                    <span>نواقص مستندات</span>:
+                                                                                    <select name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][docstatus3][]" multiple>
+                                                                                        <optgroup label="وضعیت کلی">
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus3'],'1')))?'selected':'' ?> value="1">عدم ارسال مستندات</option>
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus3'],'2')))?'selected':'' ?> value="2">عدم جامعیت کافی مستندات </option>
+                                                                                        </optgroup>
+                                                                                        <optgroup label="بازه زمانی">
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus3'],'3')))?'selected':'' ?> value="3">عدم رعایت بازه زمانی همه مستندات </option>
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus3'],'4')))?'selected':'' ?> value="4">عدم رعایت بازه زمانی بخشی از مستندات </option>
+                                                                                        </optgroup>
+                                                                                        <optgroup label="میزان رسمیت">
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus3'],'5')))?'selected':'' ?> value="5">فاقد رسمیت و اعتبار کافی همه مستندات </option>
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus3'],'6')))?'selected':'' ?> value="6">فاقد رسمیت و اعتبار کافی بخشی از مستندات </option>
+                                                                                        </optgroup>
+                                                                                        <optgroup label="میزان ارتباط">
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus3'],'7')))?'selected':'' ?> value="7">عدم ارتباط موضوعی/انطباق محتوایی  همه مستندات </option>
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus3'],'8')))?'selected':'' ?> value="8">عدم ارتباط موضوعی/انطباق محتوایی  بخشی از مستندات </option>
+                                                                                        </optgroup>
+                                                                                        <optgroup label="پذیرش مشروط">
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus3'],'9')))?'selected':'' ?> value="9">پذیرش مشروط درصد اعلامی و نیازمند ارسال مستندات کافی در دوره‌های آتی </option>
+                                                                                        </optgroup>
                                                                                     </select>
                                                                                 <?php else : ?>
-                                                                                    <?php echo readMore($vFGroup['tahlil3']) ?>
+                                                                                    <?php echo readMore($vFGroup['tahlil3']) ?><br>
+                                                                                    <span>نواقص مستندات</span>:
+                                                                                    <?php
+                                                                                    foreach (explode(',',$vFGroup['docstatus3']) as $docstatusnumber){
+                                                                                        echo $list['docstatus'][$docstatusnumber].'<br>';
+                                                                                    }
+                                                                                    ?>
                                                                                 <?php endif; ?>
 
                                                                                 <span>مدیر</span>: <?php if ($vFGroup['tahlil_manager3'] != '') : ?> <br>
-                                                                                    <?php echo readMore($vFGroup['tahlil_manager3']) ?>
+                                                                                    <?php echo readMore($vFGroup['tahlil_manager3']) ?><br>
+                                                                                    <span>نواقص مستندات</span>:
+                                                                                    <?php
+                                                                                    foreach (explode(',',$vFGroup['docstatus3_manager']) as $docstatusnumber){
+                                                                                        echo $list['docstatus'][$docstatusnumber].'<br>';
+                                                                                    }
+                                                                                    ?>
                                                                                 <?php endif; ?>
                                                                             <?php endif; ?>
                                                                         <?php else : ?>
                                                                             <?php if ($vFGroup['group_status3'] == 7) : ?>
                                                                                 <?php if ($vFGroup['tahlil_manager3'] != '') : ?>
-                                                                                    <?php echo readMore($vFGroup['tahlil_manager3']) ?><?php endif; ?>
+                                                                                    <?php echo readMore($vFGroup['tahlil_manager3']) ?><br>
+                                                                                    <span>نواقص مستندات</span>:
+                                                                                    <?php
+                                                                                    foreach (explode(',',$vFGroup['docstatus3_manager']) as $docstatusnumber){
+                                                                                        echo $list['docstatus'][$docstatusnumber].'<br>';
+                                                                                    }
+                                                                                    ?>
+                                                                                <?php endif; ?>
                                                                                 <?php endif; ?>
                                                                             <?php endif; ?>
                                                                     </td>
@@ -2416,53 +2574,106 @@
                                                                         <?php if ($admin_info['parent_id'] == 0) : ?>
                                                                             <?php if ($admin_info['admin_id'] == 1) : ?>
                                                                                 <span>ارزیاب</span>: <?php if ($vFGroup['tahlil4'] != '') : ?>
-                                                                                    <?php echo readMore($vFGroup['tahlil4']) ?>
+                                                                                    <?php echo readMore($vFGroup['tahlil4']) ?><br>
+                                                                                    <span>نواقص مستندات</span>:
+                                                                                    <?php
+                                                                                    foreach (explode(',',$vFGroup['docstatus4']) as $docstatusnumber){
+                                                                                        echo $list['docstatus'][$docstatusnumber].'<br>';
+                                                                                    }
+                                                                                    ?>
                                                                                 <?php endif; ?>
                                                                                 <span>مدیر</span>:
                                                                                 <?php if ($vFGroup['group_status'] < 7 && $vFGroup['group_status'] > 4) : ?>
-                                                                                    <textarea name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][tahlil_manager4]"><?php echo $vFGroup['tahlil_manager4'] ?></textarea>
-                                                                                    <select name="docstatus4_manager"  multiple="multiple">
-                                                                                        <option value="1">مستندی ارسال نشده است.</option>
-                                                                                        <option value="2">عدم رعایت بازه زمانی همه مستندات </option>
-                                                                                        <option value="3">عدم رعایت بازه زمانی بخشی از مستندات </option>
-                                                                                        <option value="4">فاقد رسمیت و اعتبار کافی همه مستندات </option>
-                                                                                        <option value="5">فاقد رسمیت و اعتبار کافی بخشی از مستندات </option>
-                                                                                        <option value="6">عدم ارتباط موضوعی/انطباق محتوایی  همه مستندات </option>
-                                                                                        <option value="7">عدم ارتباط موضوعی/انطباق محتوایی  بخشی از مستندات </option>
-                                                                                        <option value="8">عدم جامعیت کافی مستندات </option>
-                                                                                        <option value="9">پذیرش مشروط درصد اعلامی و نیازمند ارسال مستندات کافی در دوره‌های آتی </option>
+                                                                                    <textarea name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][tahlil_manager4]"><?php echo $vFGroup['tahlil_manager4'] ?></textarea><br>
+                                                                                    <span>نواقص مستندات</span>:
+                                                                                    <select name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][docstatus4_manager][]" multiple>
+                                                                                        <optgroup label="وضعیت کلی">
+                                                                                            <option <?php echo (is_numeric(strpos($vFGroup['docstatus4_manager'],'1')))?'selected':''  ?> value="1">عدم ارسال مستندات</option>
+                                                                                            <option <?php echo (is_numeric(strpos($vFGroup['docstatus4_manager'],'2')))?'selected':''  ?> value="2">عدم جامعیت کافی مستندات</option>
+                                                                                        </optgroup>
+                                                                                        <optgroup label="بازه زمانی">
+                                                                                            <option <?php echo (is_numeric(strpos($vFGroup['docstatus4_manager'],'3')))?'selected':''  ?> value="3">عدم رعایت بازه زمانی همه مستندات </option>
+                                                                                            <option <?php echo (is_numeric(strpos($vFGroup['docstatus4_manager'],'4')))?'selected':''  ?> value="4">عدم رعایت بازه زمانی بخشی از مستندات </option>
+                                                                                        </optgroup>
+                                                                                        <optgroup label="میزان رسمیت">
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus4_manager'],'5')))?'selected':'' ?> value="5"> فاقد رسمیت و اعتبار کافی همه مستندات </option>
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus4_manager'],'6')))?'selected':'' ?> value="6">فاقد رسمیت و اعتبار کافی بخشی از مستندات </option>
+                                                                                        </optgroup>
+                                                                                        <optgroup label="میزان ارتباط">
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus4_manager'],'7')))?'selected':'' ?> value="7">عدم ارتباط موضوعی/انطباق محتوایی  همه مستندات </option>
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus4_manager'],'8')))?'selected':'' ?> value="8">عدم ارتباط موضوعی/انطباق محتوایی  بخشی از مستندات </option>
+                                                                                        </optgroup>
+                                                                                        <optgroup label="پذیرش مشروط">
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus4_manager'],'9')))?'selected':'' ?> value="9">پذیرش مشروط درصد اعلامی و نیازمند ارسال مستندات کافی در دوره‌های آتی </option>
+                                                                                        </optgroup>
                                                                                     </select>
                                                                                 <?php else : ?>
-                                                                                    <?php echo readMore($vFGroup['tahlil_manager4']) ?>
+                                                                                    <?php echo readMore($vFGroup['tahlil_manager4']) ?><br>
+                                                                                    <span>نواقص مستندات</span>:
+                                                                                    <?php
+                                                                                    foreach (explode(',',$vFGroup['docstatus4_manager']) as $docstatusnumber){
+                                                                                        echo $list['docstatus'][$docstatusnumber].'<br>';
+                                                                                    }
+                                                                                    ?>
                                                                                 <?php endif; ?>
 
                                                                             <?php else : ?>
                                                                                 <span>ارزیاب</span>:
                                                                                 <?php if ($vFGroup['group_status'] < 5 && $list['editable'] == 1) : ?>
-                                                                                    <textarea name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][tahlil4]"><?php echo $vFGroup['tahlil4'] ?></textarea>
-                                                                                    <select name="docstatus4"  multiple="multiple">
-                                                                                        <option value="1">مستندی ارسال نشده است.</option>
-                                                                                        <option value="2">عدم رعایت بازه زمانی همه مستندات </option>
-                                                                                        <option value="3">عدم رعایت بازه زمانی بخشی از مستندات </option>
-                                                                                        <option value="4">فاقد رسمیت و اعتبار کافی همه مستندات </option>
-                                                                                        <option value="5">فاقد رسمیت و اعتبار کافی بخشی از مستندات </option>
-                                                                                        <option value="6">عدم ارتباط موضوعی/انطباق محتوایی  همه مستندات </option>
-                                                                                        <option value="7">عدم ارتباط موضوعی/انطباق محتوایی  بخشی از مستندات </option>
-                                                                                        <option value="8">عدم جامعیت کافی مستندات </option>
-                                                                                        <option value="9">پذیرش مشروط درصد اعلامی و نیازمند ارسال مستندات کافی در دوره‌های آتی </option>
+                                                                                    <textarea name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][tahlil4]"><?php echo $vFGroup['tahlil4'] ?></textarea><br>
+                                                                                    <span>نواقص مستندات</span>:
+                                                                                    <select name="manager_group[<?php echo $FGId ?>][<?php echo $faaliat_id ?>][docstatus4][]" multiple>
+                                                                                        <optgroup label="وضعیت کلی">
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus4'],'1')))?'selected':'' ?> value="1">عدم ارسال مستندات</option>
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus4'],'2')))?'selected':'' ?> value="2">عدم جامعیت کافی مستندات </option>
+                                                                                        </optgroup>
+                                                                                        <optgroup label="بازه زمانی">
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus4'],'3')))?'selected':'' ?> value="3">عدم رعایت بازه زمانی همه مستندات </option>
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus4'],'4')))?'selected':'' ?> value="4">عدم رعایت بازه زمانی بخشی از مستندات </option>
+                                                                                        </optgroup>
+                                                                                        <optgroup label="میزان رسمیت">
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus4'],'5')))?'selected':'' ?> value="5">فاقد رسمیت و اعتبار کافی همه مستندات </option>
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus4'],'6')))?'selected':'' ?> value="6">فاقد رسمیت و اعتبار کافی بخشی از مستندات </option>
+                                                                                        </optgroup>
+                                                                                        <optgroup label="میزان ارتباط">
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus4'],'7')))?'selected':'' ?> value="7">عدم ارتباط موضوعی/انطباق محتوایی  همه مستندات </option>
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus4'],'8')))?'selected':'' ?> value="8">عدم ارتباط موضوعی/انطباق محتوایی  بخشی از مستندات </option>
+                                                                                        </optgroup>
+                                                                                        <optgroup label="پذیرش مشروط">
+                                                                                            <option <?php echo(is_numeric(strpos($vFGroup['docstatus4'],'9')))?'selected':'' ?> value="9">پذیرش مشروط درصد اعلامی و نیازمند ارسال مستندات کافی در دوره‌های آتی </option>
+                                                                                        </optgroup>
                                                                                     </select>
                                                                                 <?php else : ?>
-                                                                                    <?php echo readMore($vFGroup['tahlil4']) ?>
+                                                                                    <?php echo readMore($vFGroup['tahlil4']) ?><br>
+                                                                                    <span>نواقص مستندات</span>:
+                                                                                    <?php
+                                                                                    foreach (explode(',',$vFGroup['docstatus4']) as $docstatusnumber){
+                                                                                        echo $list['docstatus'][$docstatusnumber].'<br>';
+                                                                                    }
+                                                                                    ?>
                                                                                 <?php endif; ?>
 
                                                                                 <span>مدیر</span>: <?php if ($vFGroup['tahlil_manager4'] != '') : ?>
-                                                                                    <?php echo readMore($vFGroup['tahlil_manager4']) ?>
+                                                                                    <?php echo readMore($vFGroup['tahlil_manager4']) ?><br>
+                                                                                    <span>نواقص مستندات</span>:
+                                                                                    <?php
+                                                                                    foreach (explode(',',$vFGroup['docstatus4_manager']) as $docstatusnumber){
+                                                                                        echo $list['docstatus'][$docstatusnumber].'<br>';
+                                                                                    }
+                                                                                    ?>
                                                                                 <?php endif; ?>
                                                                             <?php endif; ?>
                                                                         <?php else : ?>
                                                                             <?php if ($vFGroup['group_status4'] == 7) : ?>
                                                                                 <?php if ($vFGroup['tahlil_manager4'] != '') : ?>
-                                                                                    <?php echo readMore($vFGroup['tahlil_manager4']) ?><?php endif; ?>
+                                                                                    <?php echo readMore($vFGroup['tahlil_manager4']) ?><br>
+                                                                                    <span>نواقص مستندات</span>:
+                                                                                    <?php
+                                                                                    foreach (explode(',',$vFGroup['docstatus4_manager']) as $docstatusnumber){
+                                                                                        echo $list['docstatus'][$docstatusnumber].'<br>';
+                                                                                    }
+                                                                                    ?>
+                                                                                <?php endif; ?>
                                                                                 <?php endif; ?>
                                                                             <?php endif; ?>
                                                                     </td>

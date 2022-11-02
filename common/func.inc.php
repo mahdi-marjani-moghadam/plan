@@ -1420,7 +1420,7 @@ function translate($text, $lang = '')
 
     return $result;
 }
-function readMore($text, $limit = 70, $noLink = 1)
+function readMore($text, $limit = 50, $noLink = 1)
 {
     $string = strip_tags($text);
     if (strlen($string) > $limit) {
