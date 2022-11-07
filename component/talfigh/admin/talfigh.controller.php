@@ -55,19 +55,33 @@ class talfighController
     {
 
         $kalan = $this->allKalan();
-        
-        $charts[0]['name'] = 'نمودار تلفیق پایش و ارزیابی';
-        $charts[0]['categories'] = json_encode($kalan,JSON_UNESCAPED_UNICODE );
-        $charts[0]['series'] = json_encode([
-            ['name'=>'پایش','color'=>'url(#highcharts-default-pattern-1)','data'=>[40,40,40,50,90,100,80]],
-            ['name'=>'ارزیابی','color'=>'url(#highcharts-default-pattern-5)','data'=>[10,15,10,20,50,80,60]],
-            ['name'=>'تلفیق','color'=>'url(#highcharts-default-pattern-2)','data'=>[30,30,30,40,30,95,30]]
-        ],JSON_UNESCAPED_UNICODE );
-
 
         include_once ROOT_DIR.'component/chart/controllers/chart.controller.php';
         $chartController = new chartController();
         $reportChartTalfigh = $chartController->reportChartTalfigh(4,$_GET['qq']);
+
+        $cArray = $cArray2 = $cArray3 = [];
+        foreach ($reportChartTalfigh['chart'] as $c) {
+            $cArray[] = (int) $c;
+            $cArray2[] = 0;
+            $cArray3[] = 0;
+
+
+        }
+
+        $cArray2 = [40,40,40,50,90,100,80];
+        $cArray3 = [40,40,40,50,90,100,80];
+
+        $charts[0]['name'] = ' میزان پیشرفت پایش برنامه عملیاتی ';
+        $charts[0]['categories'] = json_encode($kalan,JSON_UNESCAPED_UNICODE );
+        $charts[0]['series'] = json_encode([
+            ['name'=>'پایش','color'=>'url(#highcharts-default-pattern-1)','data'=>$cArray],
+            ['name'=>'ارزیابی','color'=>'url(#highcharts-default-pattern-5)','data'=>$cArray2],
+            ['name'=>'تلفیق','color'=>'url(#highcharts-default-pattern-2)','data'=>$cArray3]
+        ],JSON_UNESCAPED_UNICODE );
+
+
+
 
         $this->fileName = 'talfigh.chart.php';
         $this->template(compact(

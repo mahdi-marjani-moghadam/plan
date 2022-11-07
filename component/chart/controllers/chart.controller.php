@@ -194,6 +194,7 @@ class chartController
             if ($season == 4) {
                 $khodezhari += (float)substr($kalan['admins'][$parent]['groups'][$admin_id]['QQ4'], 0, 5);
                 $nahayi += (float)substr($kalan['admins'][$parent]['groups'][$admin_id]['Q4'], 0, 5);
+                $chart[$kalan['kalan_name']] = substr($kalan['admins'][$parent]['groups'][$admin_id]['Q4'], 0, 5);
                 $count +=1;
             }
 
@@ -202,7 +203,7 @@ class chartController
         $khodezhari = $khodezhari / $count;
         $nahayi = $nahayi / $count ;
         $showAdmin = $this->showAdmin();
-        return ['khodezhari' => (int)$khodezhari, 'nahayi' => (int)$nahayi,'showAdmin'=>$showAdmin];
+        return ['khodezhari' => (int)$khodezhari, 'nahayi' => (int)$nahayi,'showAdmin'=>$showAdmin, 'chart'=>$chart];
     }
 
     public function groupChart1()

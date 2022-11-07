@@ -461,7 +461,7 @@ class shakhesController
                     $data[$shakhes_id][$motevali]['amalkardNext']['value_import'] = $amalkardNext[$motevali]['value_import']; // عملکرد ۹۹ واحدها
                     $data[$shakhes_id][$motevali]['amalkardPrev']['value_import'] = $amalkardPrev[$motevali]['value_import']; // عملکرد ۹۸ واحدها
                     $data[$shakhes_id][$motevali]['nerkh']['value_import'] = ($nerkh[$motevali]['value_import'] != null) ? $nerkh[$motevali]['value_import'] * 100 : null; // نرخ رشد واحدها*/
-                    $data[$shakhes_id][$motevali]['darsad']['value_import'] = ($darsad[$motevali]['value_import'] != null) ? $darsad[$motevali]['value_import'] * 100 : null; // درصد تحقق واحدها
+                    $data[$shakhes_id][$motevali]['darsad']['value_import'] = ($darsad[$motevali]['value_import'] != null) ? $darsad[$motevali]['value_import'] : null; // درصد تحقق واحدها
 
                     // برای جدول در سطح کلان
                     $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value_import'] +=

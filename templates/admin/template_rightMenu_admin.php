@@ -327,7 +327,7 @@
                     <i class="sidebar-icon fa fa-list-alt"></i>
                 </div>
                 <!--<a href="<?php /*echo  RELA_DIR */?>admin/?component=talfigh&m=list">-->
-                <span class="sidebar-text">تلفیق پایش و ارزیابی</span>
+                <span class="sidebar-text">نتایج عملکرد . پایش و ارزیابی</span>
             </a>
             <ul class="sidebar-child animated fadeInRight">
 

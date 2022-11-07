@@ -5,27 +5,28 @@
         var qq = '<?php echo (isset($_GET['qq'])) ? '&qq=' . $_GET['qq'] : ''; ?>';
         var r = '<?php echo (isset($_GET['r'])) ? '&r=' . $_GET['r'] : ''; ?>';
         var s = '<?php echo (isset($_GET['s'])) ? '&s=' . $_GET['s'] : ''; ?>';
-        var chart = '<?php echo (isset($_GET['chart'])) ? '&s=' . $_GET['chart'] : ''; ?>';
+        var chart = '<?php echo (isset($_GET['chart'])) ? '&chart=' . $_GET['chart'] : ''; ?>';
+
 
         /** change season event */
         $('#season').change(function () {
             var season = $(this).val();
 
-            location.href = baseUrl + '&s=' + season + r + qq;
+            location.href = baseUrl + '&s=' + season + r + chart + qq;
         });
 
         /** change result event */
         $('#result').change(function () {
             var result = $(this).val();
 
-            location.href = baseUrl + '&r=' + result + s + qq;
+            location.href = baseUrl + '&r=' + result + s + chart + qq;
         });
 
         /** change result event */
         $('#chart').change(function () {
-            var chart = $(this).val();
+            var chart2 = $(this).val();
 
-            location.href = baseUrl + '&r=' + chart + s + qq;
+            location.href = baseUrl + '&chart=' + chart2 + r + s + qq;
         });
 
         /** change admin event */
@@ -59,7 +60,7 @@
 
 <div class="content-body">
     <div class="row" >
-        <div class="col-md-2 col-sm-6 col-xs-12"  style="display:none">
+        <div class="col-md-2 col-sm-6 col-xs-12"  style="display:">
             <label for="season">دوره ارزیابی:</label>
             <select name="season" id="season">
                 <option value="2" <?php echo ($_GET['s'] == '2') ? 'selected' : ''; ?>>شش ماهه</option>
@@ -67,13 +68,15 @@
             </select>
         </div>
         <div class="col-md-2 col-sm-6 col-xs-12 " style="display:">
-            <label for="chart">اchart :</label>
-            <select name="chart" id="chart">
-                <option value="1" <?php echo ($_GET['chart'] == '1') ? 'selected' : ''; ?>>1تایید شده)</option>
-                <option value="2" <?php echo ($_GET['chart'] == '2') ? 'selected' : ''; ?>>1 2</option>
+            <label for="chart">نوع نمودار :</label>
+            <select name="chart" id="chart">20311
+
+                <option value="1" <?php echo ($_GET['chart'] == '1') ? 'selected' : ''; ?>>نمودار عملکرد کل پايش</option>
+                <option value="2" <?php echo ($_GET['chart'] == '2') ? 'selected' : ''; ?>>   نمودار تلفيق پايش و ارزيابي</option>
             </select>
         </div>
         <?php if ($admin_info['parent_id'] == 0) : ?>
+
             <div class="col-md-2 col-sm-6 col-xs-12" style="display:">
                 <label for="admin">واحد :</label>
                 <select id="admin">
@@ -91,11 +94,12 @@
 
     <div class="clearfix"><br></div>
 
-    <!--    <script src="--><?php //echo TEMPLATE_DIR ?><!--assets/js/highstock.js"></script>-->
-    <!-- <script src="< ?php echo TEMPLATE_DIR ?>assets/js/exporting.js"></script> -->
-    <!-- <script src="< ?php echo TEMPLATE_DIR ?>assets/js/export-data.js"></script> -->
-    <!--    <script src="--><?php //echo TEMPLATE_DIR ?><!--assets/js/pattern-fill.js"></script>-->
-
+    <?php if($_GET['chart'] == 2):?>
+        <script src="<?php echo TEMPLATE_DIR ?>assets/js/highstock.js"></script>
+     <script src="<?php echo TEMPLATE_DIR ?>assets/js/exporting.js"></script>
+     <script src="<?php echo TEMPLATE_DIR ?>assets/js/export-data.js"></script>
+        <script src="<?php echo TEMPLATE_DIR ?>assets/js/pattern-fill.js"></script>
+    <?php endif;?>
 
     <div class="row">
         <?php
@@ -114,8 +118,11 @@
                             </button>
                         </div>
                     </div>
+
                     <div class="panel-body">
-                        <?php /*
+
+                        <?php if($_GET['chart'] == 2):?>
+
                         <div id="container<?php echo $k ?>" style="overflow:visible; "></div>
 
                         <script> //ORGINAL
@@ -204,13 +211,16 @@
                                     scale: 2
                                 },
 
-                                series: <?php echo $chart['series'] ?>
+                                series: <?php echo $chart['series']?>
 
 
                             });
                         </script>
-                        */ ?>
-                        <?php //if($_GET['chart1']):?>
+
+
+
+                        <?php endif;?>
+                        <?php if($_GET['chart'] == 1 || !isset($_GET['chart'])):?>
                         <script src="https://code.highcharts.com/highcharts.js"></script>
                         <script src="https://code.highcharts.com/highcharts-more.js"></script>
                         <script src="https://code.highcharts.com/modules/exporting.js"></script>
@@ -460,6 +470,8 @@
 
 
                         </script>
+
+                        <?php endif;?>
                     </div>
                 </div>
             </div>
