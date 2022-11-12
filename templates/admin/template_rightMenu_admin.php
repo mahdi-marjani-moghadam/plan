@@ -246,23 +246,23 @@
                 <?php endif ?>
                 <li>
                     <a href="<?php echo  RELA_DIR ?>admin/?component=shakhes">
-                        <span class="sidebar-text text-16"> گزارش</span>
+                        <span class="sidebar-text text-16"> گزارش عملکرد</span>
                     </a>
                 </li>
 
-                <li>
+                <!--<li>
                     <a href="">
                         <span class="sidebar-text text-16"> نمودار گروهها</span>
 
                         <ul class="sidebar-child animated fadeInRight">
                             <li>
-                                <a href="<?php echo  RELA_DIR ?>admin/?component=chart&menu=arzyabi&action=g1">
+                                <a href="<?php /*echo  RELA_DIR */?>admin/?component=chart&menu=arzyabi&action=g1">
                                     <span class="sidebar-text text-16">مقایسه در سطح هدف</span>
                                 </a>
                             </li>
                         </ul>
                     </a>
-                </li>
+                </li>-->
 
                 <li>
                     <a href="">
@@ -331,15 +331,15 @@
             </a>
             <ul class="sidebar-child animated fadeInRight">
 
-                <li>
-                    <a href="<?php echo  RELA_DIR ?>admin/?component=talfigh&m=list">
+                <!--<li>
+                    <a href="<?php /*echo  RELA_DIR */?>admin/?component=talfigh&m=list">
                         <span class="sidebar-text text-16"> گزارش تلفیق</span>
                     </a>
-                </li>
+                </li>-->
 
                 <li>
                     <a href="<?php echo  RELA_DIR ?>admin/?component=talfigh&m=chart">
-                        <span class="sidebar-text text-16"> نمودار تلفیق</span>
+                        <span class="sidebar-text text-16"> نمودار </span>
                     </a>
                 </li>
 

@@ -63,8 +63,8 @@
         <div class="col-md-2 col-sm-6 col-xs-12"  style="display:">
             <label for="season">دوره ارزیابی:</label>
             <select name="season" id="season">
-                <option value="2" <?php echo ($_GET['s'] == '2') ? 'selected' : ''; ?>>شش ماهه</option>
-                <option value="4" <?php echo ($_GET['s'] == '4') ? 'selected' : ''; ?>>یکساله</option>
+                <option value="2" <?php echo ($_GET['s'] == '2' ) ? 'selected' : ''; ?>>شش ماهه</option>
+                <option value="4" <?php echo ($_GET['s'] == '4'  || (STEP_FORM1 == 4 && !isset($_GET['s']))) ? 'selected' : ''; ?>>یکساله</option>
             </select>
         </div>
         <div class="col-md-2 col-sm-6 col-xs-12 " style="display:">
@@ -72,7 +72,7 @@
             <select name="chart" id="chart">20311
 
                 <option value="1" <?php echo ($_GET['chart'] == '1') ? 'selected' : ''; ?>>نمودار عملکرد کل پايش</option>
-                <option value="2" <?php echo ($_GET['chart'] == '2') ? 'selected' : ''; ?>>   نمودار تلفيق پايش و ارزيابي</option>
+                <option value="2" <?php echo ($_GET['chart'] == '2') ? 'selected' : ''; ?>>  نمودار تلفيق پايش و ارزيابي</option>
             </select>
         </div>
         <?php if ($admin_info['parent_id'] == 0) : ?>
@@ -478,18 +478,18 @@
 
         <?php endforeach; ?>
 
-        <div class="col-md-12">
+        <!--<div class="col-md-12">
             <div id="panel-ss" class="panel panel-default border-green ">
                 <div class="panel-body">
-                    <?php foreach ($kalan as $v) : ?>
+                    <?php /*foreach ($kalan as $v) : */?>
                         <div class="col-md-4 ">
 
-                            <?php $d = 50 * 180 / 100; ?>
-                            <h3 style="text-align:center"><?php echo $v ?></h3>
+                            <?php /*$d = 50 * 180 / 100; */?>
+                            <h3 style="text-align:center"><?php /*echo $v */?></h3>
                             <div class="col-md-6 ">
 
                                 <div class="gauge"
-                                     style="margin:2em; width: 150px; --rotation:<?php echo $d ?>deg; --color:#f15c80; --background:#e9ecef;">
+                                     style="margin:2em; width: 150px; --rotation:<?php /*echo $d */?>deg; --color:#f15c80; --background:#e9ecef;">
                                     <div class="percentage"></div>
                                     <div class="mask"></div>
                                     <span class="value">46% ارزیابی</span>
@@ -498,7 +498,7 @@
 
                             <div class="col-md-6">
                                 <div class="gauge"
-                                     style="margin:2em; width: 150px; --rotation:<?php echo $d ?>deg; --color:#5ce35c; --background:#e9ecef;">
+                                     style="margin:2em; width: 150px; --rotation:<?php /*echo $d */?>deg; --color:#5ce35c; --background:#e9ecef;">
                                     <div class="percentage"></div>
                                     <div class="mask"></div>
                                     <span class="value">46% پایش</span>
@@ -506,7 +506,7 @@
                             </div>
                         </div>
 
-                    <?php endforeach ?>
+                    <?php /*endforeach */?>
                     <style>
                         .gauge {
                             position: relative;
@@ -576,7 +576,7 @@
 
                 </div>
             </div>
-        </div>
+        </div>-->
 
 
     </div>

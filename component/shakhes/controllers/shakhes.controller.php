@@ -164,7 +164,7 @@ class shakhesController
 
 
         $reports = $this->getReports($shakhesNext, $ghalamsNext, $ghalamsPrev, $groups);
-
+//        dd(11);
         $kalans = $reports['kalan'];
         unset($reports['kalan']);
 

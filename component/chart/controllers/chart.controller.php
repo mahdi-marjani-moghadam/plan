@@ -188,6 +188,7 @@ class chartController
 
                 $khodezhari += (float) substr($kalan['admins'][$parent]['groups'][$admin_id]['QQ2'], 0, 5);
                 $nahayi += (float)substr($kalan['admins'][$parent]['groups'][$admin_id]['Q2'], 0, 5);
+                $chart[$kalan['kalan_name']] = substr($kalan['admins'][$parent]['groups'][$admin_id]['Q2'], 0, 5);
                 $count +=1;
             }
 
@@ -200,6 +201,7 @@ class chartController
 
         }//next kalan
 //        dd($);
+        // نمودار گیج
         $khodezhari = $khodezhari / $count;
         $nahayi = $nahayi / $count ;
         $showAdmin = $this->showAdmin();
