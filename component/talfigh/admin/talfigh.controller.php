@@ -72,7 +72,7 @@ class talfighController
         }
 
         $cArray2 = [40,40,50,50,30,20];
-        $cArray3 = [57,57,81,50,33,60];
+        $cArray3 = [57,57,53,50,33,38];
 
         $charts[0]['name'] = ' میزان پیشرفت برنامه عملیاتی ';
         $charts[0]['categories'] = json_encode($kalan,JSON_UNESCAPED_UNICODE );

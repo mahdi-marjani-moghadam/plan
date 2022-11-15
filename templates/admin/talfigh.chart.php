@@ -52,7 +52,7 @@
 <div class="content-control">
     <!--control-nav-->
     <ul class="control-nav pull-right">
-        <li><a class="rtl text-24"><i class="sidebar-icon fa fa-adn"></i> وضعیت پیشرفت</a></li>
+        <li><a class="rtl text-24"><i class="sidebar-icon fa fa-adn"></i>وضعیت پیشرفت</a></li>
     </ul>
     <!--/control-nav-->
 </div>
@@ -67,15 +67,18 @@
                 <option value="4" <?php echo ($_GET['s'] == '4'  || (STEP_FORM1 == 4 && !isset($_GET['s']))) ? 'selected' : ''; ?>>یکساله</option>
             </select>
         </div>
+        <?php if ($admin_info['groups'] == 0 || $admin_info['groups'] == 100 ) : ?>
         <div class="col-md-2 col-sm-6 col-xs-12 " style="display:">
             <label for="chart">نوع نمودار :</label>
-            <select name="chart" id="chart">20311
+            <select name="chart" id="chart">
 
                 <option value="1" <?php echo ($_GET['chart'] == '1') ? 'selected' : ''; ?>>نمودار عملکرد کل پايش</option>
                 <option value="2" <?php echo ($_GET['chart'] == '2') ? 'selected' : ''; ?>>  نمودار تلفيق پايش و ارزيابي</option>
             </select>
         </div>
-        <?php if ($admin_info['parent_id'] == 0) : ?>
+        <?php endif; ?>
+
+        <?php if ($admin_info['groups'] == 0 || $admin_info['groups'] == 100 ) : ?>
 
             <div class="col-md-2 col-sm-6 col-xs-12" style="display:">
                 <label for="admin">واحد :</label>

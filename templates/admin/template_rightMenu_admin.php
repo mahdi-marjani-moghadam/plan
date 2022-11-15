@@ -245,6 +245,9 @@
                     </li>
                 <?php endif ?>
                 <li>
+
+                    <?php if ($admin_info['admin_id'] == 1) : ?>
+
                     <a href="<?php echo  RELA_DIR ?>admin/?component=shakhes">
                         <span class="sidebar-text text-16"> گزارش عملکرد</span>
                     </a>
@@ -303,7 +306,6 @@
                 </li>
 
 
-                <?php if ($admin_info['admin_id'] == 1) : ?>
                     <li>
                         <a href="<?php echo  RELA_DIR ?>admin/?component=shakhes&action=setting">
                             <span class="sidebar-text text-16"> تنظیمات شاخص</span>
