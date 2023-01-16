@@ -75,7 +75,7 @@
 
             //            "ajax": "<?php //=RELA_DIR
                                     ?>//admin/?component=form&action=search2&status=<?php //=$list['status']
-                                                                                                ?>//",
+                                                                                    ?>//",
             "ordering": false
         });
 
@@ -553,11 +553,13 @@
         max-height: 600px;
         overflow: auto;
     }
-     a[target="_blank"]{
-        z-index: 9999999;
-    position: relative;
 
-}
+    a[target="_blank"] {
+        z-index: 9999999;
+        position: relative;
+
+    }
+
     .word-wrap {
         position: relative;
         /* width: 260px; */
@@ -1547,8 +1549,8 @@
                                                             <td class="word-wrap" style="white-space:nowrap;">
                                                                 <div>
                                                                     <!--تجمیع--> <?php echo $vEAdmins['admin_name'] . ' ' . $vEAdmins['family'] ?><a class="show-more-group-eghdam show-more-admin-<?php echo $vEghdam['eghdam_vazn'] ?> a-show-group-amaliati-<?php echo $amaliati_no ?> a-show-group-kalan-<?php echo $kalan_no ?> " data-admin_id="<?php echo $EAId ?>-<?php echo $eghdam_id ?>" href="">▼ </a><?php if (isset($_GET['dev'])) {
-                                                                                                                                                                                                                                                                                                                                                                                                            echo "(ev:" . $vEAdmins['eghdam_vazn'];
-                                                                                                                                                                                                                                                                                                                                                                                                        } ?>
+                                                                                                                                                                                                                                                                                                                                                                                                                        echo "(ev:" . $vEAdmins['eghdam_vazn'];
+                                                                                                                                                                                                                                                                                                                                                                                                                    } ?>
                                                                 </div>
                                                             </td>
 
