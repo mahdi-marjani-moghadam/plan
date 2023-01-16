@@ -258,6 +258,11 @@ class adminLoginModel
     {
         include_once(dirname(__FILE__) . "/admin.login.model.db.php");
 
+        $result = adminLoginModelDb::deleteSessions();
+        if ($result['result'] != 1) {
+            return $result;
+        }
+        
         if (!isset($_SESSION["sessionID"])) {
             if (!isset($_COOKIE["sessionID"])) {
                 $result['result'] = -1;

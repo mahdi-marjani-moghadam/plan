@@ -109,7 +109,7 @@ class adminLoginModelDb
 
         $conn = dbConn::getConnection();
 
-        $sql = "DELETE FROM sessions_admin WHERE last_access_time < (NOW()-3000000000000)";
+        $sql = "DELETE FROM sessions_admin WHERE last_access_time < (NOW()-10000)"; 
 
         $stmt = $conn->prepare($sql);
         $stmt->execute();
