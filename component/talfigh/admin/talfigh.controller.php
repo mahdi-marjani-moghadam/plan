@@ -55,20 +55,41 @@ class talfighController
     {
 
         $kalan = $this->allKalan();
-        
-        $charts[0]['name'] = 'نمودار تلفیق پایش و ارزیابی';
+
+        $session = ($_GET['s'] == 4 ||  (STEP_FORM1 == 4 && !isset($_GET['s'])))? 4:2;
+
+        include_once ROOT_DIR.'component/chart/controllers/chart.controller.php';
+        $chartController = new chartController();
+        $reportChartTalfigh = $chartController->reportChartTalfigh($session,$_GET['qq']);
+
+        $cArray = $cArray2 = $cArray3 = [];
+        foreach ($reportChartTalfigh['chart'] as $c) {
+            $cArray[] = (int) $c;
+            $cArray2[] = 0;
+            $cArray3[] = 0;
+
+
+        }
+
+        $cArray2 = [40,40,50,50,30,20];
+        $cArray3 = [57,57,53,50,33,38];
+
+        $charts[0]['name'] = ' میزان پیشرفت برنامه عملیاتی ';
         $charts[0]['categories'] = json_encode($kalan,JSON_UNESCAPED_UNICODE );
         $charts[0]['series'] = json_encode([
-            ['name'=>'پایش','color'=>'url(#highcharts-default-pattern-1)','data'=>[10,10,10,10,10,10,10]],
-            ['name'=>'ارزیابی','color'=>'url(#highcharts-default-pattern-5)','data'=>[40,40,40,40,40,40,40]],
-            ['name'=>'تلفیق','color'=>'url(#highcharts-default-pattern-2)','data'=>[60,60,60,60,60,60,60]]
+            ['name'=>'پایش','color'=>'url(#highcharts-default-pattern-1)','data'=>$cArray],
+            ['name'=>'ارزیابی','color'=>'url(#highcharts-default-pattern-5)','data'=>$cArray2],
+            ['name'=>'تلفیق','color'=>'url(#highcharts-default-pattern-2)','data'=>$cArray3]
         ],JSON_UNESCAPED_UNICODE );
 
+
+
+
         $this->fileName = 'talfigh.chart.php';
-        $shakhes = array();
         $this->template(compact(
             'charts' ,
-            'kalan'
+            'kalan',
+            'reportChartTalfigh'
         ));
     }
 
@@ -78,7 +99,7 @@ class talfighController
         $this->fileName = 'talfigh.list.php';
         $shakhes = array();
         $this->template(compact(
-            'shakhes',
+            'shakhes'
         ));
     }
          /*   //رسم نمودار گیج

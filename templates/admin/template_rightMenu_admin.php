@@ -245,24 +245,27 @@
                     </li>
                 <?php endif ?>
                 <li>
+
+                    <?php if ($admin_info['admin_id'] == 1) : ?>
+
                     <a href="<?php echo  RELA_DIR ?>admin/?component=shakhes">
-                        <span class="sidebar-text text-16"> گزارش</span>
+                        <span class="sidebar-text text-16"> گزارش عملکرد</span>
                     </a>
                 </li>
 
-                <li>
+                <!--<li>
                     <a href="">
                         <span class="sidebar-text text-16"> نمودار گروهها</span>
 
                         <ul class="sidebar-child animated fadeInRight">
                             <li>
-                                <a href="<?php echo  RELA_DIR ?>admin/?component=chart&menu=arzyabi&action=g1">
+                                <a href="<?php /*echo  RELA_DIR */?>admin/?component=chart&menu=arzyabi&action=g1">
                                     <span class="sidebar-text text-16">مقایسه در سطح هدف</span>
                                 </a>
                             </li>
                         </ul>
                     </a>
-                </li>
+                </li>-->
 
                 <li>
                     <a href="">
@@ -303,7 +306,6 @@
                 </li>
 
 
-                <?php if ($admin_info['admin_id'] == 1) : ?>
                     <li>
                         <a href="<?php echo  RELA_DIR ?>admin/?component=shakhes&action=setting">
                             <span class="sidebar-text text-16"> تنظیمات شاخص</span>
@@ -327,19 +329,19 @@
                     <i class="sidebar-icon fa fa-list-alt"></i>
                 </div>
                 <!--<a href="<?php /*echo  RELA_DIR */?>admin/?component=talfigh&m=list">-->
-                <span class="sidebar-text">تلفیق پایش و ارزیابی</span>
+                <span class="sidebar-text">نتایج عملکرد . پایش و ارزیابی</span>
             </a>
             <ul class="sidebar-child animated fadeInRight">
 
-                <li>
-                    <a href="<?php echo  RELA_DIR ?>admin/?component=talfigh&m=list">
+                <!--<li>
+                    <a href="<?php /*echo  RELA_DIR */?>admin/?component=talfigh&m=list">
                         <span class="sidebar-text text-16"> گزارش تلفیق</span>
                     </a>
-                </li>
+                </li>-->
 
                 <li>
                     <a href="<?php echo  RELA_DIR ?>admin/?component=talfigh&m=chart">
-                        <span class="sidebar-text text-16"> نمودار تلفیق</span>
+                        <span class="sidebar-text text-16"> نمودار </span>
                     </a>
                 </li>
 

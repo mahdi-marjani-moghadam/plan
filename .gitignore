@@ -6,6 +6,8 @@
 .idea/vcs.xml
 .idea
 .vscode
-
+plan*
 .git
 server.inc.php
+/mampinstaller/
+/statics/files/

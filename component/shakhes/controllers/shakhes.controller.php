@@ -164,7 +164,7 @@ class shakhesController
 
 
         $reports = $this->getReports($shakhesNext, $ghalamsNext, $ghalamsPrev, $groups);
-
+//        dd(11);
         $kalans = $reports['kalan'];
         unset($reports['kalan']);
 
@@ -452,7 +452,7 @@ class shakhesController
                             $nerkh[$motevali]['value_import'] = (1 - (($amalkardNext[$motevali]['value_import'] ?? 1) / ($amalkardPrev[$motevali]['value_import'] ?? 1))); // نرخ رشد واحدها
                         }
 
-                        $darsad[$motevali]['value_import'] = (($nerkh[$motevali]['value_import'] ?? 1) / ($this->standard($shakhes_id, $motevali) ?? 1)) * 100; // درصد تحقق واحدها
+                        $darsad[$motevali]['value_import'] = (($amalkardNext[$motevali]['value_import'] ?? 1) / ($this->standard($shakhes_id, $motevali) ?? 1)) * 100; // درصد تحقق واحدها
                     } else {
                         $nerkh[$motevali]['value_import'] = null;
                         $darsad[$motevali]['value_import'] = null;
@@ -461,7 +461,7 @@ class shakhesController
                     $data[$shakhes_id][$motevali]['amalkardNext']['value_import'] = $amalkardNext[$motevali]['value_import']; // عملکرد ۹۹ واحدها
                     $data[$shakhes_id][$motevali]['amalkardPrev']['value_import'] = $amalkardPrev[$motevali]['value_import']; // عملکرد ۹۸ واحدها
                     $data[$shakhes_id][$motevali]['nerkh']['value_import'] = ($nerkh[$motevali]['value_import'] != null) ? $nerkh[$motevali]['value_import'] * 100 : null; // نرخ رشد واحدها*/
-                    $data[$shakhes_id][$motevali]['darsad']['value_import'] = ($darsad[$motevali]['value_import'] != null) ? $darsad[$motevali]['value_import'] * 100 : null; // درصد تحقق واحدها
+                    $data[$shakhes_id][$motevali]['darsad']['value_import'] = ($darsad[$motevali]['value_import'] != null) ? $darsad[$motevali]['value_import'] : null; // درصد تحقق واحدها
 
                     // برای جدول در سطح کلان
                     $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value_import'] +=
@@ -481,7 +481,7 @@ class shakhesController
                             $nerkh[$motevali]['value'] = -1 * (($amalkardNext[$motevali]['value'] / $amalkardPrev[$motevali]['value'])); // نرخ رشد واحدها
                         }
                         // درصد تحقق واحدها
-                        $darsad[$motevali]['value'] = ($nerkh[$motevali]['value'] / $this->standard($shakhes_id, $motevali)) * 100;
+                        $darsad[$motevali]['value'] = ($amalkardNext[$motevali]['value'] / $this->standard($shakhes_id, $motevali)) * 100;
                     } else {
                         $nerkh[$motevali]['value'] = null;
                         $darsad[$motevali]['value'] = null;
@@ -547,7 +547,7 @@ class shakhesController
                         }
 
                         $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]] =
-                            ($data[$shakhes_id][$admin['parent_id']]['nerkh'][$tmp[$i]] / $this->standard($shakhes_id, $admin['parent_id'])) * 100; // درصد تحقق
+                            ($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $this->standard($shakhes_id, $admin['parent_id'])) * 100; // درصد تحقق
 
 
                         //                        if($tmp[$i] == 'value_import'){
@@ -594,7 +594,7 @@ class shakhesController
                 }
 
                 $data[$shakhes_id][100]['darsad'][$tmp[$i]] =
-                    ($data[$shakhes_id][100]['nerkh'][$tmp[$i]] / $this->standard($shakhes_id, 100)) * 100; // درصد تحقق
+                    ($data[$shakhes_id][100]['amalkardNext'][$tmp[$i]] / $this->standard($shakhes_id, 100)) * 100; // درصد تحقق
 
                 //                dd($shakhes_id);
                 //                dd($this->shakhesVazn($shakhes_id, $admin['parent_id']));
@@ -2471,7 +2471,7 @@ class shakhesController
         // o اعلامی = value_import
         // o' نهایی = value6 / value12
         // A نرخ رشد = amalkard 99 / amalkard 98 - 1 * 100
-        // B درصد تحقق = A / shakhes_standard * amalkard 99
+        // B درصد تحقق = amalkard 99 / shakhes_standard * 100
         // C =  E (B * shakhes_vazn) وزن شاخص در هر هدف
 
         // o'o' = E (value_import * ghalam_vazn)

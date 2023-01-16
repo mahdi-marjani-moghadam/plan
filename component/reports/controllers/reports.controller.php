@@ -205,7 +205,16 @@ class reportsController
             group_list.tahlil_manager1,
             group_list.tahlil_manager2,
             group_list.tahlil_manager3,
-            group_list.tahlil_manager4
+            group_list.tahlil_manager4,
+            
+            group_list.docstatus1,
+            group_list.docstatus2,
+            group_list.docstatus3,
+            group_list.docstatus4,
+            group_list.docstatus1_manager,
+            group_list.docstatus2_manager,
+            group_list.docstatus3_manager,
+            group_list.docstatus4_manager
             
             ')
             ->leftJoin('faaliat as f', 'f.faaliat_id', '=', 'group_list.faaliat_id')
@@ -471,10 +480,20 @@ class reportsController
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['tahlil3'] = $row['tahlil3'];
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['tahlil4'] = $row['tahlil4'];
 
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['docstatus1'] = $row['docstatus1'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['docstatus2'] = $row['docstatus2'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['docstatus3'] = $row['docstatus3'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['docstatus4'] = $row['docstatus4'];
+
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['tahlil_manager1'] = $row['tahlil_manager1'];
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['tahlil_manager2'] = $row['tahlil_manager2'];
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['tahlil_manager3'] = $row['tahlil_manager3'];
             $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['tahlil_manager4'] = $row['tahlil_manager4'];
+
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['docstatus1_manager'] = $row['docstatus1_manager'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['docstatus2_manager'] = $row['docstatus2_manager'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['docstatus3_manager'] = $row['docstatus3_manager'];
+            $export['kalans'][$row['kalan_no']]['amaliatis'][$row['amaliati_no']]['eghdams'][$row['eghdam_id']]['faaliats'][$row['faaliat_id']]['admins'][$row['admin_id']]['groups'][$row['group_id']]['docstatus4_manager'] = $row['docstatus4_manager'];
 
             /**
              * sum zz
