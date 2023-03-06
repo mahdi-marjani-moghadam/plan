@@ -101,7 +101,7 @@
                         </option>
                     <?php endforeach; ?>
                 </select>
-            </div>
+            </div>وضعیت پیشرفت
         <?php endif; ?>
         <div class="col-md-1 col-xs-12  pull-left">
             <input type='button' class="btn btn-default btn-block pull-left" style="" id='btn' value='Print' onclick='printDiv();'>

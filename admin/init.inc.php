@@ -77,10 +77,8 @@ global $admin_info;
 $admin = new adminLoginModel();
 
 $admin_info = $admin->checkLogin();
-
 //$Domain = $_SERVER['SERVER_NAME'];
 //$nameDomain = explode('.', $Domain);
-
 
 /*if ($admin->existCompany === NULL)
 {
@@ -93,7 +91,6 @@ define('Count_Permission', '20');
 // Calculate Expiry Company
 //include_once(ROOT_DIR."model/produce.php");
 //$Produce = clsProduce::getProduceCompany($_SESSION['compid']);
-
 
 
 //$member_info = $admin->checkLogin();

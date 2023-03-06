@@ -60,7 +60,7 @@ class talfighController
 
         include_once ROOT_DIR.'component/chart/controllers/chart.controller.php';
         $chartController = new chartController();
-        $reportChartTalfigh = $chartController->reportChartTalfigh($session,$_GET['qq']);
+        $reportChartTalfigh = $chartController->reportChartTalfigh($session,$_GET['qq'],$_GET['chart']);
 
         $cArray = $cArray2 = $cArray3 = [];
         foreach ($reportChartTalfigh['chart'] as $c) {
@@ -81,7 +81,6 @@ class talfighController
             ['name'=>'ارزیابی','color'=>'url(#highcharts-default-pattern-5)','data'=>$cArray2],
             ['name'=>'تلفیق','color'=>'url(#highcharts-default-pattern-2)','data'=>$cArray3]
         ],JSON_UNESCAPED_UNICODE );
-
 
 
 

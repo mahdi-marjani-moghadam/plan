@@ -78,14 +78,14 @@ class reportsController
              * login by daneshkade va manager va arzyab
              */
 
-            if ($admin_info['parent_id'] == 0 && !in_array($admin_info['admin_id'], [1, 100])) {
+            if ($admin_info['parent_id'] == 0 && !in_array($admin_info['admin_id'], [1, 100, 3121])) {
                 /**
                  * arzyab 
                  */
                 $child = $adminObj->getAll()->select('admin.admin_id,admin_faaliat.faaliat_id');
                 $child =   $child->join('admin_faaliat', 'admin_faaliat.child', '=', ' admin.admin_id');
                 $child =   $child->where('admin_faaliat.admin_id', '=', $admin_info['admin_id']);
-            } else if (!in_array($admin_info['admin_id'], [1, 100])) {
+            } else if (!in_array($admin_info['admin_id'], [1, 100, 3121])) {
                 /**
                  *  vahed
                  */

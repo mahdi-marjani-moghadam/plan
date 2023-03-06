@@ -67,7 +67,7 @@
                 <option value="4" <?php echo ($_GET['s'] == '4'  || (STEP_FORM1 == 4 && !isset($_GET['s']))) ? 'selected' : ''; ?>>یکساله</option>
             </select>
         </div>
-        <?php if ($admin_info['groups'] == 0 || $admin_info['groups'] == 100 ) : ?>
+        <?php if ($admin_info['groups'] == 0 || $admin_info['groups'] == 100 || $admin_info['admin_id'] == 3121) : ?>
         <div class="col-md-2 col-sm-6 col-xs-12 " style="display:">
             <label for="chart">نوع نمودار :</label>
             <select name="chart" id="chart">
@@ -78,18 +78,34 @@
         </div>
         <?php endif; ?>
 
-        <?php if ($admin_info['groups'] == 0 || $admin_info['groups'] == 100 ) : ?>
+        <?php if ($admin_info['groups'] == 0 || $admin_info['groups'] == 100 || $admin_info['admin_id'] == 3121) : ?>
 
             <div class="col-md-2 col-sm-6 col-xs-12" style="display:">
                 <label for="admin">واحد :</label>
                 <select id="admin">
                     <option value="0">انتخاب کنید</option>
+                    <?php if($_GET['chart']== 1):?>
+
                     <?php foreach ($reportChartTalfigh['showAdmin'] as $k => $admins) : ?>
-                        <option <?php if (strpos($_GET['qq'], ',' . $admins['admin_id'] . ',') !== false) {
+                    <option <?php if (strpos($_GET['qq'], ',' . $admins['admin_id'] . ',') !== false) {
                             echo 'selected';
                         } ?> value="<?php echo $admins['admin_id'] ?>"><?php echo $admins['name'] . ' ' . $admins['family'] ?></option>
                     <?php endforeach; ?>
+                    <?php else: ?>
+                    <option <?php if (strpos($_GET['qq'], ',110,') !== false) {
+                        echo 'selected';
+                    } ?> value="110">                    کل واحد ادبیات
+                    </option>
+                        <option <?php if (strpos($_GET['qq'], ',111,') !== false) {
+                            echo 'selected';
+                        } ?> value="111">                    کل واحد الهیات
+                        </option>
+                    <?php endif ?>
+
+
                 </select>
+
+
             </div>
         <?php endif; ?>
 

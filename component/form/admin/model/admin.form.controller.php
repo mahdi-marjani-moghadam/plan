@@ -704,7 +704,16 @@ class adminFormController
                     $st = '';
                     if (STEP_FORM1 == 3 and $list['start_date'] <= date('Y-m-d') and $list['finish_date'] >= date('Y-m-d')) {
                         $st .= "<input data-season='3-{$list['fid']}' class='form-control ltr percent-input'  title='.درصد پیشرفت وارد شده نباید از درصد نهایی دوره قبل کوچکتر باشد'  autocomplete='off'  name='menu[$plan_id][3]' type='text'  value='{$list['admin_percent3']}' style='width: 150px'>";
-                        //$st .= "<input  name='menu[$plan_id][3]' type='file'   >";
+
+
+
+                        include_once ROOT_DIR . 'component/khoroji_eghdam/model/khoroji_eghdam.model.php';
+                        $res = khoroji_eghdam::getBy_faaliat_id_and_admin_id($list['faaliat_id'], $list['admin_id'])
+                            ->select('import_doc,faaliat_id')
+                            ->getList()['export']['list'][0];
+                        if ($res['import_doc'] == 1) {
+                            $st .= "<input  name='menu[$plan_id][3]' type='file'   >";
+                        }
                     } else {
                         $st .= 'اعلامی: <br>' . "<div class='elami' data-season='3-{$list['fid']}'>" . $list['admin_percent3'] . '</div><br> نهایی: ' . " <div  class='nahayi' data-season='3-{$list['fid']}'>" . (int) $list['O3'] . "</div>";
                     }

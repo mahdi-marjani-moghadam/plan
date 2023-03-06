@@ -142,8 +142,10 @@ class shakhesController
         if (isset($_GET['y'])) {
             $year = explode('-', handleData($_GET['y']));
         } else {
-            $year = array(1398, 1399);
+            $year = explode('/', convertDate(date('Y-m-d')))[0];
+            $year = array($year - 2, $year - 1);
         }
+
 
         /** admins filter */
         $list['showAdmin'] = $this->showAdmin();
@@ -159,8 +161,8 @@ class shakhesController
 
 
         // سوم برای بدست آوردن شاخص ها از جدول ghalam_shakhes , shakhes
-        $shakhesNext = $this->getShakhesByGhalam($ghalamsNext,$groups);
-        $shakhesPrev = $this->getShakhesByGhalam($ghalamsPrev,$groups);
+        $shakhesNext = $this->getShakhesByGhalam($ghalamsNext, $groups);
+        $shakhesPrev = $this->getShakhesByGhalam($ghalamsPrev, $groups);
 
 
         $reports = $this->getReports($shakhesNext, $ghalamsNext, $ghalamsPrev, $groups);
@@ -305,8 +307,8 @@ class shakhesController
             $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['motevali_admin_id'] = $item['motevali_admin_id'];
             $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['import'] = $item['import'];
 
-            $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['value_import'] = $item['value_import'];
-            $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['value'] = $item['value'];
+            $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['value_import'] += $item['value_import'];
+            $ghalam[$item['ghalam_id']]['admins'][$item['motevali_admin_id']]['value'] += $item['value'];
             if ($item['motevalis'] == '') {
                 // echo ($item['motevalis']).'---------------------';
                 $ghalam[$item['ghalam_id']]['admins'][100]['value_import'] += $item['value_import'];
@@ -318,7 +320,7 @@ class shakhesController
         return $ghalam;
     }
 
-    public function getShakhesByGhalam($ghalams,$groups)
+    public function getShakhesByGhalam($ghalams, $groups)
     {
         include_once ROOT_DIR . 'component/shakhes/model/rel.ghalam.shakhes.model.php';
         $relGhalamShakhes = new relGhalamShakhes();
@@ -333,9 +335,9 @@ class shakhesController
         // $relGhalamShakhes->keyBy('sh_shakhes.id');
         $relGhalamShakhes->leftJoin('sh_shakhes', 'sh_shakhes.shakhes_id', '=', 'sh_rel_ghalam_shakhes.shakhes_id');
         $relGhalamShakhes->leftJoin('sh_rel_kalan_shakhes', 'sh_rel_kalan_shakhes.shakhes_id', '=', 'sh_rel_ghalam_shakhes.shakhes_id');
-        $relGhalamShakhes->leftJoin('sh_rel_shakhes_admin','sh_rel_shakhes_admin.shakhes_id','=', 'sh_rel_ghalam_shakhes.shakhes_id');
+        $relGhalamShakhes->leftJoin('sh_rel_shakhes_admin', 'sh_rel_shakhes_admin.shakhes_id', '=', 'sh_rel_ghalam_shakhes.shakhes_id');
         $relGhalamShakhes->where('sh_rel_ghalam_shakhes.ghalam_id', 'in', implode(',', array_unique(array_keys($ghalams))));
-        $relGhalamShakhes->where('sh_rel_shakhes_admin.admin_id','in', implode(',', array_unique(array_keys($groups))));
+        $relGhalamShakhes->where('sh_rel_shakhes_admin.admin_id', 'in', implode(',', array_unique(array_keys($groups))));
         $rels = $relGhalamShakhes->getList()['export']['list'];
         //         dd($rels);
         // dd('rels',false);
@@ -413,7 +415,7 @@ class shakhesController
 
             $data[$shakhes_id] = $EupNext = $EupPrev = $EdownNext = $EdownPrev = $EupNextUni = $EdownNextUni = $EupPrevUni = $EdownPrevUni = array();
 
-//             dd($motevali);
+//             dd($admins);
 
             foreach ($admins as $motevali => $admin) {
 
@@ -508,6 +510,9 @@ class shakhesController
                         $tmp = array(1 => 'value', 2 => 'value_import'); // متغیر داینامیک نهایی و اعلامی
 
                         //////// ۹۹ ////////
+//                        dd($admins);
+
+//                        echo   '<br> amalkard : '.$amalkardNext[$motevali]['up'][$tmp[$i]]. '<br>';
                         $EupNext[$tmp[$i]] += $amalkardNext[$motevali]['up'][$tmp[$i]]; // جمع صورت عملکرد
                         if (isset($amalkardNext[$motevali]['down'][$tmp[$i]])) {
                             $EdownNext[$tmp[$i]] += $amalkardNext[$motevali]['down'][$tmp[$i]]; // جمع مخرج عملکرد
@@ -532,6 +537,9 @@ class shakhesController
                         $EdownPrevUni[$tmp[$i]] += $EdownPrev[$tmp[$i]]; // Uni
 
 
+//                        echo $motevali . ' up: '.$EupNext[$tmp[$i]]. ' down:' . $EdownNext[$tmp[$i]].'<br>';
+
+
                         $data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] =
                             $EupNext[$tmp[$i]] / (($EdownNext[$tmp[$i]] == 0) ? 1 : $EdownNext[$tmp[$i]]); // عملکرد ۹۹ برای کل واحد
 
@@ -540,14 +548,22 @@ class shakhesController
 
                         if ($shakhes['afzayande'] == 1) {
                             $data[$shakhes_id][$admin['parent_id']]['nerkh'][$tmp[$i]] =
-                                (($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]]) - 1); // نرخ رشد
+                                (($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]]) - 1) * 100; // نرخ رشد
+
+                            $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]] =
+                                ($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] /
+                                    $this->standard($shakhes_id, $admin['parent_id'])) * 100; // درصد تحقق
+
                         } else {
                             $data[$shakhes_id][$admin['parent_id']]['nerkh'][$tmp[$i]] =
-                                (1 - ($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]])); // نرخ رشد
-                        }
+                                (1 - ($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][$admin['parent_id']]['amalkardPrev'][$tmp[$i]])) * 100; // نرخ رشد
 
-                        $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]] =
-                            ($data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]] / $this->standard($shakhes_id, $admin['parent_id'])) * 100; // درصد تحقق
+
+                            $data[$shakhes_id][$admin['parent_id']]['darsad'][$tmp[$i]] =
+                                ($this->standard($shakhes_id, $admin['parent_id']) /
+                                    $data[$shakhes_id][$admin['parent_id']]['amalkardNext'][$tmp[$i]]
+                                ) * 100; // درصد تحقق
+                        }
 
 
                         //                        if($tmp[$i] == 'value_import'){
@@ -556,22 +572,45 @@ class shakhesController
                         //                                $data['kalan'][$shakhes['kalan_no']][$admin['parent_id']]['darsad'][$tmp[$i]].'<br>';
                         //
                         //                        }
+
+
+
+
+                        // قبلا پایین بود ولی مشکل داشت اوردیم ایجا
+                        $data['kalan'][$shakhes['kalan_no']][$admin['parent_id']]['darsad'][$tmp[$i]] +=
+                            ($data[$shakhes_id][$motevali]['darsad'][$tmp[$i]])
+                            * $this->shakhesVazn($shakhes_id, $motevali); // درصد تحقق نهایی و اعلامی
+
                     }
+
+
+
+
+
                 } else {
 
                     // برای جدول در سطح کلان
                     //برای کل واحد
-                    $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value_import'] +=
-                        $data[$shakhes_id][$motevali]['darsad']['value_import'] * $this->shakhesVazn($shakhes_id, $motevali); // درصد تحقق نهایی و اعلامی
-                    $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value'] +=
-                        $data[$shakhes_id][$motevali]['darsad']['value'] * $this->shakhesVazn($shakhes_id, $motevali); // درصد تحقق نهایی و اعلامی
+                    // توی شرط بالا پر میشه اینجا فقط در وزن ضرب میشه
 
+//                    $data['kalan'][$shakhes['kalan_no']][$admin['parent_id']]['darsad']['value_import'] +=
+//                        ($data[$shakhes_id][$motevali]['darsad']['value_import'])
+//                        * $this->shakhesVazn($shakhes_id, $motevali); // درصد تحقق نهایی و اعلامی
+//
+//                    $data['kalan'][$shakhes['kalan_no']][$admin['parent_id']]['darsad']['value'] +=
+//                        $data[$shakhes_id][$motevali]['darsad']['value']
+//                        * $this->shakhesVazn($shakhes_id, $motevali); // درصد تحقق نهایی و اعلامی
+//
 
                     //ترتیب این خط خیلی مهمه برای محاسبه کل واحد باید اینجا ریست بشه
                     //برای حل مشکل کل واحد الهیات اینجا گذاشته شده
                     $EupNext = $EupPrev = $EdownNext = $EdownPrev = array();
                 }
+
+
             }
+
+//            dd(1);
 
 
             for ($i = 1; $i <= 2; $i++) { // محاسبه اعلامی و نهایی در حلقه
@@ -587,10 +626,10 @@ class shakhesController
 
                 if ($shakhes['afzayande'] == 1) {
                     $data[$shakhes_id][100]['nerkh'][$tmp[$i]] =
-                        (($data[$shakhes_id][100]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][100]['amalkardPrev'][$tmp[$i]]) - 1); // نرخ رشد
+                        (($data[$shakhes_id][100]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][100]['amalkardPrev'][$tmp[$i]]) - 1) * 100; // نرخ رشد
                 } else {
                     $data[$shakhes_id][100]['nerkh'][$tmp[$i]] =
-                        (1 - ($data[$shakhes_id][100]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][100]['amalkardPrev'][$tmp[$i]])); // نرخ رشد
+                        (1 - ($data[$shakhes_id][100]['amalkardNext'][$tmp[$i]] / $data[$shakhes_id][100]['amalkardPrev'][$tmp[$i]])) * 100; // نرخ رشد
                 }
 
                 $data[$shakhes_id][100]['darsad'][$tmp[$i]] =
@@ -624,6 +663,7 @@ class shakhesController
         $f = explode('/', $func);
         $functionUp = explode('+', $f[0]);
         $v = $d = array();
+//        dd($gh[1020101]);
         foreach ($functionUp as $ghId) {
             foreach ($gh[$ghId]['admins'] as $g) {
                 //براي واحد ها
@@ -634,7 +674,7 @@ class shakhesController
                 $v[$g['motevali_admin_id']]['up']['value_import'] = $v[$g['motevali_admin_id']]['value_import'];
             }
         }
-        // dd($v);
+//         dd($v);
 
 
         if (isset($f[1])) {
@@ -1256,7 +1296,7 @@ class shakhesController
         // dd($season);
 
         $kalanTahlilObj = $kalanTahlil->getAll();
-        $kalanTahlilObj = $kalanTahlil->select('tahlil_manager' . $season,'tahlil_arzyab' . $season, 'admin_id', 'kalan_no');
+        $kalanTahlilObj = $kalanTahlil->select('tahlil_manager' . $season, 'tahlil_arzyab' . $season, 'admin_id', 'kalan_no');
         $kalanTahlilObj = $kalanTahlil->where('admin_id', 'in', $groupString);
         $kalanTahlilObj = $kalanTahlil->where('year', '=', KHODEZHARI_YEAR);
 

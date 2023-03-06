@@ -116,6 +116,7 @@
 
             <select id="admin" multiple>
                 <option value="0">انتخاب کنید</option>
+
                 <?php foreach ($list['showAdmin'] as $k => $admins) : ?>
                     <option <?php if (strpos($_GET['qq'], ',' . $admins['admin_id'] . ',') !== false) {
                                 echo 'selected';
@@ -128,8 +129,8 @@
         <div class="col-md-2 col-sm-4 col-xs-4">
             <label for="level">سال :</label>
             <select name="season" id="year">
-                <option value="1398-1399" <?php echo ($_GET['y'] == '1398-1399') ? 'selected' : ''; ?>>۱۳۹۸-۱۳۹۹</option>
-                <option value="1399-1400" <?php echo ($_GET['y'] == '1399-1400') ? 'selected' : ''; ?>>۱۳۹۹-۱۴۰۰</option>
+<!--                <option value="1398-1399" <?php /*echo ($_GET['y'] == '1398-1399') ? 'selected' : ''; */?>>۱۳۹۸-۱۳۹۹</option>
+-->                <option value="1399-1400" <?php echo ($_GET['y'] == '1399-1400') ? 'selected' : ''; ?>>۱۳۹۹-۱۴۰۰</option>
                 <option value="1400-1401" <?php echo ($_GET['y'] == '1400-1401') ? 'selected' : ''; ?>>۱۴۰۰-۱۴۰۱</option>
                 <option value="1401-1402" <?php echo ($_GET['y'] == '1401-1402') ? 'selected' : ''; ?>>1401-1402</option>
             </select>
@@ -260,19 +261,19 @@
             if ($msg != '') :
                 echo $msg;
             endif;
-            if ($admin_info['admin_id'] == 1) :
+            if ($admin_info['admin_id'] == 1):
             ?>
 
                 <form action="/admin/" method="GET">
                     <input type="hidden" name="component" value="shakhes">
                     <input type="hidden" name="updateShakhesReport" value="">
                     <select name="y">
-                        <option value="1398-1399">1398-1399</option>
-                        <option value="1399-1400">1399-1400</option>
+<!--                        <option value="1398-1399">1398-1399</option>
+-->                        <option value="1399-1400">1399-1400</option>
                         <option value="1400-1401">1400-1401</option>
                     </select>
 
-                    <button class="btn btn-info">به روز رسانی جدول گزارش</button>
+                    <!--<button class="btn btn-info">به روز رسانی جدول گزارش</button>-->
                 </form>
             <?php
             endif;

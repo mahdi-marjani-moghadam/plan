@@ -246,12 +246,15 @@
                 <?php endif ?>
                 <li>
 
-                    <?php if ($admin_info['admin_id'] == 1) : ?>
+                    <?php if ($admin_info['admin_id'] == 1 || 3121 ) : ?>
 
                     <a href="<?php echo  RELA_DIR ?>admin/?component=shakhes">
                         <span class="sidebar-text text-16"> گزارش عملکرد</span>
                     </a>
                 </li>
+            <?php endif; ?>
+
+                <?php if ($admin_info['admin_id'] == 1 ) : ?>
 
                 <!--<li>
                     <a href="">
