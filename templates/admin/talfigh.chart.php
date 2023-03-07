@@ -67,7 +67,7 @@
                 <option value="4" <?php echo ($_GET['s'] == '4'  || (STEP_FORM1 == 4 && !isset($_GET['s']))) ? 'selected' : ''; ?>>یکساله</option>
             </select>
         </div>
-        <?php if ($admin_info['groups'] == 0 || $admin_info['groups'] == 100 || $admin_info['admin_id'] == 3121) : ?>
+        <?php if ($admin_info['groups'] == 0 || $admin_info['groups'] == 100 || $admin_info['admin_id'] == 4000) : ?>
         <div class="col-md-2 col-sm-6 col-xs-12 " style="display:">
             <label for="chart">نوع نمودار :</label>
             <select name="chart" id="chart">
@@ -78,7 +78,7 @@
         </div>
         <?php endif; ?>
 
-        <?php if ($admin_info['groups'] == 0 || $admin_info['groups'] == 100 || $admin_info['admin_id'] == 3121) : ?>
+        <?php if ($admin_info['groups'] == 0 || $admin_info['groups'] == 100 || $admin_info['admin_id'] == 4000) : ?>
 
             <div class="col-md-2 col-sm-6 col-xs-12" style="display:">
                 <label for="admin">واحد :</label>

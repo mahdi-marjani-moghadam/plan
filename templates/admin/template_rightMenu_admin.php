@@ -246,7 +246,7 @@
                 <?php endif ?>
                 <li>
 
-                    <?php if ($admin_info['admin_id'] == 1 || 3121 ) : ?>
+                    <?php if ($admin_info['admin_id'] == 1 || 4000 ) : ?>
 
                     <a href="<?php echo  RELA_DIR ?>admin/?component=shakhes">
                         <span class="sidebar-text text-16"> گزارش عملکرد</span>

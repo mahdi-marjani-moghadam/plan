@@ -104,7 +104,7 @@ class chartController
     private function showAdmin($talfigh = false)
     {
         global $admin_info;
-        if ($admin_info['parent_id'] == 0 || $admin_info['admin_id'] == 100 || $admin_info['admin_id'] == 3121) {
+        if ($admin_info['parent_id'] == 0 || $admin_info['admin_id'] == 100 || $admin_info['admin_id'] == 4000) {
             include_once ROOT_DIR . 'component/admin/model/admin.model.php';
             $objAdmin = new admin();
             $result3 = $objAdmin->getAll()
@@ -144,7 +144,7 @@ class chartController
 
         $parent = $admin_info['parent_id'];
         $admin_id = $admin_info['admin_id'];
-        if ($admin_info['parent_id'] == 0 || $admin_info['admin_id'] == 3121) {
+        if ($admin_info['parent_id'] == 0 || $admin_info['admin_id'] == 4000) {
             if (isset($qq)) {
                 $parent = $this->getParentIdByAdminId(trim($qq, ','));
                 $admin_id = trim($qq, ',');

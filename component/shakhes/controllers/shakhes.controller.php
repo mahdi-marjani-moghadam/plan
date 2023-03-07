@@ -205,7 +205,7 @@ class shakhesController
         $admin->select('DISTINCT admin.admin_id, admin.name, admin.family, admin.group_admin, admin.parent_id, admin.groups, admin.flag');
         $admin->keyBy('admin_id');
         $admin->leftJoin('sh_import', 'admin.admin_id', '=', 'sh_import.motevali_admin_id');
-        $admin->orderBy('`parent_id`,`groups`,`flag`', 'asc');
+        $admin->orderBy('`groups`, `parent_id` desc, `flag`', 'asc');
 
 
         $admin->whereOpen('admin.parent_id', '<>', '0'); // <> 1
@@ -415,23 +415,24 @@ class shakhesController
 
             $data[$shakhes_id] = $EupNext = $EupPrev = $EdownNext = $EdownPrev = $EupNextUni = $EdownNextUni = $EupPrevUni = $EdownPrevUni = array();
 
+//            $admins = asort($admins['parent_id']);
 //             dd($admins);
 
             foreach ($admins as $motevali => $admin) {
 
 
-                // اول واحد ها پر میشن بعد کل واحد 
+                // اول واحد ها پر میشن بعد کل واحد
                 //برای اینکه دچار مشکل نشه وقتی به کل واحد میرسیم ازش با شرط زیر رد میشیم
 
-                // اعلامی = $amalkardNext[$motevali]['value_import'] 
-                // نهایی = $amalkardNext[$motevali]['value'] 
+                // اعلامی = $amalkardNext[$motevali]['value_import']
+                // نهایی = $amalkardNext[$motevali]['value']
                 // عملکرد =  $amalkardNext
                 // نرخ رشد = ( ($amalkardNext / $amalkardPrev) - 1 ) * 100
-
+//                echo $motevali.'<br>';
                 if ($admin['parent_id'] != 1) {
 
                     //--------------//
-                    //براي واحد ها 
+                    //براي واحد ها
                     //--------------//
 
                     ///////////////
@@ -516,7 +517,7 @@ class shakhesController
                         $EupNext[$tmp[$i]] += $amalkardNext[$motevali]['up'][$tmp[$i]]; // جمع صورت عملکرد
                         if (isset($amalkardNext[$motevali]['down'][$tmp[$i]])) {
                             $EdownNext[$tmp[$i]] += $amalkardNext[$motevali]['down'][$tmp[$i]]; // جمع مخرج عملکرد
-                            // $EdownNextUni[$tmp[$i]] +=  $amalkardNext[$motevali]['down'][$tmp[$i]]; // جمع مخرج عملکرد 
+                            // $EdownNextUni[$tmp[$i]] +=  $amalkardNext[$motevali]['down'][$tmp[$i]]; // جمع مخرج عملکرد
 
                         } else {
                             $EdownNext[$tmp[$i]] += 0; // در صورتی که فرمول نسبت نباشد مخرج صفر میشود
@@ -576,11 +577,6 @@ class shakhesController
 
 
 
-                        // قبلا پایین بود ولی مشکل داشت اوردیم ایجا
-                        $data['kalan'][$shakhes['kalan_no']][$admin['parent_id']]['darsad'][$tmp[$i]] +=
-                            ($data[$shakhes_id][$motevali]['darsad'][$tmp[$i]])
-                            * $this->shakhesVazn($shakhes_id, $motevali); // درصد تحقق نهایی و اعلامی
-
                     }
 
 
@@ -593,14 +589,27 @@ class shakhesController
                     //برای کل واحد
                     // توی شرط بالا پر میشه اینجا فقط در وزن ضرب میشه
 
-//                    $data['kalan'][$shakhes['kalan_no']][$admin['parent_id']]['darsad']['value_import'] +=
+                    $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value_import'] +=
+                        ($data[$shakhes_id][$motevali]['darsad']['value_import'])
+                        * $this->shakhesVazn($shakhes_id, $motevali); // درصد تحقق نهایی و اعلامی
+
+                    $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value'] +=
+                        $data[$shakhes_id][$motevali]['darsad']['value']
+                        * $this->shakhesVazn($shakhes_id, $motevali); // درصد تحقق نهایی و اعلامی
+//
+//                    echo $shakhes_id. ' ' . $admin['parent_id'].'<br>';
+
+//                    dd($data[$shakhes_id]);
+                    // قبلا پایین بود ولی مشکل داشت اوردیم ایجا
+//                    $data['kalan'][$shakhes['kalan_no']][$motevali]['darsad']['value_import'] +=
 //                        ($data[$shakhes_id][$motevali]['darsad']['value_import'])
 //                        * $this->shakhesVazn($shakhes_id, $motevali); // درصد تحقق نهایی و اعلامی
 //
+//                    // قبلا پایین بود ولی مشکل داشت اوردیم ایجا
 //                    $data['kalan'][$shakhes['kalan_no']][$admin['parent_id']]['darsad']['value'] +=
-//                        $data[$shakhes_id][$motevali]['darsad']['value']
-//                        * $this->shakhesVazn($shakhes_id, $motevali); // درصد تحقق نهایی و اعلامی
-//
+//                        ($data[$shakhes_id][$admin['parent_id']]['darsad']['value'])
+//                        * $this->shakhesVazn($shakhes_id, $admin['parent_id']); // درصد تحقق نهایی و اعلامی
+
 
                     //ترتیب این خط خیلی مهمه برای محاسبه کل واحد باید اینجا ریست بشه
                     //برای حل مشکل کل واحد الهیات اینجا گذاشته شده
@@ -843,7 +852,7 @@ class shakhesController
 
         include_once ROOT_DIR . "component/admin/model/admin.model.php";
         // پیدا کردن ستون های واحد
-        if ($admin_info['parent_id'] == 0 || $admin_info['admin_id'] == 3121 || $admin_info['admin_id'] == 6) { // مدیریت دانشگاه
+        if ($admin_info['parent_id'] == 0 || $admin_info['admin_id'] == 4000 || $admin_info['admin_id'] == 6) { // مدیریت دانشگاه
 
             $query = 'select admin_id,name,family from admin where  parent_id <> 1 or parent_id <> 0 order by parent_id';
             $admins = $obj->query($query)->getList()['export']['list'];
