@@ -681,6 +681,10 @@ class shakhesController
 
                 $v[$g['motevali_admin_id']]['up']['value'] = $v[$g['motevali_admin_id']]['value'];
                 $v[$g['motevali_admin_id']]['up']['value_import'] = $v[$g['motevali_admin_id']]['value_import'];
+
+//                if($g['motevali_admin_id'] == 1102){
+//                    echo $v[$g['motevali_admin_id']]['value'].'<br>';
+//                }
             }
         }
 //         dd($v);
@@ -702,8 +706,15 @@ class shakhesController
                     $v[$g['motevali_admin_id']]['down']['value_import'] = $d[$g['motevali_admin_id']]['value_import'];
 
                     if ($lastFunctionDown == 0) {
+
                         $v[$g['motevali_admin_id']]['value'] = $v[$g['motevali_admin_id']]['value'] / $v[$g['motevali_admin_id']]['down']['value'];
                         $v[$g['motevali_admin_id']]['value_import'] = $v[$g['motevali_admin_id']]['value_import'] / $v[$g['motevali_admin_id']]['down']['value_import'];
+//                        if($g['motevali_admin_id'] == 1102){
+//                            echo  $v[$g['motevali_admin_id']]['value'].'<br>';
+//                            echo $v[$g['motevali_admin_id']]['down']['value'].'<br>';
+//                            dd($v[$g['motevali_admin_id']]);
+//                        }
+
                     }
                 }
             }
