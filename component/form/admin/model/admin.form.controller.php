@@ -573,7 +573,7 @@ class adminFormController
 
                 $st = $list['faaliat'] . '<a  data-toggle="modal" data-target="#exampleModalCenter' . $res['id'] . '" ><i class="far fa fa-question-circle"></i></a>';
                 $st .= '
-                    <div class="modal fade" id="exampleModalCenter' . $res['id'] . '" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal fade" id="exampleModalCenter' . $res['id'] . '" tabindex="-1" role="longdialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                       <div class="modal-dialog modal-dialog-centered" role="document"><div class="modal-content"><div class="modal-header"><h3 class="modal-title" id="exampleModalCenterTitle">مستندات مورد نیاز</h3></div>
                           <div class="modal-body">';
                 $st .= $res['khoroji_eghdam'];
@@ -585,38 +585,56 @@ class adminFormController
         );
 
 
+
         $other['5'] = array(
             'formatter' => function ($list) {
                 global $admin_info;
                 $status = $list['status'];
                 if ($status == 0 || ($status == 1)) {
-                    $st = '';
+
                     $plan_id = $list['fid'];
+                    $st = '';
                     if (STEP_FORM1 == 1 and $list['start_date'] <= date('Y-m-d') and $list['finish_date'] >= date('Y-m-d')) {
                         $st .= "<input data-season='1-{$list['fid']}' class='form-control ltr ' pattern='^([0-9]|[1-9][0-9]|100)$' title='.درصد پیشرفت وارد شده مجاز نمی باشد' autocomplete='off'  name='menu[$plan_id][1]' type='text'  value='{$list['admin_percent1']}' style='width: 150px'>";
-                        $st .= "<input  name='menu[$plan_id][1]' type='file'   >";
+
+                        include_once ROOT_DIR . 'component/khoroji_eghdam/model/khoroji_eghdam.model.php';
+                        $res = khoroji_eghdam::getBy_faaliat_id_and_admin_id($list['faaliat_id'], $list['admin_id'])
+                            ->select('import_doc,faaliat_id')
+                            ->getList()['export']['list'][0];
+                        if ($res['import_doc'] == 1) {
+                            $st .= "<input  name='menu[$plan_id][1]' type='file' class='menufile5'   >";   
+                        }
                     } else {
                         $st .= 'اعلامی: <br>' . "<div class='elami' data-season='1-{$list['fid']}'>" . $list['admin_percent1'] . '</div><br> نهایی: ' . " <div class='nahayi' data-season='1-{$list['fid']}'>" . (int) $list['O1'] . "</div>";
                     }
 
-
                     if ($list['admin_file1']) {
-                        $st .= "<br>" . "<a class='btn btn-default'  href='" . RELA_DIR . "statics/files/{$admin_info['admin_id']}/season1/{$list['eghdam_id']}/{$list['admin_file1']}" . "'>دانلود فایل</a>";
+                        $st .= "<br>" . "<a  class='btn btn-success btn-xs' data-season='1' href='" . RELA_DIR . "statics/files/{$admin_info['admin_id']}/season1/{$list['eghdam_id']}/{$list['admin_file1']}" . "'>دانلود فایل</a>";
                         if (STEP_FORM1 == 1) {
-                            $st .= "<a class='btn btn-danger text-white btn-xs'  href='" . RELA_DIR . "admin/?component=form&action=deleteFile&s=1&e={$list['eghdam_id']}&f={$list['faaliat_id']}' style='color: red;'>حذف فایل</a>";
+                            $st .= "<a class='btn btn-danger text-white btn-xs'  onclick=\" return confirm('آیا میخواهید فایل را حذف نمایید؟');\"     href='" . RELA_DIR . "admin/?component=form&action=deleteFile&s=1&e={$list['eghdam_id']}&f={$list['faaliat_id']}' style='color: #ff0000;'>حذف فایل</a>";
                         }
                     }
                 } else {
                     $st = $list['admin_percent1'];
                     if ($list['admin_file1']) {
-                        $st .= "<a  class='btn btn-default' href='" . RELA_DIR . "statics/files/{$admin_info['admin_id']}/season1/{$list['eghdam_id']}/{$list['admin_file1']}" . "'>دانلود فایل </a>";
+                        $st .= "<a  class='btn btn-default btn-xs' href='" . RELA_DIR . "statics/files/{$admin_info['admin_id']}/season1/{$list['eghdam_id']}/{$list['admin_file1']}" . "'>دانلود فایل</a>";
                     }
                 }
-
 
                 return $st;
             }
         );
+
+
+
+
+
+
+
+
+
+
+
 
         $other['6'] = array(
             'formatter' => function ($list) {
@@ -652,7 +670,7 @@ class adminFormController
                             ->select('import_doc,faaliat_id')
                             ->getList()['export']['list'][0];
                         if ($res['import_doc'] == 1) {
-                            $st .= "<input  name='menu[$plan_id][2]' type='file'   >";
+                            $st .= "<input  name='menu[$plan_id][2]' type='file' class='menufile7'  >";
                         }
                     } else {
                         $st .= 'اعلامی: <br>' . "<div class='elami' data-season='2-{$list['fid']}'>" . $list['admin_percent2'] . '</div><br> نهایی: ' . " <div  class='nahayi' data-season='2-{$list['fid']}'>" . (int) $list['O2'] . "</div>";
@@ -712,7 +730,7 @@ class adminFormController
                             ->select('import_doc,faaliat_id')
                             ->getList()['export']['list'][0];
                         if ($res['import_doc'] == 1) {
-                            $st .= "<input  name='menu[$plan_id][3]' type='file'   >";
+                            $st .= "<input  name='menu[$plan_id][3]' type='file' class='menufile9'  >";
                         }
                     } else {
                         $st .= 'اعلامی: <br>' . "<div class='elami' data-season='3-{$list['fid']}'>" . $list['admin_percent3'] . '</div><br> نهایی: ' . " <div  class='nahayi' data-season='3-{$list['fid']}'>" . (int) $list['O3'] . "</div>";
@@ -768,7 +786,7 @@ class adminFormController
                             ->getList()['export']['list'][0];
 
                         if ($res['import_doc'] == 1) {
-                            $st .= "<input  name='menu[$plan_id][4]' type='file'   >";
+                            $st .= "<input  name='menu[$plan_id][4]' type='file'  class='menufile11' >";
                         }
                     } else {
                         $st .= 'اعلامی: <br>' . "<div class='elami' data-season='4-{$list['fid']}'>" . $list['admin_percent4'] . '</div><br> نهایی: ' . " <div class='nahayi' data-season='4-{$list['fid']}'>" . (int) $list['O4'] . "</div>";
